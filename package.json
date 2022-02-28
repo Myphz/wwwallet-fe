@@ -1,0 +1,18 @@
+{
+  "name": "wwwallet-fe",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite --port 5000",
+    "build": "vite build",
+    "preview": "vite preview --port 5050"
+  },
+  "dependencies": {
+    "pinia": "^2.0.11",
+    "vue": "^3.2.31",
+    "vue-router": "^4.0.12"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.2.2",
+    "vite": "^2.8.4"
+  }
+}
