@@ -2,9 +2,9 @@
   <nav>
     <Logo />
     <ul>
-      <li>Home</li>
-      <li>Market</li>
-      <li>Dashboard</li>
+      <li><RouterLink to="/">Home</RouterLink></li>
+      <li><RouterLink to="/crypto">Market</RouterLink></li>
+      <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
     </ul>
     <Icon icon="user" />
   </nav>
@@ -13,6 +13,7 @@
 <script setup>
 import Logo from "@/components/Logo.vue"
 import Icon from "@/components/Icon.vue"
+import { RouterLink } from "vue-router";
 </script>
 
 <style lang="sass" scoped>
@@ -33,4 +34,9 @@ import Icon from "@/components/Icon.vue"
   li
     display: inline-flex
     margin: 0 1em
+  
+  a
+    text-decoration: none
+    color: inherit
+
 </style>
