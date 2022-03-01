@@ -6,7 +6,7 @@
       <li><RouterLink to="/crypto">Market</RouterLink></li>
       <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
     </ul>
-    <Icon icon="user" />
+    <RouterLink to="/login"><Icon icon="user" /></RouterLink>
   </nav>
 </template>
 
