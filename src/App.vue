@@ -15,6 +15,8 @@ const path = computed( () => route.path );
 </template>
 
 <style lang="sass">
+  @import "./src/assets/sass/_variable.sass"
+  
   body
     background-color: $bg-base
     color: $text-color

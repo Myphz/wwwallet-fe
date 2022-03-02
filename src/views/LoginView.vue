@@ -1,11 +1,12 @@
 <template>
   <div>
-    Test Login View
+    <InputBox />
   </div>
 </template>
 
 <script setup>
 import { onBeforeMount, onUnmounted } from 'vue'
+import InputBox from "@/components/InputBox.vue"
 
 onBeforeMount(() => {
   document.body.classList.add("bg");

@@ -14,7 +14,7 @@ import Icon from "@/components/Icon.vue"
 
   $logo-font-size: 44px
   $logo-margin: 10px
-
+ 
   .box
     display: flex
     align-items: center
