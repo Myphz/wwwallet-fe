@@ -1,12 +1,12 @@
 <template>
-  <span class="box">
-    <Icon :icon="icon" class="icon" />
+  <span class="container">
+    <Icon class="icon" />
     <input type="text" :placeholder="capitalized">
   </span>
 </template>
 
 <script setup>
-import Icon from "./Icon.vue"
+import { defineAsyncComponent } from 'vue'
 
 const props = defineProps({
   icon: String,
@@ -14,10 +14,13 @@ const props = defineProps({
 });
 
 const { icon } = props;
+// Lazy loading component to import it from a string
+// Import the svg directly using vite-svg-loader to style the icon
+const Icon = defineAsyncComponent(() => import(`/src/assets/icons/${icon}.svg`))
 const capitalized = icon[0].toUpperCase() + icon.substring(1);
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
   @import "./src/assets/sass/_variable.sass"
 
   input
@@ -30,12 +33,16 @@ const capitalized = icon[0].toUpperCase() + icon.substring(1);
     &::placeholder
       color: $text-color-secondary
 
-  .box
+  .container
     display: flex
     align-items: center
     border-bottom: 1.5px solid $text-color
     padding: 2px
     margin: 0
     margin-bottom: 30px
+
+  .icon 
+    path
+      fill: $text-color-secondary
     
 </style>
