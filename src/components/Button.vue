@@ -1,5 +1,5 @@
 <template>
-  <button :type="submit ? 'submit' : null">{{ text }}</button>
+  <button :type="submit ? 'submit' : null" class="h3">{{ text }}</button>
 </template>
 
 <script>
@@ -26,16 +26,23 @@ export default {
 
 <style lang="sass" scoped>
   @import "./src/assets/sass/_variable.sass"
+  @import "./src/assets/sass/_utilities.sass"
 
   button
     border: none
     outline: none
     background-color: $primary
     color: $white
-    font-size: 16px
-    line-height: 40px
+    line-height: 2.5em
     text-transform: uppercase
     font-weight: bold
-    border-radius: 10px
+    border-radius: 0.625em
+    transition: all 0.1s
 
+    &:hover
+      background-color: darken($primary, 10%)
+
+    &:active
+      background-color: darken($primary, 20%)
+      
 </style>

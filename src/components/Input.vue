@@ -1,7 +1,7 @@
 <template>
   <span class="container">
     <Icon class="icon" />
-    <input type="text" :placeholder="capitalized">
+    <input class="h3" type="text" :placeholder="capitalized">
   </span>
 </template>
 
@@ -22,6 +22,7 @@ const capitalized = icon[0].toUpperCase() + icon.substring(1);
 
 <style lang="sass">
   @import "./src/assets/sass/_variable.sass"
+  @import "./src/assets/sass/_utilities.sass"
 
   input
     border: none
@@ -29,7 +30,6 @@ const capitalized = icon[0].toUpperCase() + icon.substring(1);
     background: none
     margin-left: 5px
     color: $text-color
-    font-size: 18px
     &::placeholder
       color: $text-color-secondary
 

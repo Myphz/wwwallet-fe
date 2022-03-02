@@ -1,14 +1,14 @@
 <template>
   <div>
     <Logo />
-    <h2>Login</h2>
+    <h2 class="h2">Login</h2>
     <form action="">
       <Input icon="email" class="input" />
       <Input icon="password" class="input" />
-      <span v-if="login" class="forgot">Forgot your password?</span>
+      <span v-if="login" class="forgot h4">Forgot your password?</span>
       <Button class="btn" text="login" submit />
     </form>
-    <span class="subtext">{{ subtext }}</span>
+    <span class="subtext h4">{{ subtext }}</span>
   </div>
 </template>
 
@@ -32,39 +32,37 @@ const { subtext } = defineProps({
 
 <style lang="sass" scoped>
   @import "./src/assets/sass/_variable.sass"
-  $header-size: 36px
+  @import "./src/assets/sass/_utilities.sass"
 
   div
     position: absolute
     top: 20%
     width: 20em
     max-width: 20em
-    
     padding: 1em 2.6em
     border-radius: 1em
     background-color: rgba(35, 74, 117, 0.5)
     backdrop-filter: blur(12px)
 
   h2
-    font-size: $header-size
+    margin: 0.5em 0
 
   form
     display: flex
     flex-direction: column
 
   .input
-    margin: 15px 0
+    margin: 1em 0
 
   .forgot
     display: flex
     justify-content: right
     
   .subtext, .forgot
-    font-size: 12px
     color: $text-color-secondary
 
   .btn
-    margin: 10px 0
+    margin: 0.625em 0
     width: 100%
     
 
