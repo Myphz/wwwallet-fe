@@ -36,10 +36,8 @@ const capitalized = icon[0].toUpperCase() + icon.substring(1);
   .container
     display: flex
     align-items: center
-    border-bottom: 1.5px solid $text-color
+    border-bottom: 1px solid $text-color
     padding: 2px
-    margin: 0
-    margin-bottom: 30px
 
   .icon 
     path

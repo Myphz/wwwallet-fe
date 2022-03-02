@@ -20,6 +20,7 @@ import Icon from "@/components/Icon.vue"
     align-items: center
     font-family: 'Rambla', sans-serif
     font-size: $logo-font-size
+    user-select: none
 
   img
     margin-right: $logo-margin

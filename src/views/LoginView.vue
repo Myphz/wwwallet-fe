@@ -1,6 +1,6 @@
 <template>
   <div>
-    <InputBox />
+    <InputBox subtext="Don’t have an account? Sign up" login />
   </div>
 </template>
 
@@ -21,6 +21,6 @@ onUnmounted(() => {
 <style lang="sass">
   .bg
     background-image: url("/src/assets/images/bg.png")
-    background-size: cover
+    background-size: 100% cover
     background-repeat: no-repeat
 </style>
