@@ -1,6 +1,26 @@
+@import "./_variable.sass"
+
 // Font sizes
 $font-sizes: 2.75rem, 2.25rem, 1.125rem, 0.75rem
 
 @for $i from 1 through length($font-sizes)
     .h#{$i}
         font-size: nth($font-sizes, $i)
+
+// Font color
+.text-primary
+    color: $text-primary
+
+.text-secondary
+    color: $text-secondary
+
+.text-white
+    color: $white
+
+.link
+    color: $primary
+    cursor: pointer
+
+// Transition
+.transition
+    transition: 0.1s all

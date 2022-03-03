@@ -11,7 +11,7 @@ import Icon from "@/components/Icon.vue"
 
 <style lang="sass" scoped>
   @import url('https://fonts.googleapis.com/css2?family=Rambla:ital,wght@1,700&display=swap')
-  @import "./src/assets/sass/_utilities.sass"
+  @import "/src/assets/sass/_utilities.sass"
 
   .box
     display: flex

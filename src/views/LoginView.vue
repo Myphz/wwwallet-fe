@@ -1,6 +1,6 @@
 <template>
   <div>
-    <InputBox subtext="Don’t have an account? Sign up" login />
+    <InputBox login />
   </div>
 </template>
 
@@ -19,8 +19,13 @@ onUnmounted(() => {
 </script>
 
 <style lang="sass">
+  @import "/src/assets/sass/_mixins.sass"
+
   .bg
     background-image: url("/src/assets/images/bg.png")
-    background-size: 100% cover
+    background-size: cover
     background-repeat: no-repeat
+
+    @include phone
+      background-size: unset
 </style>
