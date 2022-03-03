@@ -33,9 +33,5 @@ import { RouterLink } from "vue-router";
   li
     display: inline-flex
     margin: 0 1em
-  
-  a
-    text-decoration: none
-    color: inherit
 
 </style>

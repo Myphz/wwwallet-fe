@@ -16,10 +16,15 @@ const path = computed( () => route.path );
 
 <style lang="sass">
   @import "/src/assets/sass/_variable.sass"
+  @import "/src/assets/sass/_mixins.sass"
   
   body
     background-color: $bg-base
     color: $text-primary
     font-family: $font-base
     margin: 0 16.66vw
+    
+    @include phone
+      margin: 0
+
 </style>

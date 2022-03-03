@@ -1,17 +1,20 @@
 <template>
   <div>
     <Logo />
-    <h2 class="h2">Login</h2>
+    <h2 class="h2">{{ header }}</h2>
     <form @submit.prevent="a">
-      <Input icon="email" class="input" v-model="values.username" />
-      <Input icon="password" class="input" v-model="values.password" />
+      <Input icon="email" placeholder="Email" class="input" v-model="values.username" />
+      <Input icon="password" placeholder="Password" type="password" class="input" v-model="values.password" />
+      <Input v-if="!login" icon="password" placeholder="Confirm password" type="password" class="input" v-model="values.confirmPassword" />
+
       <span v-if="login" class="forgot h4 link">Forgot your password?</span>
-      <Button class="btn" text="login" submit />
+      <Button class="btn" :text="header" submit />
     </form>
 
     <span class="h4 text-secondary">
       <span>{{ subtext }}</span>
-      <span v-if="login" class="link"> Sign up</span>
+      <RouterLink v-if="login" class="link" to="/register"> Sign up</RouterLink>
+      <RouterLink v-else class="link" to="/login"> Login</RouterLink>
     </span>
 
   </div>
@@ -22,15 +25,25 @@ import Logo from "./Logo.vue";
 import Input from "./Input.vue";
 import Button from "./Button.vue";
 import { reactive } from "vue";
+import { RouterLink } from "vue-router";
 
 const { login } = defineProps({
   login: {
     type: Boolean,
-    required: true
+    default: false
   }
 });
 
-const subtext = login ? "Don't have an account?" : "";
+let subtext, header;
+
+if (login) {
+  subtext = "Don't have an account?";
+  header = "Login";
+} else {
+  subtext = "Already have an account?";
+  header = "Register";
+}
+
 const values = reactive({});
 </script>
 
@@ -48,6 +61,7 @@ const values = reactive({});
     border-radius: 1em
     background-color: $box-color
     backdrop-filter: blur(12px)
+    max-width: 60vw
 
     @include phone
       // Middle
