@@ -1,12 +1,12 @@
 <template>
-  <nav>
+  <nav class="h2">
     <Logo />
     <ul>
       <li><RouterLink to="/">Home</RouterLink></li>
       <li><RouterLink to="/crypto">Market</RouterLink></li>
       <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
     </ul>
-    <Icon icon="user" />
+    <RouterLink to="/login"><Icon icon="user" /></RouterLink>
   </nav>
 </template>
 
@@ -17,13 +17,12 @@ import { RouterLink } from "vue-router";
 </script>
 
 <style lang="sass" scoped>
-  $tab-font-size: 36px
+  @import "./src/assets/sass/_utilities.sass"
 
   nav
     display: flex
     justify-content: space-between
     margin: 1em 0 3em 0
-    font-size: $tab-font-size
     user-select: none
 
   ul

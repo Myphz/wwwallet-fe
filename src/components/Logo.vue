@@ -1,7 +1,7 @@
 <template>
   <span class="box">
     <Icon icon="logo" />
-    <span>wwwallet</span>
+    <span class="h1">wwwallet</span>
   </span>
 </template>
 
@@ -11,16 +11,14 @@ import Icon from "@/components/Icon.vue"
 
 <style lang="sass" scoped>
   @import url('https://fonts.googleapis.com/css2?family=Rambla:ital,wght@1,700&display=swap')
-
-  $logo-font-size: 44px
-  $logo-margin: 10px
+  @import "/src/assets/sass/_utilities.sass"
 
   .box
     display: flex
     align-items: center
     font-family: 'Rambla', sans-serif
-    font-size: $logo-font-size
+    user-select: none
 
   img
-    margin-right: $logo-margin
+    margin-right: 10px
 </style>
