@@ -1,6 +1,6 @@
 <template>
   <div>
-    <InputBox login />
+    <InputBox />
   </div>
 </template>
 
@@ -16,7 +16,7 @@ onBeforeMount(() => {
 });
 
 onUnmounted(() => {
-  if (route.path != "/register") document.body.classList.remove("bg");
+  if (route.path != "/login") document.body.classList.remove("bg");
 });
 
 </script>
