@@ -17,14 +17,23 @@ $font-sizes: 2.75rem, 2.25rem, 1.125rem, 0.75rem
 .text-white
   color: $white
 
+.text-red
+  color: $red
+
 .link
   color: $primary
   cursor: pointer
+  &:hover
+    text-decoration: underline
 
 // Transition
 .transition
   transition: 0.1s all
 
+// Utilities
+.noselect
+  user-select: none
+  
 // Resets
 a
   text-decoration: none

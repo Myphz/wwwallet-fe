@@ -1,7 +1,7 @@
 <template>
-  <nav class="h2">
+  <nav class="noselect">
     <Logo />
-    <ul>
+    <ul class="h2">
       <li><RouterLink to="/">Home</RouterLink></li>
       <li><RouterLink to="/crypto">Market</RouterLink></li>
       <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
@@ -17,13 +17,12 @@ import { RouterLink } from "vue-router";
 </script>
 
 <style lang="sass" scoped>
-  @import "./src/assets/sass/_utilities.sass"
+  @use "/src/assets/sass/_utilities.sass"
 
   nav
     display: flex
     justify-content: space-between
     margin: 1em 0 3em 0
-    user-select: none
 
   ul
     list-style-type: none

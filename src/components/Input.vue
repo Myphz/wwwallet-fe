@@ -1,24 +1,30 @@
 <template>
-  <span class="container">
-    <Icon :class="isFilled ? 'icon-fill' : 'icon icon-empty'" />
-    <span class="input-container">
-      <input 
-        class="h3 text-primary"
-        :type="type"
-        v-model="isFilled"
-        @input="$emit('update:modelValue', $event.target.value)"
-        spellcheck="false"
-        placeholder=" "
-      >
-      <label class="text-secondary h3">{{ placeholder }}</label>
+  <span>
+    <span class="container">
+      <Icon :class="value ? 'icon-fill' : 'icon icon-empty'" />
+      <span class="input-container">
+        <input 
+          class="h3 text-primary"
+          :type="type"
+          v-model="value"
+          @input="$emit('update:modelValue', $event.target.value)"
+          v-on:blur="validator"
+          spellcheck="false"
+          placeholder=" "
+        >
+        <label class="text-secondary h3">{{ placeholder }}</label>
+      </span>
     </span>
+    <div v-show="!isValid" class="text-red h4">
+      {{ errorMessage }}
+    </div>
   </span>
 </template>
 
 <script setup>
 import { defineAsyncComponent, ref } from 'vue'
 
-const { icon, placeholder, type } = defineProps({
+const { icon, placeholder, type, validate, errorMessage } = defineProps({
   icon: {
     type: String,
     required: true
@@ -32,13 +38,33 @@ const { icon, placeholder, type } = defineProps({
   type: {
     type: String,
     default: "text"
+  },
+
+  validate: {
+    type: Function,
+    default: _ => true
+  },
+
+  errorMessage: {
+    type: String,
+    default: ""
   }
 });
 
 // Lazy loading component to import it from a string
 // Import the svg directly using vite-svg-loader to style the icon
-const Icon = defineAsyncComponent(() => import(`/src/assets/icons/${icon}.svg`))
-const isFilled = ref("");
+const Icon = defineAsyncComponent(() => import(`../assets/icons/${icon}.svg`))
+const value = ref("");
+let isValid = ref(true);
+
+const validator = () => {
+  // If the field is empty, there's nothing to validate
+  if (!value.value) {
+    isValid.value = true;
+    return;
+  }
+  isValid.value = validate(value.value);
+}
 </script>
 
 <style lang="sass" scoped>
@@ -54,6 +80,7 @@ const isFilled = ref("");
 
     &:focus + label, &:not(&:placeholder-shown) + label
       top: -25px
+      font-size: nth($font-sizes, 4)
   
   .container
     display: flex

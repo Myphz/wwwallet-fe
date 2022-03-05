@@ -1,5 +1,5 @@
 <template>
-  <span class="box">
+  <span class="box noselect">
     <Icon icon="logo" />
     <span class="h1">wwwallet</span>
   </span>
@@ -17,7 +17,6 @@ import Icon from "@/components/Icon.vue"
     display: flex
     align-items: center
     font-family: 'Rambla', sans-serif
-    user-select: none
 
   img
     margin-right: 10px

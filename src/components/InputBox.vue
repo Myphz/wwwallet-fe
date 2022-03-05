@@ -2,10 +2,36 @@
   <div>
     <Logo />
     <h2 class="h2">{{ header }}</h2>
-    <form @submit.prevent="a">
-      <Input icon="email" placeholder="Email" class="input" v-model="values.username" />
-      <Input icon="password" placeholder="Password" type="password" class="input" v-model="values.password" />
-      <Input v-if="!login" icon="password" placeholder="Confirm password" type="password" class="input" v-model="values.confirmPassword" />
+    <form @submit.prevent="null">
+      <Input 
+        class="input" 
+        icon="email" 
+        placeholder="Email" 
+        v-model="values.username" 
+        :validate="validateEmail"
+        errorMessage="Invalid email"
+      />
+
+      <Input
+        class="input"
+        icon="password"
+        placeholder="Password"
+        type="password"
+        v-model="values.password"
+        :validate="login ? undefined : validatePassword"
+        errorMessage="Use 8 or more characters with a mix of letters, capital letters and numbers."
+      />
+
+      <Input
+        v-if="!login"
+        class="input"
+        icon="password"
+        placeholder="Confirm password"
+        type="password"
+        v-model="values.confirmPassword"
+        :validate="passwordEqual"
+        errorMessage="The passwords don't match"
+      />
 
       <span v-if="login" class="forgot h4 link">Forgot your password?</span>
       <Button class="btn" :text="header" submit />
@@ -16,7 +42,6 @@
       <RouterLink v-if="login" class="link" to="/register"> Sign up</RouterLink>
       <RouterLink v-else class="link" to="/login"> Login</RouterLink>
     </span>
-
   </div>
 </template>
 
@@ -26,6 +51,7 @@ import Input from "./Input.vue";
 import Button from "./Button.vue";
 import { reactive } from "vue";
 import { RouterLink } from "vue-router";
+import { validateEmail, validatePassword } from "../helpers/validator.helper";
 
 const { login } = defineProps({
   login: {
@@ -37,14 +63,15 @@ const { login } = defineProps({
 let subtext, header;
 
 if (login) {
-  subtext = "Don't have an account?";
   header = "Login";
+  subtext = "Don't have an account?";
 } else {
-  subtext = "Already have an account?";
   header = "Register";
+  subtext = "Already have an account?";
 }
 
 const values = reactive({});
+const passwordEqual = _ => values.password === values.confirmPassword;
 </script>
 
 <style lang="sass" scoped>
