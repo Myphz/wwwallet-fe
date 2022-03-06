@@ -1,19 +1,19 @@
 <template>
   <nav class="noselect">
     <Logo />
-    <ul class="h2">
-      <li><RouterLink to="/">Home</RouterLink></li>
+    <!-- <ul class="h2">
+      <li><RouterLink to="/">Homedd</RouterLink></li>
       <li><RouterLink to="/crypto">Market</RouterLink></li>
       <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
-    </ul>
-    <RouterLink to="/login"><Icon icon="user" /></RouterLink>
+    </ul> -->
+    <!-- <RouterLink to="/login"><Icon icon="user" /></RouterLink> -->
     <Icon icon="menu" />
   </nav>
 </template>
 
 <script setup>
-import Logo from "@/components/Logo.vue"
-import Icon from "@/components/Icon.vue"
+import Logo from "@/components/Logo.vue";
+import Icon from "@/components/Icon.vue";
 import { RouterLink } from "vue-router";
 </script>
 

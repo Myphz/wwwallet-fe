@@ -22,13 +22,9 @@ onUnmounted(() => {
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_mixins.sass" as *
-
   .bg
     background-image: url("/src/assets/images/bg.png")
     background-size: cover
     background-repeat: no-repeat
-
-    @include phone
-      background-size: unset
+    
 </style>
