@@ -68,9 +68,9 @@ const validator = () => {
 </script>
 
 <style lang="sass" scoped>
-  @import "/src/assets/sass/_variable.sass"
-  @import "/src/assets/sass/_utilities.sass"
-  @import "/src/assets/sass/_mixins.sass"
+  @use "/src/assets/sass/_variable.sass" as *
+  @use "/src/assets/sass/_utilities.sass" as *
+  @use "/src/assets/sass/_mixins.sass" as *
 
   input
     border: none
