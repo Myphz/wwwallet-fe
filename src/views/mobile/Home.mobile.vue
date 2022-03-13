@@ -1,5 +1,5 @@
 <template>
   <div>
-    Test Home View mobile
+    Test Home View mobilez
   </div>
 </template>

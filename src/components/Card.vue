@@ -31,7 +31,7 @@ import { RouterLink } from "vue-router";
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_variable.sass" as *
+  @use "/src/assets/sass/_variables.sass" as *
   @use "/src/assets/sass/_utilities.sass" as *
 
   tr

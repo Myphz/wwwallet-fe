@@ -18,7 +18,7 @@ const value = ref("");
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_variable.sass" as *
+  @use "/src/assets/sass/_variables.sass" as *
   @use "/src/assets/sass/_utilities.sass" as *
 
   .search-bar

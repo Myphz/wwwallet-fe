@@ -1,5 +1,9 @@
-@use "./_variable.sass" as *
+@use "./_variables.sass" as *
 
+*
+  margin: 0
+  padding: 0
+  
 // Font sizes
 $font-sizes: 2.75rem, 2.25rem, 1.25rem, 1.125rem, 0.75rem
 
@@ -42,3 +46,10 @@ $font-sizes: 2.75rem, 2.25rem, 1.25rem, 1.125rem, 0.75rem
 a
   text-decoration: none
   color: inherit
+
+ul
+  list-style-type: none
+
+svg
+  path
+    fill: $text-primary
