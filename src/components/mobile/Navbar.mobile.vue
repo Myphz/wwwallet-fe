@@ -1,11 +1,11 @@
 <template>
-  <nav class="bg-dark">
-    <div class="noselect stay align-center sidenav">
+  <section class="bg-dark">
+    <header class="noselect stay align-center">
       <Logo />
       <MenuIcon @click="openNavbar = !openNavbar" />
-    </div>
+    </header>
     
-    <div class="rel">
+    <nav>
       <aside :class="'h1 bg-dark ' + (openNavbar ? 'open' : 'closed')">
         <ul @click="openNavbar = !openNavbar" >
           <li>
@@ -31,8 +31,8 @@
         </ul>
 
       </aside>
-    </div>
-  </nav>
+    </nav>
+  </section>
 </template>
 
 <script setup>
@@ -48,11 +48,11 @@ const openNavbar = ref(false);
   @use "/src/assets/sass/_utilities.sass" as *
   @use "/src/assets/sass/_variables.sass" as *
 
-  nav
+  section
     position: sticky
     top: 0
 
-  .sidenav
+  header
     justify-content: space-between
     padding: 1em 5vw
 
@@ -90,7 +90,7 @@ const openNavbar = ref(false);
   .stay
     z-index: 2
 
-  .rel
+  nav
     position: relative
 
 </style>

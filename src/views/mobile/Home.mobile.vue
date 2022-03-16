@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section>
     Test Home View mobilez
-  </div>
+  </section>
 </template>
