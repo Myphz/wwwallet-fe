@@ -13,7 +13,7 @@ const router = createRouter({
     {
       path: "/crypto",
       name: "market",
-      component: () => import("../views/Market.vue")
+      component: () => routeResponsive("Market")
     },
 
     {

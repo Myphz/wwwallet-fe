@@ -1,5 +1,5 @@
 <template>
-  <div class="search-bar align-center">
+  <header class="search-bar align-center">
     <Icon :class="value ? 'icon-fill' : 'icon-empty'" />
     <input 
       type="text" 
@@ -8,7 +8,7 @@
       spellcheck="false" 
       placeholder="Search token"
     >
-  </div>
+  </header>
 </template>
 
 <script setup>
@@ -25,6 +25,7 @@ const value = ref("");
     background: $bg-paper
     border-radius: 10px
     padding: .2em
+    margin-bottom: 2em
 
   .search-input
     width: 100%

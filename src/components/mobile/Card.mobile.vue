@@ -3,11 +3,9 @@
     <tr @click="navigate" class="h3 transition">
       <td class="align-center">
         <Icon icon="bitcoin" class="icon" />
-        <span class="title">Bitcoin</span>
-      </td>
-
-      <td class="ticker">
-        BTC
+        <span>
+          <span class="title">Bitcoin</span> <span class="ticker">BTC</span>
+        </span>
       </td>
 
       <td class="price">
@@ -16,10 +14,6 @@
 
       <td class="change">
         +20.34%
-      </td>
-
-      <td class="mcap">
-        $1670B
       </td>
     </tr>
   </RouterLink>
@@ -52,4 +46,8 @@ import { RouterLink } from "vue-router";
   .ticker
     font-size: nth($font-sizes, 3) + 0.3rem
     font-weight: 200
+
+  img
+    width: 32px
+    height: 32px
 </style>

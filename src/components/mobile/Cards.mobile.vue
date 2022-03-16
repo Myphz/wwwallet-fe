@@ -3,10 +3,8 @@
     <thead class="text-secondary">
       <tr>
         <th>Name</th>
-        <th>Ticker</th>
         <th>Price</th>
         <th>24h Change</th>
-        <th>Market cap</th>
       </tr>
     </thead>
     <tbody>
@@ -16,7 +14,7 @@
 </template>
 
 <script setup>
-import Card from "@/components/Card.vue"
+import Card from "@/components/mobile/Card.mobile.vue"
 </script>
 
 <style lang="sass" scoped>
@@ -27,11 +25,7 @@ import Card from "@/components/Card.vue"
     border-collapse: collapse
 
   th
-    padding: 1em 1.5em
+    padding: 1em 1.2em
     text-align: left
-
-  img
-    width: 48px
-    height: 48px
 
 </style>

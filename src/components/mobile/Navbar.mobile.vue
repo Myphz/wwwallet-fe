@@ -29,9 +29,9 @@
             </RouterLink>
           </li>
         </ul>
-
       </aside>
     </nav>
+    
   </section>
 </template>
 
@@ -79,7 +79,9 @@ const openNavbar = ref(false);
     align-items: center
 
   img
-    margin-right: 1em
+    margin-right: .5em
+    width: 32px
+    height: 32px
 
   .closed
     transform: scaleY(0)

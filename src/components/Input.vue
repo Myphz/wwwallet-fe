@@ -67,7 +67,7 @@ const validator = () => {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
   @use "/src/assets/sass/_variables.sass" as *
   @use "/src/assets/sass/_utilities.sass" as *
 
@@ -78,7 +78,7 @@ const validator = () => {
     margin-left: 5px
 
     &:focus + label, &:not(&:placeholder-shown) + label
-      top: -25px
+      top: -2em
       font-size: nth($font-sizes, 5)
   
   .container

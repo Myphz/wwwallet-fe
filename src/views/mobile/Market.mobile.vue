@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <section>
     <SearchBar />
     <Cards />
-  </div>
+  </section>
 </template>
 
 <script setup>
 import SearchBar from '@/components/SearchBar.vue';
-import Cards from '@/components/Cards.vue';
+import Cards from '@/components/mobile/Cards.mobile.vue';
 </script>

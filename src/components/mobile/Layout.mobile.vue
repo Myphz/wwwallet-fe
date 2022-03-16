@@ -20,7 +20,7 @@ const path = computed( () => route.path );
   @use "/src/assets/sass/_variables.sass" as *
 
   html
-    font-size: 62.5%
+    font-size: 70%
     height: 100%
 
   body

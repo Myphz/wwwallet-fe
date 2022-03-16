@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <InputBox login />
-  </div>
+  <InputBox login />
 </template>
 
 <script setup>
