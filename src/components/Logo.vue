@@ -1,5 +1,5 @@
 <template>
-  <span class="box noselect">
+  <span class="box align-center noselect">
     <Icon icon="logo" />
     <span class="h1">wwwallet</span>
   </span>
@@ -14,8 +14,6 @@ import Icon from "@/components/Icon.vue"
   @import url('https://fonts.googleapis.com/css2?family=Rambla:ital,wght@1,700&display=swap')
 
   .box
-    display: flex
-    align-items: center
     font-family: 'Rambla', sans-serif
 
   img

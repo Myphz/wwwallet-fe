@@ -1,10 +1,10 @@
 <template>
   <span>
-    <span class="container">
-      <Icon :class="value ? 'icon-fill' : 'icon icon-empty'" />
+    <span class="container align-center">
+      <Icon :class="value ? 'icon-fill' : 'icon-empty'" />
       <span class="input-container">
         <input 
-          class="h3 text-primary"
+          class="h4 text-primary"
           :type="type"
           v-model="value"
           @input="$emit('update:modelValue', $event.target.value)"
@@ -12,10 +12,10 @@
           spellcheck="false"
           placeholder=" "
         >
-        <label class="text-secondary h3">{{ placeholder }}</label>
+        <label class="text-secondary h4">{{ placeholder }}</label>
       </span>
     </span>
-    <div v-show="!isValid" class="text-red h4">
+    <div v-show="!isValid" class="text-red h5">
       {{ errorMessage }}
     </div>
   </span>
@@ -53,7 +53,7 @@ const { icon, placeholder, type, validate, errorMessage } = defineProps({
 
 // Lazy loading component to import it from a string
 // Import the svg directly using vite-svg-loader to style the icon
-const Icon = defineAsyncComponent(() => import(`../assets/icons/${icon}.svg`))
+const Icon = defineAsyncComponent(() => import(`../assets/icons/${icon}.svg`));
 const value = ref("");
 let isValid = ref(true);
 
@@ -67,10 +67,9 @@ const validator = () => {
 }
 </script>
 
-<style lang="sass" scoped>
-  @use "/src/assets/sass/_variable.sass" as *
+<style lang="sass">
+  @use "/src/assets/sass/_variables.sass" as *
   @use "/src/assets/sass/_utilities.sass" as *
-  @use "/src/assets/sass/_mixins.sass" as *
 
   input
     border: none
@@ -79,12 +78,10 @@ const validator = () => {
     margin-left: 5px
 
     &:focus + label, &:not(&:placeholder-shown) + label
-      top: -25px
-      font-size: nth($font-sizes, 4)
+      top: -2em
+      font-size: nth($font-sizes, 5)
   
   .container
-    display: flex
-    align-items: center
     border-bottom: 1px solid $text-primary
     padding: 2px
 

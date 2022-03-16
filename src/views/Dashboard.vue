@@ -1,5 +1,5 @@
 <template>
   <div>
-    Test Dashboard View
+    Test Dashboard View desktop
   </div>
 </template>

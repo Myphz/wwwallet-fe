@@ -1,7 +1,11 @@
-@use "./_variable.sass" as *
+@use "./_variables.sass" as *
 
+*
+  margin: 0
+  padding: 0
+  
 // Font sizes
-$font-sizes: 2.75rem, 2.25rem, 1.125rem, 0.75rem
+$font-sizes: 2.75rem, 2.25rem, 1.25rem, 1.125rem, 0.75rem
 
 @for $i from 1 through length($font-sizes)
   .h#{$i}
@@ -33,8 +37,19 @@ $font-sizes: 2.75rem, 2.25rem, 1.125rem, 0.75rem
 // Utilities
 .noselect
   user-select: none
+
+.align-center
+  display: flex
+  align-items: center
   
 // Resets
 a
   text-decoration: none
   color: inherit
+
+ul
+  list-style-type: none
+
+svg
+  path
+    fill: $text-primary

@@ -3,8 +3,8 @@
     <Logo />
     <ul class="h2">
       <li><RouterLink to="/">Home</RouterLink></li>
-      <li><RouterLink to="/crypto">Market</RouterLink></li>
       <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
+      <li><RouterLink to="/crypto">Markets</RouterLink></li>
     </ul>
     <RouterLink to="/login"><Icon icon="user" /></RouterLink>
   </nav>

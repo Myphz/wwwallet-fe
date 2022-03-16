@@ -1,5 +1,5 @@
 <template>
   <div>
-    Test Market View
+    Test Dashboard View mobile
   </div>
 </template>

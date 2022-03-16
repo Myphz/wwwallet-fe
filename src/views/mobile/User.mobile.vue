@@ -1,5 +1,5 @@
 <template>
   <div>
-    Test Home View
+    Test User View
   </div>
 </template>
