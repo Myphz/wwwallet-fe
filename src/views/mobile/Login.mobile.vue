@@ -23,5 +23,6 @@ onUnmounted(() => {
   .bg
     background-image: url("/src/assets/images/bg.png")
     background-repeat: no-repeat
+    background-size: cover
 
 </style>

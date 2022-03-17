@@ -8,7 +8,7 @@
           :type="type"
           v-model="value"
           @input="$emit('update:modelValue', $event.target.value)"
-          v-on:blur="validator"
+          @blur="validator"
           spellcheck="false"
           placeholder=" "
         >

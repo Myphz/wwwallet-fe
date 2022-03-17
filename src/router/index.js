@@ -17,6 +17,12 @@ const router = createRouter({
     },
 
     {
+      path: "/crypto/:crypto",
+      name: "crypto",
+      component: () => routeResponsive("Crypto")
+    },
+
+    {
       path: "/dashboard",
       name: "dashboard",
       component: () => import("../views/Dashboard.vue")
@@ -25,13 +31,13 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: () => import("../views/Login.vue")
+      component: () => routeResponsive("Login")
     },
 
     {
       path: "/register",
       name: "register",
-      component: () => import("../views/Register.vue")
+      component: () => routeResponsive("Register")
     },
   ]
 });
