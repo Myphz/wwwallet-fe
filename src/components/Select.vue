@@ -36,6 +36,7 @@ const select = option => {
   @use "/src/assets/sass/_variables.sass" as *
   @use "/src/assets/sass/_utilities.sass" as *
 
+  $bg-box: #0A2039
   $anim-duration: 0.25s
 
   div
@@ -52,8 +53,7 @@ const select = option => {
           transform: rotate(45deg)
 
       ul
-        opacity: 0.3
-        background-color: $bg-paper
+        background-color: $bg-box
         transform: scaleY(1)
       
   .arrow
@@ -81,9 +81,10 @@ const select = option => {
     transform: scaleY(0)
     transform-origin: top
     border-radius: .3em
-    padding: .5em
-    opacity: 0
+    padding: .25em
+    z-index: 2
     transition: $anim-duration ease
+    color: $text-secondary
 
   li
     text-align: left

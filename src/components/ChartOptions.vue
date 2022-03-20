@@ -2,7 +2,7 @@
   <header class="noselect">
     <span class="align-center">
       <Select 
-        class="pair text-primary h2" 
+        class="pair padded text-primary h2" 
         :options="['BTC', 'LUNA']" 
       />
 
@@ -15,7 +15,7 @@
 
     </span>
 
-    <Icon icon="settings" />
+    <Icon icon="settings" class="padded" />
   </header>
 </template>
 
@@ -44,16 +44,21 @@ const selectedBase = ref(base);
   @use "/src/assets/sass/_utilities.sass" as *
 
   header
-    padding: .5em 3em
-    border-radius: 1.5em
-    background-color: $bg-paper
+    padding: 1em 0
+    border-radius: 1.5em 1.5em 0 0
     display: flex
     justify-content: space-between
-      
+    background: $bg-dark
+    
   img
     width: 48px
     height: 48px
+    cursor: pointer
 
   .pair
     margin-right: 2em
+
+  .padded
+    margin: 0 4rem
+
 </style>
