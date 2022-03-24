@@ -49,7 +49,8 @@ const selectedBase = ref(base);
     display: flex
     justify-content: space-between
     background: $bg-dark
-    
+    border-bottom: 1px solid $bg-paper
+        
   img
     width: 48px
     height: 48px

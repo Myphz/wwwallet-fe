@@ -1,6 +1,23 @@
 <template>
   <div class="chart-container">
     <ChartOptions :crypto="crypto" :base="base" v-model="base" />
+    <div class="stats">
+      <span class="price">
+        <span class="h2">$95.23</span>
+      </span>
+      <span class="statsgroup">
+        <span>24h Change</span>
+        <span>+1.23%</span>
+      </span>
+      <span class="statsgroup">
+        <span>24h High</span>
+        <span>92.73</span>
+      </span>
+      <span class="statsgroup">
+        <span>24h Low</span>
+        <span>75.20</span>
+      </span>
+    </div>
     <VChart :option="option" autoresize />
   </div>
 </template>
@@ -14,7 +31,7 @@ import options from "@/config/chartOptions.js";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { CandlestickChart } from "echarts/charts";
-import { GridComponent } from "echarts/components";
+import { GridComponent, DataZoomComponent, TooltipComponent } from "echarts/components";
 import VChart from "vue-echarts";
 
 export default {
@@ -33,7 +50,7 @@ export default {
   components: { VChart, ChartOptions },
 
   setup(props) {
-    use([CanvasRenderer, GridComponent, CandlestickChart]);
+    use([CandlestickChart, CanvasRenderer, GridComponent, DataZoomComponent, TooltipComponent ]);
 
     const { crypto } = props;
     const base = ref(props.base);
@@ -56,10 +73,37 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
   @use "/src/assets/sass/_variables.sass" as *
+  @use "/src/assets/sass/_utilities.sass" as *
 
   .chart-container
     height: 70vh
+
+  .stats
+    background: $bg-dark
+    padding: 1em 4em 0 4em
+    display: flex
+    justify-content: flex-start
+    gap: 2em
+
+  .price
+    padding: 0 1em 0 0
+    border-right: 1px solid $text-primary
+
+  .statsgroup
+    display: inline-flex
+    flex-direction: column
+    justify-content: center
+    
+  canvas
+    border-radius: 0 0 1.5em 1.5em
+    cursor: crosshair
+
+  .green
+    color: $green
+
+  .red
+    color: $red
 
 </style>

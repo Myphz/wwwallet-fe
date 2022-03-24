@@ -90,6 +90,6 @@ const select = option => {
     text-align: left
     cursor: pointer
     &:first-child
-      margin-top: 0.3em
+      margin-top: 0.1em
 
 </style>
