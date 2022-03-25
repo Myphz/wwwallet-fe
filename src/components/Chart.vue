@@ -11,11 +11,11 @@
       </span>
       <span class="statsgroup">
         <span>24h High</span>
-        <span>92.73</span>
+        <span class="green">92.73</span>
       </span>
       <span class="statsgroup">
         <span>24h Low</span>
-        <span>75.20</span>
+        <span class="red">75.20</span>
       </span>
     </div>
     <VChart :option="option" autoresize />
@@ -90,6 +90,7 @@ export default {
   .price
     padding: 0 1em 0 0
     border-right: 1px solid $text-primary
+    font-weight: 550
 
   .statsgroup
     display: inline-flex

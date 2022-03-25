@@ -90,7 +90,7 @@ export default {
       },
 
       shadowStyle: {
-        color: textColor
+        color: textColor,
       },
 
       crossStyle: {
@@ -125,13 +125,6 @@ export default {
     top: 50,
     right: 85,
     bottom: 50,
-
-    padding: {
-      top: 0,
-      right: 50,
-      bottom: 0,
-      left: 50
-    },  
   },
 
   series: {

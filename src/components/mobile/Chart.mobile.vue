@@ -11,11 +11,11 @@
       </span>
       <span class="statsgroup">
         <span>High</span>
-        <span>92.73</span>
+        <span class="green">92.73</span>
       </span>
       <span class="statsgroup">
         <span>Low</span>
-        <span>75.20</span>
+        <span class="red">75.20</span>
       </span>
     </div>
     <VChart :option="option" autoresize />
@@ -86,6 +86,7 @@ export default {
     background: $bg-dark
     padding: 1em 2em 0 2em
     display: flex
+    font-weight: 550
     justify-content: flex-start
     gap: 2em
 
