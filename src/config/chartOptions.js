@@ -1,7 +1,9 @@
 import extractSass from "@/helpers/extractSass.helper.js";
+import { timeFormat, dateFormat } from "@/helpers/formatDate.helper.js";
 
 const gridColor = extractSass("grid-color");
 const textColor = extractSass("primary");
+const backgroundColor = extractSass("bg-dark");
 
 function withClass(value, isPositive) {
   const styleClass = isPositive ? "green" : "red";
@@ -9,7 +11,7 @@ function withClass(value, isPositive) {
 }
 
 export default {
-  backgroundColor: "#000f20",
+  backgroundColor,
 
   textStyle: {
     fontSize: 16
@@ -18,11 +20,7 @@ export default {
   xAxis: { 
     type: "time",
     axisLabel: {
-      formatter: function(value) {
-        const date = new Date(value);
-        return `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
-      },
-
+      formatter: timeFormat,
       color: textColor,
       fontSize: "1em"
     },
@@ -32,6 +30,12 @@ export default {
       lineStyle: {
         color: gridColor,
       },
+    },
+
+    axisPointer: {
+      label: {
+        formatter: ({ value }) => dateFormat(value),
+      }
     },
 
     axisTick: {
@@ -45,7 +49,7 @@ export default {
       }
     },
 
-    scale: true
+    scale: true,
   },
   yAxis: {
     position: "right",
@@ -72,7 +76,8 @@ export default {
 
   dataZoom: {
     start: 50,
-    type: "inside"
+    minSpan: 15,
+    type: "inside",
   },
 
   tooltip: {
@@ -97,7 +102,7 @@ export default {
 
     // Function to format the data for the tooltip
     formatter: ([{ data }], _, __) => {
-      const [time, open, high, low, close] = data;
+      const [___, open, high, low, close] = data;
       const isPositive = close >= open;
       const change = ((close - open) / open * 100).toFixed(2) + "%";
       return `Open: ${withClass(open, isPositive)} High: ${withClass(high, isPositive)} Low: ${withClass(low, isPositive)} Close: ${withClass(close, isPositive)} Change: ${withClass(change, isPositive)}`
@@ -128,6 +133,6 @@ export default {
       y: [4, 1, 3, 2]
     },
     // Reduce gap between candles
-    barWidth: "95%"
+    barWidth: "95%",
   }
 }
