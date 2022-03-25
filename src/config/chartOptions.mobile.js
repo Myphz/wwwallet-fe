@@ -12,14 +12,16 @@ function withClass(value, isPositive, withSymbol) {
 
 export default {
   backgroundColor,
+  animation: false,
 
   textStyle: {
-    fontSize: 16
+    fontSize: 10
   },
 
   xAxis: { 
     type: "time",
     axisLabel: {
+      show: false,
       formatter: timeFormat,
       color: textColor,
       fontSize: "1em"
@@ -50,7 +52,7 @@ export default {
     },
 
     scale: true,
-    max: ({ max }) => max + 1800000,
+    max: ({ max }) => max + 1200000,
   },
   yAxis: {
     position: "right",
@@ -76,7 +78,7 @@ export default {
   },
 
   dataZoom: {
-    start: 50,
+    start: 80,
     minSpan: 15,
     type: "inside",
   },
@@ -99,16 +101,16 @@ export default {
     },
 
     // Static position
-    position: [55, 0],
+    position: [15, -7],
 
     // Function to format the data for the tooltip
     formatter: ([{ data }], _, __) => {
       const [___, open, high, low, close] = data;
       const isPositive = close >= open;
       const change = ((close - open) / open * 100).toFixed(2) + "%";
-      return `Open: ${withClass(open, isPositive)} High: ${withClass(high, isPositive)} Low: \
-      ${withClass(low, isPositive)} Close: ${withClass(close, isPositive)} \
-      Change: ${withClass(change, isPositive, true)}`
+      return `O: ${withClass(open, isPositive)} H: ${withClass(high, isPositive)} L: \
+      ${withClass(low, isPositive)} C: ${withClass(close, isPositive)} \
+      %: ${withClass(change, isPositive, true)}`
     },
 
     backgroundColor: "rgba(0, 0, 0, 0)",
@@ -116,22 +118,15 @@ export default {
 
     textStyle: {
       color: textColor,
-      fontSize: "1.2em"
+      fontSize: 10
     },
   },
 
   grid: {
-    left: 65,
-    top: 50,
-    right: 85,
-    bottom: 50,
-
-    padding: {
-      top: 0,
-      right: 50,
-      bottom: 0,
-      left: 50
-    },  
+    left: 0,
+    top: 20,
+    right: 50,
+    bottom: 0,
   },
 
   series: {
@@ -143,6 +138,6 @@ export default {
       y: [4, 1, 3, 2]
     },
     // Reduce gap between candles
-    barWidth: "80%",
+    barWidth: "70%",
   }
 }
