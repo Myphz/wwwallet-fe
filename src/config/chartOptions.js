@@ -5,9 +5,9 @@ const gridColor = extractSass("grid-color");
 const textColor = extractSass("primary");
 const backgroundColor = extractSass("bg-dark");
 
-function withClass(value, isPositive) {
+function withClass(value, isPositive, withSymbol) {
   const styleClass = isPositive ? "green" : "red";
-  return `<span class="${styleClass}">${value}</span>`
+  return `<span class="${styleClass}">${withSymbol ? (isPositive ? "+" : "") : ""}${value}</span>`
 }
 
 export default {
@@ -105,7 +105,9 @@ export default {
       const [___, open, high, low, close] = data;
       const isPositive = close >= open;
       const change = ((close - open) / open * 100).toFixed(2) + "%";
-      return `Open: ${withClass(open, isPositive)} High: ${withClass(high, isPositive)} Low: ${withClass(low, isPositive)} Close: ${withClass(close, isPositive)} Change: ${withClass(change, isPositive)}`
+      return `Open: ${withClass(open, isPositive)} High: ${withClass(high, isPositive)} Low: \
+      ${withClass(low, isPositive)} Close: ${withClass(close, isPositive)} \
+      Change: ${withClass(change, isPositive, true)}`
     },
 
     backgroundColor: "rgba(0, 0, 0, 0)",
@@ -133,6 +135,6 @@ export default {
       y: [4, 1, 3, 2]
     },
     // Reduce gap between candles
-    barWidth: "95%",
+    barWidth: "90%",
   }
 }
