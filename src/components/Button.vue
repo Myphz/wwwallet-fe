@@ -1,5 +1,5 @@
 <template>
-  <button :style="styleVars" :type="submit ? 'submit' : null" :class="'text-white transition ' + btnClass">{{ text }}</button>
+  <button :type="submit ? 'submit' : null" :class="'text-white transition ' + btnClass">{{ text }}</button>
 </template>
 
 <script>

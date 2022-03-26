@@ -81,6 +81,7 @@ export default {
     width: 98vw
     left: 1vw
     height: 60vh
+    z-index: -1
 
   .stats
     background: $bg-dark
