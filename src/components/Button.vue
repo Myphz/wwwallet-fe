@@ -1,5 +1,5 @@
 <template>
-  <button :type="submit ? 'submit' : null" class="h3 text-white transition">{{ text }}</button>
+  <button :type="submit ? 'submit' : null" :class="'text-white transition ' + btnClass">{{ text }}</button>
 </template>
 
 <script>
@@ -13,12 +13,13 @@ export default {
     submit: {
       type: Boolean,
       default: false
-    }
-  },
+    },
 
-  setup ({ text, submit }) {
-    return { text, submit };
-  }
+    btnClass: {
+      type: String,
+      default: "h4 bg-primary rounded"
+    },
+  },
 }
 </script>
 
@@ -29,16 +30,40 @@ export default {
   button
     border: none
     outline: none
-    background-color: $primary
+    padding: 0 1em
     line-height: 2.5em
     text-transform: uppercase
     font-weight: bold
-    border-radius: 0.625em
+    cursor: pointer
 
+  .bg-primary
+    background-color: $primary
     &:hover
       background-color: darken($primary, 10%)
 
     &:active
       background-color: darken($primary, 20%)
-      
+
+  .bg-paper
+    background-color: $bg-paper
+    &:hover
+      background-color: darken($bg-paper, 10%)
+
+    &:active
+      background-color: darken($bg-paper, 20%)
+
+  .bg-dark
+    background-color: $bg-dark
+    &:hover
+      background-color: darken($bg-dark, 2%)
+
+    &:active
+      background-color: darken($bg-dark, 5%)
+
+  .rounded
+    border-radius: .625em
+
+  .bottom-rounded
+    border-radius: 0 0 .625em .625em
+
 </style>

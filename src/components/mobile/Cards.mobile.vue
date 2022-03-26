@@ -4,7 +4,7 @@
       <tr>
         <th>Name</th>
         <th>Price</th>
-        <th>24h Change</th>
+        <th>% Change</th>
       </tr>
     </thead>
     <tbody>

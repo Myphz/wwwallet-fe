@@ -1,6 +1,6 @@
 <template>
-  <RouterLink custom v-slot="{ navigate }" to="/">
-    <tr @click="navigate" class="h3 transition">
+  <RouterLink custom v-slot="{ navigate }" to="/crypto/btc">
+    <tr @click="navigate" class="h4 transition">
       <td class="align-center">
         <Icon icon="bitcoin" class="icon" />
         <span>
@@ -8,11 +8,11 @@
         </span>
       </td>
 
-      <td class="price">
+      <td>
         $51123.23
       </td>
 
-      <td class="change">
+      <td>
         +20.34%
       </td>
     </tr>
@@ -42,10 +42,6 @@ import { RouterLink } from "vue-router";
 
   .title
     font-weight: 600
-
-  .ticker
-    font-size: nth($font-sizes, 3) + 0.3rem
-    font-weight: 200
 
   img
     width: 32px

@@ -1,0 +1,42 @@
+<template>
+  <tr class="h4">
+    <td class="align-center">
+      <Icon icon="bitcoin" class="icon" />
+      <span class="title">Bitcoin</span>
+      <span class="ticker">BTC</span>
+    </td>
+    <td>2.15</td>
+    <td>$31982.23</td>
+    <td>+$80982.34</td>
+    <td>+$1523.23</td>
+  </tr>
+</template>
+
+<script setup>
+import Icon from "@/components/Icon.vue";
+
+const { crypto } = defineProps({
+  crypto: {
+    type: String,
+    required: true
+  }
+});
+</script>
+
+<style lang="sass" scoped>
+  @use "/src/assets/sass/_utilities.sass" as *
+
+  .title
+    font-weight: 600
+    margin-right: 1em
+
+  td
+    padding: 0.7em 1em
+
+  img
+    width: 48px
+    height: 48px
+
+  .icon
+    margin-right: 1em
+</style>

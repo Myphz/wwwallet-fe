@@ -1,7 +1,7 @@
 <template>
   <div>
     <Logo />
-    <h2 class="h2">{{ header }}</h2>
+    <h2>{{ header }}</h2>
     <form @submit.prevent="null">
       <Input 
         class="input" 
@@ -33,11 +33,11 @@
         errorMessage="The passwords don't match"
       />
 
-      <span v-if="login" class="forgot h5 link">Forgot your password?</span>
+      <span v-if="login" class="forgot h6 link">Forgot your password?</span>
       <Button class="btn" :text="header" submit />
     </form>
 
-    <span class="h5 text-secondary">
+    <span class="h6 text-secondary">
       <span>{{ subtext }}</span>
       <RouterLink v-if="login" class="link" to="/register"> Sign up</RouterLink>
       <RouterLink v-else class="link" to="/login"> Login</RouterLink>

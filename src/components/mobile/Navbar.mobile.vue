@@ -1,6 +1,6 @@
 <template>
   <section class="bg-dark">
-    <header class="noselect stay align-center">
+    <header class="noselect align-center">
       <Logo />
       <MenuIcon @click="openNavbar = !openNavbar" />
     </header>
@@ -67,6 +67,7 @@ const openNavbar = ref(false);
     height: 100vh
     transform-origin: top
     transition: 0.25s transform ease-out
+    z-index: 99999999
 
   ul
     margin: 0 5vw
@@ -88,9 +89,6 @@ const openNavbar = ref(false);
 
   .open
     transform: scaleY(1)
-
-  .stay
-    z-index: 2
 
   nav
     position: relative

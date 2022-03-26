@@ -3,7 +3,7 @@
     <Icon :class="value ? 'icon-fill' : 'icon-empty'" />
     <input 
       type="text" 
-      class="text-primary h3 search-input"
+      class="text-primary h4 search-input"
       v-model="value"
       spellcheck="false" 
       placeholder="Search token"
