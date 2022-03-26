@@ -2,14 +2,14 @@
   <div>
     <Navbar v-if="path != '/login' && path != '/register'"/>
     <main>
-      <slot />
+      <router-view />
     </main>
   </div>
 </template>
 
 <script setup>
 import { computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, RouterView } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
 
 const route = useRoute();

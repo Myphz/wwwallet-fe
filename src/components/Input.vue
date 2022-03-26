@@ -1,7 +1,7 @@
 <template>
   <span>
     <div class="container align-center">
-      <Icon :class="value ? 'icon-fill' : 'icon-empty'" />
+      <Icon :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-small' : '')" />
       <span class="input-container">
         <input 
           class="h5 text-primary"
@@ -24,7 +24,7 @@
 <script setup>
 import { defineAsyncComponent, ref } from 'vue'
 
-const { icon, placeholder, type, validate, errorMessage, placeholderCss } = defineProps({
+const { icon, validate } = defineProps({
   icon: {
     type: String,
     required: true
@@ -48,6 +48,11 @@ const { icon, placeholder, type, validate, errorMessage, placeholderCss } = defi
   errorMessage: {
     type: String,
     default: ""
+  },
+
+  iconSmall: {
+    type: Boolean,
+    default: false
   },
 
   placeholderClasses: {
@@ -87,17 +92,19 @@ const validator = () => {
       top: -2em
       font-size: nth($font-sizes, 5)
   
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button
+      -webkit-appearance: none
+      margin: 0
+      
   .container
     border-bottom: 1px solid $text-primary
     width: 100%
-    padding: 2px
 
   .input-container
-    width: auto
-    height: auto
     position: relative
-    width: 90%
-    max-width: 90%
+    width: 70%
+    max-width: 70%
 
   label
     position: absolute
@@ -113,5 +120,8 @@ const validator = () => {
   .icon-fill
     path
       fill: $text-primary
+
+  .icon-small
+    transform: scale(.5)
     
 </style>

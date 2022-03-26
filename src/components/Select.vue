@@ -2,7 +2,7 @@
   <div :class="'noselect ' + (open ? 'opened ' : '') + (bordered ? 'bordered' : '')" @click="open = !open">
     <span class="align-center item-container">
       <span class="align-center">
-        <Icon v-if="icon" :icon="icon" />
+        <Icon v-if="icon" :icon="icon" :class="'icon-' + iconSize" />
         <span>{{ selected }}</span>
       </span>
       <span class="arrow"></span>
@@ -17,7 +17,7 @@
 import { getCurrentInstance, ref } from "vue";
 import Icon from "@/components/Icon.vue";
 
-const { options, icon } = defineProps({
+const { options } = defineProps({
   options: {
     type: Array,
     required: true
@@ -26,6 +26,11 @@ const { options, icon } = defineProps({
   icon: {
     type: String,
     default: ""
+  },
+
+  iconSize: {
+    type: String,
+    default: "big"
   },
 
   bordered: {
@@ -116,10 +121,15 @@ const select = option => {
     &:first-child
       margin-top: 0.1em
 
-  img
+  .icon-big
     width: 64px
     height: 64px
     margin: 0 .5em
     padding: .2em 0
+
+  .icon-small
+    width: 48px
+    height: 48px
+    margin: 0 .1em
 
 </style>

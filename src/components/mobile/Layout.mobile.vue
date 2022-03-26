@@ -1,19 +1,21 @@
 <template>
   <div>
-    <Navbar v-if="path != '/login' && path != '/register'" />
+    <Navbar v-if="path != '/login' && path != '/register'" @navClick="navOpen = !navOpen" />
     <main>
-      <slot />
+      <!-- Pass the navbar status to the view (for the chart page) -->
+      <router-view :navOpen="navOpen" />
     </main>
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useRoute } from "vue-router";
+import { computed, ref } from "vue";
+import { useRoute, RouterView } from "vue-router";
 import Navbar from "@/components/mobile/Navbar.mobile.vue";
 
 const route = useRoute();
 const path = computed( () => route.path );
+const navOpen = ref(false);
 </script>
 
 <style lang="sass">

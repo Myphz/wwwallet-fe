@@ -3,7 +3,7 @@
     <div class="filter"></div>
     <div class="container">
       <header class="space-between">
-        <h1>Add Transaction</h1>
+        <h3>Add Transaction</h3>
         <Icon 
           icon="cross"
           @click="$emit('close')"
@@ -18,24 +18,28 @@
         <Select 
           :options='["BTC", "ETH"]' 
           icon="bitcoin" 
-          class="h2"
+          class="h3"
+          iconSize="small"
+          style="width: 40%"
           bordered
         />
         <Select 
           :options='["BTC", "ETH"]' 
           icon="bitcoin" 
-          class="h2"
+          class="h3"
+          iconSize="small"
+          style="width: 40%"
           bordered
         />
       </div>
 
       <div class="space-between row">
-        <Input icon="coins" placeholder="Quantity" type="number" />
-        <Input icon="exchange" placeholder="BTC/USDT Price" type="number" />
+        <Input icon="coins" placeholder="Quantity" iconSmall type="number" />
+        <Input icon="exchange" placeholder="USDT Price" iconSmall type="number" />
       </div>
       <div class="space-between row">
-        <Input icon="date" placeholder="Date (Now)" />
-        <Input icon="notes" placeholder="Notes" />
+        <Input icon="date" placeholder="Date (Now)" iconSmall />
+        <Input icon="notes" placeholder="Notes" iconSmall />
       </div>
 
       <Input icon="dollar" placeholder="Total Value (USDT)" placeholderClasses="h4" type="number" />
@@ -66,8 +70,10 @@ const isBuy = ref(false);
     padding: 2em
     transform: translate(-50%, -50%)
     background-color: $bg-paper
-    width: 40vw
+    width: 80vw
     border-radius: 1.5em
+    // Gotta defeat echarts' tooltip's z-index
+    z-index: 999999999
 
   .filter
     position: fixed
@@ -93,6 +99,7 @@ const isBuy = ref(false);
     display: flex
     justify-content: space-between
     margin-bottom: 2em
+    gap: 2em
 
   .row
     *
@@ -103,6 +110,10 @@ const isBuy = ref(false);
 
   .margin-bottom
     margin-bottom: 1em
+
+  img
+    width: 36px
+    height: 36px
 
 
 </style>
