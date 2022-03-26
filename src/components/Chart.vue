@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container">
+  <div>
     <ChartOptions :crypto="crypto" :base="base" v-model="base" />
     <div class="stats">
       <span class="price">
@@ -18,7 +18,9 @@
         <span class="red">75.20</span>
       </span>
     </div>
-    <VChart :option="option" autoresize />
+    <div class="chart-container">
+      <VChart :option="option" />
+    </div>
   </div>
 </template>
 
@@ -79,6 +81,7 @@ export default {
 
   .chart-container
     height: 70vh
+    width: 100%
 
   .stats
     background: $bg-dark
