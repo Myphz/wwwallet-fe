@@ -82,6 +82,7 @@ export default {
   .chart-container
     height: 70vh
     width: 100%
+    margin-bottom: 2em
 
   .stats
     background: $bg-dark

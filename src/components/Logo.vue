@@ -1,7 +1,7 @@
 <template>
   <span class="box align-center noselect">
     <Icon icon="logo" />
-    <span class="h1">wwwallet</span>
+    <h1>wwwallet</h1>
   </span>
 </template>
 

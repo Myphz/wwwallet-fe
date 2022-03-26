@@ -4,7 +4,7 @@
       <Icon :class="value ? 'icon-fill' : 'icon-empty'" />
       <span class="input-container">
         <input 
-          class="h4 text-primary"
+          class="h5 text-primary"
           :type="type"
           v-model="value"
           @input="$emit('update:modelValue', $event.target.value)"
@@ -12,10 +12,10 @@
           spellcheck="false"
           placeholder=" "
         >
-        <label class="text-secondary h4">{{ placeholder }}</label>
+        <label class="text-secondary h5">{{ placeholder }}</label>
       </span>
     </span>
-    <div v-show="!isValid" class="text-red h5">
+    <div v-show="!isValid" class="text-red h6">
       {{ errorMessage }}
     </div>
   </span>

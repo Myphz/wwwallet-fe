@@ -5,10 +5,13 @@
   padding: 0
   
 // Font sizes
-$font-sizes: 2.75rem, 2.25rem, 1.25rem, 1.125rem, 0.75rem
+$font-sizes: 2.75rem, 2.25rem, 2rem, 1.25rem, 1.125rem, 0.75rem
 
 @for $i from 1 through length($font-sizes)
   .h#{$i}
+    font-size: nth($font-sizes, $i)
+
+  h#{$i}
     font-size: nth($font-sizes, $i)
 
 // Font color
@@ -30,6 +33,9 @@ $font-sizes: 2.75rem, 2.25rem, 1.25rem, 1.125rem, 0.75rem
   &:hover
     text-decoration: underline
 
+.ticker
+  font-size: nth($font-sizes, 4) + 0.3rem
+  font-weight: 200
 // Transition
 .transition
   transition: 0.1s all
@@ -41,6 +47,10 @@ $font-sizes: 2.75rem, 2.25rem, 1.25rem, 1.125rem, 0.75rem
 .align-center
   display: flex
   align-items: center
+
+.justify-center
+  display: flex
+  justify-content: center
   
 // Resets
 a

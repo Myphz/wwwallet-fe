@@ -1,6 +1,6 @@
 <template>
   <RouterLink custom v-slot="{ navigate }" to="/crypto/btc">
-    <tr @click="navigate" class="h3 transition">
+    <tr @click="navigate" class="h4 transition">
       <td class="align-center">
         <Icon icon="bitcoin" class="icon" />
         <span>
