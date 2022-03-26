@@ -18,7 +18,8 @@
         <span class="red">75.20</span>
       </span>
     </div>
-    <VChart :option="option" autoresize />
+    <VChart :option="option" style="margin-bottom: 1em" autoresize />
+    <slot />
   </div>
 </template>
 
@@ -61,7 +62,7 @@ export default {
         .then(res => res.json())
         .then(data => {
           data = data.slice(-100, -1);
-          // Convert to float
+          // Get first 5 elements and convert to float
           data = data.map(candle => candle.slice(0, 5).map(c => parseFloat(c)));
           option.series.data = data;
       });

@@ -7,7 +7,6 @@
           <th>Quantity</th>
           <th>Buy Price</th>
           <th>Revenue</th>
-          <th>24h Revenue</th>
         </tr>
       </thead>
       <tbody>
@@ -15,13 +14,13 @@
       </tbody>
     </table>
     <div class="justify-center" style="margin-bottom: 2em">
-      <Button text="+ Add Transaction" btnClass="h3 bg-dark bottom-rounded" />
+      <Button text="+ Add Transaction" btnClass="h4 bg-dark bottom-rounded" />
     </div>
   </div>
 </template>
 
 <script setup>
-import Transaction from "@/components/Transaction.vue";
+import Transaction from "@/components/mobile/Transaction.mobile.vue";
 import Button from "@/components/Button.vue";
 
 const { crypto } = defineProps({
@@ -43,7 +42,7 @@ const { crypto } = defineProps({
     border-collapse: collapse
 
   th
-    padding: 1em 1em
+    padding: 1em .5em
     text-align: left
 
 </style>

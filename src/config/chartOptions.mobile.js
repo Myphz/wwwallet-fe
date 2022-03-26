@@ -139,5 +139,6 @@ export default {
     },
     // Reduce gap between candles
     barWidth: "70%",
+    data: [[0,0,0,0]]
   }
 }
