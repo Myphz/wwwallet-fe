@@ -28,6 +28,7 @@
 import ChartOptions from "@/components/mobile/ChartOptions.mobile.vue";
 import { onMounted, reactive, ref } from "vue";
 import options from "@/config/chartOptions.mobile.js";
+
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { CandlestickChart } from "echarts/charts";

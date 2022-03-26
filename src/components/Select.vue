@@ -1,7 +1,11 @@
 <template>
-  <div :class="open ? 'opened' : null" @click="open = !open">
-    <span class="align-center">
-      {{ selected }}<span class="arrow"></span>
+  <div :class="'noselect ' + (open ? 'opened ' : '') + (bordered ? 'bordered' : '')" @click="open = !open">
+    <span class="align-center item-container">
+      <span class="align-center">
+        <Icon v-if="icon" :icon="icon" />
+        <span>{{ selected }}</span>
+      </span>
+      <span class="arrow"></span>
     </span>
     <ul>
       <li v-for="option in opts" @click="select(option)">{{ option }}</li>
@@ -11,11 +15,22 @@
 
 <script setup>
 import { getCurrentInstance, ref } from "vue";
+import Icon from "@/components/Icon.vue";
 
-const { options } = defineProps({
+const { options, icon } = defineProps({
   options: {
     type: Array,
     required: true
+  },
+
+  icon: {
+    type: String,
+    default: ""
+  },
+
+  bordered: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -42,6 +57,8 @@ const select = option => {
   div
     text-align: right
     cursor: pointer
+    width: 45%
+    padding: 0 1em 0 0
 
     &.opened
       .arrow 
@@ -76,6 +93,13 @@ const select = option => {
     &:after
       transform: rotate(135deg)
   
+  .item-container
+    justify-content: space-between
+
+  .bordered
+    border: 2px solid $text-primary
+    border-radius: .5em
+
   ul
     position: absolute
     transform: scaleY(0)
@@ -91,5 +115,11 @@ const select = option => {
     cursor: pointer
     &:first-child
       margin-top: 0.1em
+
+  img
+    width: 64px
+    height: 64px
+    margin: 0 .5em
+    padding: .2em 0
 
 </style>

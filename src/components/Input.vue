@@ -1,6 +1,6 @@
 <template>
   <span>
-    <span class="container align-center">
+    <div class="container align-center">
       <Icon :class="value ? 'icon-fill' : 'icon-empty'" />
       <span class="input-container">
         <input 
@@ -12,9 +12,9 @@
           spellcheck="false"
           placeholder=" "
         >
-        <label class="text-secondary h5">{{ placeholder }}</label>
+        <label :class="'text-secondary ' + placeholderClasses">{{ placeholder }}</label>
       </span>
-    </span>
+    </div>
     <div v-show="!isValid" class="text-red h6">
       {{ errorMessage }}
     </div>
@@ -24,7 +24,7 @@
 <script setup>
 import { defineAsyncComponent, ref } from 'vue'
 
-const { icon, placeholder, type, validate, errorMessage } = defineProps({
+const { icon, placeholder, type, validate, errorMessage, placeholderCss } = defineProps({
   icon: {
     type: String,
     required: true
@@ -48,6 +48,11 @@ const { icon, placeholder, type, validate, errorMessage } = defineProps({
   errorMessage: {
     type: String,
     default: ""
+  },
+
+  placeholderClasses: {
+    type: String,
+    default: "h5"
   }
 });
 
@@ -76,6 +81,7 @@ const validator = () => {
     outline: none
     background: none
     margin-left: 5px
+    width: 100%
 
     &:focus + label, &:not(&:placeholder-shown) + label
       top: -2em
@@ -83,12 +89,14 @@ const validator = () => {
   
   .container
     border-bottom: 1px solid $text-primary
+    width: 100%
     padding: 2px
 
   .input-container
     width: auto
     height: auto
     position: relative
+    width: 90%
     max-width: 90%
 
   label
