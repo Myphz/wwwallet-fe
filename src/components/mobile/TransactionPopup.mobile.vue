@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="filter"></div>
-    <div class="container">
+    <div class="container-popup">
       <header class="space-between">
         <h3>Add Transaction</h3>
         <Icon 
@@ -38,7 +38,17 @@
         <Input icon="exchange" placeholder="USDT Price" iconSmall type="number" />
       </div>
       <div class="space-between row">
-        <Input icon="date" placeholder="Date (Now)" iconSmall />
+        <Datepicker 
+          v-model="date" 
+          format="dd/MM HH:mm" 
+          :maxDate="new Date()" 
+          autoApply 
+          :closeOnAutoApply="false"
+          menuClassName="dp-menu"
+          :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
+          @open.once="datePicked = true"
+          dark 
+        />
         <Input icon="notes" placeholder="Notes" iconSmall />
       </div>
 
@@ -55,14 +65,19 @@ import Icon from "@/components/Icon.vue";
 import Button from "@/components/Button.vue";
 import { ref } from "vue";
 
+import Datepicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+
 const isBuy = ref(false);
+const date = ref(new Date());
+const datePicked = ref(false);
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
   @use "/src/assets/sass/_utilities.sass" as *
   @use "/src/assets/sass/_variables.sass" as *
 
-  .container
+  .container-popup
     position: absolute
     border: none
     left: 50%
@@ -102,7 +117,7 @@ const isBuy = ref(false);
     gap: 2em
 
   .row
-    *
+    span, .dp__main
       width: 48%
 
   .active
@@ -115,5 +130,80 @@ const isBuy = ref(false);
     width: 36px
     height: 36px
 
+  .dp__theme_dark
+    --dp-background-color: $bg-paper
+    --dp-text-color: $text-primary
+    --dp-icon-color: $text-primary
+    --dp-scroll-bar-background: #{darken($bg-dark, 3%)}
+    --dp-scroll-bar-color: #{lighten($bg-dark, 15%)}
+
+  .dp__overlay, .dp__calendar_wrap
+    font-family: $font-base
+
+  .dp-menu, .dp__overlay_row
+    background-color: $bg-dark
+
+  .dp-menu
+    min-width: unset
+
+  .dp__active_date
+    background-color: $primary
+    &:hover
+      background-color: darken($primary, 5%) !important
+
+  .dp__cell_inner, .dp__button, .dp__month_year_select, .dp__inner_nav, .dp__inc_dec_button, .dp__time_display, .dp__overlay_cell
+    &:hover
+      background-color: darken($bg-dark, 3%)
+
+  .dp__button_bottom
+    background-color: lighten($bg-dark, 10%)
+    padding: 0
+
+  .dp__select
+    color: $green
+
+  .dp__cancel
+    color: $red
+
+  .dp__input_icons
+    height: 24px
+    width: 24px
+    path
+      fill: #6D8AAC
+
+  .dp-input
+    font-size: nth($font-sizes, 4)
+    padding: 16px 0 16px 50px
+    border: none
+    border-bottom: 1px solid $text-primary
+    border-radius: 0
+    line-height: unset
+    &:hover
+      border-color: $text-primary
+
+  .dp__menu_index
+    z-index: 9999999999
+
+  .dp__clear_icon
+    display: none
+
+  .date-default
+    color: $text-secondary
+
+  .date-picked
+    color: $text-primary
+    & + .dp__input_icons
+      path  
+        fill: $text-primary
+
+  .dp__calendar_header_item, .dp__cell_inner
+    height: 24px
+    width: 24px
+
+  .dp__instance_calendar
+    overflow: hidden
+
+  .dp__overlay
+    overflow-x: hidden
 
 </style>

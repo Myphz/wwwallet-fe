@@ -1,6 +1,6 @@
 <template>
   <span>
-    <div class="container align-center">
+    <div class="box-container align-center">
       <Icon :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-small' : '')" />
       <span class="input-container">
         <input 
@@ -97,7 +97,7 @@ const validator = () => {
       -webkit-appearance: none
       margin: 0
       
-  .container
+  .box-container
     border-bottom: 1px solid $text-primary
     width: 100%
 
