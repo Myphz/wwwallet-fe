@@ -7,6 +7,7 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^3.0.0",
     "echarts": "^5.3.1",
     "pinia": "^2.0.11",
     "vue": "^3.2.31",
