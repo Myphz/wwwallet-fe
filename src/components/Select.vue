@@ -75,7 +75,6 @@ const select = option => {
           transform: rotate(45deg)
 
       ul
-        background-color: $bg-box
         transform: scaleY(1)
       
   .arrow
@@ -114,6 +113,7 @@ const select = option => {
     z-index: 2
     transition: $anim-duration ease
     color: $text-secondary
+    background-color: $bg-box
 
   li
     text-align: left
