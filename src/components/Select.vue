@@ -111,7 +111,7 @@ const select = option => {
     border-radius: .3em
     border: 2px solid $bg-paper
     width: 100%
-    z-index: 2
+    z-index: 999999999
     transition: $anim-duration ease
     color: $text-secondary
     background-color: $bg-dark
