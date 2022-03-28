@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
-import routeResponsive from "../helpers/route.helper";
+import { routeView } from "../helpers/route.helper";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,37 +7,37 @@ const router = createRouter({
     {
       path: "/",
       name: "homepage",
-      component: () => routeResponsive("Home")
+      component: () => routeView("Home")
     },
 
     {
       path: "/crypto",
       name: "market",
-      component: () => routeResponsive("Market")
+      component: () => routeView("Market")
     },
 
     {
       path: "/crypto/:crypto",
       name: "crypto",
-      component: () => routeResponsive("Crypto")
+      component: () => routeView("Crypto")
     },
 
     {
       path: "/dashboard",
       name: "dashboard",
-      component: () => import("../views/Dashboard.vue")
+      component: () => import("../views/Dashboard.view.vue")
     },
 
     {
       path: "/login",
       name: "login",
-      component: () => routeResponsive("Login")
+      component: () => routeView("Login")
     },
 
     {
       path: "/register",
       name: "register",
-      component: () => routeResponsive("Register")
+      component: () => routeView("Register")
     },
   ]
 });

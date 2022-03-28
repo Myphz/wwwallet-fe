@@ -4,7 +4,7 @@
 
 <script setup>
 import { defineAsyncComponent } from "vue";
-import routeHelper from "@/helpers/route.helper";
+import { routeComponent } from "@/helpers/route.helper";
 
-const Layout = defineAsyncComponent(() => routeHelper("Layout", "components"));
+const Layout = defineAsyncComponent(() => routeComponent("Layout"));
 </script>
