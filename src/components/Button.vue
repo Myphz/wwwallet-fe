@@ -1,5 +1,5 @@
 <template>
-  <button :type="submit ? 'submit' : null" :class="'text-white transition ' + btnClass">{{ text }}</button>
+  <button :type="submit ? 'submit' : null" :class="'noselect text-white transition ' + btnClass" :style="btnCss">{{ text }}</button>
 </template>
 
 <script>
@@ -18,6 +18,11 @@ export default {
     btnClass: {
       type: String,
       default: "h4 bg-primary rounded"
+    },
+
+    btnCss: {
+      type: String,
+      default: ""
     },
   },
 }

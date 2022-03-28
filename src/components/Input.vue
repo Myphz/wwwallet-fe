@@ -1,10 +1,10 @@
 <template>
   <span>
-    <span class="container align-center">
-      <Icon :class="value ? 'icon-fill' : 'icon-empty'" />
+    <div class="box-container align-center">
+      <Icon :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-small' : '')" />
       <span class="input-container">
         <input 
-          class="h5 text-primary"
+          :class="'text-primary ' + inputClasses"
           :type="type"
           v-model="value"
           @input="$emit('update:modelValue', $event.target.value)"
@@ -12,9 +12,9 @@
           spellcheck="false"
           placeholder=" "
         >
-        <label class="text-secondary h5">{{ placeholder }}</label>
+        <label :class="'text-secondary ' + placeholderClasses">{{ placeholder }}</label>
       </span>
-    </span>
+    </div>
     <div v-show="!isValid" class="text-red h6">
       {{ errorMessage }}
     </div>
@@ -24,7 +24,7 @@
 <script setup>
 import { defineAsyncComponent, ref } from 'vue'
 
-const { icon, placeholder, type, validate, errorMessage } = defineProps({
+const { icon, validate } = defineProps({
   icon: {
     type: String,
     required: true
@@ -48,6 +48,21 @@ const { icon, placeholder, type, validate, errorMessage } = defineProps({
   errorMessage: {
     type: String,
     default: ""
+  },
+
+  iconSmall: {
+    type: Boolean,
+    default: false
+  },
+
+  inputClasses: {
+    type: String,
+    default: "h5"
+  },
+
+  placeholderClasses: {
+    type: String,
+    default: "h5"
   }
 });
 
@@ -76,20 +91,25 @@ const validator = () => {
     outline: none
     background: none
     margin-left: 5px
+    width: 100%
 
     &:focus + label, &:not(&:placeholder-shown) + label
       top: -2em
       font-size: nth($font-sizes, 5)
   
-  .container
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button
+      -webkit-appearance: none
+      margin: 0
+      
+  .box-container
     border-bottom: 1px solid $text-primary
-    padding: 2px
+    width: 100%
 
   .input-container
-    width: auto
-    height: auto
     position: relative
-    max-width: 90%
+    width: 70%
+    max-width: 70%
 
   label
     position: absolute
@@ -105,5 +125,8 @@ const validator = () => {
   .icon-fill
     path
       fill: $text-primary
+
+  .icon-small
+    transform: scale(.5)
     
 </style>

@@ -36,13 +36,17 @@ $font-sizes: 2.75rem, 2.25rem, 2rem, 1.25rem, 1.125rem, 0.75rem
 .ticker
   font-size: nth($font-sizes, 4) + 0.3rem
   font-weight: 200
-// Transition
+  
 .transition
   transition: 0.1s all
 
 // Utilities
 .noselect
   user-select: none
+  -webkit-tap-highlight-color: transparent
+  -webkit-touch-callout: none
+  &:hover
+    outline: none !important
 
 .align-center
   display: flex

@@ -1,5 +1,5 @@
 <template>
-  <img :src="icon">
+  <img :src="icon" :class="clickable ? 'clickable' : ''">
 </template>
 
 <script>
@@ -8,6 +8,11 @@ export default {
     icon: {
       type: String,
       required: true
+    },
+
+    clickable: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -17,3 +22,8 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.clickable
+  cursor: pointer
+</style>

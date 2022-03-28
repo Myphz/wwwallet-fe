@@ -2,12 +2,12 @@
   <section class="bg-dark">
     <header class="noselect align-center">
       <Logo />
-      <MenuIcon @click="openNavbar = !openNavbar" />
+      <MenuIcon @click="openNavbar" />
     </header>
     
     <nav>
-      <aside :class="'h1 bg-dark ' + (openNavbar ? 'open' : 'closed')">
-        <ul @click="openNavbar = !openNavbar" >
+      <aside :class="'h1 bg-dark ' + (opened ? 'open' : 'closed')">
+        <ul @click="openNavbar" >
           <li>
             <RouterLink to="/">
               <Icon icon="home" />Home
@@ -41,7 +41,14 @@ import { defineAsyncComponent, ref } from "vue";
 import { RouterLink } from "vue-router";
 import Icon from "@/components/Icon.vue";
 const MenuIcon = defineAsyncComponent(() => import("../../assets/icons/menu.svg"));
-const openNavbar = ref(false);
+
+const opened = ref(false);
+const emit = defineEmits(["navClick"]);
+
+const openNavbar = () => {
+  opened.value = !opened.value;
+  emit("navClick");
+}
 </script>
 
 <style lang="sass" scoped>
@@ -67,7 +74,7 @@ const openNavbar = ref(false);
     height: 100vh
     transform-origin: top
     transition: 0.25s transform ease-out
-    z-index: 99999999
+    z-index: 9
 
   ul
     margin: 0 5vw

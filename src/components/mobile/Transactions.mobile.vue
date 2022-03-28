@@ -13,8 +13,8 @@
         <Transaction v-for="i in 2" :key="i" :crypto="crypto" />
       </tbody>
     </table>
-    <div class="justify-center" style="margin-bottom: 2em">
-      <Button text="+ Add Transaction" btnClass="h4 bg-dark bottom-rounded" />
+    <div class="justify-center">
+      <Button text="+ Add Transaction" btnClass="h4 bg-dark bottom-rounded" btnCss="margin-bottom: 2em" @click="$emit('open')" />
     </div>
   </div>
 </template>

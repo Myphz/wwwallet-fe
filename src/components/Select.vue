@@ -1,7 +1,11 @@
 <template>
-  <div :class="open ? 'opened' : null" @click="open = !open">
-    <span class="align-center">
-      {{ selected }}<span class="arrow"></span>
+  <div :class="'noselect ' + (open ? 'opened ' : '') + (bordered ? 'bordered' : '')" @click="open = !open">
+    <span class="align-center item-container">
+      <span class="align-center">
+        <Icon v-if="icon" :icon="icon" :class="'icon-' + iconSize" />
+        <span>{{ selected }}</span>
+      </span>
+      <span class="arrow"></span>
     </span>
     <ul>
       <li v-for="option in opts" @click="select(option)">{{ option }}</li>
@@ -11,11 +15,27 @@
 
 <script setup>
 import { getCurrentInstance, ref } from "vue";
+import Icon from "@/components/Icon.vue";
 
 const { options } = defineProps({
   options: {
     type: Array,
     required: true
+  },
+
+  icon: {
+    type: String,
+    default: ""
+  },
+
+  iconSize: {
+    type: String,
+    default: "big"
+  },
+
+  bordered: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -36,12 +56,14 @@ const select = option => {
   @use "/src/assets/sass/_variables.sass" as *
   @use "/src/assets/sass/_utilities.sass" as *
 
-  $bg-box: #0A2039
   $anim-duration: 0.25s
 
   div
+    position: relative
     text-align: right
     cursor: pointer
+    width: 45%
+    padding: 0 1em 0 0
 
     &.opened
       .arrow 
@@ -53,7 +75,6 @@ const select = option => {
           transform: rotate(45deg)
 
       ul
-        background-color: $bg-box
         transform: scaleY(1)
       
   .arrow
@@ -76,20 +97,41 @@ const select = option => {
     &:after
       transform: rotate(135deg)
   
+  .item-container
+    justify-content: space-between
+
+  .bordered
+    border: 2px solid $text-primary
+    border-radius: .5em
+
   ul
     position: absolute
     transform: scaleY(0)
     transform-origin: top
     border-radius: .3em
-    padding: .25em
-    z-index: 2
+    border: 2px solid $bg-paper
+    width: 100%
+    z-index: 999999999
     transition: $anim-duration ease
     color: $text-secondary
+    background-color: $bg-dark
 
   li
     text-align: left
     cursor: pointer
+    padding: .25em
     &:first-child
       margin-top: 0.1em
+
+  .icon-big
+    width: 64px
+    height: 64px
+    margin: 0 .5em
+    padding: .2em 0
+
+  .icon-small
+    width: 48px
+    height: 48px
+    margin: 0 .1em
 
 </style>

@@ -1,26 +1,28 @@
 <template>
-  <div class="chart-container">
-    <ChartOptions :crypto="crypto" :base="base" v-model="base" />
-    <div class="stats">
-      <span class="price">
-        <span class="h2">$95.23</span>
-      </span>
-      <span class="statsgroup">
-        <span>% Change</span>
-        <span>+1.23%</span>
-      </span>
-      <span class="statsgroup">
-        <span>High</span>
-        <span class="green">92.73</span>
-      </span>
-      <span class="statsgroup">
-        <span>Low</span>
-        <span class="red">75.20</span>
-      </span>
+  <transition name="fade">
+    <div class="chart-container" v-show="!navOpen">
+      <ChartOptions :crypto="crypto" :base="base" v-model="base" />
+      <div class="stats">
+        <span class="price">
+          <span class="h2">$95.23</span>
+        </span>
+        <span class="statsgroup">
+          <span>% Change</span>
+          <span>+1.23%</span>
+        </span>
+        <span class="statsgroup">
+          <span>High</span>
+          <span class="green">92.73</span>
+        </span>
+        <span class="statsgroup">
+          <span>Low</span>
+          <span class="red">75.20</span>
+        </span>
+      </div>
+      <VChart :option="option" style="margin-bottom: 1em" autoresize />
+      <slot />
     </div>
-    <VChart :option="option" style="margin-bottom: 1em" autoresize />
-    <slot />
-  </div>
+  </transition>
 </template>
 
 
@@ -28,6 +30,7 @@
 import ChartOptions from "@/components/mobile/ChartOptions.mobile.vue";
 import { onMounted, reactive, ref } from "vue";
 import options from "@/config/chartOptions.mobile.js";
+
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { CandlestickChart } from "echarts/charts";
@@ -36,6 +39,11 @@ import VChart from "vue-echarts";
 
 export default {
   props: {
+    navOpen: {
+      type: Boolean,
+      required: true,
+    },
+
     crypto: {
       type: String,
       required: true
@@ -82,7 +90,6 @@ export default {
     width: 98vw
     left: 1vw
     height: 60vh
-    z-index: -1
 
   .stats
     background: $bg-dark
@@ -104,6 +111,12 @@ export default {
   canvas
     border-radius: 0 0 1.5em 1.5em
     cursor: crosshair
+
+  .fade-enter-active, .fade-leave-active
+    transition: opacity .4s
+
+  .fade-enter, .fade-leave-to
+    opacity: 0
 
   .green
     color: $green

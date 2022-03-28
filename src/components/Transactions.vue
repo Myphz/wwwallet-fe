@@ -15,7 +15,7 @@
       </tbody>
     </table>
     <div class="justify-center" style="margin-bottom: 2em">
-      <Button text="+ Add Transaction" btnClass="h3 bg-dark bottom-rounded" />
+      <Button text="+ Add Transaction" btnClass="h3 bg-dark bottom-rounded" @click="$emit('open')" />
     </div>
   </div>
 </template>
