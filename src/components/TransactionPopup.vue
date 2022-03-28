@@ -31,13 +31,13 @@
 
       <div class="space-between row">
         <Input icon="coins" placeholder="Quantity" type="number" />
-        <Input icon="exchange" placeholder="BTC/USDT Price" type="number" />
+        <Input icon="exchange" placeholder="Price in USDT" type="number" />
       </div>
       <div class="space-between row">
         <Datepicker 
           v-model="date" 
           format="dd/MM/yyyy HH:mm" 
-          :maxDate="new Date()" 
+          :maxDate="currentDate" 
           autoApply 
           :closeOnAutoApply="false"
           menuClassName="dp-menu"
@@ -48,7 +48,7 @@
         <Input icon="notes" placeholder="Notes" />
       </div>
 
-      <Input icon="dollar" placeholder="Total Value (USDT)" placeholderClasses="h4" type="number" />
+      <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
       <Button text="add" btnClass="h3 bg-primary rounded" btnCss="width: 100%; line-height: 1.75em; margin-top: 1em;" />
     </div>
   </div>
@@ -65,7 +65,8 @@ import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 const isBuy = ref(false);
-const date = ref(new Date());
+const currentDate = new Date();
+const date = ref(currentDate);
 const datePicked = ref(false);
 </script>
 
@@ -158,7 +159,7 @@ const datePicked = ref(false);
       fill: #6D8AAC
 
   .dp-input
-    font-size: nth($font-sizes, 4)
+    font-size: nth($font-sizes, 5)
     padding: 11px 0 11px 50px
     border: none
     border-bottom: 1px solid $text-primary

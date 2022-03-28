@@ -4,7 +4,7 @@
       <Icon :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-small' : '')" />
       <span class="input-container">
         <input 
-          class="h5 text-primary"
+          :class="'text-primary ' + inputClasses"
           :type="type"
           v-model="value"
           @input="$emit('update:modelValue', $event.target.value)"
@@ -53,6 +53,11 @@ const { icon, validate } = defineProps({
   iconSmall: {
     type: Boolean,
     default: false
+  },
+
+  inputClasses: {
+    type: String,
+    default: "h5"
   },
 
   placeholderClasses: {
