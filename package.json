@@ -9,14 +9,14 @@
   "dependencies": {
     "@vuepic/vue-datepicker": "^3.0.0",
     "echarts": "^5.3.1",
-    "pinia": "^2.0.11",
+    "pinia": "^2.0.12",
     "vue": "^3.2.31",
     "vue-echarts": "^6.0.2",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.14"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.2.2",
-    "vite": "^2.8.4",
+    "@vitejs/plugin-vue": "^2.2.4",
+    "vite": "^2.8.6",
     "vite-svg-loader": "^3.1.2"
   }
 }
