@@ -74,6 +74,8 @@ const datePicked = ref(false);
   @use "/src/assets/sass/_utilities.sass" as *
   @use "/src/assets/sass/_variables.sass" as *
 
+  $text-secondary-hex: #6D8AAC
+
   .container-popup
     position: absolute
     border: none
@@ -156,8 +158,8 @@ const datePicked = ref(false);
     width: 48px
     padding: 0
     path
-      fill: #6D8AAC
-
+      fill: $text-secondary-hex
+      
   .dp-input
     font-size: nth($font-sizes, 5)
     padding: 11px 0 11px 50px
