@@ -9,8 +9,8 @@
       <aside :class="'h1 bg-dark ' + (opened ? 'open' : 'closed')">
         <ul @click="openNavbar" >
           <li>
-            <RouterLink to="/">
-              <Icon icon="home" />Home
+            <RouterLink to="/wallet">
+              <Icon icon="wallet" />Wallet
             </RouterLink>
           </li>
           <li>

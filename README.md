@@ -23,3 +23,4 @@
 - [ ] Dashboard view
 - [ ] User settings view
 - [ ] Other advanced views (recover password...)
+- [ ] Business logic
