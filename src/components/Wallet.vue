@@ -22,11 +22,9 @@ const cryptos = ["BTC", "ETH"]
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-
   table
     width: 100%
-    // border-collapse: collapse
+    border-collapse: collapse
     
   th
     padding: 1em 1.5em

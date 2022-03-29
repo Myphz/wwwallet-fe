@@ -71,9 +71,6 @@ const datePicked = ref(false);
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_utilities.sass" as *
-  @use "/src/assets/sass/_variables.sass" as *
-
   $text-secondary-hex: #6D8AAC
 
   .container-popup

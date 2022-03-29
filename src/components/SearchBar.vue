@@ -18,13 +18,10 @@ const value = ref("");
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_variables.sass" as *
-  @use "/src/assets/sass/_utilities.sass" as *
-
   .search-bar
     background: $bg-paper
     border-radius: 1em
-    padding: .5em !important
+    padding: .5em
     margin-bottom: 2em
 
   .search-input

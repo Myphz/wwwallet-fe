@@ -83,9 +83,6 @@ const validator = () => {
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_variables.sass" as *
-  @use "/src/assets/sass/_utilities.sass" as *
-
   input
     border: none
     outline: none

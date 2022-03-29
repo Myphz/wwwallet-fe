@@ -40,9 +40,6 @@ const selectedBase = ref(base);
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_variables.sass" as *
-  @use "/src/assets/sass/_utilities.sass" as *
-
   header
     padding: 1em 0
     border-radius: 1.5em 1.5em 0 0

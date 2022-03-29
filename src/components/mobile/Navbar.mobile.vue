@@ -52,9 +52,6 @@ const openNavbar = () => {
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-  @use "/src/assets/sass/_variables.sass" as *
-
   section
     position: sticky
     top: 0

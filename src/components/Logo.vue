@@ -13,9 +13,6 @@ import { RouterLink } from "vue-router";
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-  @import url('https://fonts.googleapis.com/css2?family=Rambla:ital,wght@1,700&display=swap')
-
   .box
     font-family: 'Rambla', sans-serif
     cursor: pointer

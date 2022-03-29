@@ -1,11 +1,8 @@
-@use "./_variables.sass" as *
+@use "./variables" as *
 
 *
   margin: 0
   padding: 0
-  
-// Font sizes
-$font-sizes: 2.75rem, 2.25rem, 2rem, 1.25rem, 1.125rem, 0.75rem
 
 @for $i from 1 through length($font-sizes)
   .h#{$i}

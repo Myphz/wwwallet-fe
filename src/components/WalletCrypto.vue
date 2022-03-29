@@ -24,8 +24,6 @@ const { crypto } = defineProps({
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-
   .title
     font-weight: 600
     margin-right: 1em

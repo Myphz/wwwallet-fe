@@ -76,9 +76,6 @@ export default {
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_variables.sass" as *
-  @use "/src/assets/sass/_utilities.sass" as *
-
   .chart-container
     height: 70vh
     width: 100%

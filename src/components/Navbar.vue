@@ -17,8 +17,6 @@ import { RouterLink } from "vue-router";
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-
   nav
     display: flex
     justify-content: space-between

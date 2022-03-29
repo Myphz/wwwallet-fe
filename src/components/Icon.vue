@@ -24,8 +24,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-
   .clickable
     cursor: pointer
 </style>

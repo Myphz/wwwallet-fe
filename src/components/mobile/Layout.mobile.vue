@@ -19,8 +19,6 @@ const navOpen = ref(false);
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_variables.sass" as *
-
   html
     font-size: 70%
     height: 100%

@@ -20,8 +20,6 @@ import Card from "@/components/Card.vue"
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-
   table
     width: 100%
     border-collapse: collapse

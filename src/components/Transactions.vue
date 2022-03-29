@@ -34,9 +34,6 @@ const { crypto } = defineProps({
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-  @use "/src/assets/sass/_variables.sass" as *
-
   table
     background-color: $bg-dark  
     border-collapse: separate
