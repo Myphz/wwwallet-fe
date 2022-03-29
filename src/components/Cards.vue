@@ -20,15 +20,6 @@ import Card from "@/components/Card.vue"
 </script>
 
 <style lang="sass" scoped>
-  table
-    width: 100%
-    border-collapse: collapse
-
-  th
-    padding: 1em 1.5em
-    text-align: left
-    font-weight: bold
-
   img
     width: 48px
     height: 48px

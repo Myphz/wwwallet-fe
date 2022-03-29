@@ -1,6 +1,6 @@
 <template>
   <table>
-    <thead class="text-secondary">
+    <thead>
       <tr>
         <th>Token</th>
         <th>Avg Price</th>
@@ -8,29 +8,21 @@
         <th>Value</th>
         <th>Total Revenue</th>
         <th>Total Change</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <WalletCrypto v-for="crypto in cryptos" :crypto="crypto" />
+      <WalletRow v-for="crypto in cryptos" :crypto="crypto" />
     </tbody>
   </table>
 </template>
 
 <script setup>
-import WalletCrypto from "@/components/WalletCrypto.vue";
+import WalletRow from "@/components/WalletRow.vue";
 const cryptos = ["BTC", "ETH"]
 </script>
 
 <style lang="sass" scoped>
-  table
-    width: 100%
-    border-collapse: collapse
-    
-  th
-    padding: 1em 1.5em
-    text-align: left
-    font-weight: bold
-
   img
     width: 48px
     height: 48px

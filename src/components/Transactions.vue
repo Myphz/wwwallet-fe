@@ -1,23 +1,21 @@
 <template>
-  <div>
-    <table>
-      <thead class="text-secondary">
-        <tr>
-          <th>Token</th>
-          <th>Side</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Value</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        <Transaction v-for="i in 2" :key="i" :crypto="crypto" />
-      </tbody>
-    </table>
-    <div class="justify-center" style="margin-bottom: 2em">
-      <Button text="+ Add Transaction" btnClass="h3 bg-dark bottom-rounded" @click="$emit('open')" />
-    </div>
+  <table>
+    <thead>
+      <tr>
+        <th v-if="withTicker">Token</th>
+        <th>Side</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Value</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <Transaction v-for="i in 2" :key="i" :crypto="crypto" :bgColor="bgColor" :withTicker="withTicker" :shorter="shorter" />
+    </tbody>
+  </table>
+  <div v-if="false" class="justify-center" style="margin-bottom: 2em">
+    <Button text="+ Add Transaction" btnClass="h3 bg-dark bottom-rounded" @click="$emit('open')" />
   </div>
 </template>
 
@@ -29,22 +27,28 @@ const { crypto } = defineProps({
   crypto: {
     type: String,
     required: true
-  }
+  },
+
+  bgColor: {
+    type: String,
+    default: "bg-dark"
+  },
+
+  withTicker: {
+    type: Boolean,
+    default: true
+  },
+
+  shorter: {
+    type: Boolean,
+    default: false
+  },
+  
 });
 </script>
 
 <style lang="sass" scoped>
   table
-    background-color: $bg-dark  
-    border-collapse: separate
-    border-spacing: 0
     border-radius: 1.5em
-    width: 100%
-
-  th
-    padding: 1em
-    text-align: left
-    font-weight: bold
-
 
 </style>

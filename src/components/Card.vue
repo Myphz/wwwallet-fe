@@ -36,10 +36,7 @@ import { RouterLink } from "vue-router";
     cursor: pointer
     &:hover
       background-color: lighten($bg-base, 5%)
-
-  td
-    padding: 0.7em 1em
-
+      
   .icon
     margin-right: 1em
 

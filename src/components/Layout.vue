@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <Navbar v-if="path != '/login' && path != '/register'"/>
-    <main>
-      <router-view />
-    </main>
-  </div>
+  <Navbar v-if="path != '/login' && path != '/register'"/>
+  <main>
+    <router-view />
+  </main>
 </template>
 
 <script setup>

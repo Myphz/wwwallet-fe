@@ -1,6 +1,6 @@
 <template>
-  <tr :class="'h4 transition ' + bgColor">
-    <td class="align-center">
+  <tr :class="'h4 transition ' + bgColor + ' ' + (shorter ? 'short' : '')">
+    <td v-if="withTicker" class="align-center">
       <Icon icon="bitcoin" class="icon" />
       <span class="title">Bitcoin</span>
       <span class="ticker">BTC</span>
@@ -25,7 +25,17 @@ const { crypto } = defineProps({
   bgColor: {
     type: String,
     default: "bg-dark"
-  }
+  },
+
+  withTicker: {
+    type: Boolean,
+    default: true
+  },
+
+  shorter: {
+    type: Boolean,
+    default: false
+  },
 });
 </script>
 
@@ -43,12 +53,14 @@ const { crypto } = defineProps({
     &:hover
       background-color: darken($bg-paper, 10%)
 
+  .bg-base
+    background-color: $bg-base
+    &:hover
+      background-color: lighten($bg-base, 10%)
+
   .title
     font-weight: 600
     margin-right: 1em
-
-  td
-    padding: 0.7em 1em
 
   img
     width: 48px
@@ -56,4 +68,8 @@ const { crypto } = defineProps({
 
   .icon
     margin-right: 1em
+
+  .short
+    td
+      padding: 0.3em 1em
 </style>
