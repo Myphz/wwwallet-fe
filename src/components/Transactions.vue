@@ -3,11 +3,12 @@
     <table>
       <thead class="text-secondary">
         <tr>
-          <th>Name</th>
+          <th>Token</th>
+          <th>Side</th>
           <th>Quantity</th>
-          <th>Buy Price</th>
-          <th>Revenue</th>
-          <th>24h Revenue</th>
+          <th>Price</th>
+          <th>Value</th>
+          <th>Date</th>
         </tr>
       </thead>
       <tbody>
@@ -38,12 +39,15 @@ const { crypto } = defineProps({
 
   table
     background-color: $bg-dark  
+    border-collapse: separate
+    border-spacing: 0
     border-radius: 1.5em
     width: 100%
-    border-collapse: collapse
 
   th
-    padding: 1em 1em
+    padding: 1em
     text-align: left
+    font-weight: bold
+
 
 </style>

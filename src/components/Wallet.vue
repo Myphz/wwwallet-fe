@@ -2,21 +2,23 @@
   <table>
     <thead class="text-secondary">
       <tr>
-        <th>Name</th>
-        <th>Ticker</th>
-        <th>Price</th>
-        <th>24h Change</th>
-        <th>Market cap</th>
+        <th>Token</th>
+        <th>Avg Price</th>
+        <th>Quantity</th>
+        <th>Value</th>
+        <th>Total Revenue</th>
+        <th>Total Change</th>
       </tr>
     </thead>
     <tbody>
-      <Card v-for="i in 10" :key="i" />
+      <WalletCrypto v-for="crypto in cryptos" :crypto="crypto" />
     </tbody>
   </table>
 </template>
 
 <script setup>
-import Card from "@/components/Card.vue"
+import WalletCrypto from "@/components/WalletCrypto.vue";
+const cryptos = ["BTC", "ETH"]
 </script>
 
 <style lang="sass" scoped>
@@ -24,8 +26,8 @@ import Card from "@/components/Card.vue"
 
   table
     width: 100%
-    border-collapse: collapse
-
+    // border-collapse: collapse
+    
   th
     padding: 1em 1.5em
     text-align: left

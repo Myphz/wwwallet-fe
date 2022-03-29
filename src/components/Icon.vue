@@ -1,5 +1,5 @@
 <template>
-  <img :src="icon" :class="clickable ? 'clickable' : ''">
+  <img :src="icon" :class="'noselect ' + (clickable ? 'clickable' : '')">
 </template>
 
 <script>
@@ -24,6 +24,8 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.clickable
-  cursor: pointer
+  @use "/src/assets/sass/_utilities.sass" as *
+
+  .clickable
+    cursor: pointer
 </style>

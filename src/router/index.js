@@ -11,6 +11,12 @@ const router = createRouter({
     },
 
     {
+      path: "/wallet",
+      name: "wallet",
+      component: () => routeView("Wallet")
+    },
+
+    {
       path: "/crypto",
       name: "market",
       component: () => routeView("Market")

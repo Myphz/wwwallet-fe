@@ -27,5 +27,6 @@ import Card from "@/components/mobile/Card.mobile.vue"
   th
     padding: 1em 1.2em
     text-align: left
+    font-weight: bold
 
 </style>

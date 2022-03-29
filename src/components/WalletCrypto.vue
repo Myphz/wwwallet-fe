@@ -1,5 +1,5 @@
 <template>
-  <tr :class="'h4 transition ' + bgColor">
+  <tr :class="'h4 transition'">
     <td class="align-center">
       <Icon icon="bitcoin" class="icon" />
       <span class="title">Bitcoin</span>
@@ -12,39 +12,19 @@
     <td>20/12/2021 15:03</td>
   </tr>
 </template>
-
 <script setup>
 import Icon from "@/components/Icon.vue";
 
 const { crypto } = defineProps({
   crypto: {
     type: String,
-    required: true
-  },
-
-  bgColor: {
-    type: String,
-    default: "bg-dark"
+    required: true,
   }
 });
 </script>
 
 <style lang="sass" scoped>
   @use "/src/assets/sass/_utilities.sass" as *
-  @use "/src/assets/sass/_variables.sass" as *
-
-  tr
-    cursor: pointer
-  
-  .bg-dark
-    background-color: $bg-dark
-    &:hover
-      background-color: lighten($bg-dark, 10%)
-
-  .bg-paper
-    background-color: $bg-paper
-    &:hover
-      background-color: darken($bg-paper, 10%)
 
   .title
     font-weight: 600

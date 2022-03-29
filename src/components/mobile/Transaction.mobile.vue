@@ -4,9 +4,9 @@
       <Icon icon="bitcoin" class="icon" />
       <span>BTC</span>
     </td>
+    <td>BUY</td>
     <td>2.15</td>
-    <td>$31982.23</td>
-    <td>+$80982.34</td>
+    <td>$50982.34</td>
   </tr>
 </template>
 

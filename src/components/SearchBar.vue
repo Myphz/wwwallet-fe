@@ -1,6 +1,6 @@
 <template>
   <header class="search-bar align-center">
-    <Icon :class="value ? 'icon-fill' : 'icon-empty'" />
+    <Icon :class="'icon ' + (value ? 'icon-fill' : 'icon-empty')" />
     <input 
       type="text" 
       class="text-primary h4 search-input"
@@ -23,8 +23,8 @@ const value = ref("");
 
   .search-bar
     background: $bg-paper
-    border-radius: 10px
-    padding: .2em
+    border-radius: 1em
+    padding: .5em !important
     margin-bottom: 2em
 
   .search-input
@@ -35,6 +35,9 @@ const value = ref("");
 
     &::placeholder
       color: $text-secondary
+
+  .icon
+    margin-right: .5em
 
   .icon-empty
     path
