@@ -1,8 +1,9 @@
 <template>
-  <table>
+  <table :class="shorter ? 'short' : ''">
     <thead>
       <tr>
         <th v-if="withTicker">Token</th>
+        <th>Pair</th>
         <th>Side</th>
         <th>Quantity</th>
         <th>Price</th>
@@ -11,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <Transaction v-for="i in 2" :key="i" :crypto="crypto" :bgColor="bgColor" :withTicker="withTicker" :shorter="shorter" />
+      <Transaction v-for="i in 2" :key="i" :crypto="crypto" :bgColor="bgColor" :withTicker="withTicker" :shorter="shorter" :fontSize="fontSize" />
     </tbody>
   </table>
   <div v-if="false" class="justify-center" style="margin-bottom: 2em">
@@ -29,9 +30,14 @@ const { crypto } = defineProps({
     required: true
   },
 
+  fontSize: {
+    type: String,
+    default: "h4"
+  },
+
   bgColor: {
     type: String,
-    default: "bg-dark"
+    default: "bg-base"
   },
 
   withTicker: {
@@ -50,5 +56,9 @@ const { crypto } = defineProps({
 <style lang="sass" scoped>
   table
     border-radius: 1.5em
+
+  .short
+    th
+      padding: .5em 1em
 
 </style>

@@ -1,10 +1,11 @@
 <template>
-  <tr :class="'h4 transition ' + bgColor + ' ' + (shorter ? 'short' : '')">
+  <tr :class="'transition ' + fontSize + ' ' + bgColor + ' ' + (shorter ? 'short' : '')">
     <td v-if="withTicker" class="align-center">
       <Icon icon="bitcoin" class="icon" />
       <span class="title">Bitcoin</span>
       <span class="ticker">BTC</span>
     </td>
+    <td>BTC/USDT</td>
     <td>BUY</td>
     <td>2.15</td>
     <td>$31982.23</td>
@@ -22,9 +23,14 @@ const { crypto } = defineProps({
     required: true
   },
 
+  fontSize: {
+    type: String,
+    default: "h4"
+  },
+
   bgColor: {
     type: String,
-    default: "bg-dark"
+    default: "bg-base"
   },
 
   withTicker: {
@@ -58,6 +64,11 @@ const { crypto } = defineProps({
     &:hover
       background-color: lighten($bg-base, 10%)
 
+  .bg-base-dark
+    background-color: darken($bg-base, 2%)ù
+    &:hover
+      background-color: lighten($bg-base, 10%)
+
   .title
     font-weight: 600
     margin-right: 1em
@@ -72,4 +83,5 @@ const { crypto } = defineProps({
   .short
     td
       padding: 0.3em 1em
+
 </style>

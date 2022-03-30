@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <Navbar v-if="path != '/login' && path != '/register'" @navClick="navOpen = !navOpen" />
-    <main>
-      <!-- Pass the navbar status to the view (for the chart page) -->
-      <router-view :navOpen="navOpen" />
-    </main>
-  </div>
+  <Navbar v-if="path != '/login' && path != '/register'" @navClick="navOpen = !navOpen" />
+  <main>
+    <!-- Pass the navbar status to the view (for the chart page) -->
+    <router-view :navOpen="navOpen" />
+  </main>
 </template>
 
 <script setup>

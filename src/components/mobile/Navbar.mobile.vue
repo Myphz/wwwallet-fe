@@ -9,8 +9,8 @@
       <aside :class="'h1 bg-dark ' + (opened ? 'open' : 'closed')">
         <ul @click="openNavbar" >
           <li>
-            <RouterLink to="/wallet">
-              <Icon icon="wallet" />Wallet
+            <RouterLink to="/crypto">
+              <Icon icon="chart" />Markets
             </RouterLink>
           </li>
           <li>
@@ -19,8 +19,8 @@
             </RouterLink>
           </li>
           <li>
-            <RouterLink to="/crypto">
-              <Icon icon="chart" />Markets
+            <RouterLink to="/wallet">
+              <Icon icon="wallet" />Wallet
             </RouterLink>
           </li>
           <li>
@@ -31,7 +31,6 @@
         </ul>
       </aside>
     </nav>
-    
   </section>
 </template>
 

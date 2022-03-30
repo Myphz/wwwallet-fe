@@ -14,7 +14,7 @@
   </tr>
   <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
     <td colspan="7">
-      <Transactions :crypto="crypto" bgColor="bg-paper" :withTicker="false" shorter />
+      <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" shorter />
     </td>
   </tr>
 </template>
@@ -83,7 +83,7 @@ const open = ref(false);
       transform: rotate(45deg)
 
   .transactions-row
-    background-color: $bg-paper
+    background-color: darken($bg-base, 2%)
     transform-origin: top
     transition: $anim-duration all ease
     display: none
