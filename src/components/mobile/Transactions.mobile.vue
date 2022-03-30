@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table :class="'nohover ' + bgColor">
     <thead class="text-secondary">
       <tr>
         <th>Token</th>
@@ -12,8 +12,8 @@
       <Transaction v-for="i in 2" :key="i" :crypto="crypto" />
     </tbody>
   </table>
-  <div class="justify-center">
-    <Button text="+ Add Transaction" btnClass="h4 bg-dark bottom-rounded" btnCss="margin-bottom: 2em" @click="$emit('open')" />
+  <div v-if="button" class="justify-center">
+    <Button btnClass="h4 bg-dark bottom-rounded noborder" btnCss="margin-bottom: 2em" @click="$emit('open')">+ Add Transaction</Button>
   </div>
 </template>
 
@@ -25,20 +25,37 @@ const { crypto } = defineProps({
   crypto: {
     type: String,
     required: true
+  },
+
+  fontSize: {
+    type: String,
+    default: "h4"
+  },
+
+  bgColor: {
+    type: String,
+    default: "bg-dark"
+  },
+
+  button: {
+    type: Boolean,
+    default: true
   }
 });
+
+defineEmits(["open"]);
 </script>
 
 <style lang="sass" scoped>
   table
-    background-color: $bg-dark  
     border-radius: 1.5em
-    width: 100%
-    border-collapse: collapse
 
   th
     padding: 1em .5em
     text-align: left
     font-weight: bold
+
+  th:first-of-type
+    padding: 1em 2em
 
 </style>

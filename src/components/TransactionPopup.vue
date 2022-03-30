@@ -1,54 +1,56 @@
 <template>
-  <div class="filter"></div>
-  <div class="container-popup">
-    <header class="space-between">
-      <h1>Add Transaction</h1>
-      <Icon 
-        icon="cross"
-        @click="$emit('close')"
-        clickable
-      />
-    </header>
-    <div class="options transition justify-center h1">
-      <span :class="'option ' + (isBuy ? 'active' : '')" @click="isBuy = true">BUY</span>
-      <span :class="'option ' + (isBuy ? '' : 'active')" @click="isBuy = false">SELL</span>
-    </div>
-    <div class="space-between">
-      <Select 
-        :options='["BTC", "ETH"]' 
-        icon="bitcoin" 
-        class="h2"
-        bordered
-      />
-      <Select 
-        :options='["BTC", "ETH"]' 
-        icon="bitcoin" 
-        class="h2"
-        bordered
-      />
-    </div>
+  <div>
+    <div class="filter"></div>
+    <div class="container-popup">
+      <header class="space-between">
+        <h1>Add Transaction</h1>
+        <Icon 
+          icon="cross"
+          @click="$emit('close')"
+          clickable
+        />
+      </header>
+      <div class="options transition justify-center h1">
+        <span :class="'option ' + (isBuy ? 'active' : '')" @click="isBuy = true">BUY</span>
+        <span :class="'option ' + (isBuy ? '' : 'active')" @click="isBuy = false">SELL</span>
+      </div>
+      <div class="space-between margin-bottom">
+        <Select 
+          :options='["BTC", "ETH"]' 
+          icon="bitcoin" 
+          class="h2"
+          bordered
+        />
+        <Select 
+          :options='["BTC", "ETH"]' 
+          icon="bitcoin" 
+          class="h2"
+          bordered
+        />
+      </div>
 
-    <div class="space-between row">
-      <Input icon="coins" placeholder="Quantity" type="number" />
-      <Input icon="exchange" placeholder="Price in USDT" type="number" />
-    </div>
-    <div class="space-between row">
-      <Datepicker 
-        v-model="date" 
-        format="dd/MM/yyyy HH:mm" 
-        :maxDate="currentDate" 
-        autoApply 
-        :closeOnAutoApply="false"
-        menuClassName="dp-menu"
-        :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
-        @open.once="datePicked = true"
-        dark 
-      />
-      <Input icon="notes" placeholder="Notes" />
-    </div>
+      <div class="space-between row margin-bottom">
+        <Input icon="coins" placeholder="Quantity" type="number" />
+        <Input icon="exchange" placeholder="Price in USDT" type="number" />
+      </div>
+      <div class="space-between row margin-bottom">
+        <Datepicker 
+          v-model="date" 
+          format="dd/MM/yyyy HH:mm" 
+          :maxDate="currentDate" 
+          autoApply 
+          :closeOnAutoApply="false"
+          menuClassName="dp-menu"
+          :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
+          @open.once="datePicked = true"
+          dark 
+        />
+        <Input icon="notes" placeholder="Notes" />
+      </div>
 
-    <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
-    <Button text="add" btnClass="h3 bg-primary rounded" btnCss="width: 100%; line-height: 1.75em; margin-top: 1em;" />
+      <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
+      <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
+    </div>
   </div>
 </template>
 
@@ -102,11 +104,6 @@ const datePicked = ref(false);
     border-radius: .5em
     cursor: pointer
 
-  .space-between
-    display: flex
-    justify-content: space-between
-    margin-bottom: 2em
-
   .row
     span, .dp__main
       width: 48%
@@ -115,7 +112,7 @@ const datePicked = ref(false);
     background-color: $primary
 
   .margin-bottom
-    margin-bottom: 1em
+    margin-bottom: 2em
 
   .dp__theme_dark
     --dp-background-color: $bg-paper

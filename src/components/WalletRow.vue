@@ -15,6 +15,9 @@
   <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
     <td colspan="7">
       <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" shorter />
+      <RouterLink custom v-slot="{ navigate }" to="/wallet">
+        <span class="link" style="padding: 1em">Add transaction</span>
+      </RouterLink>
     </td>
   </tr>
 </template>
@@ -90,7 +93,4 @@ const open = ref(false);
 
   .row-open
     display: table-row
-
-
-
 </style>

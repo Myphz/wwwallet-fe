@@ -1,58 +1,60 @@
 <template>
-  <div class="filter"></div>
-  <div class="container-popup">
-    <header class="space-between">
-      <h3>Add Transaction</h3>
-      <Icon 
-        icon="cross"
-        @click="$emit('close')"
-        clickable
-      />
-    </header>
-    <div class="options transition justify-center h1 noselect">
-      <span :class="'option ' + (isBuy ? 'active' : '')" @click="isBuy = true">BUY</span>
-      <span :class="'option ' + (isBuy ? '' : 'active')" @click="isBuy = false">SELL</span>
-    </div>
-    <div class="space-between">
-      <Select 
-        :options='["BTC", "ETH"]' 
-        icon="bitcoin" 
-        class="h3"
-        iconSize="small"
-        style="width: 40%"
-        bordered
-      />
-      <Select 
-        :options='["BTC", "ETH"]' 
-        icon="bitcoin" 
-        class="h3"
-        iconSize="small"
-        style="width: 40%"
-        bordered
-      />
-    </div>
+  <div>
+    <div class="filter"></div>
+    <div class="container-popup">
+      <header class="space-between">
+        <h3>Add Transaction</h3>
+        <Icon 
+          icon="cross"
+          @click="$emit('close')"
+          clickable
+        />
+      </header>
+      <div class="options transition justify-center h1 noselect">
+        <span :class="'option ' + (isBuy ? 'active' : '')" @click="isBuy = true">BUY</span>
+        <span :class="'option ' + (isBuy ? '' : 'active')" @click="isBuy = false">SELL</span>
+      </div>
+      <div class="space-between">
+        <Select 
+          :options='["BTC", "ETH"]' 
+          icon="bitcoin" 
+          class="h3"
+          iconSize="small"
+          style="width: 40%"
+          bordered
+        />
+        <Select 
+          :options='["BTC", "ETH"]' 
+          icon="bitcoin" 
+          class="h3"
+          iconSize="small"
+          style="width: 40%"
+          bordered
+        />
+      </div>
 
-    <div class="space-between row">
-      <Input icon="coins" placeholder="Quantity" iconSmall type="number" />
-      <Input icon="exchange" placeholder="BTC/USDT" iconSmall type="number" />
-    </div>
-    <div class="space-between row">
-      <Datepicker 
-        v-model="date" 
-        format="dd/MM HH:mm" 
-        :maxDate="currentDate" 
-        autoApply 
-        :closeOnAutoApply="false"
-        menuClassName="dp-menu"
-        :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
-        @open.once="datePicked = true"
-        dark 
-      />
-      <Input icon="notes" placeholder="Notes" iconSmall />
-    </div>
+      <div class="space-between row">
+        <Input icon="coins" placeholder="Quantity" iconSmall type="number" />
+        <Input icon="exchange" placeholder="BTC/USDT" iconSmall type="number" />
+      </div>
+      <div class="space-between row">
+        <Datepicker 
+          v-model="date" 
+          format="dd/MM HH:mm" 
+          :maxDate="currentDate" 
+          autoApply 
+          :closeOnAutoApply="false"
+          menuClassName="dp-menu"
+          :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
+          @open.once="datePicked = true"
+          dark 
+        />
+        <Input icon="notes" placeholder="Notes" iconSmall />
+      </div>
 
-    <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
-    <Button text="add" btnClass="h3 bg-primary rounded" btnCss="width: 100%; line-height: 1.75em; margin-top: 1em;" />
+      <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
+      <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
+    </div>
   </div>
 </template>
 

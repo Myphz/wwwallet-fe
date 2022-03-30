@@ -1,5 +1,5 @@
 <template>
-  <table :class="shorter ? 'short' : ''">
+  <table :class="'nohover ' + bgColor + ' ' + (shorter ? 'short ' : '')">
     <thead>
       <tr>
         <th v-if="withTicker">Token</th>
@@ -12,11 +12,11 @@
       </tr>
     </thead>
     <tbody>
-      <Transaction v-for="i in 2" :key="i" :crypto="crypto" :bgColor="bgColor" :withTicker="withTicker" :shorter="shorter" :fontSize="fontSize" />
+      <Transaction v-for="i in 2" :key="i" :crypto="crypto" :withTicker="withTicker" :shorter="shorter" :fontSize="fontSize" />
     </tbody>
   </table>
-  <div v-if="false" class="justify-center" style="margin-bottom: 2em">
-    <Button text="+ Add Transaction" btnClass="h3 bg-dark bottom-rounded" @click="$emit('open')" />
+  <div v-if="withTicker" class="justify-center" style="margin-bottom: 2em">
+    <Button btnClass="h3 bg-dark bottom-rounded noborder" @click="$emit('open')">+ Add Transaction</Button>
   </div>
 </template>
 
@@ -37,7 +37,7 @@ const { crypto } = defineProps({
 
   bgColor: {
     type: String,
-    default: "bg-base"
+    default: "bg-dark"
   },
 
   withTicker: {
@@ -48,9 +48,11 @@ const { crypto } = defineProps({
   shorter: {
     type: Boolean,
     default: false
-  },
+  }
   
 });
+
+defineEmits(["open"]);
 </script>
 
 <style lang="sass" scoped>

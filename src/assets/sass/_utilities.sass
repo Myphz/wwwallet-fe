@@ -18,9 +18,6 @@
 .text-secondary
   color: $text-secondary
 
-.text-white
-  color: $white
-
 .text-red
   color: $red
 
@@ -35,7 +32,7 @@
   font-weight: 200
   
 .transition
-  transition: 0.1s all
+  transition: 0.25s all
 
 // Utilities
 .noselect
@@ -52,7 +49,62 @@
 .justify-center
   display: flex
   justify-content: center
+
+.space-between
+  display: flex
+  justify-content: space-between
+
+// Bg color
+.bg-primary
+  background-color: $primary
+  &:not(.nohover):hover
+    background-color: darken($primary, 10%)
+
+  &:not(.nohover):active
+    background-color: darken($primary, 20%)
+
+.bg-dark
+  background-color: $bg-dark
+  &:not(.nohover):hover
+    background-color: lighten($bg-dark, 10%)
   
+  &:not(.nohover):active
+    background-color: lighten($bg-dark, 10%)
+    
+.bg-paper
+  background-color: $bg-paper
+  &:not(.nohover):hover
+    background-color: darken($bg-paper, 10%)
+
+  &:not(.nohover):active
+    background-color: darken($bg-paper, 10%)
+
+.bg-base
+  background-color: $bg-base
+  &:not(.nohover):hover
+    background-color: lighten($bg-base, 10%)
+  
+  &:not(.nohover):active
+    background-color: lighten($bg-base, 20%)
+
+.bg-base-dark
+  background-color: darken($bg-base, 2%)
+  &:not(.nohover):hover
+    background-color: lighten($bg-base, 10%)
+
+  &:not(.nohover):active
+    background-color: lighten($bg-base, 20%)
+
+.bg-outline
+  background-color: inherit
+  border: 1.5px solid $text-primary
+  border-radius: .3em
+  &:not(.nohover):hover
+    background-color: rgba($text-primary, .2)
+
+  &:not(.nohover):active
+    background-color: rgba($text-primary, .3)
+
 // Resets
 a
   text-decoration: none

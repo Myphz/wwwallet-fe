@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-dark">
+  <section class="bg-dark nohover">
     <header class="noselect align-center">
       <Logo />
       <MenuIcon @click="openNavbar" />

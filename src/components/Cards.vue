@@ -18,10 +18,3 @@
 <script setup>
 import Card from "@/components/Card.vue"
 </script>
-
-<style lang="sass" scoped>
-  img
-    width: 48px
-    height: 48px
-
-</style>
