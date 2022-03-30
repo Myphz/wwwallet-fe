@@ -1,18 +1,19 @@
 <template>
   <table :class="'nohover ' + bgColor">
-    <thead class="text-secondary">
+    <thead>
       <tr>
-        <th>Token</th>
+        <th v-if="withTicker">Token</th>
         <th>Side</th>
         <th>Quantity</th>
         <th>Price</th>
+        <th v-if="!withTicker"></th>
       </tr>
     </thead>
     <tbody>
-      <Transaction v-for="i in 2" :key="i" :crypto="crypto" />
+      <Transaction v-for="i in 2" :key="i" :crypto="crypto" :withTicker="withTicker" :fontSize="fontSize" />
     </tbody>
   </table>
-  <div v-if="button" class="justify-center">
+  <div v-if="withTicker" class="justify-center">
     <Button btnClass="h4 bg-dark bottom-rounded noborder" btnCss="margin-bottom: 2em" @click="$emit('open')">+ Add Transaction</Button>
   </div>
 </template>
@@ -37,7 +38,7 @@ const { crypto } = defineProps({
     default: "bg-dark"
   },
 
-  button: {
+  withTicker: {
     type: Boolean,
     default: true
   }
@@ -54,8 +55,5 @@ defineEmits(["open"]);
     padding: 1em .5em
     text-align: left
     font-weight: bold
-
-  th:first-of-type
-    padding: 1em 2em
 
 </style>
