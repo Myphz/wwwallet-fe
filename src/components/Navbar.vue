@@ -31,4 +31,8 @@ import { RouterLink } from "vue-router";
     display: inline-flex
     margin: 0 1em
 
+  img
+    width: 48px
+    height: 48px
+
 </style>

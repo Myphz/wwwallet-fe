@@ -15,14 +15,10 @@
       <Transaction v-for="i in 2" :key="i" :crypto="crypto" :withTicker="withTicker" :shorter="shorter" :fontSize="fontSize" />
     </tbody>
   </table>
-  <div v-if="withTicker" class="justify-center" style="margin-bottom: 2em">
-    <Button btnClass="h3 bg-dark bottom-rounded noborder" @click="$emit('open')">+ Add Transaction</Button>
-  </div>
 </template>
 
 <script setup>
 import Transaction from "@/components/Transaction.vue";
-import Button from "@/components/Button.vue";
 
 const { crypto } = defineProps({
   crypto: {
@@ -51,8 +47,6 @@ const { crypto } = defineProps({
   }
   
 });
-
-defineEmits(["open"]);
 </script>
 
 <style lang="sass" scoped>
