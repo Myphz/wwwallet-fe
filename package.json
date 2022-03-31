@@ -17,6 +17,6 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.2.4",
     "vite": "^2.9.0",
-    "vite-svg-loader": "^3.1.2"
+    "vite-svg-loader": "^3.2.0"
   }
 }
