@@ -53,7 +53,7 @@
       </div>
 
       <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
-      <Button text="add" btnClass="h3 bg-primary rounded" btnCss="width: 100%; line-height: 1.75em; margin-top: 1em;" />
+      <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
     </div>
   </div>
 </template>
@@ -75,9 +75,6 @@ const datePicked = ref(false);
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_utilities.sass" as *
-  @use "/src/assets/sass/_variables.sass" as *
-
   .container-popup
     position: absolute
     border: none

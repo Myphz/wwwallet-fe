@@ -1,26 +1,20 @@
 <template>
-  <div>
-    <Navbar v-if="path != '/login' && path != '/register'" @navClick="navOpen = !navOpen" />
-    <main>
-      <!-- Pass the navbar status to the view (for the chart page) -->
-      <router-view :navOpen="navOpen" />
-    </main>
-  </div>
+  <header class="logo">
+    <Logo small />
+  </header>
+  <main>
+    <router-view />
+  </main>
+  <Navbar />
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { useRoute, RouterView } from "vue-router";
+import { RouterView } from "vue-router";
 import Navbar from "@/components/mobile/Navbar.mobile.vue";
-
-const route = useRoute();
-const path = computed( () => route.path );
-const navOpen = ref(false);
+import Logo from "@/components/Logo.vue";
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_variables.sass" as *
-
   html
     font-size: 70%
     height: 100%
@@ -29,10 +23,12 @@ const navOpen = ref(false);
     background-color: $bg-base
     color: $text-primary
     font-family: $font-base
-    min-height: 100%
-    margin: 0
 
   main
-    margin: 1.5em 5vw 0 5vw
+    margin: 1.5em 5vw 1.5em 5vw
+    padding-bottom: 10vh
 
+  .logo
+    padding: .5em 1.5em
+    background-color: $bg-dark
 </style>

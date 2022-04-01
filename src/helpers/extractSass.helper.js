@@ -1,6 +1,13 @@
-import sass from "@/assets/sass/_variables.sass";
+/* 
+  Unfortunately, SASS doesn't provide any rules to directly export variables. 
+  SCSS does that using ::export rule.
+  The ::export rule still works with SASS, but it can't be as easily imported with a single import instruction.
+  This function imports the entire SASS file, which returns a string with the exported properties and
+  returns the string between a specified value and ';' 
+*/
 
-// Function to extract a value from the sass variables file
+import sass from "@/assets/sass/_export.sass";
+
 export default function(value) {
   // Get the string between 'value:' and ';' (the content of the variable)
   return sass.split(value + ":")[1].split(";")[0];

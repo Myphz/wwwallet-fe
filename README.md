@@ -12,14 +12,15 @@
 <a href="https://github.com/Myphz/wwwallet-be" target="_blank">Backend repository</a>
 </p>
 
-## Pages:
+## TODO:
 - [ ] Homepage
 - [X] Login view
 - [X] Register view
 - [X] Market view
 - [X] Crypto chart view
 - [X] Add transaction view
-- [ ] Transactions view
+- [X] Wallet view
+- [ ] Transaction detail view
 - [ ] Dashboard view
 - [ ] User settings view
 - [ ] Other advanced views (recover password...)

@@ -14,7 +14,7 @@
         <span :class="'option ' + (isBuy ? 'active' : '')" @click="isBuy = true">BUY</span>
         <span :class="'option ' + (isBuy ? '' : 'active')" @click="isBuy = false">SELL</span>
       </div>
-      <div class="space-between">
+      <div class="space-between margin-bottom">
         <Select 
           :options='["BTC", "ETH"]' 
           icon="bitcoin" 
@@ -29,11 +29,11 @@
         />
       </div>
 
-      <div class="space-between row">
+      <div class="space-between row margin-bottom">
         <Input icon="coins" placeholder="Quantity" type="number" />
         <Input icon="exchange" placeholder="Price in USDT" type="number" />
       </div>
-      <div class="space-between row">
+      <div class="space-between row margin-bottom">
         <Datepicker 
           v-model="date" 
           format="dd/MM/yyyy HH:mm" 
@@ -49,7 +49,7 @@
       </div>
 
       <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
-      <Button text="add" btnClass="h3 bg-primary rounded" btnCss="width: 100%; line-height: 1.75em; margin-top: 1em;" />
+      <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
     </div>
   </div>
 </template>
@@ -71,9 +71,6 @@ const datePicked = ref(false);
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_utilities.sass" as *
-  @use "/src/assets/sass/_variables.sass" as *
-
   $text-secondary-hex: #6D8AAC
 
   .container-popup
@@ -107,11 +104,6 @@ const datePicked = ref(false);
     border-radius: .5em
     cursor: pointer
 
-  .space-between
-    display: flex
-    justify-content: space-between
-    margin-bottom: 2em
-
   .row
     span, .dp__main
       width: 48%
@@ -120,7 +112,7 @@ const datePicked = ref(false);
     background-color: $primary
 
   .margin-bottom
-    margin-bottom: 1em
+    margin-bottom: 2em
 
   .dp__theme_dark
     --dp-background-color: $bg-paper

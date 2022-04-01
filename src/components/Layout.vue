@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <Navbar v-if="path != '/login' && path != '/register'"/>
-    <main>
-      <router-view />
-    </main>
-  </div>
+  <Navbar v-if="path != '/login' && path != '/register'"/>
+  <main>
+    <router-view />
+  </main>
 </template>
 
 <script setup>
@@ -17,8 +15,6 @@ const path = computed( () => route.path );
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_variables.sass" as *
-
   body
     background-color: $bg-base
     color: $text-primary

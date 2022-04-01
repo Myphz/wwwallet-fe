@@ -2,23 +2,23 @@
   <nav class="noselect">
     <Logo />
     <ul class="h2">
-      <li><RouterLink to="/wallet">Wallet</RouterLink></li>
-      <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
       <li><RouterLink to="/crypto">Markets</RouterLink></li>
+      <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
+      <li><RouterLink to="/wallet">Wallet</RouterLink></li>
     </ul>
-    <RouterLink to="/login"><Icon icon="user" /></RouterLink>
+    <RouterLink to="/login" class="align-center"><UserIcon class="user-icon" /></RouterLink>
   </nav>
 </template>
 
 <script setup>
 import Logo from "@/components/Logo.vue"
-import Icon from "@/components/Icon.vue"
 import { RouterLink } from "vue-router";
+import { defineAsyncComponent } from "vue";
+
+const UserIcon = defineAsyncComponent(() => import("../assets/icons/user.svg"));
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-
   nav
     display: flex
     justify-content: space-between
@@ -32,5 +32,8 @@ import { RouterLink } from "vue-router";
   li
     display: inline-flex
     margin: 0 1em
+
+  .user-icon
+    transform: scale(1.5)
 
 </style>

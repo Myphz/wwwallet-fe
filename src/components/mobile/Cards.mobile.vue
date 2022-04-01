@@ -18,8 +18,6 @@ import Card from "@/components/mobile/Card.mobile.vue"
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-
   table
     width: 100%
     border-collapse: collapse
@@ -27,5 +25,6 @@ import Card from "@/components/mobile/Card.mobile.vue"
   th
     padding: 1em 1.2em
     text-align: left
+    font-weight: bold
 
 </style>

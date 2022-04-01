@@ -18,20 +18,3 @@
 <script setup>
 import Card from "@/components/Card.vue"
 </script>
-
-<style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-
-  table
-    width: 100%
-    border-collapse: collapse
-
-  th
-    padding: 1em 1.5em
-    text-align: left
-
-  img
-    width: 48px
-    height: 48px
-
-</style>

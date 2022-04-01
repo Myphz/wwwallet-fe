@@ -83,9 +83,6 @@ const validator = () => {
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_variables.sass" as *
-  @use "/src/assets/sass/_utilities.sass" as *
-
   input
     border: none
     outline: none
@@ -113,8 +110,8 @@ const validator = () => {
 
   label
     position: absolute
-    top: -1px
-    left: 6px
+    top: -.09em
+    left: .375em
     transition: 0.2s ease all
     pointer-events: none
 

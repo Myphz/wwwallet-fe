@@ -34,7 +34,7 @@
       />
 
       <span v-if="login" class="forgot h6 link">Forgot your password?</span>
-      <Button class="btn" :text="header" submit />
+      <Button class="btn" submit>{{ header }}</Button>
     </form>
 
     <span class="h6 text-secondary">
@@ -75,9 +75,6 @@ const passwordEqual = _ => values.password === values.confirmPassword;
 </script>
 
 <style lang="sass" scoped>
-  @use "/src/assets/sass/_utilities.sass" as *
-  @use "/src/assets/sass/_mixins.sass" as *
-
   $box-color: rgba(35, 74, 117, 0.5)
 
   div
@@ -90,7 +87,7 @@ const passwordEqual = _ => values.password === values.confirmPassword;
     backdrop-filter: blur(12px)
     max-width: 60vw
 
-    @include phone
+    @media (max-width: 1440px)
       // Middle
       left: 50%
       top: 50%

@@ -1,28 +1,26 @@
 <template>
-  <transition name="fade">
-    <div class="chart-container" v-show="!navOpen">
-      <ChartOptions :crypto="crypto" :base="base" v-model="base" />
-      <div class="stats">
-        <span class="price">
-          <span class="h2">$95.23</span>
-        </span>
-        <span class="statsgroup">
-          <span>% Change</span>
-          <span>+1.23%</span>
-        </span>
-        <span class="statsgroup">
-          <span>High</span>
-          <span class="green">92.73</span>
-        </span>
-        <span class="statsgroup">
-          <span>Low</span>
-          <span class="red">75.20</span>
-        </span>
-      </div>
-      <VChart :option="option" style="margin-bottom: 1em" autoresize />
-      <slot />
+  <div class="chart-container">
+    <ChartOptions :crypto="crypto" :base="base" v-model="base" />
+    <div class="stats">
+      <span class="price">
+        <span class="h2">$95.23</span>
+      </span>
+      <span class="statsgroup">
+        <span>% Change</span>
+        <span>+1.23%</span>
+      </span>
+      <span class="statsgroup">
+        <span>High</span>
+        <span class="green">92.73</span>
+      </span>
+      <span class="statsgroup">
+        <span>Low</span>
+        <span class="red">75.20</span>
+      </span>
     </div>
-  </transition>
+    <VChart :option="option" style="margin-bottom: 1em" autoresize />
+    <slot />
+  </div>
 </template>
 
 
@@ -39,11 +37,6 @@ import VChart from "vue-echarts";
 
 export default {
   props: {
-    navOpen: {
-      type: Boolean,
-      required: true,
-    },
-
     crypto: {
       type: String,
       required: true
@@ -82,9 +75,6 @@ export default {
 </script>
 
 <style lang="sass">
-  @use "/src/assets/sass/_variables.sass" as *
-  @use "/src/assets/sass/_utilities.sass" as *
-
   .chart-container
     position: absolute
     width: 98vw
@@ -111,12 +101,6 @@ export default {
   canvas
     border-radius: 0 0 1.5em 1.5em
     cursor: crosshair
-
-  .fade-enter-active, .fade-leave-active
-    transition: opacity .4s
-
-  .fade-enter, .fade-leave-to
-    opacity: 0
 
   .green
     color: $green
