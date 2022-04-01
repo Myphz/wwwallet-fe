@@ -77,5 +77,6 @@ const route = useRoute();
       svg
         path
           fill: $text-primary
+          stroke: $text-primary
 
 </style>

@@ -1,4 +1,7 @@
 <template>
+  <header class="logo">
+    <Logo small />
+  </header>
   <main>
     <router-view />
   </main>
@@ -8,6 +11,7 @@
 <script setup>
 import { RouterView } from "vue-router";
 import Navbar from "@/components/mobile/Navbar.mobile.vue";
+import Logo from "@/components/Logo.vue";
 </script>
 
 <style lang="sass">
@@ -24,4 +28,7 @@ import Navbar from "@/components/mobile/Navbar.mobile.vue";
     margin: 1.5em 5vw 1.5em 5vw
     padding-bottom: 10vh
 
+  .logo
+    padding: .5em 1.5em
+    background-color: $bg-dark
 </style>

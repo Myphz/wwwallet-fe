@@ -6,14 +6,16 @@
       <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
       <li><RouterLink to="/wallet">Wallet</RouterLink></li>
     </ul>
-    <RouterLink to="/login"><Icon icon="user" /></RouterLink>
+    <RouterLink to="/login" class="align-center"><UserIcon class="user-icon" /></RouterLink>
   </nav>
 </template>
 
 <script setup>
 import Logo from "@/components/Logo.vue"
-import Icon from "@/components/Icon.vue"
 import { RouterLink } from "vue-router";
+import { defineAsyncComponent } from "vue";
+
+const UserIcon = defineAsyncComponent(() => import("../assets/icons/user.svg"));
 </script>
 
 <style lang="sass" scoped>
@@ -31,8 +33,7 @@ import { RouterLink } from "vue-router";
     display: inline-flex
     margin: 0 1em
 
-  img
-    width: 48px
-    height: 48px
+  .user-icon
+    transform: scale(1.5)
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <RouterLink custom v-slot="{ navigate }" to="/">
     <span class="box align-center noselect" @click="navigate">
-      <Icon icon="logo" />
+      <Icon icon="logo" :class="small ? 'small' : ''" />
       <h1>wwwallet</h1>
     </span>
   </RouterLink>
@@ -10,6 +10,13 @@
 <script setup>
 import Icon from "@/components/Icon.vue";
 import { RouterLink } from "vue-router";
+
+defineProps({
+  small: {
+    type: Boolean,
+    default: false
+  }
+})
 </script>
 
 <style lang="sass" scoped>
@@ -19,4 +26,9 @@ import { RouterLink } from "vue-router";
 
   img
     margin-right: 10px
+
+  .small
+    width: 36px
+    height: 36px
+
 </style>
