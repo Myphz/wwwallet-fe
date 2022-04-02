@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container">
+  <section class="chart-container">
     <ChartOptions :crypto="crypto" :base="base" v-model="base" />
     <div class="stats">
       <span class="price">
@@ -20,7 +20,7 @@
     </div>
     <VChart :option="option" style="margin-bottom: 1em" autoresize />
     <slot />
-  </div>
+  </section>
 </template>
 
 
