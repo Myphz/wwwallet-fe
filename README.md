@@ -20,7 +20,7 @@
 - [X] Crypto chart view
 - [X] Add transaction view
 - [X] Wallet view
-- [ ] Transaction detail view
+- [X] Transaction detail view
 - [ ] Dashboard view
 - [ ] User settings view
 - [ ] Other advanced views (recover password...)
