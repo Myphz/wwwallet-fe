@@ -12,14 +12,17 @@
     <td>$80982.34</td>
     <td class="space-between align-center">
       <span>20/12/2021 15:03</span>
-      <Button btnClass="bg-outline h4">Details</Button>
+      <Button btnClass="bg-outline h4" @click="openPopup">Details</Button>
     </td>
   </tr>
+  <TransactionPopup v-if="displayPopup" :quantity="2342" @close="displayPopup = false" />
 </template>
 
 <script setup>
 import Icon from "@/components/Icon.vue";
 import Button from "@/components/Button.vue";
+import TransactionPopup from "@/components/TransactionPopup.vue";
+import { ref } from "vue";
 
 const { crypto } = defineProps({
   crypto: {
@@ -42,6 +45,12 @@ const { crypto } = defineProps({
     default: false
   },
 });
+
+const displayPopup = ref(false);
+const openPopup = () => {
+  window.scrollTo({top: 0, behavior: "smooth"});
+  displayPopup.value = true;
+}
 </script>
 
 <style lang="sass" scoped>

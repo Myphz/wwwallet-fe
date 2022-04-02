@@ -2,8 +2,9 @@
   <div>
     <div class="filter"></div>
     <div class="container-popup">
-      <header class="space-between">
-        <h1>Add Transaction</h1>
+      <header class="space-between margin-bottom">
+        <h1 v-if="isDetail">Transaction Detail</h1>
+        <h1 v-else>Add Transaction</h1>
         <Icon 
           icon="cross"
           @click="$emit('close')"
@@ -14,7 +15,7 @@
         <span :class="'option ' + (isBuy ? 'active' : '')" @click="isBuy = true">BUY</span>
         <span :class="'option ' + (isBuy ? '' : 'active')" @click="isBuy = false">SELL</span>
       </div>
-      <div class="space-between margin-bottom">
+      <div class="space-between margin-bottom gap">
         <Select 
           :options='["BTC", "ETH"]' 
           icon="bitcoin" 
@@ -30,8 +31,8 @@
       </div>
 
       <div class="space-between row margin-bottom">
-        <Input icon="coins" placeholder="Quantity" type="number" />
-        <Input icon="exchange" placeholder="Price in USDT" type="number" />
+        <Input icon="coins" placeholder="Quantity" type="number" :startValue="quantity" v-model="quantity" />
+        <Input icon="exchange" placeholder="Price in USDT" type="number" :startValue="price" v-model="price" />
       </div>
       <div class="space-between row margin-bottom">
         <Datepicker 
@@ -45,11 +46,15 @@
           @open.once="datePicked = true"
           dark 
         />
-        <Input icon="notes" placeholder="Notes" />
+        <Input icon="notes" placeholder="Notes" :startValue="notes" v-model="notes" />
       </div>
 
       <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
-      <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
+      <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
+      <div v-else class="space-between gap">
+        <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>
+        <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;">DELETE</Button>
+      </div>
     </div>
   </div>
 </template>
@@ -64,10 +69,39 @@ import { ref } from "vue";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
-const isBuy = ref(false);
+const props = defineProps({
+  isBuy: {
+    type: Boolean,
+    default: true,
+  },
+
+  quantity: {
+    type: [Number, String],
+    default: "",
+  },
+
+  price: {
+    type: [Number, String],
+    default: "",
+  },
+
+  date: {
+    type: Date,
+    default: new Date(0)
+  },
+
+  notes: {
+    type: String,
+    default: ""
+  }
+});
+
+const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
 const currentDate = new Date();
-const date = ref(currentDate);
-const datePicked = ref(false);
+if (date.value.getTime() === 0) date.value = currentDate;
+const datePicked = ref(date.value !== currentDate);
+// Check if the component has been called with any parameter valorized, i.e if this must be a Transaction Detail
+const isDetail = !!quantity.value;
 </script>
 
 <style lang="sass">
@@ -113,6 +147,9 @@ const datePicked = ref(false);
 
   .margin-bottom
     margin-bottom: 2em
+
+  .gap
+    gap: 1em
 
   .dp__theme_dark
     --dp-background-color: $bg-paper

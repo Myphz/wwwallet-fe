@@ -24,7 +24,7 @@
 <script setup>
 import { defineAsyncComponent, ref } from 'vue'
 
-const { icon, validate } = defineProps({
+const { icon, validate, startValue } = defineProps({
   icon: {
     type: String,
     required: true
@@ -33,6 +33,11 @@ const { icon, validate } = defineProps({
   placeholder: {
     type: String,
     required: true
+  },
+
+  startValue: {
+    type: [String, Number],
+    default: ""
   },
 
   type: {
@@ -69,7 +74,7 @@ const { icon, validate } = defineProps({
 // Lazy loading component to import it from a string
 // Import the svg directly using vite-svg-loader to style the icon
 const Icon = defineAsyncComponent(() => import(`../assets/icons/${icon}.svg`));
-const value = ref("");
+const value = ref(startValue);
 let isValid = ref(true);
 
 const validator = () => {

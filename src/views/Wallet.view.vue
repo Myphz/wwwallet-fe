@@ -4,7 +4,7 @@
     <SearchBar />
     <Wallet />
     <div class="btn-container">
-      <Button btnClass="h4 bg-primary rounded noborder" @click="openPopup">+ Add Transaction</Button>
+      <Button btnClass="h3 bg-primary rounded noborder" @click="openPopup">+ Add Transaction</Button>
     </div>
     <TransactionPopup v-show="displayPopup" @close="displayPopup = false"/>
   </section>
