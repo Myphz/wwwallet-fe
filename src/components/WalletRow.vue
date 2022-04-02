@@ -15,16 +15,12 @@
   <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
     <td colspan="7">
       <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" shorter />
-      <RouterLink custom v-slot="{ navigate }" to="/wallet">
-        <span class="link" style="padding: 1em">Add transaction</span>
-      </RouterLink>
     </td>
   </tr>
 </template>
 <script setup>
 import Icon from "@/components/Icon.vue";
 import Transactions from "@/components/Transactions.vue";
-
 import { ref } from "vue";
 
 const { crypto } = defineProps({
