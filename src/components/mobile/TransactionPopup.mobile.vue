@@ -2,8 +2,9 @@
   <div>
     <div class="filter"></div>
     <div class="container-popup">
-      <header class="space-between">
-        <h3>Add Transaction</h3>
+      <header class="space-between margin-bottom">
+        <h2 v-if="isDetail">Transaction Detail</h2>
+        <h2 v-else>Add Transaction</h2>
         <Icon 
           icon="cross"
           @click="$emit('close')"
@@ -34,8 +35,8 @@
       </div>
 
       <div class="space-between row">
-        <Input icon="coins" placeholder="Quantity" iconSmall type="number" />
-        <Input icon="exchange" placeholder="BTC/USDT" iconSmall type="number" />
+        <Input icon="coins" placeholder="Quantity" iconSmall type="number" :startValue="quantity" v-model="quantity" />
+        <Input icon="exchange" placeholder="BTC/USDT" iconSmall type="number" :startValue="price" v-model="price" />
       </div>
       <div class="space-between row">
         <Datepicker 
@@ -49,11 +50,15 @@
           @open.once="datePicked = true"
           dark 
         />
-        <Input icon="notes" placeholder="Notes" iconSmall />
+        <Input icon="notes" placeholder="Notes" iconSmall :startValue="notes" v-model="notes" />
       </div>
 
       <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
-      <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
+      <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
+      <div v-else class="space-between" style="margin-bottom: 0">
+        <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>
+        <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;">DELETE</Button>
+      </div>
     </div>
   </div>
 </template>
@@ -68,10 +73,40 @@ import { ref } from "vue";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
-const isBuy = ref(false);
+const props = defineProps({
+  isBuy: {
+    type: Boolean,
+    default: true,
+  },
+
+  quantity: {
+    type: [Number, String],
+    default: "",
+  },
+
+  price: {
+    type: [Number, String],
+    default: "",
+  },
+
+  date: {
+    type: Date,
+    default: new Date(0)
+  },
+
+  notes: {
+    type: String,
+    default: ""
+  }
+});
+
+// Convert each prop to ref
+const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
 const currentDate = new Date();
-const date = ref(currentDate);
-const datePicked = ref(false);
+if (date.value.getTime() === 0) date.value = currentDate;
+const datePicked = ref(date.value !== currentDate);
+// Check if the component has been called with quantity valorized, i.e if this must be a Transaction Detail
+const isDetail = !!quantity.value;
 </script>
 
 <style lang="sass">

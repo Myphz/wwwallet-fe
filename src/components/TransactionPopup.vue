@@ -96,11 +96,12 @@ const props = defineProps({
   }
 });
 
+// Convert each prop to ref
 const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
 const currentDate = new Date();
 if (date.value.getTime() === 0) date.value = currentDate;
 const datePicked = ref(date.value !== currentDate);
-// Check if the component has been called with any parameter valorized, i.e if this must be a Transaction Detail
+// Check if the component has been called with quantity valorized, i.e if this must be a Transaction Detail
 const isDetail = !!quantity.value;
 </script>
 

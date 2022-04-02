@@ -6,7 +6,7 @@
         <Button btnClass="h4 bg-dark bottom-rounded noborder" @click="openPopup">+ Add Transaction</Button>
       </div>
     </Chart>
-    <TransactionPopup v-show="displayPopup" @close="displayPopup = false"/>
+    <TransactionPopup v-show="displayPopup" @close="displayPopup = false" />
   </section>
 </template>
 
