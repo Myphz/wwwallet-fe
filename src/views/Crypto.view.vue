@@ -5,7 +5,7 @@
     <div class="justify-center" style="margin-bottom: 2em">
       <Button btnClass="h3 bg-dark bottom-rounded noborder" @click="openPopup">+ Add Transaction</Button>
     </div>
-    <TransactionPopup v-show="displayPopup" @close="displayPopup = false"/>
+    <TransactionPopup v-show="displayPopup" @close="displayPopup = false" />
   </section>
 </template>
 

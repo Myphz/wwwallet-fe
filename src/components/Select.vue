@@ -59,7 +59,7 @@ const select = option => {
     position: relative
     text-align: right
     cursor: pointer
-    width: 45%
+    width: 50%
     padding: 0 1em 0 0
 
     &.opened
