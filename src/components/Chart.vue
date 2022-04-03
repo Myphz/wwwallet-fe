@@ -18,7 +18,7 @@
         <span class="red">75.20</span>
       </span>
     </div>
-    <div class="chart-container">
+    <div :class="dashboard ? 'chart-container-dashboard' : 'chart-container'">
       <CandlestickChart :crypto="crypto" :base="base" />
     </div>
   </section>
@@ -38,6 +38,11 @@ const props = defineProps({
   base: {
     type: String,
     required: true
+  },
+
+  dashboard: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -53,6 +58,10 @@ const base = ref(props.base);
     height: 70vh
     width: 100%
     margin-bottom: 2em
+
+  .chart-container-dashboard
+    height: 37.5vh
+    width: 100%
 
   .stats
     background: $bg-dark

@@ -1,5 +1,5 @@
 <template>
-  <section class="chart-container">
+  <section>
     <div class="main-info">
       <h4 class="text-secondary">TOTAL ASSET VALUE</h4>
       <h2>$192,002.42</h2>
@@ -39,15 +39,14 @@ export default {
 <style lang="sass" scoped>
   section
     width: 15vw
-    min-height: 45vh
+    height: 45vh
     padding: 2em
-    background-color: $bg-paper
+    background-color: $bg-dark
     border-radius: 2em
+    margin-right: 2em
 
   .chart-container
     height: 30vh
-    // padding: 0 2em
-    // background-color: $bg-paper
 
   .main-info
     display: flex

@@ -22,7 +22,7 @@ const UserIcon = defineAsyncComponent(() => import("../assets/icons/user.svg"));
   nav
     display: flex
     justify-content: space-between
-    margin: 1em 0 3em 0
+    margin: 2em 0 3em 0
 
   ul
     list-style-type: none
