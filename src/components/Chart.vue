@@ -48,7 +48,7 @@ const base = ref(props.base);
 <style lang="sass" scoped>
   h2
     font-weight: normal
-    
+
   .chart-container
     height: 70vh
     width: 100%
@@ -70,10 +70,4 @@ const base = ref(props.base);
     display: inline-flex
     flex-direction: column
     justify-content: center
-
-  .green
-    color: $green
-
-  .red
-    color: $red
 </style>

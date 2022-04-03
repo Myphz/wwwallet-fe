@@ -71,11 +71,4 @@ const base = ref(props.base);
     display: inline-flex
     flex-direction: column
     justify-content: center
-  
-  .green
-    color: $green
-
-  .red
-    color: $red
-
 </style>

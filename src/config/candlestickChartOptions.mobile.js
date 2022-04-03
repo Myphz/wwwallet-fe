@@ -104,7 +104,7 @@ export default {
     position: [15, -7],
 
     // Function to format the data for the tooltip
-    formatter: ([{ data }], _, __) => {
+    formatter: ([{ data }]) => {
       const [___, open, high, low, close] = data;
       const isPositive = close >= open;
       const change = ((close - open) / open * 100).toFixed(2) + "%";
