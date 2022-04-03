@@ -1,11 +1,10 @@
 <template>
   <section>
-    <Chart crypto="BTC" base="USDT">
-      <Transactions crypto="BTC" />
-      <div class="justify-center bottom">
-        <Button btnClass="h4 bg-dark bottom-rounded noborder" @click="openPopup">+ Add Transaction</Button>
-      </div>
-    </Chart>
+    <Chart crypto="BTC" base="USDT" />
+    <Transactions crypto="BTC" />
+    <div class="justify-center bottom">
+      <Button btnClass="h4 bg-dark bottom-rounded noborder" @click="openPopup">+ Add Transaction</Button>
+    </div>
     <TransactionPopup v-show="displayPopup" @close="displayPopup = false" />
   </section>
 </template>
@@ -23,8 +22,3 @@ const openPopup = () => {
   displayPopup.value = true;
 }
 </script>
-
-<style lang="sass" scoped>
-  .bottom
-    padding-bottom: 10vh  
-</style>

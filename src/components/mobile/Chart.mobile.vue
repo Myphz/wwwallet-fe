@@ -1,5 +1,5 @@
 <template>
-  <section class="chart-container">
+  <section>
     <ChartOptions :crypto="crypto" :base="base" v-model="base" />
     <div class="stats">
       <span class="price">
@@ -18,8 +18,9 @@
         <span class="red">75.20</span>
       </span>
     </div>
-    <CandlestickChart :crypto="crypto" :base="base" />
-    <slot />
+    <div class="chart-container">
+      <CandlestickChart :crypto="crypto" :base="base" />
+    </div>
   </section>
 </template>
 
@@ -47,10 +48,8 @@ const base = ref(props.base);
 
 <style lang="sass" scoped>
   .chart-container
-    position: absolute
-    width: 98vw
-    left: 1vw
     height: 60vh
+    margin-bottom: 1em
 
   h2
     font-weight: normal

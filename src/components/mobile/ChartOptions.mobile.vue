@@ -2,12 +2,12 @@
   <header class="noselect">
     <span class="align-center">
       <Select 
-        class="pair padded text-primary h2" 
+        class="margin-left text-primary h2" 
         :options="['BTC', 'LUNA']" 
       />
 
       <Select 
-        class="pair text-primary h2" 
+        class="text-primary h2" 
         :options="['USDT', 'UST', 'EUR']" 
         v-model="selectedBase"
         @update:modelValue="$emit('update:modelValue', selectedBase)"
@@ -15,7 +15,7 @@
 
     </span>
 
-    <Icon icon="settings" class="padded" />
+    <Icon icon="settings" class="margin-right" />
   </header>
 </template>
 
@@ -53,10 +53,10 @@ const selectedBase = ref(base);
     height: 36px
     cursor: pointer
 
-  .pair
-    margin-right: 1.5em
+  .margin-left
+    margin-left: 1em
 
-  .padded
-    margin: 0 2rem
+  .margin-right
+    margin-right: 1em
 
 </style>
