@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <PieChart />
-    <Chart class="chart" dashboard />
+    <AssetsChart />
+    <Chart class="chart" crypto="BTC" base="USDT" dashboard />
   </div>
 </template>
 
 <script setup>
-import PieChart from "@/components/PieChart.vue"
+import AssetsChart from "@/components/AssetsChart.vue"
 import Chart from "@/components/Chart.vue";
 </script>
 
