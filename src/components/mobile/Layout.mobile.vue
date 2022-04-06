@@ -10,8 +10,8 @@
 
 <script setup>
 import { RouterView } from "vue-router";
-import Navbar from "@/components/mobile/Navbar.mobile.vue";
-import Logo from "@/components/Logo.vue";
+import Navbar from "M#/Navbar.mobile.vue";
+import Logo from "U#/Logo.vue";
 </script>
 
 <style lang="sass">

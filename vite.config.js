@@ -8,7 +8,10 @@ export default defineConfig({
   plugins: [vue(), svgLoader()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      'D#': fileURLToPath(new URL('./src/components/desktop', import.meta.url)),
+      'M#': fileURLToPath(new URL('./src/components/mobile', import.meta.url)),
+      'U#': fileURLToPath(new URL('./src/components/ui', import.meta.url)),
     }
   },
 

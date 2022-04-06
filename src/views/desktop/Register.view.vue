@@ -6,7 +6,7 @@
 
 <script setup>
 import { onBeforeMount, onUnmounted } from "vue";
-import InputBox from "M#/login/InputBox.vue";
+import InputBox from "D#/login/InputBox.vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -24,7 +24,7 @@ onUnmounted(() => {
 <style lang="sass">
   .bg
     background-image: url("/src/assets/images/bg.png")
-    background-repeat: no-repeat
     background-size: cover
+    background-repeat: no-repeat
     
 </style>

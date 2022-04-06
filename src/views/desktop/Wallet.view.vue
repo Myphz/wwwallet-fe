@@ -4,7 +4,7 @@
     <SearchBar />
     <Wallet />
     <div class="btn-container">
-      <Button btnClass="h4 bg-primary rounded noborder" @click="openPopup">+ Add Transaction</Button>
+      <Button btnClass="h3 bg-primary rounded noborder" @click="openPopup">+ Add Transaction</Button>
     </div>
     <TransactionPopup v-show="displayPopup" @close="displayPopup = false"/>
   </section>
@@ -12,9 +12,9 @@
 
 <script setup>
 import SearchBar from "U#/SearchBar.vue";
-import Wallet from "M#/wallet/Wallet.mobile.vue";
+import Wallet from "D#/wallet/Wallet.vue";
 import Button from "U#/Button.vue";
-import TransactionPopup from "M#/wallet/TransactionPopup.mobile.vue";
+import TransactionPopup from "D#/wallet/TransactionPopup.vue";
 import { ref } from "vue";
 
 const displayPopup = ref(false);
