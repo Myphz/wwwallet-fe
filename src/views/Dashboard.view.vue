@@ -8,12 +8,14 @@
     <h1>Assets Analysis</h1>
     <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h1" />
   </header>
+  <AssetsAnalysis :frequency="'DAILY'" />
 </template>
 
 <script setup>
 import AssetsChart from "@/components/AssetsChart.vue"
 import Chart from "@/components/Chart.vue";
 import Select from "@/components/Select.vue";
+import AssetsAnalysis from "@/components/AssetsAnalysis.vue";
 </script>
 
 <style lang="sass" scoped>
