@@ -1,13 +1,19 @@
 <template>
-  <div class="container">
+  <h1>Wallet Analysis</h1>
+  <section class="container">
     <AssetsChart />
     <Chart class="chart" crypto="BTC" base="USDT" dashboard />
-  </div>
+  </section>
+  <section class="space-between">
+    <h1>Assets Analysis</h1>
+    <Select :options='["DAILY", "WEEKLY", "MONTHLY", "TOTAL"]' class="h1" />
+  </section>
 </template>
 
 <script setup>
 import AssetsChart from "@/components/AssetsChart.vue"
 import Chart from "@/components/Chart.vue";
+import Select from "@/components/Select.vue";
 </script>
 
 <style lang="sass" scoped>

@@ -19,13 +19,13 @@
         <Select 
           :options='["BTC", "ETH"]' 
           icon="bitcoin" 
-          class="h2"
+          class="h2 width-50"
           bordered
         />
         <Select 
           :options='["BTC", "ETH"]' 
           icon="bitcoin" 
-          class="h2"
+          class="h2 width-50"
           bordered
         />
       </div>
@@ -132,6 +132,9 @@ const isDetail = !!quantity.value;
     background-color: $bg-dark
     border-radius: 1.5em
     margin-bottom: 1em
+
+  .width-50
+    width: 50%
 
   .option
     width: 50%

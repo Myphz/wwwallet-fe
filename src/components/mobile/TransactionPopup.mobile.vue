@@ -19,7 +19,7 @@
         <Select 
           :options='["BTC", "ETH"]' 
           icon="bitcoin" 
-          class="h3"
+          class="h3 width-50"
           iconSize="small"
           style="width: 40%"
           bordered
@@ -27,7 +27,7 @@
         <Select 
           :options='["BTC", "ETH"]' 
           icon="bitcoin" 
-          class="h3"
+          class="h3 width-50"
           iconSize="small"
           style="width: 40%"
           bordered
@@ -131,6 +131,9 @@ const isDetail = !!quantity.value;
     height: 100%
     background-color: black
     opacity: .5
+
+  .width-50
+    width: 50%
   
   .options
     background-color: $bg-dark

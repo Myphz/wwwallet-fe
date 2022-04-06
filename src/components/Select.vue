@@ -59,7 +59,6 @@ const select = option => {
     position: relative
     text-align: right
     cursor: pointer
-    width: 50%
     padding: 0 1em 0 0
 
     &.opened
@@ -107,7 +106,8 @@ const select = option => {
     transform-origin: top
     border-radius: .3em
     border: 2px solid $bg-paper
-    width: 100%
+    min-width: 100%
+    width: fit-content
     z-index: 999999999
     transition: $anim-duration ease
     color: $text-secondary
