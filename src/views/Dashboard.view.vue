@@ -4,10 +4,10 @@
     <AssetsChart />
     <Chart class="chart" crypto="BTC" base="USDT" dashboard />
   </section>
-  <section class="space-between">
+  <header class="space-between">
     <h1>Assets Analysis</h1>
-    <Select :options='["DAILY", "WEEKLY", "MONTHLY", "TOTAL"]' class="h1" />
-  </section>
+    <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h1" />
+  </header>
 </template>
 
 <script setup>
