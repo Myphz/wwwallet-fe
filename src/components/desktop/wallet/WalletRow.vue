@@ -53,34 +53,6 @@ const open = ref(false);
   .icon
     margin-right: 1em
 
-  .arrow
-    width: 16px
-    height: 16px
-    position: relative
-    transition: $anim-duration ease
-
-    &:before, &:after
-      position: absolute
-      content: ''
-      width: 3px
-      height: 10px
-      border-bottom: 12px solid $text-primary
-      background-color: transparent
-      transition: $anim-duration ease
-
-    &:before
-      transform: rotate(-135deg)
-    &:after
-      transform: rotate(135deg)
-
-  .open 
-    transform: rotate(0)
-    transform: translate(0, -6px)
-    &:before
-      transform: rotate(-45deg)
-    &:after
-      transform: rotate(45deg)
-
   .transactions-row
     background-color: darken($bg-base, 2%)
     transform-origin: top

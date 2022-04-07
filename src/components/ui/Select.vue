@@ -5,7 +5,7 @@
         <Icon v-if="icon" :icon="icon" :class="'icon-' + iconSize" />
         <span>{{ selected }}</span>
       </span>
-      <span class="arrow"></span>
+      <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </span>
     <ul>
       <li v-for="option in opts" @click="select(option)">{{ option }}</li>
@@ -62,36 +62,8 @@ const select = option => {
     padding: 0 1em 0 0
 
     &.opened
-      .arrow 
-        transform: rotate(0)
-        transform: translate(0, -6px)
-        &:before
-          transform: rotate(-45deg)
-        &:after
-          transform: rotate(45deg)
-
       ul
         transform: scaleY(1)
-      
-  .arrow
-    width: 16px
-    height: 16px
-    position: relative
-    transition: $anim-duration ease
-
-    &:before, &:after
-      position: absolute
-      content: ''
-      width: 3px
-      height: 10px
-      border-bottom: 12px solid $text-primary
-      background-color: transparent
-      transition: $anim-duration ease
-
-    &:before
-      transform: rotate(-135deg)
-    &:after
-      transform: rotate(135deg)
   
   .item-container
     justify-content: space-between

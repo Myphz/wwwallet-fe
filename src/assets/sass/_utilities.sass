@@ -105,11 +105,41 @@
   &:not(.nohover):active
     background-color: rgba($text-primary, .3)
 
+// Text Color
 .green
   color: $green
 
 .red
   color: $red
+
+// Arrow utility
+.arrow
+  width: 16px
+  height: 16px
+  position: relative
+  transition: 0.25s all ease
+
+  &:before, &:after
+    position: absolute
+    content: ''
+    width: 3px
+    height: 10px
+    border-bottom: 12px solid $text-primary
+    background-color: transparent
+    transition: 0.25s all ease
+
+  &:before
+    transform: rotate(-135deg)
+  &:after
+    transform: rotate(135deg)
+
+  &.open 
+    transform: rotate(0)
+    transform: translateY(-6px)
+    &:before
+      transform: rotate(-45deg)
+    &:after
+      transform: rotate(45deg)
 
 // Resets
 a
