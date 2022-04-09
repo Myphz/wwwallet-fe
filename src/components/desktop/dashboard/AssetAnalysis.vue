@@ -7,11 +7,11 @@
     </td>
     <td>+20.32%</td>
     <td>+$30,231.42</td>
-    <td>d</td>
-    <td>s</td>
-    <td>s</td>
-    <td>s</td>
-    <td>s</td>
+    <td id="chart">
+      <div :style="'width: 50%; height: ' + chartHeight">
+        <LineChart />
+      </div>
+    </td>
     <td>
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </td>
@@ -20,8 +20,17 @@
 
 <script setup>
 import Icon from "U#/Icon.vue";
-import { ref } from "vue";
+import LineChart from "D#/charts/LineChart.vue";
+import { computed, onMounted, ref } from "vue";
 const open = ref(false);
+const chartHeight = ref("100%");
+
+onMounted(() => {
+  const element = document.getElementById("chart");
+  const style = getComputedStyle(element);
+  chartHeight.value = (element.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)) + "px";
+});
+
 </script>
 
 <style lang="sass" scoped>
