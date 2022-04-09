@@ -25,9 +25,6 @@ const open = ref(false);
 </script>
 
 <style lang="sass" scoped>
-  $anim-duration: 0.25s
-  $border-type: 1px solid $text-primary
-
   img
     width: 48px
     height: 48px
@@ -38,16 +35,9 @@ const open = ref(false);
     margin-right: 1em
 
   td
-    border-top: $border-type
-    border-bottom: $border-type
-
-    &:first-child
-      border-radius: 1em 0 0 1em
-      border-left: $border-type
+    border-bottom: 1px solid $text-secondary
 
     &:last-child
       text-align: right
-      border-radius: 0 1em 1em 0
-      border-right: $border-type
       
 </style>
