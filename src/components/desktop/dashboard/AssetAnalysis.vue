@@ -54,6 +54,7 @@ onMounted(() => {
 
   tr
     border-bottom: 1px solid $text-secondary
+    cursor: pointer
 
   td
     padding: 1em
