@@ -12,7 +12,9 @@
       <h1>Assets Analysis</h1>
       <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h1" />
     </header>
-    <AssetsAnalysis class="bg-dark nohover assets-section" :frequency="'DAILY'" />
+    <div class="bg-dark nohover assets-section">
+      <AssetsAnalysis class="bg-dark nohover" :frequency="'DAILY'" />
+    </div>
   </section>
  
 </template>
@@ -38,4 +40,5 @@ import AssetsAnalysis from "D#/dashboard/AssetsAnalysis.vue";
 
   .assets-section
     border-radius: 2em
+    padding: 1.5em
 </style>
