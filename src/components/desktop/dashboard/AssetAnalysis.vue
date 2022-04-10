@@ -1,5 +1,5 @@
 <template>
-  <tr class="h4" @click="open = !open">
+  <tr class="h4 bg-base transition" @click="open = !open">
     <td class="align-center">
       <Icon icon="bitcoin" class="icon" />
       <span class="title">Bitcoin</span>
@@ -43,9 +43,11 @@ onMounted(() => {
     font-weight: 600
     margin-right: 1em
 
-  td
+  tr
     border-bottom: 1px solid $text-secondary
 
+  td
+    padding: 1em
     &:last-child
       text-align: right
       

@@ -4,9 +4,8 @@ const primaryColor = extractSass("text-primary");
 export default {
   yAxis: {
     show: false,
-    // min: value => value.min * .9,
-    // max: value => value.min * 1.1,
-    scale: true,
+    min: value => value.min * (1 + (value.min - value.max) / value.min),
+    max: value => value.max * (1 + (value.max - value.min) / value.max),
   },
 
   xAxis: {

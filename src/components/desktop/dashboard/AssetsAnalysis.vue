@@ -25,9 +25,3 @@ const { frequency } = defineProps({
   }
 });
 </script>
-
-<style lang="sass" scoped>
-  table
-    border-collapse: separate
-    border-spacing: 0 1em
-</style>
