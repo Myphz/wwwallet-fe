@@ -37,9 +37,6 @@ import { RouterLink } from "vue-router";
   .icon
     margin-right: 1em
 
-  .title
-    font-weight: 600
-
   img
     width: 32px
     height: 32px

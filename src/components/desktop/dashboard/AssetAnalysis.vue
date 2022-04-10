@@ -44,10 +44,6 @@ onMounted(() => {
     height: 48px
     margin-right: 1em
 
-  .title
-    font-weight: 600
-    margin-right: 1em
-
   tr
     border-bottom: 1px solid $text-secondary
 

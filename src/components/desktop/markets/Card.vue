@@ -25,7 +25,7 @@
         <Button btnClass="bg-outline h4" link="/crypto/btc">
           <span class="align-center">
             <span>Chart</span>
-            <Icon icon="arrow" class="arrow" />
+            <Icon icon="arrow" class="arrow-icon" />
           </span>
         </Button>
       </div>
@@ -44,11 +44,8 @@ import Button from "U#/Button.vue";
       
   .icon
     margin-right: 1em
-
-  .title
-    font-weight: 600
   
-  .arrow
+  .arrow-icon
     display: inline-block
     margin-left: .5em
     width: 32px

@@ -54,10 +54,6 @@ const openPopup = () => {
 </script>
 
 <style lang="sass" scoped>
-  .title
-    font-weight: 600
-    margin-right: 1em
-
   img
     width: 48px
     height: 48px
