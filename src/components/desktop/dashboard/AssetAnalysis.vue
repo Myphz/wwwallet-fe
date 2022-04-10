@@ -1,10 +1,11 @@
 <template>
-  <tr class="h4 bg-base transition" @click="open = !open">
+  <tr class="h4 bg-dark transition" @click="open = !open">
     <td class="align-center">
       <Icon icon="bitcoin" class="icon" />
       <span class="title">Bitcoin</span>
       <span class="ticker">BTC</span>
     </td>
+    <td>$50,233.78</td>
     <td>+20.32%</td>
     <td>+$30,231.42</td>
     <td id="chart">
@@ -17,7 +18,7 @@
     </td>
   </tr>
   <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
-    <td colspan="5">
+    <td colspan="6">
       <TransactionsAnalysis />
     </td>
   </tr>
@@ -52,7 +53,7 @@ onMounted(() => {
     margin-right: 1em
 
   tr
-    border-bottom: 1px solid $primary
+    border-bottom: 1px solid $text-secondary
 
   td
     padding: 1em

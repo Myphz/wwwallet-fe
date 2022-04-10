@@ -3,6 +3,7 @@
     <thead>
       <tr>
         <th>Token</th>
+        <th>Average Price</th>
         <th>Change</th>
         <th>Revenue</th>
         <th></th>
