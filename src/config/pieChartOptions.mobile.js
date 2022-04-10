@@ -23,7 +23,7 @@ export default {
     tooltip: {
       formatter({ marker, data, percent }) {
         const { value, name } = data;
-        return `${marker} ${name} - $${value} (${percent}%)`
+        return `${marker} <strong>${name}</strong> - $${value} (${percent}%)`
       },
 
       backgroundColor: bgColor,
