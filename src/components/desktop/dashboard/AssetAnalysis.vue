@@ -12,7 +12,7 @@
         <LineChart />
       </div>
     </td>
-    <td>
+    <td class="arrow-cell">
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </td>
   </tr>
@@ -26,7 +26,9 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import LineChart from "D#/charts/LineChart.vue";
+import TransactionsAnalysis from "D#/dashboard/TransactionsAnalysis.vue";
 import { onMounted, ref } from "vue";
+
 const open = ref(false);
 // Initial height of the cell. It needs to be modified to make the echarts library work by setting an explicit amount in pixels
 const chartHeight = ref("100%");
@@ -54,8 +56,9 @@ onMounted(() => {
 
   td
     padding: 1em
-    &:last-child
-      text-align: right
+  
+  .arrow-cell
+    text-align: right
 
   .transactions-row
     background-color: darken($bg-base, 2%)

@@ -1,0 +1,11 @@
+<template>
+  <tr>
+    <td>BTC/USDT</td>
+    <td>BUY</td>
+    <td>3.22</td>
+    <td>$40,027.23</td>
+    <td>$10,022.32</td>
+    <td>+$20,123.44</td>
+    <td>+10.22%</td>
+  </tr>
+</template>
