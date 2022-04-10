@@ -23,7 +23,7 @@ import PieChart from "M#/charts/PieChart.mobile.vue"
     height: 45vh
     padding: 2em
     background-color: $bg-dark
-    border-radius: 2em
+    border-radius: 1.5em
     margin-bottom: 2em
 
   .chart-container

@@ -101,7 +101,7 @@ export default {
     },
 
     // Static position
-    position: [15, -7],
+    position: [12, -7],
 
     // Function to format the data for the tooltip
     formatter: ([{ data }]) => {

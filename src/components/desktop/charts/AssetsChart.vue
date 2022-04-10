@@ -24,7 +24,7 @@ import PieChart from "D#/charts/PieChart.vue";
     height: 45vh
     padding: 2em
     background-color: $bg-dark
-    border-radius: 2em
+    border-radius: 1.5em
     margin-right: 2em
 
   .chart-container

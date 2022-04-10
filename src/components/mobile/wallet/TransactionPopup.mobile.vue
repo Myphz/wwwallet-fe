@@ -2,7 +2,7 @@
   <div>
     <div class="filter"></div>
     <div class="container-popup">
-      <header class="space-between margin-bottom">
+      <header class="space-between-margin">
         <h2 v-if="isDetail">Transaction Detail</h2>
         <h2 v-else>Add Transaction</h2>
         <Icon 
@@ -15,7 +15,7 @@
         <span :class="'option ' + (isBuy ? 'active' : '')" @click="isBuy = true">BUY</span>
         <span :class="'option ' + (isBuy ? '' : 'active')" @click="isBuy = false">SELL</span>
       </div>
-      <div class="space-between">
+      <div class="space-between-margin">
         <Select 
           :options='["BTC", "ETH"]' 
           icon="bitcoin" 
@@ -34,11 +34,11 @@
         />
       </div>
 
-      <div class="space-between row">
+      <div class="space-between-margin row">
         <Input icon="coins" placeholder="Quantity" iconSmall type="number" :startValue="quantity" v-model="quantity" />
         <Input icon="exchange" placeholder="BTC/USDT" iconSmall type="number" :startValue="price" v-model="price" />
       </div>
-      <div class="space-between row">
+      <div class="space-between-margin row">
         <Datepicker 
           v-model="date" 
           format="dd/MM HH:mm" 
@@ -55,7 +55,7 @@
 
       <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
       <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
-      <div v-else class="space-between" style="margin-bottom: 0">
+      <div v-else class="space-between-margin" style="margin-bottom: 0">
         <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>
         <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;">DELETE</Button>
       </div>
@@ -146,7 +146,7 @@ const isDetail = !!quantity.value;
     border-radius: .5em
     cursor: pointer
 
-  .space-between
+  .space-between-margin
     display: flex
     justify-content: space-between
     margin-bottom: 2em

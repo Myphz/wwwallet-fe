@@ -18,6 +18,11 @@
         <span class="red">75.20</span>
       </span>
     </div>
+    <div class="time stats noselect">
+      <span v-for="(time, i) in times" :class="activeTime == i ? 'active-time' : ''" @click="activeTime = i">
+        {{ time }}
+      </span>
+    </div>
     <div :class="dashboard ? 'chart-container-dashboard' : 'chart-container'">
       <CandlestickChart :crypto="crypto" :base="base" />
     </div>
@@ -48,9 +53,15 @@ const props = defineProps({
 
 const { crypto } = props;
 const base = ref(props.base);
+const times = ["1m", "15m", "1H", "4H", "1D", "1W", "1M"];
+const activeTime = ref(0);
 </script>
 
 <style lang="sass" scoped>
+  section
+    background-color: $bg-dark
+    border-radius: 1.5em
+
   h2
     font-weight: normal
 
@@ -60,15 +71,23 @@ const base = ref(props.base);
     margin-bottom: 2em
 
   .chart-container-dashboard
-    height: 37.5vh
+    height: 34vh
     width: 100%
 
   .stats
-    background: $bg-dark
     padding: 1em 4em 0 4em
     display: flex
     justify-content: flex-start
     gap: 2em
+
+  .time
+    color: $text-secondary
+    font-weight: bold
+    span
+      cursor: pointer
+
+  .active-time
+    color: $text-primary
 
   .price
     padding: 0 1em 0 0

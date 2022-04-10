@@ -1,5 +1,5 @@
 <template>
-  <header class="noselect">
+  <header class="noselect space-between">
     <span class="align-center">
       <Select 
         class="pair padded text-primary h2" 
@@ -42,10 +42,6 @@ const selectedBase = ref(base);
 <style lang="sass" scoped>
   header
     padding: 1em 0
-    border-radius: 1.5em 1.5em 0 0
-    display: flex
-    justify-content: space-between
-    background: $bg-dark
     border-bottom: 1px solid $bg-paper
         
   img

@@ -11,6 +11,6 @@ import BarChart from "D#/charts/BarChart.vue";
 <style lang="sass" scoped>
   .chart-container
     height: 40vh
-    border-radius: 2em
+    border-radius: 1.5em
 
 </style>
