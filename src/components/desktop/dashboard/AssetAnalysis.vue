@@ -21,13 +21,17 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import LineChart from "D#/charts/LineChart.vue";
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 const open = ref(false);
 const chartHeight = ref("100%");
 
+// Hook to give the chart cell its height (to make echarts library work, as the height needs to be explicit)
 onMounted(() => {
+  // Get the cell element
   const element = document.getElementById("chart");
+  // Get the style element
   const style = getComputedStyle(element);
+  // Calculate the height by subtracting the element height to the padding top and bottom
   chartHeight.value = (element.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)) + "px";
 });
 
