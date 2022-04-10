@@ -34,8 +34,6 @@ const open = ref(false);
 </script>
 
 <style lang="sass" scoped>
-  $anim-duration: 0.25s
-
   .main-row
     border-bottom: 1px solid $primary
     cursor: pointer
@@ -55,8 +53,6 @@ const open = ref(false);
 
   .transactions-row
     background-color: darken($bg-base, 2%)
-    transform-origin: top
-    transition: $anim-duration all ease
     display: none
 
   .row-open

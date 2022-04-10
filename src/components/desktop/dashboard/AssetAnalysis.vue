@@ -23,9 +23,10 @@ import Icon from "U#/Icon.vue";
 import LineChart from "D#/charts/LineChart.vue";
 import { onMounted, ref } from "vue";
 const open = ref(false);
+// Initial height of the cell. It needs to be modified to make the echarts library work by setting an explicit amount in pixels
 const chartHeight = ref("100%");
 
-// Hook to give the chart cell its height (to make echarts library work, as the height needs to be explicit)
+// Hook to convert the chart cell height to pixels (to make echarts library work, as the height needs to be explicit)
 onMounted(() => {
   // Get the cell element
   const element = document.getElementById("chart");
