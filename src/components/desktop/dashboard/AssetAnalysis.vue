@@ -16,6 +16,11 @@
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </td>
   </tr>
+  <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
+    <td colspan="5">
+      <TransactionsAnalysis />
+    </td>
+  </tr>
 </template>
 
 <script setup>
@@ -45,11 +50,18 @@ onMounted(() => {
     margin-right: 1em
 
   tr
-    border-bottom: 1px solid $text-secondary
+    border-bottom: 1px solid $primary
 
   td
     padding: 1em
     &:last-child
       text-align: right
+
+  .transactions-row
+    background-color: darken($bg-base, 2%)
+    display: none
+
+  .row-open
+    display: table-row
       
 </style>
