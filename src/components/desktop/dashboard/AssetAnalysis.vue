@@ -10,7 +10,7 @@
     <td>+$30,231.42</td>
     <td id="chart">
       <div :style="'width: 50%; height: ' + chartHeight">
-        <LineChart />
+        <LineChart v-if="chartHeight != '100%'" />
       </div>
     </td>
     <td class="arrow-cell">
