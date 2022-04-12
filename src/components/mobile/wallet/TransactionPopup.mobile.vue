@@ -48,6 +48,7 @@
           menuClassName="dp-menu"
           :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
           @open.once="datePicked = true"
+          vertical
           dark 
         />
         <Input icon="notes" placeholder="Notes" iconSmall :startValue="notes" v-model="notes" />
