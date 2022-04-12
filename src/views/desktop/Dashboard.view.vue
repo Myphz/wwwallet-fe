@@ -45,7 +45,7 @@ import AssetsAnalysis from "D#/dashboard/AssetsAnalysis.vue";
     flex: 1
 
   .assets-section
-    border-radius: 2em
+    border-radius: 1.5em
     margin-bottom: 2em
     padding: 1.5em
 </style>
