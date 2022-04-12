@@ -13,6 +13,10 @@
       <AssetsAnalysis :frequency="'DAILY'" />
     </div>
   </section>
+  <section class="analysis-section">
+    <h1>Earnings Analysis</h1>
+    <EarningsChart />
+  </section>
 </template>
 
 <script setup>
@@ -20,6 +24,7 @@ import AssetsChart from "M#/charts/AssetsChart.mobile.vue"
 import CryptoChart from "M#/charts/CryptoChart.mobile.vue";
 import Select from "U#/Select.vue";
 import AssetsAnalysis from "M#/dashboard/AssetsAnalysis.mobile.vue";
+import EarningsChart from "M#/charts/EarningsChart.mobile.vue";
 </script>
 
 <style lang="sass" scoped>

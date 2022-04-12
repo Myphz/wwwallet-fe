@@ -25,7 +25,7 @@ export default {
     borderColor: primary,
     textStyle: {
       color: textPrimary,
-      fontSize: 20
+      fontSize: 16
     }
   },
 
@@ -35,20 +35,6 @@ export default {
   },
 
   xAxis: {
-    type: 'value',
-    splitLine: {
-      lineStyle: {
-        color: gridColor,
-      }
-    },
-
-    axisLabel: {
-      fontSize: 16,
-      color: primary
-    },
-  },
-
-  yAxis: {
     type: "category",
 
     splitLine: {
@@ -58,18 +44,30 @@ export default {
       }
     },
 
-    inverse: true,
-
     axisTick: {
       show: false
     },
 
     axisLabel: {
-      fontSize: 20,
+      fontSize: 16,
       color: textPrimary
     },
 
     data: ["BTC", "MATIC", "ETH", "LUNA"]
+  },
+
+  yAxis: {
+    type: 'value',
+    splitLine: {
+      lineStyle: {
+        color: gridColor,
+      }
+    },
+
+    axisLabel: {
+      fontSize: 12,
+      color: primary
+    },
   },
   
   series: {
@@ -89,7 +87,7 @@ export default {
         itemStyle: {color: red},
       },
       {
-        value: -500,
+        value: -498.22,
         itemStyle: {color: red},
       }
     ]
