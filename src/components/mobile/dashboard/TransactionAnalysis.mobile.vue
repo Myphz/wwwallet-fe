@@ -36,7 +36,10 @@
 
 <style lang="sass" scoped>
   .trans
+    background-color: lighten($bg-dark, 2%)
     margin-bottom: 1em
+    border-radius: 1em
+    padding: 1em
 
   .header
     font-weight: bold

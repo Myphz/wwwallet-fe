@@ -7,7 +7,7 @@
   <section class="analysis-section">
     <header class="assets-header">
       <h1>Assets Analysis</h1>
-      <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h2" />
+      <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h2 with-border" />
     </header>
     <div>
       <AssetsAnalysis :frequency="'DAILY'" />
@@ -31,4 +31,8 @@ import AssetsAnalysis from "M#/dashboard/AssetsAnalysis.mobile.vue";
 
   .assets-header
     margin-bottom: 1.5em
+
+  .with-border
+    border-bottom: 2px solid $primary
+
 </style>

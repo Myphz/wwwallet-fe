@@ -10,7 +10,7 @@
       <LineChart />
     </div>
 
-    <div class="pad-1">
+    <div class="pad-1 t">
       <div class="space-between header">
         <span>Avg Buy Price</span>
         <span>Current Price</span>
@@ -30,11 +30,11 @@
       </div>
     </div>
 
-    <div class="align-center justify-center arrow-cell" style="height: 5vh" @click="open = !open">
+    <div class="align-center justify-center arrow-cell bg-primary" style="height: 5vh" @click="open = !open">
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </div>
 
-    <div :class="'transactions-row pad-1 ' + (open ? 'row-open' : '')">
+    <div :class="'transactions-row ' + (open ? 'row-open' : '')">
       <TransactionsAnalysis />
     </div>
   </div>
@@ -47,8 +47,6 @@ import TransactionsAnalysis from "M#/dashboard/TransactionsAnalysis.mobile.vue";
 import { ref } from "vue";
 
 const open = ref(false);
-
-
 </script>
 
 <style lang="sass" scoped>
@@ -69,9 +67,7 @@ const open = ref(false);
     margin-bottom: .5em
 
   .arrow-cell
-    background-color: lighten($bg-dark, 3%)
     border-radius: 0 0 1em 1em
-    margin-bottom: 1em
 
   .header
     font-weight: bold
