@@ -45,6 +45,12 @@ const router = createRouter({
       name: "register",
       component: () => routeView("Register")
     },
+
+    {
+      path: "/settings",
+      name: "settings",
+      component: () => routeView("UserSettings")
+    },
   ]
 });
 
