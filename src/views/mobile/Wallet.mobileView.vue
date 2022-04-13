@@ -11,10 +11,10 @@
 </template>
 
 <script setup>
-import SearchBar from "@/components/SearchBar.vue";
-import Wallet from "@/components/mobile/Wallet.mobile.vue";
-import Button from "@/components/Button.vue";
-import TransactionPopup from "@/components/mobile/TransactionPopup.mobile.vue";
+import SearchBar from "U#/SearchBar.vue";
+import Wallet from "M#/wallet/Wallet.mobile.vue";
+import Button from "U#/Button.vue";
+import TransactionPopup from "M#/wallet/TransactionPopup.mobile.vue";
 import { ref } from "vue";
 
 const displayPopup = ref(false);

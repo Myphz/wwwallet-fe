@@ -1,0 +1,218 @@
+<template>
+  <div>
+    <div class="filter"></div>
+    <div class="container-popup">
+      <header class="space-between margin-bottom">
+        <h1 v-if="isDetail">Transaction Detail</h1>
+        <h1 v-else>Add Transaction</h1>
+        <Icon 
+          icon="cross"
+          @click="$emit('close')"
+          clickable
+        />
+      </header>
+      <div class="options transition justify-center h1">
+        <span :class="'option ' + (isBuy ? 'active' : '')" @click="isBuy = true">BUY</span>
+        <span :class="'option ' + (isBuy ? '' : 'active')" @click="isBuy = false">SELL</span>
+      </div>
+      <div class="space-between margin-bottom gap">
+        <Select 
+          :options='["BTC", "ETH"]' 
+          icon="bitcoin" 
+          class="h2 width-50"
+          bordered
+        />
+        <Select 
+          :options='["BTC", "ETH"]' 
+          icon="bitcoin" 
+          class="h2 width-50"
+          bordered
+        />
+      </div>
+
+      <div class="space-between row margin-bottom">
+        <Input icon="coins" placeholder="Quantity" type="number" :startValue="quantity" v-model="quantity" />
+        <Input icon="exchange" placeholder="Price in USDT" type="number" :startValue="price" v-model="price" />
+      </div>
+      <div class="space-between row margin-bottom">
+        <Datepicker 
+          v-model="date" 
+          format="dd/MM/yyyy HH:mm" 
+          :maxDate="currentDate" 
+          autoApply 
+          :closeOnAutoApply="false"
+          menuClassName="dp-menu"
+          :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
+          @open.once="datePicked = true"
+          dark 
+        />
+        <Input icon="notes" placeholder="Notes" :startValue="notes" v-model="notes" />
+      </div>
+
+      <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
+      <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
+      <div v-else class="space-between gap">
+        <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>
+        <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;">DELETE</Button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import Select from "U#/Select.vue";
+import Input from "U#/Input.vue";
+import Icon from "U#/Icon.vue";
+import Button from "U#/Button.vue";
+import { ref } from "vue";
+
+import Datepicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+
+const props = defineProps({
+  isBuy: {
+    type: Boolean,
+    default: true,
+  },
+
+  quantity: {
+    type: [Number, String],
+    default: "",
+  },
+
+  price: {
+    type: [Number, String],
+    default: "",
+  },
+
+  date: {
+    type: Date,
+    default: new Date(0)
+  },
+
+  notes: {
+    type: String,
+    default: ""
+  }
+});
+
+// Convert each prop to ref
+const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
+const currentDate = new Date();
+if (date.value.getTime() === 0) date.value = currentDate;
+const datePicked = ref(date.value !== currentDate);
+// Check if the component has been called with quantity valorized, i.e if this must be a Transaction Detail
+const isDetail = !!quantity.value;
+</script>
+
+<style lang="sass">
+  $text-secondary-hex: #6D8AAC
+
+  .container-popup
+    position: absolute
+    border: none
+    left: 50%
+    top: 50%
+    padding: 2em
+    transform: translate(-50%, -50%)
+    background-color: $bg-paper
+    width: 40vw
+    border-radius: 1.5em
+
+  .filter
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background-color: black
+    opacity: .5
+  
+  .options
+    background-color: $bg-dark
+    border-radius: 1.5em
+    margin-bottom: 1em
+
+  .width-50
+    width: 50%
+
+  .option
+    width: 50%
+    text-align: center
+    border-radius: .5em
+    cursor: pointer
+
+  .row
+    span, .dp__main
+      width: 48%
+
+  .active
+    background-color: $primary
+
+  .margin-bottom
+    margin-bottom: 2em
+
+  .gap
+    gap: 1em
+
+  .dp__theme_dark
+    --dp-background-color: $bg-paper
+    --dp-text-color: $text-primary
+    --dp-icon-color: $text-primary
+    --dp-scroll-bar-background: #{darken($bg-dark, 3%)}
+    --dp-scroll-bar-color: #{lighten($bg-dark, 15%)}
+
+  .dp__overlay, .dp__calendar_wrap
+    font-family: $font-base
+
+  .dp-menu, .dp__overlay_row
+    background-color: $bg-dark
+
+  .dp__active_date
+    background-color: $primary
+    &:hover
+      background-color: darken($primary, 5%) !important
+
+  .dp__cell_inner, .dp__button, .dp__month_year_select, .dp__inner_nav, .dp__inc_dec_button, .dp__time_display, .dp__overlay_cell
+    &:hover
+      background-color: darken($bg-dark, 3%)
+
+  .dp__button_bottom
+    background-color: darken($bg-dark, 3%)
+
+  .dp__select
+    color: $green
+
+  .dp__cancel
+    color: $red
+
+  .dp__input_icons
+    height: 48px
+    width: 48px
+    padding: 0
+    path
+      fill: $text-secondary-hex
+      
+  .dp-input
+    font-size: nth($font-sizes, 5)
+    padding: 11px 0 11px 50px
+    border: none
+    border-bottom: 1px solid $text-primary
+    border-radius: 0
+    line-height: unset
+    &:hover
+      border-color: $text-primary
+
+  .dp__clear_icon
+    display: none
+
+  .date-default
+    color: $text-secondary
+
+  .date-picked
+    color: $text-primary
+    & + .dp__input_icons
+      path  
+        fill: $text-primary
+
+</style>

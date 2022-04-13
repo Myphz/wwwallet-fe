@@ -3,9 +3,9 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onUnmounted } from 'vue'
-import InputBox from "@/components/InputBox.vue"
-import { useRoute } from 'vue-router';
+import { onBeforeMount, onUnmounted } from "vue";
+import InputBox from "M#/login/InputBox.vue";
+import { useRoute } from "vue-router";
 
 const route = useRoute();
 

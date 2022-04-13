@@ -6,6 +6,6 @@
 </template>
 
 <script setup>
-import SearchBar from '@/components/SearchBar.vue';
-import Cards from '@/components/mobile/Cards.mobile.vue';
+import SearchBar from "U#/SearchBar.vue";
+import Cards from "M#/markets/Cards.mobile.vue";
 </script>

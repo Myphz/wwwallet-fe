@@ -1,0 +1,20 @@
+<template>
+  <table>
+    <thead class="text-secondary">
+      <tr>
+        <th>Name</th>
+        <th>Ticker</th>
+        <th>Price</th>
+        <th>24h Change</th>
+        <th>Market cap</th>
+      </tr>
+    </thead>
+    <tbody>
+      <Card v-for="i in 10" :key="i" />
+    </tbody>
+  </table>
+</template>
+
+<script setup>
+import Card from "D#/markets/Card.vue"
+</script>
