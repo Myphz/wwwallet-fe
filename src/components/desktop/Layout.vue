@@ -3,12 +3,15 @@
   <main>
     <router-view />
   </main>
+
+  <Footer />
 </template>
 
 <script setup>
 import { computed } from "vue";
 import { useRoute, RouterView } from "vue-router";
 import Navbar from "D#/Navbar.vue";
+import Footer from "D#/Footer.vue";
 
 const route = useRoute();
 const path = computed( () => route.path );
@@ -20,5 +23,4 @@ const path = computed( () => route.path );
     color: $text-primary
     font-family: $font-base
     margin: 0 16.66vw
-
 </style>

@@ -21,7 +21,7 @@ defineProps({
 
 <style lang="sass" scoped>
   .box
-    font-family: 'Rambla', sans-serif
+    font-family: $font-logo
     cursor: pointer
 
   img
