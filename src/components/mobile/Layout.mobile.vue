@@ -5,13 +5,19 @@
   <main>
     <router-view />
   </main>
+  <Footer v-if="path !== '/login' && path !== '/register'" />
   <Navbar />
 </template>
 
 <script setup>
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
 import Navbar from "M#/Navbar.mobile.vue";
 import Logo from "U#/Logo.vue";
+import Footer from "M#/Footer.mobile.vue";
+import { computed } from "vue";
+
+const route = useRoute();
+const path = computed( () => route.path );
 </script>
 
 <style lang="sass">
@@ -25,8 +31,7 @@ import Logo from "U#/Logo.vue";
     font-family: $font-base
 
   main
-    margin: 1.5em 5vw 1.5em 5vw
-    padding-bottom: 10vh
+    margin: 1.5em 5vw 10vh 5vw
 
   .logo
     padding: .5em 1.5em

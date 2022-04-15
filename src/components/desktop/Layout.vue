@@ -1,10 +1,9 @@
 <template>
-  <Navbar v-if="path != '/login' && path != '/register'"/>
+  <Navbar v-if="path !== '/login' && path !== '/register'"/>
   <main>
     <router-view />
   </main>
-
-  <Footer />
+  <Footer v-if="path !== '/login' && path !== '/register'" />
 </template>
 
 <script setup>
