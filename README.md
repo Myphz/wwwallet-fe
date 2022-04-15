@@ -22,6 +22,6 @@
 - [X] Wallet view
 - [X] Transaction detail view
 - [X] Dashboard view
-- [ ] User settings view
+- [X] User settings view
 - [ ] Other advanced views (recover password...)
 - [ ] Business logic
