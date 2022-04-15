@@ -21,7 +21,6 @@
         <span>Username</span>
       </div>
       <Icon icon="arrow" class="margin-left" />
-
     </div>
 
     <div class="bg-base transition pointer">
