@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const CryptoStore = defineStore("crypto", {
+export const useCryptoStore = defineStore("crypto", {
   state: () => {
 
   },
