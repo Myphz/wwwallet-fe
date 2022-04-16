@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
-import { BINANCE_BASE_URL_WS, QUOTES_DOLLAR } from "@/config/config.js";
+import { BINANCE_BASE_URL_WS } from "@/config/config.js";
 import fetchBinance from "@/helpers/fetchBinance.helper.js";
+import getDollarPrice from "@/helpers/getDollarPrice.helper";
 
 export const useCryptoStore = defineStore("crypto", {
   state: () => ({
@@ -46,8 +47,7 @@ export const useCryptoStore = defineStore("crypto", {
         const { symbol, baseAsset, baseAssetPrecision, quoteAsset } = crypto;
 
         // Try to get a price for the current symbol in dollars to calculate the total volume
-        const quote = QUOTES_DOLLAR.find(quote => (baseAsset + quote) in this.prices);
-        const quotePrice = quote ? this.prices[baseAsset + quote].c : 0;
+        const quotePrice = getDollarPrice(baseAsset, this.prices);
 
         // Update or add the baseAsset in tickerInfo object
         // Example structure of tickerInfo:

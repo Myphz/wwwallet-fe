@@ -6,7 +6,7 @@
         <th>Ticker</th>
         <th>Price</th>
         <th>24h Change</th>
-        <th>Market cap</th>
+        <th>24h Volume</th>
       </tr>
     </thead>
     <tbody>

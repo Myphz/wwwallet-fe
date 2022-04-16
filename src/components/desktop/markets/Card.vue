@@ -2,17 +2,22 @@
   <tr class="h4 transition">
     <td>
       <div class="align-center">
-        <Icon icon="bitcoin" class="icon" />
-        <span class="title">Bitcoin</span>
+        <img 
+          :src="iconUrl" 
+          :alt="crypto" 
+          onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
+          class="icon"
+        >
+        <span class="title">{{ name }}</span>
       </div>
     </td>
 
     <td class="ticker">
-      BTC
+      {{ crypto }}
     </td>
 
     <td>
-      $51123.23
+      ${{ price }}
     </td>
 
     <td>
@@ -21,7 +26,7 @@
 
     <td>
       <div class="align-center space-between">
-        <span>$1670B</span>
+        <span>${{ volume }}</span>
         <Button btnClass="bg-outline h4" link="/crypto/btc">
           <span class="align-center">
             <span>Chart</span>
@@ -36,6 +41,12 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
+import { computed, toRefs } from "vue";
+import { useCryptoStore } from "S#/crypto.store";
+import getDollarPrice from "@/helpers/getDollarPrice.helper";
+import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
+import { cryptoSymbol } from "crypto-symbol";
+const { nameLookup } = cryptoSymbol({});
 
 const props = defineProps({
   crypto: {
@@ -43,6 +54,14 @@ const props = defineProps({
     required: true
   }
 });
+
+const { crypto } = toRefs(props);
+const name = nameLookup(crypto.value, {exact: true}) || crypto.value;
+const iconUrl = getCryptoIcon(crypto.value);
+
+const store = useCryptoStore();
+const price = computed(() => getDollarPrice(crypto.value, store.prices).toFixed(2));
+const volume = store.tickerInfo[crypto.value].volume.toFixed(2);
 </script>
 
 <style lang="sass" scoped>
@@ -50,6 +69,8 @@ const props = defineProps({
     border-bottom: 1px solid $primary
       
   .icon
+    height: 64px
+    width: 64px
     margin-right: 1em
   
   .arrow-icon
