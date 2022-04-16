@@ -36,6 +36,13 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
+
+const props = defineProps({
+  crypto: {
+    type: String,
+    required: true
+  }
+});
 </script>
 
 <style lang="sass" scoped>
