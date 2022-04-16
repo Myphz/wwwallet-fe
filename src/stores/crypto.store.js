@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import { BINANCE_BASE_URL_WS, fetchBinance, QUOTES_DOLLAR } from "@/config/config.js";
+import { BINANCE_BASE_URL_WS, QUOTES_DOLLAR } from "@/config/config.js";
+import fetchBinance from "@/helpers/fetchBinance.helper.js";
 
 export const useCryptoStore = defineStore("crypto", {
   state: () => ({
@@ -12,7 +13,6 @@ export const useCryptoStore = defineStore("crypto", {
     async init() {
       // Get 24h prices and volume for every ticker
       const startPrices = await fetchBinance("ticker/24hr");
-
       // Get exchange information for every ticker
       const exchangeInfo = await fetchBinance("exchangeInfo");
       

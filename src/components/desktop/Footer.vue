@@ -4,8 +4,8 @@
     <section class="space-between">
       <div>
         <h4>About Us</h4>
-        <RouterLink to="/...">About</RouterLink>
-        <RouterLink to="/...">License</RouterLink>
+        <RouterLink to="/">About</RouterLink>
+        <RouterLink to="/">License</RouterLink>
       </div>
 
       <div>
@@ -19,7 +19,7 @@
 
       <div>
         <h4>Project</h4>
-        <RouterLink to="/...">Contribute</RouterLink>
+        <RouterLink to="/">Contribute</RouterLink>
         <div class="align-center pointer" style="flex-direction: row; gap: .5em" @click="openLink('https://github.com/Myphz/wwwallet-fe')">
           <Icon icon="github" />
           <a>GitHub</a>
@@ -28,7 +28,7 @@
 
       <div>
         <h4>Contacts</h4>
-        <RouterLink to="/...">Feedback</RouterLink>
+        <RouterLink to="/">Feedback</RouterLink>
       </div>
 
     </section>
