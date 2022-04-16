@@ -1,15 +1,34 @@
 import { defineStore } from "pinia";
-import { BINANCE_BASE_URL_WS, BINANCE_BASE_URL_HTTPS } from "@/config/config.js";
+import { BINANCE_BASE_URL_WS, fetchBinance, QUOTES_DOLLAR } from "@/config/config.js";
 
 export const useCryptoStore = defineStore("crypto", {
   state: () => ({
     prices: {},
-    tickerInfo: {}
+    tickerInfo: {},
+    quoteAssets: new Set(),
   }),
 
   actions: {
     async init() {
-      // Socket to subscribe to all miniTickers
+      // Get 24h prices and volume for every ticker
+      const startPrices = await fetchBinance("ticker/24hr");
+
+      // Get exchange information for every ticker
+      const exchangeInfo = await fetchBinance("exchangeInfo");
+      
+      // Initialize this.prices following miniTicker's convention
+      startPrices.forEach(crypto => {
+        const { symbol, openPrice, highPrice, lowPrice, lastPrice, volume } = crypto;
+        this.prices[symbol] = {
+          o: parseFloat(openPrice),
+          h: parseFloat(highPrice),
+          l: parseFloat(lowPrice),
+          c: parseFloat(lastPrice),
+          v: parseFloat(volume)
+        }
+      });
+
+      // Initialize socket to subscribe to all miniTickers and get real time updates
       const socket = new WebSocket(BINANCE_BASE_URL_WS + "!miniTicker@arr");
       socket.onopen = () => {
         socket.send(JSON.stringify({
@@ -20,29 +39,53 @@ export const useCryptoStore = defineStore("crypto", {
       };
 
       socket.onmessage = this.priceUpdate;
+      // Retrieve all possible assets used as quote
+      this.quoteAssets = new Set(exchangeInfo.symbols.map(symbol => symbol.quoteAsset));
+      // For every crypto, get its possible quotes and precision
+      exchangeInfo.symbols.forEach(crypto => {
+        const { symbol, baseAsset, baseAssetPrecision, quoteAsset } = crypto;
 
-      // Get exchange information for every ticker
-      let res = await fetch(BINANCE_BASE_URL_HTTPS + "exchangeInfo");
-      res = await res.json();
-      // For every symbol, get the relevant information
-      this.tickerInfo = res.symbols.reduce((prev, current) => {
-        const { symbol, baseAsset, baseAssetPrecision, quoteAsset, quoteAssetPrecision } = current;
+        // Try to get a price for the current symbol in dollars to calculate the total volume
+        const quote = QUOTES_DOLLAR.find(quote => (baseAsset + quote) in this.prices);
+        const quotePrice = quote ? this.prices[baseAsset + quote].c : 0;
 
-        return {...prev, [symbol]: {
-          baseAsset, baseAssetPrecision, quoteAsset, quoteAssetPrecision
-        }};
-      }, {});
+        // Update or add the baseAsset in tickerInfo object
+        // Example structure of tickerInfo:
+        // {
+        //   BTC: {
+        //     precision: 8,                   # Precision digits of the asset
+        //     quotes: ["USDT", "USDC", ...],  # Possible markets (e.g: BTCUSDT, BTCUSDC, ...)
+        //     volume: 1085673999.22,          # Total 24h volume in dollars
+        //   },
+        //    ETH: ...
+        // }
+
+        if (baseAsset in this.tickerInfo) {
+          this.tickerInfo[baseAsset].volume += this.prices[symbol].v * quotePrice;
+          this.tickerInfo[baseAsset].quotes.push(quoteAsset);
+        } else {
+          this.tickerInfo[baseAsset] = {
+            precision: baseAssetPrecision,
+            quotes: [quoteAsset],
+            volume: this.prices[symbol].v * quotePrice,
+          }
+        }
+      });
     },
 
-    // Parse array of data from the miniTicker socket
+    // Action to parse array of data from the miniTicker socket
     priceUpdate(prices) {
       const data = JSON.parse(prices.data);
       if (data.result === null) return;
       data.forEach(miniTicker => {
-        // Save open, high, low, close
-        const { o, h, l, c, s } = miniTicker;
+        // Save open, high, low, close, volume
+        const { o, h, l, c, v, s } = miniTicker;
         this.prices[s] = { 
-          o, h, l, c
+          o: parseFloat(o), 
+          h: parseFloat(h), 
+          l: parseFloat(l), 
+          c: parseFloat(c), 
+          v: parseFloat(v)
         };
       });
     }
