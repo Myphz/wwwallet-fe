@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import options from "@/config/candlestickChartOptions.mobile.js";
+import options from "@/config/charts/candlestickChartOptions.mobile.js";
 import { onMounted, reactive, toRefs } from "vue";
 
 import { use } from "echarts/core";

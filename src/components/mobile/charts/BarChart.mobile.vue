@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import options from "@/config/barChartOptions.mobile.js";
+import options from "@/config/charts/barChartOptions.mobile.js";
 
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";

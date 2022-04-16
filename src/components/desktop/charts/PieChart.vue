@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import options from "@/config/pieChartOptions.js";
+import options from "@/config/charts/pieChartOptions.js";
 
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";

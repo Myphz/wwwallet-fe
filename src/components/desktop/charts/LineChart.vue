@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import options from "@/config/lineChartOptions.js";
+import options from "@/config/charts/lineChartOptions.js";
 
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
