@@ -11,8 +11,12 @@ export const getDollarPrice = (crypto, prices) => {
   return price?.c || 0
 }
 
-export const getPercentageChange = (crypto, prices) => {
-  const price = getPriceObj(crypto, prices);
+export const calculatePercentage = price => {
   if (!price) return 0;
   return (price.c - price.o) / price.c;
+}
+
+export const getPercentageChange = (crypto, prices) => {
+  const price = getPriceObj(crypto, prices);
+  return calculatePercentage(price);
 }

@@ -2,20 +2,20 @@
   <section>
     <ChartOptions :crypto="crypto" :base="base" v-model="currentBase" />
     <div class="stats">
-      <span class="price">
-        <h2>$95.23</h2>
+      <span :class="'price ' + (isHigher ? 'green' : isHigher !== null ? 'red' : '')">
+        <h2>{{ price }}</h2>
       </span>
       <span class="statsgroup">
         <span>24h Change</span>
-        <span>+1.23%</span>
+        <span :class="pctChange.startsWith('+') ? 'green' : pctChange.startsWith('-') ? 'red' : ''">{{ pctChange }}</span>
       </span>
       <span class="statsgroup">
         <span>24h High</span>
-        <span class="green">92.73</span>
+        <span class="green">{{ high24 }}</span>
       </span>
       <span class="statsgroup">
         <span>24h Low</span>
-        <span class="red">75.20</span>
+        <span class="red">{{ low24 }}</span>
       </span>
     </div>
     <div class="time stats noselect">
@@ -33,7 +33,10 @@
 import ChartOptions from "D#/charts/ChartOptions.vue";
 import CandlestickChart from "D#/charts/CandlestickChart.vue";
 import { TIMES } from "@/config/config.js";
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
+import { formatValue, formatPercentage } from "@/helpers/formatNumber.helper";
+import { calculatePercentage } from "@/helpers/getPrice.helper";
+import { useCryptoStore } from "S#/crypto.store";
 
 const { crypto, base } = defineProps({
   crypto: {
@@ -54,6 +57,16 @@ const { crypto, base } = defineProps({
 
 const currentBase = ref(base);
 const activeTime = ref(0);
+const store = useCryptoStore();
+const price = computed(() => formatValue(store.prices[crypto + currentBase.value]?.c));
+const pctChange = computed(() => formatPercentage(calculatePercentage(store.prices[crypto + currentBase.value])));
+const high24 = computed(() => formatValue(store.prices[crypto + currentBase.value]?.h));
+const low24 = computed(() => formatValue(store.prices[crypto + currentBase.value]?.l));
+
+const isHigher = ref(null);
+watch(price, (newPrice, oldPrice) => {
+  isHigher.value = newPrice > oldPrice;
+});
 </script>
 
 <style lang="sass" scoped>
