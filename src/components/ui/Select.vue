@@ -23,6 +23,11 @@ const props = defineProps({
     required: true
   },
 
+  startValue: {
+    type: String,
+    default: ""
+  },
+
   icon: {
     type: String,
     default: ""
@@ -42,11 +47,11 @@ const props = defineProps({
 const { options } = toRefs(props);
 const { emit } = getCurrentInstance();
 const open = ref(false);
-const selected = ref(options.value[0]);
+const selected = ref(props.startValue || options.value[0]);
 const opts = ref(options.value.filter(opt => opt !== selected.value));
 
 watch(options, newOpts => {
-  selected.value = newOpts[0];
+  selected.value = props.startValue || newOpts[0];
   opts.value = newOpts.filter(opt => opt !== selected.value);
 });
 

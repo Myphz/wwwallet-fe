@@ -5,7 +5,8 @@
 
       <Select 
         class="text-primary h2" 
-        :options="baseOptions" 
+        :options="baseOptions"
+        :startValue="selectedBase"
         v-model="selectedBase"
         @update:modelValue="$emit('update:modelValue', selectedBase)"
       />

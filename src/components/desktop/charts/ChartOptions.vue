@@ -4,13 +4,14 @@
       <h2 class="pair">{{ crypto }}</h2>
       <Select 
         class="pair text-primary h2" 
-        :options="baseOptions" 
+        :options="baseOptions"
+        :startValue="selectedBase"
         v-model="selectedBase"
         @update:modelValue="$emit('update:modelValue', selectedBase)"
       />
 
     </span>
-    <Icon icon="settings" class="padded" />
+    <Icon icon="settings" />
   </header>
 </template>
 
@@ -48,7 +49,7 @@ watch(selectedBase, newBase => {
     font-weight: normal
 
   span
-    margin-left: 4rem
+    margin: 0 4rem
 
   header
     padding: 1em 0
@@ -58,6 +59,7 @@ watch(selectedBase, newBase => {
     width: 48px
     height: 48px
     cursor: pointer
+    margin-right: 4rem
 
   .pair
     margin-right: 1em
