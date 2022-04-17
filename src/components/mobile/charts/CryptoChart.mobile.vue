@@ -19,7 +19,7 @@
       </span>
     </div>
     <div class="stats time noselect">
-      <span v-for="(time, i) in times" :class="activeTime == i ? 'active-time' : ''" @click="activeTime = i">
+      <span v-for="(time, i) in TIMES" :class="activeTime == i ? 'active-time' : ''" @click="activeTime = i">
         {{ time }}
       </span>
     </div>
@@ -33,6 +33,7 @@
 <script setup>
 import ChartOptions from "M#/charts/ChartOptions.mobile.vue";
 import CandlestickChart from "M#/charts/CandlestickChart.mobile.vue";
+import { TIMES } from "@/config/config.js";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -49,7 +50,6 @@ const props = defineProps({
 
 const { crypto } = props;
 const base = ref(props.base);
-const times = ["1m", "15m", "1H", "4H", "1D", "1W", "1M"];
 const activeTime = ref(0);
 </script>
 

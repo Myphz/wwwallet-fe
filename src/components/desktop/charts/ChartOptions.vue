@@ -1,11 +1,7 @@
 <template>
   <header class="noselect space-between">
     <span class="align-center">
-      <Select 
-        class="pair padded text-primary h2" 
-        :options="['BTC', 'LUNA']" 
-      />
-
+      <h2 class="pair">{{ crypto }}</h2>
       <Select 
         class="pair text-primary h2" 
         :options="['USDT', 'UST', 'EUR']" 
@@ -14,7 +10,6 @@
       />
 
     </span>
-
     <Icon icon="settings" class="padded" />
   </header>
 </template>
@@ -22,9 +17,9 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
-import { ref } from "vue";
+import { getCurrentInstance, ref, toRefs, watch } from "vue";
 
-const { crypto, base } = defineProps({
+const { base } = defineProps({
   crypto: {
     type: String,
     required: true
@@ -37,9 +32,20 @@ const { crypto, base } = defineProps({
 });
 
 const selectedBase = ref(base);
+const { emit } = getCurrentInstance();
+
+watch(selectedBase, newBase => {
+  emit("update:modelValue", newBase);
+});
 </script>
 
 <style lang="sass" scoped>
+  h2
+    font-weight: normal
+
+  span
+    margin-left: 4rem
+
   header
     padding: 1em 0
     border-bottom: 1px solid $bg-paper
@@ -50,9 +56,6 @@ const selectedBase = ref(base);
     cursor: pointer
 
   .pair
-    margin-right: 2em
-
-  .padded
-    margin: 0 4rem
+    margin-right: 1em
 
 </style>

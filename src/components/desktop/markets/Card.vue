@@ -27,7 +27,7 @@
     <td>
       <div class="align-center space-between">
         <span>${{ volume }}</span>
-        <Button btnClass="bg-outline h4" link="/crypto/btc">
+        <Button btnClass="bg-outline h4" :link="`/crypto/${crypto}`">
           <span class="align-center">
             <span>Chart</span>
             <Icon icon="arrow" class="arrow-icon" />

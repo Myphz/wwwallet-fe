@@ -1,5 +1,5 @@
 <template>
-  <RouterLink custom v-slot="{ navigate }" to="/crypto/btc">
+  <RouterLink custom v-slot="{ navigate }" :to="`/crypto/${crypto}`">
     <tr @click="navigate" class="h4 transition">
       <td class="align-center">
         <img 
