@@ -5,6 +5,7 @@
 <script>
 import options from "@/config/charts/candlestickChartOptions.js";
 import { onMounted, reactive, toRefs } from "vue";
+import { useCryptoStore } from "S#/crypto.store";
 
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -22,6 +23,11 @@ export default {
     base: {
       type: String,
       required: true
+    },
+
+    interval: {
+      type: String,
+      required: true
     }
   },
 
@@ -29,18 +35,13 @@ export default {
 
   setup(props) {
     use([CandlestickChart, CanvasRenderer, GridComponent, DataZoomComponent, TooltipComponent ]);
-    const { crypto, base } = toRefs(props);
+    const store = useCryptoStore();
+    const { crypto, base, interval } = toRefs(props);
 
     // Temporary load the data
-    onMounted(() => {
-      fetch("https://api.binance.com/api/v3/klines?symbol=ETHEUR&interval=5m")
-        .then(res => res.json())
-        .then(data => {
-          data = data.slice(-100, -1);
-          // Convert to float
-          data = data.map(candle => candle.slice(0, 5).map(c => parseFloat(c)));
-          option.series.data = data;
-      });
+    onMounted(async () => {
+      const klines = await store.getKlines(crypto.value, base.value, interval.value);
+      option.series.data = klines;
     });
 
     const option = reactive(options);

@@ -18,7 +18,7 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const { crypto } = route.params;
+const crypto = route.params.crypto.toUpperCase();
 const base = "USDT";
 
 const displayPopup = ref(false);

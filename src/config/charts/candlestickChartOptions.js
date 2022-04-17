@@ -76,7 +76,7 @@ export default {
   },
 
   dataZoom: {
-    start: 50,
+    start: 90,
     minSpan: 15,
     type: "inside",
   },

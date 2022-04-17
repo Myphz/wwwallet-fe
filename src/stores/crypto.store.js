@@ -88,6 +88,11 @@ export const useCryptoStore = defineStore("crypto", {
           v: parseFloat(v)
         };
       });
+    },
+
+    async getKlines(crypto, base, interval) {
+      const klines = await fetchBinance(`klines?symbol=${crypto.toUpperCase()}${base.toUpperCase()}&interval=${interval}`);
+      return klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k)));
     }
   }
 });
