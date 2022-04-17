@@ -24,7 +24,7 @@
       </span>
     </div>
     <div :class="dashboard ? 'chart-container-dashboard' : 'chart-container'">
-      <CandlestickChart :crypto="crypto" :base="base" />
+      <CandlestickChart :crypto="crypto" :base="currentBase" />
     </div>
   </section>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <ChartOptions :crypto="crypto" :base="base" v-model="base" />
+    <ChartOptions :crypto="crypto" :base="base" v-model="currentBase" />
     <div class="stats">
       <span :class="'price ' + (isHigher ? 'green' : isHigher !== null ? 'red' : '')">
         <h3>{{ price }}</h3>
@@ -24,7 +24,7 @@
       </span>
     </div>
     <div class="chart-container">
-      <CandlestickChart :crypto="crypto" :base="base" />
+      <CandlestickChart :crypto="crypto" :base="currentBase" />
     </div>
   </section>
 </template>
