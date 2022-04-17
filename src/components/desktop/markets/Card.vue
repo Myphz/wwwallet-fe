@@ -16,12 +16,12 @@
       {{ crypto }}
     </td>
 
-    <td>
+    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
       ${{ price }}
     </td>
 
-    <td>
-      +20.34%
+    <td :class="pctChange.startsWith('+') ? 'green' : pctChange.startsWith('-') ? 'red' : ''">
+      {{ pctChange }}
     </td>
 
     <td>
@@ -41,9 +41,10 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
-import { computed, toRefs } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
-import getDollarPrice from "@/helpers/getDollarPrice.helper";
+import { getDollarPrice, getPercentageChange } from "@/helpers/getPrice.helper";
+import { formatPercentage, formatValue } from "@/helpers/formatNumber.helper";
 import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
 import { cryptoSymbol } from "crypto-symbol";
 const { nameLookup } = cryptoSymbol({});
@@ -60,8 +61,15 @@ const name = nameLookup(crypto.value, {exact: true}) || crypto.value;
 const iconUrl = getCryptoIcon(crypto.value);
 
 const store = useCryptoStore();
-const price = computed(() => getDollarPrice(crypto.value, store.prices).toFixed(2));
-const volume = store.tickerInfo[crypto.value].volume.toFixed(2);
+const price = computed(() => formatValue(getDollarPrice(crypto.value, store.prices)));
+const volume = formatValue(store.tickerInfo[crypto.value].volume);
+const pctChange = computed(() => formatPercentage(getPercentageChange(crypto.value, store.prices)));
+
+const isHigher = ref(null);
+watch(price, (newPrice, oldPrice) => {
+  isHigher.value = newPrice > oldPrice;
+});
+
 </script>
 
 <style lang="sass" scoped>

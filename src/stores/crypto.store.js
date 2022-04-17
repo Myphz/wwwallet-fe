@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { BINANCE_BASE_URL_WS } from "@/config/config.js";
 import fetchBinance from "@/helpers/fetchBinance.helper.js";
-import getDollarPrice from "@/helpers/getDollarPrice.helper";
+import { getDollarPrice } from "@/helpers/getPrice.helper.js";
 
 export const useCryptoStore = defineStore("crypto", {
   state: () => ({
