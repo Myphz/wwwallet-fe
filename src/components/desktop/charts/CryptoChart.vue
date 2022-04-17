@@ -1,7 +1,6 @@
 <template>
   <section>
     <ChartOptions :crypto="crypto" :base="base" v-model="currentBase" />
-    {{ currentBase }}
     <div class="stats">
       <span class="price">
         <h2>$95.23</h2>

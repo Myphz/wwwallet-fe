@@ -4,7 +4,7 @@
       <h2 class="pair">{{ crypto }}</h2>
       <Select 
         class="pair text-primary h2" 
-        :options="['USDT', 'UST', 'EUR']" 
+        :options="baseOptions" 
         v-model="selectedBase"
         @update:modelValue="$emit('update:modelValue', selectedBase)"
       />
@@ -17,9 +17,10 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
-import { getCurrentInstance, ref, toRefs, watch } from "vue";
+import { computed, getCurrentInstance, ref, toRefs, watch } from "vue";
+import { useCryptoStore } from "S#/crypto.store";
 
-const { base } = defineProps({
+const { crypto, base } = defineProps({
   crypto: {
     type: String,
     required: true
@@ -30,6 +31,9 @@ const { base } = defineProps({
     required: true
   }
 });
+
+const store = useCryptoStore();
+const baseOptions = computed(() => store.tickerInfo[crypto]?.quotes || []);
 
 const selectedBase = ref(base);
 const { emit } = getCurrentInstance();

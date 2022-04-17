@@ -14,10 +14,10 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, ref } from "vue";
+import { getCurrentInstance, ref, toRefs, watch } from "vue";
 import Icon from "U#/Icon.vue";
 
-const { options } = defineProps({
+const props = defineProps({
   options: {
     type: Array,
     required: true
@@ -39,14 +39,20 @@ const { options } = defineProps({
   }
 });
 
+const { options } = toRefs(props);
 const { emit } = getCurrentInstance();
 const open = ref(false);
-const selected = ref(options[0]);
-const opts = ref(options.filter(opt => opt !== selected.value));
+const selected = ref(options.value[0]);
+const opts = ref(options.value.filter(opt => opt !== selected.value));
+
+watch(options, newOpts => {
+  selected.value = newOpts[0];
+  opts.value = newOpts.filter(opt => opt !== selected.value);
+});
 
 const select = option => {
   selected.value = option;
-  opts.value = options.filter(option => option !== selected.value);
+  opts.value = options.value.filter(option => option !== selected.value);
   emit("update:modelValue", selected.value);
 }
 
