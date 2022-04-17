@@ -85,6 +85,8 @@ const select = option => {
     border-radius: .3em
     border: 2px solid $bg-paper
     min-width: 100%
+    max-height: 20vh
+    overflow-y: scroll
     width: fit-content
     z-index: 999999999
     transition: $anim-duration ease
