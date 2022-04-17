@@ -17,7 +17,7 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
-import { computed, getCurrentInstance, ref, toRefs, watch } from "vue";
+import { computed, getCurrentInstance, ref, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 
 const { crypto, base } = defineProps({
