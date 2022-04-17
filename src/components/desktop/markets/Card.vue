@@ -41,7 +41,7 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
-import { computed, ref, toRefs, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 import { getDollarPrice, getPercentageChange } from "@/helpers/getPrice.helper";
 import { formatPercentage, formatValue } from "@/helpers/formatNumber.helper";
@@ -49,27 +49,25 @@ import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
 import { cryptoSymbol } from "crypto-symbol";
 const { nameLookup } = cryptoSymbol({});
 
-const props = defineProps({
+const { crypto } = defineProps({
   crypto: {
     type: String,
     required: true
   }
 });
 
-const { crypto } = toRefs(props);
-const name = nameLookup(crypto.value, {exact: true}) || crypto.value;
-const iconUrl = getCryptoIcon(crypto.value);
+const name = nameLookup(crypto, {exact: true}) || crypto;
+const iconUrl = getCryptoIcon(crypto);
 
 const store = useCryptoStore();
-const price = computed(() => formatValue(getDollarPrice(crypto.value, store.prices)));
-const volume = formatValue(store.tickerInfo[crypto.value].volume);
-const pctChange = computed(() => formatPercentage(getPercentageChange(crypto.value, store.prices)));
+const price = computed(() => formatValue(getDollarPrice(crypto, store.prices)));
+const volume = formatValue(store.tickerInfo[crypto].volume);
+const pctChange = computed(() => formatPercentage(getPercentageChange(crypto, store.prices)));
 
 const isHigher = ref(null);
 watch(price, (newPrice, oldPrice) => {
   isHigher.value = newPrice > oldPrice;
 });
-
 </script>
 
 <style lang="sass" scoped>

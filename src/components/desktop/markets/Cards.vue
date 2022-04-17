@@ -26,7 +26,9 @@ import { useCryptoStore } from "S#/crypto.store";
 const ArrowIcon = defineAsyncComponent(() => import("../../../assets/icons/arrow.svg"));
 const page = ref(0);
 const store = useCryptoStore();
-const cryptoList = computed(() => Object.keys(store.tickerInfo).sort((a, b) => store.tickerInfo[b].volume - store.tickerInfo[a].volume).slice(page.value*10, (page.value+1)*10));
+const cryptoList = computed(() => Object.keys(store.tickerInfo)
+                                  .sort((a, b) => store.tickerInfo[b].volume - store.tickerInfo[a].volume)
+                                  .slice(page.value*10, (page.value+1)*10));
 </script>
 
 <style lang="sass">

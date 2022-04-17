@@ -4,24 +4,29 @@
       <tr>
         <th>Name</th>
         <th>Price</th>
-        <th>% Change</th>
+        <th>Change</th>
       </tr>
     </thead>
     <tbody>
-      <Card v-for="i in 10" :key="i" />
+      <Card v-for="crypto in cryptoList" :key="crypto" :crypto="crypto" />
     </tbody>
   </table>
   <section class="justify-center" style="gap: 5em; margin-top: 1em">
-    <ArrowIcon :class="'arrow-icon noselect reverse ' + (page === 1 ? 'inactive' : 'bg-base transition pointer')" @click="page !== 1 ? page-- : null"/>
+    <ArrowIcon :class="'arrow-icon noselect reverse ' + (!page ? 'inactive' : 'bg-base transition pointer')" @click="page ? page-- : null"/>
     <ArrowIcon class="arrow-icon noselect bg-base transition pointer" @click="page++" />
   </section>
 </template>
 
 <script setup>
 import Card from "M#/markets/Card.mobile.vue";
-import { defineAsyncComponent, ref } from "vue";
+import { computed, defineAsyncComponent, ref } from "vue";
+import { useCryptoStore } from "S#/crypto.store";
 const ArrowIcon = defineAsyncComponent(() => import("../../../assets/icons/arrow.svg"));
-const page = ref(1);
+const page = ref(0);
+const store = useCryptoStore();
+const cryptoList = computed(() => Object.keys(store.tickerInfo)
+                                  .sort((a, b) => store.tickerInfo[b].volume - store.tickerInfo[a].volume)
+                                  .slice(page.value*10, (page.value+1)*10));
 </script>
 
 <style lang="sass" scoped>
