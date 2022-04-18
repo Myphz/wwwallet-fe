@@ -50,7 +50,6 @@ export default {
     },
 
     scale: true,
-    max: ({ max }) => max + 1800000,
   },
   yAxis: {
     position: "right",
@@ -76,9 +75,9 @@ export default {
   },
 
   dataZoom: {
-    start: 90,
-    minSpan: 15,
+    minSpan: 10,
     type: "inside",
+    orient: "horizontal"
   },
 
   tooltip: {
@@ -136,7 +135,7 @@ export default {
       y: [4, 1, 3, 2]
     },
     // Reduce gap between candles
-    barWidth: "80%",
+    barWidth: "70%",
     data: [[0,0,0,0]],
   }
 }

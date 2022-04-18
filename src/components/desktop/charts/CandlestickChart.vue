@@ -1,10 +1,10 @@
 <template>
-  <VChart :option="option" />
+  <VChart :option="option" ref="chart" />
 </template>
 
 <script>
 import options from "@/config/charts/candlestickChartOptions.js";
-import { onMounted, onUnmounted, reactive, toRefs, watch } from "vue";
+import { onMounted, onUnmounted, reactive, ref, toRefs, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 
 import { use } from "echarts/core";
@@ -35,6 +35,7 @@ export default {
 
   setup(props) {
     use([CandlestickChart, CanvasRenderer, GridComponent, DataZoomComponent, TooltipComponent ]);
+    const chart = ref(null);
     const store = useCryptoStore();
     const { crypto, base, interval } = toRefs(props);
     const option = reactive(options);
@@ -60,9 +61,17 @@ export default {
       // Close possibly existing socket
       klinesSocket && klinesSocket.close();
       const { klines, socket } = await store.getKlines(crypto.value, base.value, interval.value);
+      // Set 10 candles of white space to the right of the chart 
+      option.xAxis.max = klines[klines.length - 1][0] + (klines[klines.length - 1][0] - klines[klines.length - 2][0]) * 10;
       option.series.data = klines;
+
       socket.onmessage = klineUpdate;
       klinesSocket = socket;
+      // Zoom on chart
+      chart.value.dispatchAction({
+        type: "dataZoom",
+        start: 90
+      });
     };
 
     // Load the data when mounted and when base or interval change
@@ -72,7 +81,7 @@ export default {
     // Close the socket when the component is unmounted
     onUnmounted(() => klinesSocket && klinesSocket.close());
     
-    return { option }
+    return { chart, option }
   }
 }
 </script>
