@@ -89,7 +89,6 @@ export default {
     const checkEnd = async ({ batch }) => {
       if (!batch) return;
       const [kline] = batch;
-      console.log(kline);
       if (kline.start || isLoading) return;
       isLoading = true;
       // The end of the chart has been reached: need to load more data.
