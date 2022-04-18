@@ -52,8 +52,8 @@ export default {
     },
 
     scale: true,
-    max: ({ max }) => max + 1200000,
   },
+
   yAxis: {
     position: "right",
 
@@ -78,9 +78,8 @@ export default {
   },
 
   dataZoom: {
-    start: 80,
-    minSpan: 15,
     type: "inside",
+    orient: "horizontal"
   },
 
   tooltip: {

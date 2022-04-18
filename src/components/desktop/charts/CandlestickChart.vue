@@ -50,6 +50,7 @@ export default {
       // Convert to float
       const newKline = [t, o, h, l, c].map(k => parseFloat(k));
       // Check if it's a new candle
+      if (!option.animation) option.animation = true;
       if (t !== option.series.data[option.series.data.length - 1][0]) {
         // Update the maximum x axis value
         option.xAxis.max += t - option.series.data[option.series.data.length - 1][0];
@@ -66,7 +67,7 @@ export default {
       klinesSocket && klinesSocket.close();
       const { klines, socket } = await store.getKlines(crypto.value, base.value, interval.value);
       // Set white space to the right of the chart 
-      option.xAxis.max = klines[klines.length - 1][0] + (klines[klines.length - 1][0] - klines[klines.length - 2][0]) * klines.length / 100;
+      option.xAxis.max = klines[klines.length - 1][0] + (klines[klines.length - 1][0] - klines[klines.length - 2][0]) * klines.length / 200;
       // Set maximum zoom
       option.dataZoom.minSpan = 3000 / klines.length;
 
@@ -77,7 +78,7 @@ export default {
       // Zoom on chart
       chart.value.dispatchAction({
         type: "dataZoom",
-        start: 95
+        start: 100
       });
     };
 
@@ -88,6 +89,7 @@ export default {
     const checkEnd = async ({ batch }) => {
       if (!batch) return;
       const [kline] = batch;
+      console.log(kline);
       if (kline.start || isLoading) return;
       isLoading = true;
       // The end of the chart has been reached: need to load more data.
@@ -99,13 +101,18 @@ export default {
         }
       );
 
+      // Temporary disable animation
+      option.animation = false;
+      // Add data
       option.series.data = [...klines, ...option.series.data];
+      // Set maximum zoom
+      option.dataZoom.minSpan = 3000 / klines.length / option.series.data.length / klines.length;
 
       // Return to the last position
       chart.value.dispatchAction({
         type: "dataZoom",
         start: 100 / (option.series.data.length / klines.length),
-        end: 100 / (option.series.data.length / klines.length) + kline.end / option.series.data.length / klines.length
+        end: 100 / (option.series.data.length / klines.length) + kline.end / (option.series.data.length / klines.length)
       });
 
       isLoading = false;

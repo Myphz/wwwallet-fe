@@ -12,6 +12,7 @@ function withClass(value, isPositive, withSymbol) {
 
 export default {
   backgroundColor,
+  animation: true,
 
   textStyle: {
     fontSize: 16
