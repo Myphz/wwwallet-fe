@@ -37,14 +37,17 @@ export default {
     use([CandlestickChart, CanvasRenderer, GridComponent, DataZoomComponent, TooltipComponent ]);
     const store = useCryptoStore();
     const { crypto, base, interval } = toRefs(props);
+    const option = reactive(options);
 
-    // Temporary load the data
     onMounted(async () => {
       const klines = await store.getKlines(crypto.value, base.value, interval.value);
       option.series.data = klines;
     });
 
-    const option = reactive(options);
+    store.$subscribe((_, state) => {
+      const { o, h, l, c, E } = state.prices[crypto.value + base.value];
+    });
+
     return { option }
   }
 }

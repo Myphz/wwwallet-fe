@@ -16,7 +16,8 @@ export const useCryptoStore = defineStore("crypto", {
       const startPrices = await fetchBinance("ticker/24hr");
       // Get exchange information for every ticker
       const exchangeInfo = await fetchBinance("exchangeInfo");
-      
+      // Get current timestamp in milliseconds
+      const now = +new Date();
       // Initialize this.prices following miniTicker's convention
       startPrices.forEach(crypto => {
         const { symbol, openPrice, highPrice, lowPrice, lastPrice, volume } = crypto;
@@ -25,7 +26,8 @@ export const useCryptoStore = defineStore("crypto", {
           h: parseFloat(highPrice),
           l: parseFloat(lowPrice),
           c: parseFloat(lastPrice),
-          v: parseFloat(volume)
+          v: parseFloat(volume),
+          E: now,
         }
       });
 
@@ -79,13 +81,14 @@ export const useCryptoStore = defineStore("crypto", {
       if (data.result === null) return;
       data.forEach(miniTicker => {
         // Save open, high, low, close, volume
-        const { o, h, l, c, v, s } = miniTicker;
+        const { E, o, h, l, c, v, s } = miniTicker;
         this.prices[s] = { 
           o: parseFloat(o), 
           h: parseFloat(h), 
           l: parseFloat(l), 
           c: parseFloat(c), 
-          v: parseFloat(v)
+          v: parseFloat(v),
+          E,
         };
       });
     },
