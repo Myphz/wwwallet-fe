@@ -1,12 +1,14 @@
 import { defineStore } from "pinia";
 import { BINANCE_BASE_URL_WS } from "@/config/config.js";
 import fetchBinance from "@/helpers/fetchBinance.helper.js";
+import createSocket from "@/helpers/createSocket.helper";
 import { getDollarPrice } from "@/helpers/getPrice.helper.js";
 
 export const useCryptoStore = defineStore("crypto", {
   state: () => ({
     prices: {},
     tickerInfo: {},
+    klines: {},
     quoteAssets: new Set(),
   }),
 
@@ -32,15 +34,7 @@ export const useCryptoStore = defineStore("crypto", {
       });
 
       // Initialize socket to subscribe to all miniTickers and get real time updates
-      const socket = new WebSocket(BINANCE_BASE_URL_WS + "!miniTicker@arr");
-      socket.onopen = () => {
-        socket.send(JSON.stringify({
-          method: "SUBSCRIBE",
-          params: [ "!miniTicker@arr" ],
-          id: 1
-        }));
-      };
-
+      const socket = createSocket("!miniTicker@arr");
       socket.onmessage = this.priceUpdate;
       // Retrieve all possible assets used as quote
       this.quoteAssets = new Set(exchangeInfo.symbols.map(symbol => symbol.quoteAsset));
@@ -95,7 +89,12 @@ export const useCryptoStore = defineStore("crypto", {
 
     async getKlines(crypto, base, interval) {
       const klines = await fetchBinance(`klines?symbol=${crypto.toUpperCase()}${base.toUpperCase()}&interval=${interval}`);
-      return klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k)));
+      const socket = createSocket(`${crypto}${base}@kline_${interval}`);
+      return { 
+        klines: klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k))),
+        open: klines[klines.length - 1][0],
+        close:  klines[klines.length - 1][6]
+      };
     }
   }
 });

@@ -39,15 +39,14 @@ export default {
     const { crypto, base, interval } = toRefs(props);
     const option = reactive(options);
 
-    onMounted(async () => {
-      const klines = await store.getKlines(crypto.value, base.value, interval.value);
+    const loadData = async () => {
+      const { klines } = await store.getKlines(crypto.value, base.value, interval.value);
       option.series.data = klines;
-    });
 
-    store.$subscribe((_, state) => {
-      const { o, h, l, c, E } = state.prices[crypto.value + base.value];
-    });
+      console.log(store.prices);
+    }
 
+    onMounted(loadData);
     return { option }
   }
 }
