@@ -75,7 +75,6 @@ export default {
   },
 
   dataZoom: {
-    minSpan: 10,
     type: "inside",
     orient: "horizontal"
   },

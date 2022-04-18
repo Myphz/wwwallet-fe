@@ -85,9 +85,14 @@ export const useCryptoStore = defineStore("crypto", {
       });
     },
 
-    async getKlines(crypto, base, interval) {
-      const klines = await fetchBinance(`klines?symbol=${crypto.toUpperCase()}${base.toUpperCase()}&interval=${interval}`);
-      const socket = createSocket(`${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`);;
+    async getKlines(crypto, base, interval, opts) {
+      const { end, noSocket } = opts || {};
+      let url = `klines?symbol=${crypto.toUpperCase()}${base.toUpperCase()}&interval=${interval}&limit=1000`;
+      if (end) url += `&endTime=${end}`;
+      const klines = await fetchBinance(url);
+
+      let socket;
+      if (!noSocket) socket = createSocket(`${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`);;
 
       return {
         klines: klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k))),

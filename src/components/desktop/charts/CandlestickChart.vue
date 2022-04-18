@@ -1,5 +1,5 @@
 <template>
-  <VChart :option="option" ref="chart" />
+  <VChart :option="option" ref="chart" @datazoom="checkEnd" />
 </template>
 
 <script>
@@ -40,6 +40,7 @@ export default {
     const { crypto, base, interval } = toRefs(props);
     const option = reactive(options);
     let klinesSocket;
+    let isLoading = false;
 
     // Function called by the websocket for every new kline
     const klineUpdate = ({ data }) => {
@@ -50,7 +51,10 @@ export default {
       const newKline = [t, o, h, l, c].map(k => parseFloat(k));
       // Check if it's a new candle
       if (t !== option.series.data[option.series.data.length - 1][0]) {
-        option.series.data.push(newKline)
+        // Update the maximum x axis value
+        option.xAxis.max += t - option.series.data[option.series.data.length - 1][0];
+        // Add candle
+        option.series.data.push(newKline);
       } else {
         // Or an update of the last one
         option.series.data[option.series.data.length - 1] = newKline;
@@ -61,8 +65,11 @@ export default {
       // Close possibly existing socket
       klinesSocket && klinesSocket.close();
       const { klines, socket } = await store.getKlines(crypto.value, base.value, interval.value);
-      // Set 10 candles of white space to the right of the chart 
-      option.xAxis.max = klines[klines.length - 1][0] + (klines[klines.length - 1][0] - klines[klines.length - 2][0]) * 10;
+      // Set white space to the right of the chart 
+      option.xAxis.max = klines[klines.length - 1][0] + (klines[klines.length - 1][0] - klines[klines.length - 2][0]) * klines.length / 100;
+      // Set maximum zoom
+      option.dataZoom.minSpan = 3000 / klines.length;
+
       option.series.data = klines;
 
       socket.onmessage = klineUpdate;
@@ -70,7 +77,7 @@ export default {
       // Zoom on chart
       chart.value.dispatchAction({
         type: "dataZoom",
-        start: 90
+        start: 95
       });
     };
 
@@ -78,10 +85,35 @@ export default {
     onMounted(loadData);
     watch([base, interval], loadData);
 
+    const checkEnd = async ({ batch }) => {
+      if (!batch) return;
+      const [kline] = batch;
+      if (kline.start || isLoading) return;
+      isLoading = true;
+      // The end of the chart has been reached: need to load more data.
+      const { klines } = await store.getKlines(
+        crypto.value, base.value, interval.value, 
+        { 
+          end: option.series.data[0][0] - (option.series.data[1][0] - option.series.data[0][0]), 
+          noSocket: true 
+        }
+      );
+
+      option.series.data = [...klines, ...option.series.data];
+
+      // Return to the last position
+      chart.value.dispatchAction({
+        type: "dataZoom",
+        start: 100 / (option.series.data.length / klines.length),
+        end: 100 / (option.series.data.length / klines.length) + kline.end / option.series.data.length / klines.length
+      });
+
+      isLoading = false;
+    };
+
     // Close the socket when the component is unmounted
     onUnmounted(() => klinesSocket && klinesSocket.close());
-    
-    return { chart, option }
+    return { chart, option, checkEnd };
   }
 }
 </script>
