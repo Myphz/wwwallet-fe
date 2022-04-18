@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { BINANCE_BASE_URL_WS } from "@/config/config.js";
 import fetchBinance from "@/helpers/fetchBinance.helper.js";
 import createSocket from "@/helpers/createSocket.helper";
 import { getDollarPrice } from "@/helpers/getPrice.helper.js";
@@ -72,7 +71,6 @@ export const useCryptoStore = defineStore("crypto", {
     // Action to parse array of data from the miniTicker socket
     priceUpdate(prices) {
       const data = JSON.parse(prices.data);
-      if (data.result === null) return;
       data.forEach(miniTicker => {
         // Save open, high, low, close, volume
         const { E, o, h, l, c, v, s } = miniTicker;
@@ -89,11 +87,11 @@ export const useCryptoStore = defineStore("crypto", {
 
     async getKlines(crypto, base, interval) {
       const klines = await fetchBinance(`klines?symbol=${crypto.toUpperCase()}${base.toUpperCase()}&interval=${interval}`);
-      const socket = createSocket(`${crypto}${base}@kline_${interval}`);
-      return { 
+      const socket = createSocket(`${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`);;
+
+      return {
         klines: klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k))),
-        open: klines[klines.length - 1][0],
-        close:  klines[klines.length - 1][6]
+        socket
       };
     }
   }

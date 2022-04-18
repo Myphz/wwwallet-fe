@@ -4,7 +4,7 @@
 
 <script>
 import options from "@/config/charts/candlestickChartOptions.js";
-import { onMounted, reactive, toRefs } from "vue";
+import { onMounted, onUnmounted, reactive, toRefs, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 
 import { use } from "echarts/core";
@@ -38,15 +38,40 @@ export default {
     const store = useCryptoStore();
     const { crypto, base, interval } = toRefs(props);
     const option = reactive(options);
+    let klinesSocket;
+
+    // Function called by the websocket for every new kline
+    const klineUpdate = ({ data }) => {
+      // Parse the data
+      const kline = JSON.parse(data);
+      const { t, o, h, l, c } = kline.k;
+      // Convert to float
+      const newKline = [t, o, h, l, c].map(k => parseFloat(k));
+      // Check if it's a new candle
+      if (t !== option.series.data[option.series.data.length - 1][0]) {
+        option.series.data.push(newKline)
+      } else {
+        // Or an update of the last one
+        option.series.data[option.series.data.length - 1] = newKline;
+      }
+    };
 
     const loadData = async () => {
-      const { klines } = await store.getKlines(crypto.value, base.value, interval.value);
+      // Close possibly existing socket
+      klinesSocket && klinesSocket.close();
+      const { klines, socket } = await store.getKlines(crypto.value, base.value, interval.value);
       option.series.data = klines;
+      socket.onmessage = klineUpdate;
+      klinesSocket = socket;
+    };
 
-      console.log(store.prices);
-    }
-
+    // Load the data when mounted and when base or interval change
     onMounted(loadData);
+    watch([base, interval], loadData);
+
+    // Close the socket when the component is unmounted
+    onUnmounted(() => klinesSocket && klinesSocket.close());
+    
     return { option }
   }
 }
