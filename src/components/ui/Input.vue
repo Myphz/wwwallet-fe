@@ -102,9 +102,16 @@ const validator = () => {
   
   input[type=number]::-webkit-outer-spin-button,
   input[type=number]::-webkit-inner-spin-button
-      -webkit-appearance: none
-      margin: 0
-      
+    -webkit-appearance: none
+    margin: 0
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active
+    -webkit-background-clip: text
+    -webkit-text-fill-color: $text-primary
+        
   .box-container
     border-bottom: 1px solid $text-primary
     width: 100%
@@ -116,7 +123,7 @@ const validator = () => {
 
   label
     position: absolute
-    top: -.09em
+    top: -.2em
     left: .375em
     transition: 0.2s ease all
     pointer-events: none
