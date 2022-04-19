@@ -13,7 +13,7 @@
   </table>
   <section class="justify-center" style="gap: 5em; margin-top: 1em">
     <ArrowIcon :class="'arrow-icon noselect reverse ' + (!page ? 'inactive' : 'bg-base transition pointer')" @click="page ? page-- : null"/>
-    <ArrowIcon class="arrow-icon noselect bg-base transition pointer" @click="page++" />
+    <ArrowIcon :class="'arrow-icon noselect ' + ((page+1) * 10 <= cryptoLen ? 'bg-base transition pointer' : 'inactive')" @click="(page+1) * 10 <= cryptoLen ? page++ : null" />
   </section>
 </template>
 
@@ -24,6 +24,7 @@ import { useCryptoStore } from "S#/crypto.store";
 const ArrowIcon = defineAsyncComponent(() => import("../../../assets/icons/arrow.svg"));
 const page = ref(0);
 const store = useCryptoStore();
+const cryptoLen = computed(() => Object.keys(store.tickerInfo).length);
 const cryptoList = computed(() => Object.keys(store.tickerInfo)
                                   .sort((a, b) => store.tickerInfo[b].volume - store.tickerInfo[a].volume)
                                   .slice(page.value*10, (page.value+1)*10));
