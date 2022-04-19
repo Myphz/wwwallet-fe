@@ -7,8 +7,6 @@ export const useCryptoStore = defineStore("crypto", {
   state: () => ({
     prices: {},
     tickerInfo: {},
-    klines: {},
-    quoteAssets: new Set(),
   }),
 
   actions: {
@@ -35,8 +33,6 @@ export const useCryptoStore = defineStore("crypto", {
       // Initialize socket to subscribe to all miniTickers and get real time updates
       const socket = createSocket("!miniTicker@arr");
       socket.onmessage = this.priceUpdate;
-      // Retrieve all possible assets used as quote
-      this.quoteAssets = new Set(exchangeInfo.symbols.map(symbol => symbol.quoteAsset));
       // For every crypto, get its possible quotes and precision
       exchangeInfo.symbols.forEach(crypto => {
         const { symbol, baseAsset, baseAssetPrecision, quoteAsset } = crypto;
