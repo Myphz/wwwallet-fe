@@ -12,6 +12,7 @@ export default defineConfig({
       'D#': fileURLToPath(new URL('./src/components/desktop', import.meta.url)),
       'M#': fileURLToPath(new URL('./src/components/mobile', import.meta.url)),
       'U#': fileURLToPath(new URL('./src/components/ui', import.meta.url)),
+      'S#': fileURLToPath(new URL('./src/stores', import.meta.url)),
     }
   },
 

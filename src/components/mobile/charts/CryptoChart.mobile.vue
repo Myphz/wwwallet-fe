@@ -1,30 +1,30 @@
 <template>
   <section>
-    <ChartOptions :crypto="crypto" :base="base" v-model="base" />
+    <ChartOptions :crypto="crypto" :base="base" v-model="currentBase" />
     <div class="stats">
-      <span class="price">
-        <h2>$95.23</h2>
+      <span :class="'price ' + (isHigher ? 'green' : isHigher !== null ? 'red' : '')">
+        <h3>{{ price }}</h3>
       </span>
       <span class="statsgroup">
-        <span>% Change</span>
-        <span>+1.23%</span>
+        <span>Change</span>
+        <span :class="pctChange.startsWith('+') ? 'green' : pctChange.startsWith('-') ? 'red' : ''">{{ pctChange }}</span>
       </span>
       <span class="statsgroup">
         <span>High</span>
-        <span class="green">92.73</span>
+        <span class="green">{{ high24 }}</span>
       </span>
       <span class="statsgroup">
         <span>Low</span>
-        <span class="red">75.20</span>
+        <span class="red">{{ low24 }}</span>
       </span>
     </div>
     <div class="stats time noselect">
-      <span v-for="(time, i) in times" :class="activeTime == i ? 'active-time' : ''" @click="activeTime = i">
+      <span v-for="(time, i) in TIMES" :class="activeTime == i ? 'active-time' : ''" @click="activeTime = i">
         {{ time }}
       </span>
     </div>
     <div class="chart-container">
-      <CandlestickChart :crypto="crypto" :base="base" />
+      <CandlestickChart :crypto="crypto" :base="currentBase" :interval="TIMES[activeTime]" />
     </div>
   </section>
 </template>
@@ -33,9 +33,13 @@
 <script setup>
 import ChartOptions from "M#/charts/ChartOptions.mobile.vue";
 import CandlestickChart from "M#/charts/CandlestickChart.mobile.vue";
-import { ref } from "vue";
+import { TIMES } from "@/config/config.js";
+import { computed, ref, watch } from "vue";
+import { formatValue, formatPercentage } from "@/helpers/formatNumber.helper";
+import { calculatePercentage } from "@/helpers/getPrice.helper";
+import { useCryptoStore } from "S#/crypto.store";
 
-const props = defineProps({
+const { crypto, base } = defineProps({
   crypto: {
     type: String,
     required: true
@@ -47,10 +51,18 @@ const props = defineProps({
   }
 });
 
-const { crypto } = props;
-const base = ref(props.base);
-const times = ["1m", "15m", "1H", "4H", "1D", "1W", "1M"];
+const currentBase = ref(base);
 const activeTime = ref(0);
+const store = useCryptoStore();
+const price = computed(() => formatValue(store.prices[crypto + currentBase.value]?.c));
+const pctChange = computed(() => formatPercentage(calculatePercentage(store.prices[crypto + currentBase.value])));
+const high24 = computed(() => formatValue(store.prices[crypto + currentBase.value]?.h));
+const low24 = computed(() => formatValue(store.prices[crypto + currentBase.value]?.l));
+
+const isHigher = ref(null);
+watch(price, (newPrice, oldPrice) => {
+  isHigher.value = newPrice > oldPrice;
+});
 </script>
 
 <style lang="sass" scoped>
@@ -62,7 +74,7 @@ const activeTime = ref(0);
     height: 60vh
     margin-bottom: 1em
 
-  h2
+  h3
     font-weight: normal
 
   .stats
@@ -70,7 +82,7 @@ const activeTime = ref(0);
     display: flex
     font-weight: 550
     justify-content: flex-start
-    gap: 2em
+    gap: 1em
 
   .time
     color: $text-secondary

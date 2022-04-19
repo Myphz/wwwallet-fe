@@ -7,20 +7,25 @@
       </span>
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </span>
-    <ul>
+    <ul class="h3">
       <li v-for="option in opts" @click="select(option)">{{ option }}</li>
     </ul>
   </div>
 </template>
 
 <script setup>
-import { getCurrentInstance, ref } from "vue";
+import { getCurrentInstance, ref, toRefs, watch } from "vue";
 import Icon from "U#/Icon.vue";
 
-const { options } = defineProps({
+const props = defineProps({
   options: {
     type: Array,
     required: true
+  },
+
+  startValue: {
+    type: String,
+    default: ""
   },
 
   icon: {
@@ -39,14 +44,20 @@ const { options } = defineProps({
   }
 });
 
+const { options } = toRefs(props);
 const { emit } = getCurrentInstance();
 const open = ref(false);
-const selected = ref(options[0]);
-const opts = ref(options.filter(opt => opt !== selected.value));
+const selected = ref(props.startValue || options.value[0]);
+const opts = ref(options.value.filter(opt => opt !== selected.value));
+
+watch(options, newOpts => {
+  selected.value = props.startValue || newOpts[0];
+  opts.value = newOpts.filter(opt => opt !== selected.value);
+});
 
 const select = option => {
   selected.value = option;
-  opts.value = options.filter(option => option !== selected.value);
+  opts.value = options.value.filter(option => option !== selected.value);
   emit("update:modelValue", selected.value);
 }
 
@@ -79,6 +90,8 @@ const select = option => {
     border-radius: .3em
     border: 2px solid $bg-paper
     min-width: 100%
+    max-height: 40vh
+    overflow-y: scroll
     width: fit-content
     z-index: 999999999
     transition: $anim-duration ease

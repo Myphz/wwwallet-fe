@@ -174,3 +174,18 @@ th
 
 td
   padding: 0.7em 1em
+
+// Scrollbar
+::-webkit-scrollbar
+  width: 7px
+
+::-webkit-scrollbar-track
+  background-color: darken($primary, 45%)
+
+::-webkit-scrollbar-thumb
+  background-color: $primary
+  &:hover
+    background-color: darken($primary, 10%)
+  &:active
+    background-color: darken($primary, 20%)
+  

@@ -1,7 +1,7 @@
 <template>
   <section>
-    <CryptoChart crypto="BTC" base="USDT" />
-    <Transactions crypto="BTC" />
+    <CryptoChart :crypto="crypto" :base="base" />
+    <Transactions :crypto="crypto" />
     <div class="justify-center" style="margin-bottom: 2em">
       <Button btnClass="h3 bg-dark bottom-rounded noborder" @click="openPopup">+ Add Transaction</Button>
     </div>
@@ -15,6 +15,11 @@ import Button from "U#/Button.vue";
 import Transactions from "D#/wallet/Transactions.vue";
 import TransactionPopup from "D#/wallet/TransactionPopup.vue";
 import { ref } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const crypto = route.params.crypto.toUpperCase();
+const base = "USDT";
 
 const displayPopup = ref(false);
 const openPopup = () => {
