@@ -7,7 +7,8 @@
         class="input" 
         icon="email" 
         placeholder="Email" 
-        v-model="values.username" 
+        v-model:value="values.username"
+        v-model:isValid="areValuesValid[0]"
         :validate="validateEmail"
         errorMessage="Invalid email"
       />
@@ -17,7 +18,8 @@
         icon="password"
         placeholder="Password"
         type="password"
-        v-model="values.password"
+        v-model:value="values.password"
+        v-model:isValid="areValuesValid[1]"
         :validate="login ? undefined : validatePassword"
         errorMessage="Use 8 or more characters with a mix of letters, capital letters and numbers."
       />
@@ -28,7 +30,8 @@
         icon="password"
         placeholder="Confirm password"
         type="password"
-        v-model="values.confirmPassword"
+        v-model:value="values.confirmPassword"
+        v-model:isValid="areValuesValid[2]"
         :validate="passwordEqual"
         errorMessage="The passwords don't match"
       />
@@ -62,21 +65,27 @@ const { login } = defineProps({
 });
 
 const store = useAuthStore();
+const values = reactive({});
+const areValuesValid = reactive(new Array(2 + !login).fill(false));
+const passwordEqual = _ => values.password === values.confirmPassword;
 
 let subtext, header, submit;
 
 if (login) {
   header = "Login";
   subtext = "Don't have an account?";
-  submit = store.login;
+  submit = () => { 
+    if (areValuesValid.some(v => !v)) return; 
+    store.login(values);
+  };
 } else {
   header = "Register";
   subtext = "Already have an account?";
-  submit = store.register;
+  submit = () => { 
+    if (areValuesValid.some(v => !v)) return; 
+    store.register(values);
+  };
 }
-
-const values = reactive({});
-const passwordEqual = _ => values.password === values.confirmPassword;
 </script>
 
 <style lang="sass" scoped>

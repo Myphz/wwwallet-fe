@@ -8,8 +8,8 @@
           :type="type"
           :name="icon"
           v-model="value"
-          @input="$emit('update:modelValue', $event.target.value)"
-          @blur="validator"
+          @input="$emit('update:value', $event.target.value)"
+          @blur="validator(); $emit('update:isValid', isValid)"
           spellcheck="false"
           placeholder=" "
         >
