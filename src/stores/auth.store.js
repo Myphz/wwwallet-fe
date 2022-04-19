@@ -8,6 +8,19 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   actions: {
+    async login(event) {
+      const data = Object.fromEntries(new FormData(event.target).entries());
+      console.log(data);
+      // const res = await fetchServer({ email, password });
+      // console.log(res);
+    },
+
+    async register(event) {
+      const data = Object.fromEntries(new FormData(event.target).entries());
+      console.log(data);
+      // const res = await fetchServer({ email, password });
+      // console.log(res);
+    }
 
   }
 })

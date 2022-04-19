@@ -6,6 +6,7 @@
         <input 
           :class="'text-primary ' + inputClasses"
           :type="type"
+          :name="icon"
           v-model="value"
           @input="$emit('update:modelValue', $event.target.value)"
           @blur="validator"

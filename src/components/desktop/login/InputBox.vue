@@ -2,7 +2,7 @@
   <div>
     <Logo />
     <h2>{{ header }}</h2>
-    <form @submit.prevent="null">
+    <form @submit.prevent="submit">
       <Input 
         class="input" 
         icon="email" 
@@ -49,6 +49,7 @@
 import Logo from "U#/Logo.vue";
 import Input from "U#/Input.vue";
 import Button from "U#/Button.vue";
+import { useAuthStore } from "S#/auth.store";
 import { reactive } from "vue";
 import { RouterLink } from "vue-router";
 import { validateEmail, validatePassword } from "@/helpers/validator.helper";
@@ -60,14 +61,18 @@ const { login } = defineProps({
   }
 });
 
-let subtext, header;
+const store = useAuthStore();
+
+let subtext, header, submit;
 
 if (login) {
   header = "Login";
   subtext = "Don't have an account?";
+  submit = store.login;
 } else {
   header = "Register";
   subtext = "Already have an account?";
+  submit = store.register;
 }
 
 const values = reactive({});
