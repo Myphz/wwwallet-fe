@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import fetchBinance from "@/helpers/fetchBinance.helper.js";
+import { fetchBinance } from "@/helpers/fetch.helper.js";
 import createSocket from "@/helpers/createSocket.helper";
 import { getDollarPrice } from "@/helpers/getPrice.helper.js";
 
