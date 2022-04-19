@@ -99,8 +99,6 @@ if (login) {
   $box-color: rgba(35, 74, 117, 0.5)
 
   div
-    position: absolute
-    top: 20%
     width: 20vw
     padding: 1em 2.6em
     border-radius: 1em
