@@ -21,15 +21,27 @@
 
 <script setup>
 import Card from "D#/markets/Card.vue"
-import { computed, defineAsyncComponent, ref } from "vue";
+import { computed, defineAsyncComponent, ref, toRefs } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
+
+const props = defineProps({
+  search: {
+    type: String,
+    default: ""
+  }
+});
+
+const { search } = toRefs(props);
+
 const ArrowIcon = defineAsyncComponent(() => import("../../../assets/icons/arrow.svg"));
 const page = ref(0);
 const store = useCryptoStore();
-const cryptoLen = computed(() => Object.keys(store.tickerInfo).length);
-const cryptoList = computed(() => Object.keys(store.tickerInfo)
-                                  .sort((a, b) => store.tickerInfo[b].volume - store.tickerInfo[a].volume)
-                                  .slice(page.value*10, (page.value+1)*10));
+const crypto = computed(() => Object.keys(store.tickerInfo)
+                              .filter(ticker => ticker.includes(search.value.toUpperCase()))
+                              .sort((a, b) => store.tickerInfo[b].volume - store.tickerInfo[a].volume));
+
+const cryptoLen = computed(() => crypto.value.length);
+const cryptoList = computed(() => crypto.value.slice(page.value*10, (page.value+1)*10));
 </script>
 
 <style lang="sass">

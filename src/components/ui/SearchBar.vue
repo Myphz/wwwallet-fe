@@ -6,7 +6,8 @@
       class="text-primary h4 search-input"
       v-model="value"
       spellcheck="false" 
-      placeholder="Search token"
+      placeholder="Search ticker"
+      @input="$emit('update:modelValue', $event.target.value)"
     >
   </header>
 </template>
@@ -15,6 +16,8 @@
 import { defineAsyncComponent, ref } from "vue";
 const Icon = defineAsyncComponent(() => import("../../assets/icons/search.svg"));
 const value = ref("");
+
+const test = e => console.log(e);
 </script>
 
 <style lang="sass">
