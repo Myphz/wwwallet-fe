@@ -27,7 +27,7 @@ import { useCryptoStore } from "S#/crypto.store";
 const props = defineProps({
   search: {
     type: String,
-    default: ""
+    required: true
   }
 });
 
