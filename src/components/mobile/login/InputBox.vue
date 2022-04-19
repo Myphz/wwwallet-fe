@@ -2,12 +2,13 @@
   <div>
     <Logo />
     <h2>{{ header }}</h2>
-    <form @submit.prevent="null">
+    <form @submit.prevent="submit">
       <Input 
         class="input" 
         icon="email" 
         placeholder="Email" 
-        v-model="values.username" 
+        v-model:value="values.username"
+        v-model:isValid="areValuesValid[0]"
         :validate="validateEmail"
         errorMessage="Invalid email"
       />
@@ -17,7 +18,8 @@
         icon="password"
         placeholder="Password"
         type="password"
-        v-model="values.password"
+        v-model:value="values.password"
+        v-model:isValid="areValuesValid[1]"
         :validate="login ? undefined : validatePassword"
         errorMessage="Use 8 or more characters with a mix of letters, capital letters and numbers."
       />
@@ -28,7 +30,8 @@
         icon="password"
         placeholder="Confirm password"
         type="password"
-        v-model="values.confirmPassword"
+        v-model:value="values.confirmPassword"
+        v-model:isValid="areValuesValid[2]"
         :validate="passwordEqual"
         errorMessage="The passwords don't match"
       />
@@ -49,6 +52,7 @@
 import Logo from "U#/Logo.vue";
 import Input from "U#/Input.vue";
 import Button from "U#/Button.vue";
+import { useAuthStore } from "S#/auth.store";
 import { reactive } from "vue";
 import { RouterLink } from "vue-router";
 import { validateEmail, validatePassword } from "@/helpers/validator.helper";
@@ -60,18 +64,29 @@ const { login } = defineProps({
   }
 });
 
-let subtext, header;
+const store = useAuthStore();
+const values = reactive({});
+const areValuesValid = reactive(new Array(2 + !login).fill(false));
+const passwordEqual = _ => values.password === values.confirmPassword;
+
+let subtext, header, submit;
 
 if (login) {
   header = "Login";
   subtext = "Don't have an account?";
+  submit = () => { 
+    if (areValuesValid.some(v => !v)) return; 
+    store.login(values);
+  };
 } else {
   header = "Register";
   subtext = "Already have an account?";
+  submit = () => { 
+    if (areValuesValid.some(v => !v)) return; 
+    store.register(values);
+  };
 }
 
-const values = reactive({});
-const passwordEqual = _ => values.password === values.confirmPassword;
 </script>
 
 <style lang="sass" scoped>

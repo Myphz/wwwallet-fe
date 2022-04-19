@@ -31,8 +31,8 @@
       </div>
 
       <div class="space-between row margin-bottom">
-        <Input icon="coins" placeholder="Quantity" type="number" :startValue="quantity" v-model="quantity" />
-        <Input icon="exchange" placeholder="Price in USDT" type="number" :startValue="price" v-model="price" />
+        <Input icon="coins" placeholder="Quantity" type="number" :startValue="quantity" v-model:value="quantity" />
+        <Input icon="exchange" placeholder="Price in USDT" type="number" :startValue="price" v-model:value="price" />
       </div>
       <div class="space-between row margin-bottom">
         <Datepicker 
@@ -46,7 +46,7 @@
           @open.once="datePicked = true"
           dark 
         />
-        <Input icon="notes" placeholder="Notes" :startValue="notes" v-model="notes" />
+        <Input icon="notes" placeholder="Notes" :startValue="notes" v-model:value="notes" />
       </div>
 
       <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
