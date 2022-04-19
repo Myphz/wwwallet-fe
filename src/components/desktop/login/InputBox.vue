@@ -66,8 +66,9 @@ const { login } = defineProps({
 
 const store = useAuthStore();
 const values = reactive({});
+// Reactive array to check if the input fields are valid or not. The size of the array is 3 if it's a register route (as there are 3 forms to validate), 2 if it's login.
 const areValuesValid = reactive(new Array(2 + !login).fill(false));
-const passwordEqual = _ => values.password === values.confirmPassword;
+const passwordEqual = () => values.password === values.confirmPassword;
 
 let subtext, header, submit;
 
@@ -75,6 +76,7 @@ if (login) {
   header = "Login";
   subtext = "Don't have an account?";
   submit = () => { 
+    // Guard clause to check if all the values are valid before sending the request to backend
     if (areValuesValid.some(v => !v)) return; 
     store.login(values);
   };
@@ -82,6 +84,7 @@ if (login) {
   header = "Register";
   subtext = "Already have an account?";
   submit = () => { 
+    // Guard clause to check if all the values are valid before sending the request to backend
     if (areValuesValid.some(v => !v)) return; 
     store.register(values);
   };
