@@ -7,7 +7,7 @@
         class="input" 
         icon="email" 
         placeholder="Email" 
-        v-model:value="values.username"
+        v-model:value="values.email"
         v-model:isValid="areValuesValid[0]"
         :validate="validateEmail"
         errorMessage="Invalid email"
@@ -103,6 +103,7 @@ if (login) {
     backdrop-filter: blur(12px)
     left: 50%
     top: 50%
+    min-width: 60%
     transform: translateX(-50%) translateY(-50%)
 
   h2

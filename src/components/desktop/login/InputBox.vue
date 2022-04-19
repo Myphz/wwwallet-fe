@@ -7,7 +7,7 @@
         class="input" 
         icon="email" 
         placeholder="Email" 
-        v-model:value="values.username"
+        v-model:value="values.email"
         v-model:isValid="areValuesValid[0]"
         :validate="validateEmail"
         errorMessage="Invalid email"
@@ -53,7 +53,7 @@ import Logo from "U#/Logo.vue";
 import Input from "U#/Input.vue";
 import Button from "U#/Button.vue";
 import { useAuthStore } from "S#/auth.store";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { validateEmail, validatePassword } from "@/helpers/validator.helper";
 
@@ -70,23 +70,27 @@ const values = reactive({});
 const areValuesValid = reactive(new Array(2 + !login).fill(false));
 const passwordEqual = () => values.password === values.confirmPassword;
 
+const fetchError = ref("");
+
 let subtext, header, submit;
 
 if (login) {
   header = "Login";
   subtext = "Don't have an account?";
-  submit = () => { 
+  submit = async () => { 
     // Guard clause to check if all the values are valid before sending the request to backend
     if (areValuesValid.some(v => !v)) return; 
-    store.login(values);
+    const { success, msg } = await store.login(values);
+    if (!success) fetchError.value = msg;
   };
 } else {
   header = "Register";
   subtext = "Already have an account?";
-  submit = () => { 
+  submit = async () => { 
     // Guard clause to check if all the values are valid before sending the request to backend
     if (areValuesValid.some(v => !v)) return; 
-    store.register(values);
+    const { success, msg } = await store.register(values);
+    if (!success) fetchError.value = msg;
   };
 }
 </script>
@@ -97,7 +101,7 @@ if (login) {
   div
     position: absolute
     top: 20%
-    width: 20em
+    width: 20vw
     padding: 1em 2.6em
     border-radius: 1em
     background-color: $box-color

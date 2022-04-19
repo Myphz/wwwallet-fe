@@ -8,10 +8,10 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   actions: {
-    async login(data) {
-      console.log(data);
-      // const res = await fetchServer({ email, password });
-      // console.log(res);
+    async login({ email, password }) {
+      const res = await fetchServer("auth/login", { email, password });
+      this.isAuthenticated = res.success;
+      return res;
     },
 
     async register(data) {

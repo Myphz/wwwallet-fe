@@ -63,12 +63,12 @@ const { icon, validate, startValue } = defineProps({
 
   inputClasses: {
     type: String,
-    default: "h5"
+    default: "h4"
   },
 
   placeholderClasses: {
     type: String,
-    default: "h5"
+    default: "h4"
   }
 });
 
