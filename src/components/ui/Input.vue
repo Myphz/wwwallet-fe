@@ -88,30 +88,7 @@ const validator = () => {
 }
 </script>
 
-<style lang="sass">
-  input
-    border: none
-    outline: none
-    background: none
-    margin-left: 5px
-    width: 100%
-
-    &:focus + label, &:not(&:placeholder-shown) + label
-      top: -2em
-      font-size: nth($font-sizes, 5)
-  
-  input[type=number]::-webkit-outer-spin-button,
-  input[type=number]::-webkit-inner-spin-button
-    -webkit-appearance: none
-    margin: 0
-
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover, 
-  input:-webkit-autofill:focus, 
-  input:-webkit-autofill:active
-    -webkit-background-clip: text
-    -webkit-text-fill-color: $text-primary
-        
+<style lang="sass" scoped>      
   .box-container
     border-bottom: 1px solid $text-primary
     width: 100%
@@ -127,6 +104,11 @@ const validator = () => {
     left: .375em
     transition: 0.2s ease all
     pointer-events: none
+</style>
+
+<style lang="sass">
+  .icon-empty, .icon.fill
+    margin-top: -.2em
 
   .icon-empty
     path
@@ -138,5 +120,4 @@ const validator = () => {
 
   .icon-small
     transform: scale(.5)
-    
 </style>
