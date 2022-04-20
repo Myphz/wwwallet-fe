@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Logo />
     <h2>{{ header }}</h2>
     <form @submit.prevent="submit">
       <Input 
@@ -49,7 +48,6 @@
 </template>
 
 <script setup>
-import Logo from "U#/Logo.vue";
 import Input from "U#/Input.vue";
 import Button from "U#/Button.vue";
 import { useAuthStore } from "S#/auth.store";
@@ -96,15 +94,12 @@ if (login) {
   $box-color: rgba(35, 74, 117, 0.5)
 
   div
-    position: absolute
     padding: 1em 2.6em
     border-radius: 1em
     background-color: $box-color
     backdrop-filter: blur(12px)
-    left: 50%
-    top: 50%
     min-width: 60%
-    transform: translateX(-50%) translateY(-50%)
+    text-align: left
 
   h2
     margin: 0.5em 0
@@ -117,6 +112,7 @@ if (login) {
     margin: 1.5em 0
 
   .forgot
+    margin: 0.3em 0
     margin-left: auto
 
   .btn

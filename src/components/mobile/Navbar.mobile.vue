@@ -2,8 +2,8 @@
   <section class="bg-dark nohover nav-section">
     <nav class="noselect">
       <ul>
-        <li v-for="tab in tabs" :key="tab.endpoint">
-          <RouterLink :to="tab.endpoint" :class="route.path.startsWith(tab.endpoint) ? 'current-page' : ''">
+        <li v-for="tab in tabs" :key="tab.endpoint[0]">
+          <RouterLink :to="tab.endpoint[0]" :class="tab.endpoint.some(endpoint => route.path.startsWith(endpoint)) ? 'current-page' : ''">
             <component :is="tab.icon" />
             <span>{{ tab.title }}</span>
           </RouterLink>
@@ -18,22 +18,22 @@ import { defineAsyncComponent } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 const tabs = [
   {
-    endpoint: "/crypto",
+    endpoint: ["/crypto"],
     icon: "chart",
     title: "Markets"
   },
   {
-    endpoint: "/dashboard",
+    endpoint: ["/dashboard"],
     icon: "dashboard",
     title: "Dashboard"
   },
   {
-    endpoint: "/wallet",
+    endpoint: ["/wallet"],
     icon: "wallet",
     title: "Wallet"
   },
   {
-    endpoint: "/login",
+    endpoint: ["/login", "/register"],
     icon: "user",
     title: "Account"
   },

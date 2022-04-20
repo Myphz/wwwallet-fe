@@ -1,28 +1,38 @@
 <template>
-  <InputBox login />
+  <section class="align-center justify-center">
+    <div>
+      <h2>Managing your crypto</h2>
+      <h3>has never been <span>this easy</span></h3>
+      <InputBox login />
+    </div>
+  </section>
 </template>
 
 <script setup>
-import { onBeforeMount, onUnmounted } from "vue";
 import InputBox from "M#/login/InputBox.vue";
-import { useRoute } from "vue-router";
-
-const route = useRoute();
-
-onBeforeMount(() => {
-  document.body.classList.add("bg");
-});
-
-onUnmounted(() => {
-  if (route.path != "/register") document.body.classList.remove("bg");
-});
-
 </script>
 
-<style lang="sass">
-  .bg
-    background-image: url("/src/assets/images/bg.png")
-    background-repeat: no-repeat
-    background-size: cover
+<style lang="sass" scoped>
+  section
+    position: absolute
+    left: 0
+    margin-top: -1.5em
+    width: 100%
+    height: calc(100% - 109px)
+    background-image: linear-gradient(135deg, $bg-base 0%, rgba(0,6,13,1) 100%)
+
+    & > div
+      padding: 0 2em
+      text-align: center
+
+  h2, h3
+    font-weight: normal
+
+  h3
+    margin-bottom: 1em
+
+  span
+    color: darken($text-primary, 15%)
+    font-weight: bold
 
 </style>

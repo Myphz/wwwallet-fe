@@ -6,15 +6,15 @@
         
         <div class="text-header">
           <h1>Managing your crypto</h1>
-          <h2>has never been <span class="trans"><i>this easy.</i></span></h2>
+          <h2>has never been <span><i>this easy</i></span></h2>
         </div>
 
         <div class="img-section" style="text-align: justify;">
           <img src="/src/assets/images/phone_mockup.png" alt="phone_mockup">
           <h3 class="img-text">
-            <div>Track your<br><span class="trans">crypto wallet</span><br>everywhere.</div>
-            <div>Receive<br><span class="trans">real time updates</span><br>with many useful statistics.</div>
-            <div>Completely<br><span class="trans">free</span> and <span class="trans">open source</span>.</div>
+            <div>Track your<br><span>crypto wallet</span><br>everywhere.</div>
+            <div>Receive<br><span>real time updates</span><br>with many useful statistics.</div>
+            <div>Completely<br><span>free</span> and <span>open source</span>.</div>
           </h3>
         </div>
 
@@ -59,7 +59,7 @@ import InputBox from "D#/login/InputBox.vue";
     flex-direction: column
     justify-content: space-around
 
-  .trans
+  span
     color: darken($text-primary, 15%)
     font-weight: bold
 
