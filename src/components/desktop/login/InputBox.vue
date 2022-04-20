@@ -99,7 +99,8 @@ if (login) {
   $box-color: rgba(35, 74, 117, 0.5)
 
   div
-    width: 20vw
+    min-width: 25vw
+    width: fit-content
     padding: 1em 2.6em
     border-radius: 1em
     background-color: $box-color
@@ -116,6 +117,7 @@ if (login) {
     margin: 1.5em 0
 
   .forgot
+    margin: .5em 0
     margin-left: auto
 
   .btn
