@@ -42,7 +42,7 @@ import InputBox from "D#/login/InputBox.vue";
     height: 100%
     display: flex
     justify-content: space-around
-    background-image: linear-gradient(135deg, rgba(0,28,61,1) 0%, rgba(0,6,13,1) 100%)
+    background-image: linear-gradient(135deg, $bg-base 0%, rgba(0,6,13,1) 100%)
 
   .text-header
     margin-top: 2.5em
