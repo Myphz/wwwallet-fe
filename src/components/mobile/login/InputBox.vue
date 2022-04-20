@@ -98,7 +98,6 @@ if (login) {
     border-radius: 1em
     background-color: $box-color
     backdrop-filter: blur(12px)
-    min-width: 60%
     text-align: left
 
   h2

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <Logo />
     <h2>{{ header }}</h2>
     <form @submit.prevent="submit">
@@ -46,6 +46,15 @@
       <RouterLink v-else class="link" to="/login"> Login</RouterLink>
     </span>
   </div>
+
+  <Transition name="fade">
+    <div class="error" v-if="fetchError">
+      <div class="align-center">
+        <WarningIcon /> 
+        <span class="h4">{{ fetchError }}</span>
+      </div>
+    </div>
+  </Transition>
 </template>
 
 <script setup>
@@ -53,9 +62,11 @@ import Logo from "U#/Logo.vue";
 import Input from "U#/Input.vue";
 import Button from "U#/Button.vue";
 import { useAuthStore } from "S#/auth.store";
-import { reactive, ref } from "vue";
+import { defineAsyncComponent, reactive, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { validateEmail, validatePassword } from "@/helpers/validator.helper";
+
+const WarningIcon = defineAsyncComponent(() => import("../../../assets/icons/warning.svg"));
 
 const { login } = defineProps({
   login: {
@@ -79,7 +90,9 @@ if (login) {
   subtext = "Don't have an account?";
   submit = async () => { 
     // Guard clause to check if all the values are valid before sending the request to backend
+    console.log(areValuesValid);
     if (areValuesValid.some(v => !v)) return; 
+    fetchError.value = "";
     const { success, msg } = await store.login(values);
     if (!success) fetchError.value = msg;
   };
@@ -98,7 +111,7 @@ if (login) {
 <style lang="sass" scoped>
   $box-color: rgba(35, 74, 117, 0.5)
 
-  div
+  .container
     min-width: 25vw
     width: fit-content
     padding: 1em 2.6em
@@ -123,6 +136,26 @@ if (login) {
   .btn
     margin: 0.625em 0
     width: 100%
+
+  .error
+    position: absolute
+    bottom: 10%
+    background-color: transparentize($red, 0.5)
+    border-radius: .5em
+
+    padding: 1em 2.6em
+    min-width: 25vw
+    width: fit-content
     
+    svg
+      margin-right: .25em
+
+  .fade-enter-active,
+  .fade-leave-active
+    transition: opacity 0.5s ease
+
+  .fade-enter-from,
+  .fade-leave-to
+    opacity: 0
 
 </style>

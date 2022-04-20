@@ -16,8 +16,8 @@
         <label :class="'text-secondary ' + placeholderClasses">{{ placeholder }}</label>
       </span>
     </div>
-    <div v-show="!isValid" class="text-red h6">
-      {{ errorMessage }}
+    <div v-show="!isValid" class="error text-red h6">
+      <span>{{ errorMessage }}</span>
     </div>
   </span>
 </template>
@@ -81,14 +81,14 @@ let isValid = ref(true);
 const validator = () => {
   // If the field is empty, there's nothing to validate
   if (!value.value) {
-    isValid.value = true;
+    isValid.value = false;
     return;
   }
   isValid.value = validate(value.value);
 }
 </script>
 
-<style lang="sass" scoped>      
+<style lang="sass" scoped>
   .box-container
     border-bottom: 1px solid $text-primary
     width: 100%
@@ -104,6 +104,15 @@ const validator = () => {
     left: .375em
     transition: 0.2s ease all
     pointer-events: none
+
+  .error
+    display: flex
+
+    span
+      flex-grow: 1
+      width: 0
+
+
 </style>
 
 <style lang="sass">
