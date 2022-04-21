@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@vuepic/vue-datepicker": "^3.1.1",
-    "crypto-symbol": "^3.5.15",
+    "crypto-symbol": "^3.5.18",
     "echarts": "^5.3.2",
     "pinia": "^2.0.13",
     "vue": "^3.2.33",
