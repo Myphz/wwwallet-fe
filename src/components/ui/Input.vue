@@ -11,12 +11,13 @@
           @input="$emit('update:value', $event.target.value)"
           @blur="validator(); $emit('update:isValid', isValid)"
           spellcheck="false"
+          autocapitalize="none"
           placeholder=" "
         >
         <label :class="'text-secondary ' + placeholderClasses">{{ placeholder }}</label>
       </span>
     </div>
-    <div v-show="!isValid" class="error text-red h6">
+    <div v-show="!isValid && value" class="error text-red h6">
       <span>{{ errorMessage }}</span>
     </div>
   </span>

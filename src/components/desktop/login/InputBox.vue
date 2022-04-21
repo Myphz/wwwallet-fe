@@ -90,7 +90,6 @@ if (login) {
   subtext = "Don't have an account?";
   submit = async () => { 
     // Guard clause to check if all the values are valid before sending the request to backend
-    console.log(areValuesValid);
     if (areValuesValid.some(v => !v)) return; 
     fetchError.value = "";
     const { success, msg } = await store.login(values);

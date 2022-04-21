@@ -1,9 +1,10 @@
 <template>
-  <section class="align-center justify-center">
+  <section class="justify-center bg-section">
     <div>
+      <InputBox />
       <h2>Managing your crypto</h2>
       <h3>has never been <span>this easy</span></h3>
-      <InputBox />
+      <h1>Join now</h1>
     </div>
   </section>
 </template>
@@ -13,8 +14,8 @@ import InputBox from "M#/login/InputBox.vue";
 </script>
 
 <style lang="sass" scoped>
-  section
-    position: absolute
+  .bg-section
+    position: fixed
     left: 0
     margin-top: -1.5em
     width: 100%
@@ -22,7 +23,7 @@ import InputBox from "M#/login/InputBox.vue";
     background-image: linear-gradient(135deg, $bg-base 0%, rgba(0,6,13,1) 100%)
 
     & > div
-      padding: 0 2em
+      padding: 1em 2em
       text-align: center
 
   h2, h3
