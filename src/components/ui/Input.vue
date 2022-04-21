@@ -8,10 +8,10 @@
           :type="type"
           :name="icon"
           v-model="value"
-          @input="$emit('update:value', $event.target.value)"
-          @blur="validator(); $emit('update:isValid', isValid)"
+          @input="$emit('update:value', $event.target.value); validator(); $emit('update:isValid', isValid)"
           spellcheck="false"
           autocapitalize="none"
+          :autocomplete="autocomplete"
           placeholder=" "
         >
         <label :class="'text-secondary ' + placeholderClasses">{{ placeholder }}</label>
@@ -45,6 +45,11 @@ const { icon, validate, startValue } = defineProps({
   type: {
     type: String,
     default: "text"
+  },
+
+  autocomplete: {
+    type: String,
+    default: "off"
   },
 
   validate: {

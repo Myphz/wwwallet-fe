@@ -10,6 +10,7 @@
         v-model:value="values.email"
         v-model:isValid="areValuesValid[0]"
         :validate="validateEmail"
+        autocomplete="email"
         errorMessage="Invalid email"
       />
 
@@ -21,6 +22,7 @@
         v-model:value="values.password"
         v-model:isValid="areValuesValid[1]"
         :validate="login ? undefined : validatePassword"
+        :autocomplete="login ? 'current-password' : 'new-password'"
         errorMessage="Use 8 or more characters with a mix of letters, capital letters and numbers."
       />
 
@@ -63,7 +65,7 @@ import Input from "U#/Input.vue";
 import Button from "U#/Button.vue";
 import { useAuthStore } from "S#/auth.store";
 import { defineAsyncComponent, reactive, ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { validateEmail, validatePassword } from "@/helpers/validator.helper";
 
 const WarningIcon = defineAsyncComponent(() => import("../../../assets/icons/warning.svg"));
@@ -75,6 +77,7 @@ const { login } = defineProps({
   }
 });
 
+const router = useRouter();
 const store = useAuthStore();
 const values = reactive({});
 // Reactive array to check if the input fields are valid or not. The size of the array is 3 if it's a register route (as there are 3 forms to validate), 2 if it's login.
@@ -94,6 +97,7 @@ if (login) {
     fetchError.value = "";
     const { success, msg } = await store.login(values);
     if (!success) fetchError.value = msg;
+    else router.push("/wallet");
   };
 } else {
   header = "Register";
@@ -103,6 +107,7 @@ if (login) {
     if (areValuesValid.some(v => !v)) return; 
     const { success, msg } = await store.register(values);
     if (!success) fetchError.value = msg;
+    else router.push("/wallet");
   };
 }
 </script>

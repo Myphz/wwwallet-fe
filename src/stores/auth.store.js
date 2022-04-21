@@ -14,11 +14,10 @@ export const useAuthStore = defineStore("auth", {
       return res;
     },
 
-    async register(data) {
-      console.log(data);
-      // const res = await fetchServer({ email, password });
-      // console.log(res);
-    }
-
+    async register({ email, password }) {
+      const res = await fetchServer("auth/register", { email, password });
+      this.isAuthenticated = res.success;
+      return res;
+    },
   }
-})
+});

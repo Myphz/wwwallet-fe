@@ -10,6 +10,7 @@
           v-model:value="values.email"
           v-model:isValid="areValuesValid[0]"
           :validate="validateEmail"
+          autocomplete="email"
           errorMessage="Invalid email"
         />
 
@@ -60,7 +61,7 @@ import Input from "U#/Input.vue";
 import Button from "U#/Button.vue";
 import { useAuthStore } from "S#/auth.store";
 import { reactive, ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { validateEmail, validatePassword } from "@/helpers/validator.helper";
 
 const { login } = defineProps({
@@ -70,6 +71,7 @@ const { login } = defineProps({
   }
 });
 
+const router = useRouter();
 const store = useAuthStore();
 const values = reactive({});
 // Reactive array to check if the input fields are valid or not. The size of the array is 3 if it's a register route (as there are 3 forms to validate), 2 if it's login.
@@ -89,6 +91,7 @@ if (login) {
     fetchError.value = "";
     const { success, msg } = await store.login(values);
     if (!success) fetchError.value = msg;
+    else router.push("/wallet");
   };
 } else {
   header = "Register";
@@ -99,6 +102,7 @@ if (login) {
     fetchError.value = "";
     const { success, msg } = await store.register(values);
     if (!success) fetchError.value = msg;
+    else router.push("/wallet");
   };
 }
 
