@@ -64,10 +64,14 @@ import { reactive, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import { validateEmail, validatePassword } from "@/helpers/validator.helper";
 
-const { login } = defineProps({
+const { login, redirect } = defineProps({
   login: {
     type: Boolean,
     default: false
+  },
+
+  redirect: {
+    type: [String, undefined]
   }
 });
 
@@ -91,7 +95,7 @@ if (login) {
     fetchError.value = "";
     const { success, msg } = await store.login(values);
     if (!success) fetchError.value = msg;
-    else router.push("/wallet");
+    else router.push(redirect || "/wallet");
   };
 } else {
   header = "Register";

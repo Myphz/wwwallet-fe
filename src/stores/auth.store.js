@@ -19,5 +19,12 @@ export const useAuthStore = defineStore("auth", {
       this.isAuthenticated = res.success;
       return res;
     },
+
+    async checkAuth() {
+      if (this.isAuthenticated) return true;
+      const { success } = await fetchServer("auth/verify");
+      this.isAuthenticated = success;
+      return success;
+    }
   }
 });

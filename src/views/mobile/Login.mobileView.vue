@@ -1,7 +1,7 @@
 <template>
   <section class="justify-center bg-section">
     <div>
-      <InputBox login />
+      <InputBox login :redirect="$route.params.redirect" />
       <h2>Managing your crypto</h2>
       <h3>has never been <span>this easy</span></h3>
       <h1>Join now</h1>

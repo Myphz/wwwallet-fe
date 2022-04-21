@@ -22,7 +22,7 @@
     </div>
 
     <div class="align-center justify-center">
-      <InputBox login />
+      <InputBox login :redirect="$route.params.redirect" />
     </div>
 
   </section>
