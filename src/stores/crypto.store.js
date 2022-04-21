@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { fetchBinance } from "@/helpers/fetch.helper.js";
 import createSocket from "@/helpers/createSocket.helper";
 import { getDollarPrice } from "@/helpers/getPrice.helper.js";
+import { KLINES_LIMIT } from "@/config/config";
 
 export const useCryptoStore = defineStore("crypto", {
   state: () => ({
@@ -83,12 +84,12 @@ export const useCryptoStore = defineStore("crypto", {
 
     async getKlines(crypto, base, interval, opts) {
       const { end, noSocket } = opts || {};
-      let url = `klines?symbol=${crypto.toUpperCase()}${base.toUpperCase()}&interval=${interval}&limit=1000`;
+      let url = `klines?symbol=${crypto.toUpperCase()}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}`;
       if (end) url += `&endTime=${end}`;
       const klines = await fetchBinance(url);
 
       let socket;
-      if (!noSocket) socket = createSocket(`${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`);;
+      if (!noSocket) socket = createSocket(`${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`);
 
       return {
         klines: klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k))),

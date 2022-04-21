@@ -1,5 +1,5 @@
-import { GATEIO_ICON } from "@/config/config.js";
+import { GATEIO_ICON_URL } from "@/config/config.js";
 
-export default function(crypto, size="64") {
-  return `${GATEIO_ICON}${size}/${crypto.toLowerCase()}.png`;
+export default function(crypto) {
+  return `${GATEIO_ICON_URL}${crypto.toLowerCase()}.png`;
 }

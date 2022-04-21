@@ -6,6 +6,7 @@
 import options from "@/config/charts/candlestickChartOptions.js";
 import { onMounted, onUnmounted, reactive, ref, toRefs, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
+import { KLINES_LIMIT } from "@/config/config";
 
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -40,7 +41,9 @@ export default {
     const { crypto, base, interval } = toRefs(props);
     const option = reactive(options);
     let klinesSocket;
-    let isLoading = false;
+
+    let isLoading = false; // Check if the component is currently fetching more data
+    let allLoaded = false; // Check if all the data has been fetched
 
     // Function called by the websocket for every new kline
     const klineUpdate = ({ data }) => {
@@ -49,8 +52,9 @@ export default {
       const { t, o, h, l, c } = kline.k;
       // Convert to float
       const newKline = [t, o, h, l, c].map(k => parseFloat(k));
-      // Check if it's a new candle
+      // Restore animation if previously disabled
       if (!option.animation) option.animation = true;
+      // Check if it's a new candle
       if (t !== option.series.data[option.series.data.length - 1][0]) {
         // Update the maximum x axis value
         option.xAxis.max += t - option.series.data[option.series.data.length - 1][0];
@@ -86,10 +90,11 @@ export default {
     onMounted(loadData);
     watch([base, interval], loadData);
 
+    // Function to load more data if the user has dragged the chart all the way to the left
     const checkEnd = async ({ batch }) => {
       if (!batch) return;
       const [kline] = batch;
-      if (kline.start || isLoading) return;
+      if (kline.start || isLoading || allLoaded) return;
       isLoading = true;
       // The end of the chart has been reached: need to load more data.
       const { klines } = await store.getKlines(
@@ -114,6 +119,7 @@ export default {
         end: 100 / (option.series.data.length / klines.length) + kline.end / (option.series.data.length / klines.length)
       });
 
+      allLoaded = klines.length !== KLINES_LIMIT;
       isLoading = false;
     };
 
