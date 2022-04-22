@@ -1,4 +1,4 @@
-const QUOTES_DOLLAR = ["USDT", "USDC", "BUSD", "UST"];
+const QUOTES_DOLLAR = ["USDT", "USDC", "BUSD", "UST", "DAI"];
 
 // Helper function to retrieve the dollar price object of a given asset
 const getPriceObj = (crypto, prices) => {

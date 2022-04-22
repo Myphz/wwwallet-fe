@@ -26,7 +26,7 @@
 
     <td>
       <div class="align-center space-between">
-        <span>${{ volume }}</span>
+        <span>${{ mcap }}</span>
         <Button btnClass="bg-outline h4" :link="`/crypto/${crypto}`">
           <span class="align-center">
             <span>Chart</span>
@@ -46,8 +46,6 @@ import { useCryptoStore } from "S#/crypto.store";
 import { getDollarPrice, getPercentageChange } from "@/helpers/getPrice.helper";
 import { formatPercentage, formatValue } from "@/helpers/formatNumber.helper";
 import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
-import { cryptoSymbol } from "crypto-symbol";
-const { nameLookup } = cryptoSymbol({});
 
 const { crypto } = defineProps({
   crypto: {
@@ -56,12 +54,13 @@ const { crypto } = defineProps({
   }
 });
 
-const name = nameLookup(crypto, {exact: true}) || crypto;
 const iconUrl = getCryptoIcon(crypto);
 
 const store = useCryptoStore();
+const name = store.tickerInfo[crypto].name || crypto;
+
 const price = computed(() => formatValue(getDollarPrice(crypto, store.prices)));
-const volume = formatValue(store.tickerInfo[crypto].volume);
+const mcap = formatValue(store.tickerInfo[crypto].mcap);
 const pctChange = computed(() => formatPercentage(getPercentageChange(crypto, store.prices)));
 
 const isHigher = ref(null);

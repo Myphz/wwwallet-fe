@@ -13,7 +13,7 @@ function formatBigValue(price) {
     Nsuffix = "M";
   };
 
-  return N.toFixed(3) + Nsuffix;
+  return N.toFixed(2) + Nsuffix;
 };
 
 export const formatValue = price => {

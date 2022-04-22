@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { fetchBinance } from "@/helpers/fetch.helper.js";
+import { fetchBinance, fetchServer } from "@/helpers/fetch.helper.js";
 import createSocket from "@/helpers/createSocket.helper";
 import { getDollarPrice } from "@/helpers/getPrice.helper.js";
 import { KLINES_LIMIT } from "@/config/config";
@@ -16,18 +16,16 @@ export const useCryptoStore = defineStore("crypto", {
       const startPrices = await fetchBinance("ticker/24hr");
       // Get exchange information for every ticker
       const exchangeInfo = await fetchBinance("exchangeInfo");
-      // Get current timestamp in milliseconds
-      const now = +new Date();
+      // Get market cap and symbol-name conversion for every ticker
+      const cryptoInfo = await fetchServer("crypto/info");
       // Initialize this.prices following miniTicker's convention
       startPrices.forEach(crypto => {
-        const { symbol, openPrice, highPrice, lowPrice, lastPrice, volume } = crypto;
+        const { symbol, openPrice, highPrice, lowPrice, lastPrice } = crypto;
         this.prices[symbol] = {
           o: parseFloat(openPrice),
           h: parseFloat(highPrice),
           l: parseFloat(lowPrice),
           c: parseFloat(lastPrice),
-          v: parseFloat(volume),
-          E: now,
         }
       });
 
@@ -36,10 +34,7 @@ export const useCryptoStore = defineStore("crypto", {
       socket.onmessage = this.priceUpdate;
       // For every crypto, get its possible quotes and precision
       exchangeInfo.symbols.forEach(crypto => {
-        const { symbol, baseAsset, baseAssetPrecision, quoteAsset } = crypto;
-
-        // Try to get a price for the current symbol in dollars to calculate the total volume
-        const quotePrice = getDollarPrice(baseAsset, this.prices);
+        const { baseAsset, baseAssetPrecision, quoteAsset } = crypto;
 
         // Update or add the baseAsset in tickerInfo object
         // Example structure of tickerInfo:
@@ -47,22 +42,26 @@ export const useCryptoStore = defineStore("crypto", {
         //   BTC: {
         //     precision: 8,                   # Precision digits of the asset
         //     quotes: ["USDT", "USDC", ...],  # Possible markets (e.g: BTCUSDT, BTCUSDC, ...)
-        //     volume: 1085673999.22,          # Total 24h volume in dollars
+        //     mcap: 92033939202.322           # Total market cap (in USD)
+        //     name: "Bitcoin"                 # Crypto name
         //   },
         //    ETH: ...
         // }
 
+        // IMPORTANT: 'mcap' and 'name' may be missing, 
+        // as they come from the top 5000 crypto by marketcap on CoinMarketCap (and not from Binance)
+
         if (baseAsset in this.tickerInfo) {
-          this.tickerInfo[baseAsset].volume += this.prices[symbol].v * quotePrice;
           this.tickerInfo[baseAsset].quotes.push(quoteAsset);
         } else {
           this.tickerInfo[baseAsset] = {
             precision: baseAssetPrecision,
             quotes: [quoteAsset],
-            volume: this.prices[symbol].v * quotePrice,
+            ...cryptoInfo[baseAsset]
           }
         }
       });
+
     },
 
     // Action to parse array of data from the miniTicker socket
@@ -70,14 +69,12 @@ export const useCryptoStore = defineStore("crypto", {
       const data = JSON.parse(prices.data);
       data.forEach(miniTicker => {
         // Save open, high, low, close, volume
-        const { E, o, h, l, c, v, s } = miniTicker;
+        const { o, h, l, c, s } = miniTicker;
         this.prices[s] = { 
           o: parseFloat(o), 
           h: parseFloat(h), 
           l: parseFloat(l), 
           c: parseFloat(c), 
-          v: parseFloat(v),
-          E,
         };
       });
     },
