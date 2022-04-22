@@ -19,8 +19,8 @@
       </span>
     </div>
     <div class="stats time noselect">
-      <span v-for="(time, i) in TIMES" :class="activeTime == i ? 'active-time' : ''" @click="activeTime = i">
-        {{ time }}
+      <span v-for="(time, i) in TIMES" :key="time" :class="activeTime == i ? 'active-time' : ''" @click="activeTime = i">
+        {{ time.toUpperCase() }}
       </span>
     </div>
     <div class="chart-container">
