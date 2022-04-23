@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@vuepic/vue-datepicker": "^3.1.1",
+    "big.js": "^6.1.1",
     "echarts": "^5.3.2",
     "pinia": "^2.0.13",
     "vue": "^3.2.33",
