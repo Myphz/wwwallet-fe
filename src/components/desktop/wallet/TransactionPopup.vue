@@ -64,6 +64,7 @@ import Select from "U#/Select.vue";
 import Input from "U#/Input.vue";
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
+import Big from "big.js";
 import { ref, watch } from "vue";
 
 import Datepicker from "@vuepic/vue-datepicker";
@@ -109,7 +110,9 @@ const submitTransaction = () => {
 }
 
 watch([quantity, price], () => {
-  totalInput.value.update("900");
+  if (!quantity.value || !price.value) return;
+  const total = Big(quantity.value).times(price.value);
+  totalInput.value.update(total.toFixed(2));
 });
 </script>
 

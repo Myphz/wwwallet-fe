@@ -8,7 +8,7 @@
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </span>
     <ul class="h3">
-      <li v-for="option in opts" @click="select(option)">{{ option }}</li>
+      <li v-for="option in opts" :key="option" @click="select(option)">{{ option }}</li>
     </ul>
   </div>
 </template>
@@ -16,6 +16,8 @@
 <script setup>
 import { getCurrentInstance, ref, toRefs, watch } from "vue";
 import Icon from "U#/Icon.vue";
+import { useCryptoStore } from "S#/crypto.store";
+import byMcap from "@/helpers/sortByMcap.helper";
 
 const props = defineProps({
   options: {
@@ -44,20 +46,21 @@ const props = defineProps({
   }
 });
 
+const store = useCryptoStore();
 const { options } = toRefs(props);
 const { emit } = getCurrentInstance();
 const open = ref(false);
 const selected = ref(props.startValue || options.value[0]);
-const opts = ref(options.value.filter(opt => opt !== selected.value));
+const opts = ref(options.value.filter(opt => opt !== selected.value).sort(byMcap(store)));
 
 watch(options, newOpts => {
   selected.value = props.startValue || newOpts[0];
-  opts.value = newOpts.filter(opt => opt !== selected.value);
+  opts.value = newOpts.filter(opt => opt !== selected.value).sort(byMcap(store));
 });
 
 const select = option => {
   selected.value = option;
-  opts.value = options.value.filter(option => option !== selected.value);
+  opts.value = options.value.filter(option => option !== selected.value).sort(byMcap(store));
   emit("update:modelValue", selected.value);
 }
 

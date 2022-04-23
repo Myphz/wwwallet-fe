@@ -23,6 +23,7 @@
 import Card from "D#/markets/Card.vue"
 import { computed, defineAsyncComponent, ref, toRefs } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
+import byMcap from "@/helpers/sortByMcap.helper";
 
 const props = defineProps({
   search: {
@@ -38,7 +39,7 @@ const page = ref(0);
 const store = useCryptoStore();
 const crypto = computed(() => Object.keys(store.tickerInfo)
                               .filter(ticker => ticker.includes(search.value.toUpperCase()))
-                              .sort((a, b) => (store.tickerInfo[b].mcap || 0) - (store.tickerInfo[a].mcap || 0)));
+                              .sort(byMcap(store)));
 
 const cryptoLen = computed(() => crypto.value.length);
 const cryptoList = computed(() => crypto.value.slice(page.value*10, (page.value+1)*10));
