@@ -1,6 +1,6 @@
 <template>
   <div :class="'noselect ' + (open ? 'opened ' : '') + (bordered ? 'bordered' : '')">
-    <span class="align-center item-container" @click="open = !open">
+    <span class="align-center item-container" @click="open = !open; search = ''; input.update('')">
       <span class="align-center">
         <Icon v-if="icon" :icon="icon" :class="'icon-' + iconSize" />
         <span>{{ selected }}</span>
@@ -8,7 +8,7 @@
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </span>
     <ul class="h3">
-      <Input icon="search" placeholder="Search" />
+      <Input icon="search" placeholder="Search" v-model:value="search" ref="input" />
       <li v-for="option in opts" :key="option" @click="select(option)">{{ option }}</li>
     </ul>
   </div>
@@ -51,20 +51,27 @@ const props = defineProps({
 const store = useCryptoStore();
 const { options } = toRefs(props);
 const { emit } = getCurrentInstance();
-const open = ref(false);
-const selected = ref(props.startValue || options.value[0]);
-const opts = ref(options.value.filter(opt => opt !== selected.value).sort(byMcap(store)));
 
-watch(options, newOpts => {
+const input = ref();
+const open = ref(false);
+const search = ref("");
+const selected = ref(props.startValue || options.value[0]);
+
+const filterOptions = opt => opt !== selected.value && opt.includes(search.value.toUpperCase());
+const opts = ref(options.value.filter(filterOptions).sort(byMcap(store)));
+
+watch([options, search], () => {
   selected.value = props.startValue || newOpts[0];
-  opts.value = newOpts.filter(opt => opt !== selected.value).sort(byMcap(store));
+  opts.value = options.value.filter(filterOptions).sort(byMcap(store));
 });
 
 const select = option => {
   selected.value = option;
-  opts.value = options.value.filter(option => option !== selected.value).sort(byMcap(store));
+  opts.value = options.value.filter(filterOptions).sort(byMcap(store));
   emit("update:modelValue", selected.value);
   open.value = !open.value;
+  search.value = "";
+  input.value.update("");
 }
 
 </script>
