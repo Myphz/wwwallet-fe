@@ -5,23 +5,23 @@
         <img 
           v-if="withIcon"
           :src="getCryptoIcon(selected)" 
-          :alt="crypto"
+          :alt="selected"
           onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
-          :class="'icon-' + iconSize"
+          :class="('icon-' + iconSize) + (mobile ? ' icon-mobile' : '')"
         >
         <span>{{ selected }}</span>
       </span>
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </span>
-    <ul class="h3 text-secondary">
+    <ul class="h3 text-secondary" @scroll="detectScrollEnd">
       <Input icon="search" placeholder="Search" v-model:value="search" ref="input" containerClasses="bg-dark nohover" />
-      <li v-for="option in opts.slice(0, 50)" :key="option" @click="select(option)" class="align-center">
+      <li v-for="option in opts.slice(0, 20*page)" :key="option" @click="select(option)" class="align-center">
         <img 
           v-if="withIcon"
           :src="getCryptoIcon(option)" 
-          :alt="crypto"
+          :alt="option"
           onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
-          class="icon-small"
+          :class="'icon-small' + (mobile ? ' icon-mobile-li' : '')"
         >
         {{ option }}
       </li>
@@ -60,6 +60,11 @@ const props = defineProps({
   bordered: {
     type: Boolean,
     default: false
+  },
+
+  mobile: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -68,6 +73,7 @@ const { options } = toRefs(props);
 const { emit } = getCurrentInstance();
 
 const input = ref();
+const page = ref(1);
 const open = ref(false);
 const search = ref("");
 const selected = ref(props.startValue || options.value[0]);
@@ -87,7 +93,13 @@ const select = option => {
   open.value = !open.value;
   search.value = "";
   input.value.update("");
-}
+};
+
+const detectScrollEnd = event => {
+  // Detect scroll end
+  if (event.target.scrollHeight - event.target.scrollTop - 10 >= event.target.clientHeight || page.value*20 > opts.length) return;
+  page.value++;
+};
 
 </script>
 
@@ -141,6 +153,12 @@ const select = option => {
   .icon-small
     width: 48px
     height: 48px
-    margin: 0 .5em
+    // margin: 0 .5em
+
+  .icon-mobile
+    transform: scale(.7)
+
+  .icon-mobile-li
+    transform: scale(.6)
 
 </style>

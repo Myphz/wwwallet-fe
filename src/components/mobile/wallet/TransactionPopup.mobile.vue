@@ -17,19 +17,25 @@
       </div>
       <div class="space-between-margin">
         <Select 
-          :options='["BTC", "ETH"]' 
+          :options="cryptoList"
           icon="bitcoin" 
           class="h3 width-50"
+          :startValue="selectedCrypto"
+          v-model="selectedCrypto"
           iconSize="small"
           bordered
+          withIcon
+          mobile
         />
         <Select 
-          :options='["BTC", "ETH"]' 
+          :options="quotes"
           icon="bitcoin" 
           class="h3 width-50"
           iconSize="small"
           :startValue="base"
           bordered
+          withIcon
+          mobile
         />
       </div>
 
@@ -68,7 +74,9 @@ import Select from "U#/Select.vue";
 import Input from "U#/Input.vue";
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
-import { ref, toRefs } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
+import { useCryptoStore } from "S#/crypto.store";
+import { useRoute } from "vue-router";
 
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
@@ -105,9 +113,16 @@ const props = defineProps({
   }
 });
 
+const store = useCryptoStore();
 const { base } = toRefs(props);
+const route = useRoute();
+const selectedCrypto = ref(route.params.crypto.toUpperCase());
 // Convert each prop to ref
 const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
+
+const cryptoList = computed(() => Object.keys(store.tickerInfo));
+const quotes = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
+
 const currentDate = new Date();
 if (date.value.getTime() === 0) date.value = currentDate;
 const datePicked = ref(date.value !== currentDate);

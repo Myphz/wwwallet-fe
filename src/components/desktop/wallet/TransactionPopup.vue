@@ -72,10 +72,10 @@ import Button from "U#/Button.vue";
 import Big from "big.js";
 import { computed, ref, toRefs, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
+import { useRoute } from "vue-router";
 
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import { useRoute } from "vue-router";
 
 const props = defineProps({
   base: {
