@@ -33,7 +33,7 @@
 import ChartOptions from "D#/charts/ChartOptions.vue";
 import CandlestickChart from "D#/charts/CandlestickChart.vue";
 import { TIMES } from "@/config/config.js";
-import { computed, ref, watch } from "vue";
+import { computed, getCurrentInstance, ref, watch } from "vue";
 import { formatValue, formatPercentage } from "@/helpers/formatNumber.helper";
 import { calculatePercentage } from "@/helpers/getPrice.helper";
 import { useCryptoStore } from "S#/crypto.store";
@@ -57,7 +57,10 @@ const { crypto, base } = defineProps({
 
 const currentBase = ref(base);
 const activeTime = ref(0);
+const { emit } = getCurrentInstance();
+
 const store = useCryptoStore();
+
 const price = computed(() => formatValue(store.prices[crypto + currentBase.value]?.c));
 const pctChange = computed(() => formatPercentage(calculatePercentage(store.prices[crypto + currentBase.value])));
 const high24 = computed(() => formatValue(store.prices[crypto + currentBase.value]?.h));
@@ -66,6 +69,10 @@ const low24 = computed(() => formatValue(store.prices[crypto + currentBase.value
 const isHigher = ref(null);
 watch(price, (newPrice, oldPrice) => {
   isHigher.value = newPrice > oldPrice;
+});
+
+watch(currentBase, () => {
+  emit("update:modelValue", currentBase.value);
 });
 </script>
 

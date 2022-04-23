@@ -7,7 +7,7 @@
       </span>
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </span>
-    <ul class="h3">
+    <ul class="h3 text-secondary">
       <Input icon="search" placeholder="Search" v-model:value="search" ref="input" />
       <li v-for="option in opts" :key="option" @click="select(option)">{{ option }}</li>
     </ul>
@@ -108,7 +108,6 @@ const select = option => {
     width: fit-content
     z-index: 999999999
     transition: $anim-duration ease
-    color: $text-secondary
     background-color: $bg-dark
 
   li

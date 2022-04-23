@@ -26,6 +26,7 @@
           :options='["BTC", "ETH"]' 
           icon="bitcoin" 
           class="h2 width-50"
+          :startValue="base"
           bordered
         />
       </div>
@@ -65,12 +66,17 @@ import Input from "U#/Input.vue";
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
 import Big from "big.js";
-import { ref, watch } from "vue";
+import { ref, toRefs, watch } from "vue";
 
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 const props = defineProps({
+  base: {
+    type: String,
+    required: true
+  },
+
   isBuy: {
     type: Boolean,
     default: true,
@@ -97,6 +103,7 @@ const props = defineProps({
   }
 });
 
+const { base } = toRefs(props);
 // Convert each prop to ref
 const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
 const currentDate = new Date();
