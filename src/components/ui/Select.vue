@@ -61,7 +61,7 @@ const filterOptions = opt => opt !== selected.value && opt.includes(search.value
 const opts = ref(options.value.filter(filterOptions).sort(byMcap(store)));
 
 watch([options, search], () => {
-  selected.value = props.startValue || newOpts[0];
+  selected.value = props.startValue || options.value[0];
   opts.value = options.value.filter(filterOptions).sort(byMcap(store));
 });
 
