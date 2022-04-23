@@ -1,7 +1,7 @@
 <template>
   <span>
-    <div :class="'box-container align-center bordered ' + (value ? 'border-primary ' : '')">
-      <Icon :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-small' : '')" />
+    <div :class="'box-container align-center bordered ' + (value ? 'border-primary ' : '') + containerClasses">
+      <Icon :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-05' : '')" />
       <span class="input-container">
         <input 
           :class="'text-primary ' + inputClasses"
@@ -77,6 +77,11 @@ const { icon, validate, startValue } = defineProps({
     default: false
   },
 
+  containerClasses: {
+    type: String,
+    default: ""
+  },
+
   inputClasses: {
     type: String,
     default: "h4"
@@ -114,6 +119,9 @@ defineExpose({ update });
   .box-container
     width: 100%
     border-bottom: 1px solid $text-secondary
+    position: sticky
+    top: 0
+    z-index: 100
 
   .border-primary
     border-bottom: 1px solid $text-primary
@@ -150,6 +158,6 @@ defineExpose({ update });
     path
       fill: $text-primary
 
-  .icon-small
+  .icon-05
     transform: scale(.5)
 </style>

@@ -2,24 +2,39 @@
   <div :class="'noselect ' + (open ? 'opened ' : '') + (bordered ? 'bordered' : '')">
     <span class="align-center item-container" @click="open = !open; search = ''; input.update('')">
       <span class="align-center">
-        <Icon v-if="icon" :icon="icon" :class="'icon-' + iconSize" />
+        <img 
+          v-if="withIcon"
+          :src="getCryptoIcon(selected)" 
+          :alt="crypto"
+          onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
+          :class="'icon-' + iconSize"
+        >
         <span>{{ selected }}</span>
       </span>
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </span>
     <ul class="h3 text-secondary">
-      <Input icon="search" placeholder="Search" v-model:value="search" ref="input" />
-      <li v-for="option in opts" :key="option" @click="select(option)">{{ option }}</li>
+      <Input icon="search" placeholder="Search" v-model:value="search" ref="input" containerClasses="bg-dark nohover" />
+      <li v-for="option in opts.slice(0, 50)" :key="option" @click="select(option)" class="align-center">
+        <img 
+          v-if="withIcon"
+          :src="getCryptoIcon(option)" 
+          :alt="crypto"
+          onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
+          class="icon-small"
+        >
+        {{ option }}
+      </li>
     </ul>
   </div>
 </template>
 
 <script setup>
 import { getCurrentInstance, ref, toRefs, watch } from "vue";
-import Icon from "U#/Icon.vue";
 import Input from "U#/Input.vue";
 import { useCryptoStore } from "S#/crypto.store";
 import byMcap from "@/helpers/sortByMcap.helper";
+import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
 
 const props = defineProps({
   options: {
@@ -32,9 +47,9 @@ const props = defineProps({
     default: ""
   },
 
-  icon: {
-    type: String,
-    default: ""
+  withIcon: {
+    type: Boolean,
+    default: false
   },
 
   iconSize: {
@@ -126,6 +141,6 @@ const select = option => {
   .icon-small
     width: 48px
     height: 48px
-    margin: 0 .1em
+    margin: 0 .5em
 
 </style>
