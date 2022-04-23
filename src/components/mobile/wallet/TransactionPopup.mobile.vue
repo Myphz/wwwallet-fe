@@ -76,7 +76,7 @@ import "@vuepic/vue-datepicker/dist/main.css";
 const props = defineProps({
   base: {
     type: String,
-    required: true
+    default: "USDT"
   },
 
   isBuy: {
