@@ -1,11 +1,11 @@
 <template>
   <section>
-    <CryptoChart :crypto="crypto" :base="base" v-model="base" />
+    <CryptoChart :crypto="crypto" :base="base" v-model:Base="base" v-model:Crypto="crypto" />
     <Transactions :crypto="crypto" />
     <div class="justify-center" style="margin-bottom: 2em">
       <Button btnClass="h3 bg-dark bottom-rounded noborder" @click="openPopup">+ Add Transaction</Button>
     </div>
-    <TransactionPopup v-show="displayPopup" @close="displayPopup = false" :base="base" />
+    <TransactionPopup v-show="displayPopup" @close="displayPopup = false" :base="base" :crypto="crypto" />
   </section>
 </template>
 
@@ -18,7 +18,7 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const crypto = route.params.crypto.toUpperCase();
+const crypto = ref(route.params.crypto.toUpperCase());
 const base = ref("USDT");
 
 const displayPopup = ref(false);

@@ -20,7 +20,7 @@
           :options="cryptoList"
           icon="bitcoin"
           class="h2 width-50"
-          :startValue="selectedCrypto"
+          :startValue="crypto"
           v-model="selectedCrypto"
           bordered
           withIcon
@@ -30,6 +30,7 @@
           icon="bitcoin" 
           class="h2 width-50"
           :startValue="base"
+          v-model="selectedBase"
           bordered
           withIcon
         />
@@ -72,12 +73,16 @@ import Button from "U#/Button.vue";
 import Big from "big.js";
 import { computed, ref, toRefs, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
-import { useRoute } from "vue-router";
 
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 const props = defineProps({
+  crypto: {
+    type: String,
+    default: "BTC"
+  },
+
   base: {
     type: String,
     default: "USDT"
@@ -110,9 +115,11 @@ const props = defineProps({
 });
 
 const store = useCryptoStore();
-const { base } = toRefs(props);
-const route = useRoute();
-const selectedCrypto = ref(route.params.crypto.toUpperCase());
+const { crypto, base } = toRefs(props);
+
+const selectedCrypto = ref(crypto.value);
+const selectedBase = ref(base.value);
+
 // Convert each prop to ref
 const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
 
@@ -127,6 +134,7 @@ const totalInput = ref();
 const isDetail = !!quantity.value;
 
 const submitTransaction = () => {
+  console.log(isBuy.value, quantity.value, price.value, date.value, notes.value);
 }
 
 watch([quantity, price], () => {

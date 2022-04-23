@@ -68,20 +68,20 @@ const props = defineProps({
 });
 
 const store = useCryptoStore();
-const { options } = toRefs(props);
+const { options, startValue } = toRefs(props);
 const { emit } = getCurrentInstance();
 
 const input = ref();
 const page = ref(1);
 const open = ref(false);
 const search = ref("");
-const selected = ref(props.startValue || options.value[0]);
+const selected = ref(startValue.value || options.value[0]);
 
 const filterOptions = opt => opt !== selected.value && opt.includes(search.value.toUpperCase());
 const opts = ref(options.value.filter(filterOptions).sort(byMcap(store)));
 
-watch([options, search], () => {
-  selected.value = props.startValue && options.value.includes(props.startValue) ? props.startValue : options.value[0];
+watch([options, search, startValue], () => {
+  selected.value = startValue.value && options.value.includes(startValue.value) ? startValue.value : options.value[0];
   emit("update:modelValue", selected.value);
   opts.value = options.value.filter(filterOptions).sort(byMcap(store));
 });

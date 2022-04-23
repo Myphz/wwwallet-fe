@@ -73,8 +73,12 @@ watch(price, (newPrice, oldPrice) => {
   isHigher.value = newPrice > oldPrice;
 });
 
+watch(currentCrypto, () => {
+  emit("update:Crypto", currentCrypto.value);
+});
+
 watch(currentBase, () => {
-  emit("update:modelValue", currentBase.value);
+  emit("update:Base", currentBase.value);
 });
 </script>
 
