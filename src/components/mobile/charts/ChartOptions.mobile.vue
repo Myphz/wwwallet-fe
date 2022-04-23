@@ -1,14 +1,21 @@
 <template>
   <header class="noselect space-between">
     <span class="align-center">
-      <h2 class="margin-left margin-right">{{ crypto }}</h2>
+      <Select 
+        class="margin-left text-primary h2" 
+        :options="cryptoList"
+        :startValue="selectedCrypto"
+        v-model="selectedCrypto"
+        mobile
+      />
 
       <Select 
         class="text-primary h2" 
         :options="baseOptions"
-        :startValue="selectedBase"
+        :startValue="base"
         v-model="selectedBase"
-        @update:modelValue="$emit('update:modelValue', selectedBase)"
+        @update:modelValue="$emit('update:Base', selectedBase)"
+        mobile
       />
 
     </span>
@@ -22,6 +29,7 @@ import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
 import { computed, getCurrentInstance, ref, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
+import { useRouter } from "vue-router";
 
 const { crypto, base } = defineProps({
   crypto: {
@@ -36,13 +44,18 @@ const { crypto, base } = defineProps({
 });
 
 const store = useCryptoStore();
-const baseOptions = computed(() => store.tickerInfo[crypto]?.quotes || []);
+const router = useRouter();
 
+const selectedCrypto = ref(crypto);
 const selectedBase = ref(base);
-const { emit } = getCurrentInstance();
 
-watch(selectedBase, newBase => {
-  emit("update:modelValue", newBase);
+const baseOptions = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
+const cryptoList = computed(() => Object.keys(store.tickerInfo));
+
+const { emit } = getCurrentInstance();
+watch(selectedCrypto, newCrypto => {
+  router.replace({ name: "crypto", params: { crypto: newCrypto } });
+  emit("update:Crypto", newCrypto);
 });
 </script>
 

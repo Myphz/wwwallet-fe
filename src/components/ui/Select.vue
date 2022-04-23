@@ -16,8 +16,7 @@
     <ul class="h3 text-secondary" @scroll="detectScrollEnd">
       <Input icon="search" placeholder="Search" v-model:value="search" ref="input" containerClasses="bg-dark nohover" />
       <li v-for="option in opts.slice(0, 20*page)" :key="option" @click="select(option)" class="align-center">
-        <img 
-          v-if="withIcon"
+        <img
           :src="getCryptoIcon(option)" 
           :alt="option"
           onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
@@ -82,7 +81,8 @@ const filterOptions = opt => opt !== selected.value && opt.includes(search.value
 const opts = ref(options.value.filter(filterOptions).sort(byMcap(store)));
 
 watch([options, search], () => {
-  selected.value = props.startValue || options.value[0];
+  selected.value = props.startValue && options.value.includes(props.startValue) ? props.startValue : options.value[0];
+  emit("update:modelValue", selected.value);
   opts.value = options.value.filter(filterOptions).sort(byMcap(store));
 });
 
@@ -153,12 +153,14 @@ const detectScrollEnd = event => {
   .icon-small
     width: 48px
     height: 48px
-    // margin: 0 .5em
+    margin: 0 .5em
 
   .icon-mobile
     transform: scale(.7)
+    margin: 0
 
   .icon-mobile-li
     transform: scale(.6)
+    margin: 0
 
 </style>

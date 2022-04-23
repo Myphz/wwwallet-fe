@@ -70,6 +70,7 @@ export default {
       // Close possibly existing socket
       klinesSocket && klinesSocket.close();
       const { klines, socket } = await store.getKlines(crypto.value, base.value, interval.value);
+      if (!klines?.length) return;
       // Set white space to the right of the chart 
       option.xAxis.max = klines[klines.length - 1][0] + (klines[klines.length - 1][0] - klines[klines.length - 2][0]) * klines.length / 200;
       // Set maximum zoom
@@ -88,7 +89,7 @@ export default {
 
     // Load the data when mounted and when base or interval change
     onMounted(loadData);
-    watch([base, interval], loadData);
+    watch([crypto, base, interval], loadData);
 
     // Function to load more data if the user has dragged the chart all the way to the left
     const checkEnd = async ({ batch }) => {

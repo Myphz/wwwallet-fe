@@ -89,7 +89,7 @@ export const useCryptoStore = defineStore("crypto", {
       if (!noSocket) socket = createSocket(`${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`);
 
       return {
-        klines: klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k))),
+        klines: klines.length && klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k))),
         socket
       };
     }

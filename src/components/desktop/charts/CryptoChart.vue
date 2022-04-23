@@ -1,6 +1,6 @@
 <template>
   <section>
-    <ChartOptions :crypto="crypto" :base="base" v-model="currentBase" />
+    <ChartOptions :crypto="crypto" :base="base" v-model:Base="currentBase" v-model:Crypto="currentCrypto" />
     <div class="stats">
       <span :class="'price ' + (isHigher ? 'green' : isHigher !== null ? 'red' : '')">
         <h2>{{ price }}</h2>
@@ -24,7 +24,7 @@
       </span>
     </div>
     <div :class="dashboard ? 'chart-container-dashboard' : 'chart-container'">
-      <CandlestickChart :crypto="crypto" :base="currentBase" :interval="TIMES[activeTime]" />
+      <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" />
     </div>
   </section>
 </template>
@@ -56,15 +56,17 @@ const { crypto, base } = defineProps({
 });
 
 const currentBase = ref(base);
+const currentCrypto = ref(crypto);
+
 const activeTime = ref(0);
 const { emit } = getCurrentInstance();
 
 const store = useCryptoStore();
 
-const price = computed(() => formatValue(store.prices[crypto + currentBase.value]?.c));
-const pctChange = computed(() => formatPercentage(calculatePercentage(store.prices[crypto + currentBase.value])));
-const high24 = computed(() => formatValue(store.prices[crypto + currentBase.value]?.h));
-const low24 = computed(() => formatValue(store.prices[crypto + currentBase.value]?.l));
+const price = computed(() => formatValue(store.prices[currentCrypto.value + currentBase.value]?.c));
+const pctChange = computed(() => formatPercentage(calculatePercentage(store.prices[currentCrypto.value + currentBase.value])));
+const high24 = computed(() => formatValue(store.prices[currentCrypto.value + currentBase.value]?.h));
+const low24 = computed(() => formatValue(store.prices[currentCrypto.value + currentBase.value]?.l));
 
 const isHigher = ref(null);
 watch(price, (newPrice, oldPrice) => {
