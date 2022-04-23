@@ -35,8 +35,8 @@
       </div>
 
       <div class="space-between-margin row">
-        <Input icon="coins" placeholder="Quantity" iconSmall type="number" :startValue="quantity" v-model:value="quantity" />
-        <Input icon="exchange" placeholder="BTC/USDT" iconSmall type="number" :startValue="price" v-model:value="price" />
+        <Input icon="coins" label="Quantity" iconSmall type="number" :startValue="quantity" v-model:value="quantity" />
+        <Input icon="exchange" label="BTC/USDT" iconSmall type="number" :startValue="price" v-model:value="price" />
       </div>
       <div class="space-between-margin row">
         <Datepicker 
@@ -51,10 +51,10 @@
           vertical
           dark 
         />
-        <Input icon="notes" placeholder="Notes" iconSmall :startValue="notes" v-model:value="notes" />
+        <Input icon="notes" label="Notes" iconSmall :startValue="notes" v-model:value="notes" />
       </div>
 
-      <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
+      <Input icon="dollar" label="Total Value (USDT)" inputClasses="h4" labelClasses="h4" type="number" />
       <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
       <div v-else class="space-between-margin" style="margin-bottom: 0">
         <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>
@@ -212,11 +212,11 @@ const isDetail = !!quantity.value;
     font-size: nth($font-sizes, 5)
     padding: 16px 0 16px 50px
     border: none
-    border-bottom: 1px solid $text-primary
+    border-bottom: 1px solid $text-secondary
     border-radius: 0
     line-height: unset
     &:hover
-      border-color: $text-primary
+      border-color: $text-secondary
 
   .dp__menu_index
     z-index: 9999999999
@@ -232,6 +232,10 @@ const isDetail = !!quantity.value;
     & + .dp__input_icons
       path  
         fill: $text-primary
+
+    border-bottom: 1px solid $text-primary
+    &:hover
+      border-bottom: 1px solid $text-primary
 
   .dp__calendar_header_item, .dp__cell_inner
     height: 24px

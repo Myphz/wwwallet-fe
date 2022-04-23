@@ -1,6 +1,6 @@
 <template>
   <span>
-    <div class="box-container align-center">
+    <div :class="'box-container align-center bordered ' + (value ? 'border-primary ' : '')">
       <Icon :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-small' : '')" />
       <span class="input-container">
         <input 
@@ -13,9 +13,9 @@
           autocapitalize="none"
           :autocomplete="autocomplete"
           :disabled="disabled"
-          placeholder=" "
+          :placeholder="placeholder"
         >
-        <label :class="'text-secondary ' + placeholderClasses">{{ placeholder }}</label>
+        <label :class="'text-secondary ' + labelClasses">{{ label }}</label>
       </span>
     </div>
     <div v-show="!isValid && value" class="error text-red h6">
@@ -33,9 +33,13 @@ const { icon, validate, startValue } = defineProps({
     required: true
   },
 
+  label: {
+    type: String,
+  },
+
   placeholder: {
     type: String,
-    required: true
+    default: " "
   },
 
   startValue: {
@@ -78,7 +82,7 @@ const { icon, validate, startValue } = defineProps({
     default: "h4"
   },
 
-  placeholderClasses: {
+  labelClasses: {
     type: String,
     default: "h4"
   }
@@ -108,13 +112,19 @@ defineExpose({ update });
 
 <style lang="sass" scoped>
   .box-container
-    border-bottom: 1px solid $text-primary
     width: 100%
+    border-bottom: 1px solid $text-secondary
+
+  .border-primary
+    border-bottom: 1px solid $text-primary
 
   .input-container
     position: relative
     width: 70%
     max-width: 70%
+
+  input::placeholder
+    color: $text-secondary
 
   label
     position: absolute
@@ -129,14 +139,9 @@ defineExpose({ update });
     span
       flex-grow: 1
       width: 0
-
-
 </style>
 
 <style lang="sass">
-  .icon-empty, .icon.fill
-    margin-top: -.2em
-
   .icon-empty
     path
       fill: $text-secondary

@@ -31,8 +31,8 @@
       </div>
 
       <div class="space-between row margin-bottom">
-        <Input icon="coins" placeholder="Quantity" type="number" :startValue="quantity" v-model:value="quantity" />
-        <Input icon="exchange" placeholder="Price in USDT" type="number" :startValue="price" v-model:value="price" />
+        <Input icon="coins" label="Quantity" type="number" :startValue="quantity" v-model:value="quantity" />
+        <Input icon="exchange" label="Price in USDT" type="number" :startValue="price" v-model:value="price" />
       </div>
       <div class="space-between row margin-bottom">
         <Datepicker 
@@ -46,10 +46,10 @@
           @open.once="datePicked = true"
           dark 
         />
-        <Input icon="notes" placeholder="Notes" :startValue="notes" v-model:value="notes" />
+        <Input icon="notes" label="Notes" :startValue="notes" v-model:value="notes" />
       </div>
 
-      <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" ref="totalInput" disabled />
+      <Input icon="dollar" label="Total Value (USDT)" inputClasses="h4" labelClasses="h4" ref="totalInput" disabled />
       <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;" @click="submitTransaction">Add</Button>
       <div v-else class="space-between gap">
         <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>
@@ -208,11 +208,11 @@ watch([quantity, price], () => {
     font-size: nth($font-sizes, 5)
     padding: 11px 0 11px 50px
     border: none
-    border-bottom: 1px solid $text-primary
+    border-bottom: 1px solid $text-secondary
     border-radius: 0
     line-height: unset
     &:hover
-      border-color: $text-primary
+      border-color: $text-secondary
 
   .dp__clear_icon
     display: none
@@ -225,5 +225,9 @@ watch([quantity, price], () => {
     & + .dp__input_icons
       path  
         fill: $text-primary
+        
+    border-bottom: 1px solid $text-primary
+    &:hover
+      border-bottom: 1px solid $text-primary
 
 </style>

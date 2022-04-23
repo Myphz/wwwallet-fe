@@ -6,7 +6,7 @@
       <Input 
         class="input" 
         icon="email" 
-        placeholder="Email" 
+        label="Email" 
         v-model:value="values.email"
         v-model:isValid="areValuesValid[0]"
         :validate="validateEmail"
@@ -17,7 +17,7 @@
       <Input
         class="input"
         icon="password"
-        placeholder="Password"
+        label="Password"
         type="password"
         v-model:value="values.password"
         v-model:isValid="areValuesValid[1]"
@@ -30,7 +30,7 @@
         v-if="!login"
         class="input"
         icon="password"
-        placeholder="Confirm password"
+        label="Confirm password"
         type="password"
         v-model:value="values.confirmPassword"
         v-model:isValid="areValuesValid[2]"

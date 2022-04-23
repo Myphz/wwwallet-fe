@@ -1,6 +1,6 @@
 <template>
-  <div :class="'noselect ' + (open ? 'opened ' : '') + (bordered ? 'bordered' : '')" @click="open = !open">
-    <span class="align-center item-container">
+  <div :class="'noselect ' + (open ? 'opened ' : '') + (bordered ? 'bordered' : '')">
+    <span class="align-center item-container" @click="open = !open">
       <span class="align-center">
         <Icon v-if="icon" :icon="icon" :class="'icon-' + iconSize" />
         <span>{{ selected }}</span>
@@ -8,6 +8,7 @@
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </span>
     <ul class="h3">
+      <Input icon="search" placeholder="Search" />
       <li v-for="option in opts" :key="option" @click="select(option)">{{ option }}</li>
     </ul>
   </div>
@@ -16,6 +17,7 @@
 <script setup>
 import { getCurrentInstance, ref, toRefs, watch } from "vue";
 import Icon from "U#/Icon.vue";
+import Input from "U#/Input.vue";
 import { useCryptoStore } from "S#/crypto.store";
 import byMcap from "@/helpers/sortByMcap.helper";
 
@@ -62,6 +64,7 @@ const select = option => {
   selected.value = option;
   opts.value = options.value.filter(option => option !== selected.value).sort(byMcap(store));
   emit("update:modelValue", selected.value);
+  open.value = !open.value;
 }
 
 </script>
@@ -106,7 +109,7 @@ const select = option => {
     cursor: pointer
     padding: .25em
     &:first-child
-      margin-top: 0.1em
+      margin-top: 0.5em
 
   .icon-big
     width: 64px

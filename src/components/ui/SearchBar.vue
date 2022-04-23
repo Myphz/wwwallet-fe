@@ -16,11 +16,9 @@
 import { defineAsyncComponent, ref } from "vue";
 const Icon = defineAsyncComponent(() => import("../../assets/icons/search.svg"));
 const value = ref("");
-
-const test = e => console.log(e);
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
   .search-bar
     background: $bg-paper
     border-radius: 1em
@@ -38,7 +36,9 @@ const test = e => console.log(e);
 
   .icon
     margin-right: .5em
+</style>
 
+<style lang="sass">
   .icon-empty
     path
       fill: $text-secondary
