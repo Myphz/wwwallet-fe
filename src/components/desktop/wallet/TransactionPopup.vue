@@ -62,6 +62,18 @@
         <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;">DELETE</Button>
       </div>
     </div>
+
+    <div v-if="requestSuccess !== null" :class="'response h4 align-center ' + (requestSuccess ? 'success' : 'error')">
+      <Icon :icon="requestSuccess ? 'check' : 'warning'" />
+      <div v-if="requestSuccess">
+        <div><strong>SUCCESS</strong></div>
+        <div>Transaction successfully added!</div>
+      </div>
+      <div v-else>
+        <div><strong>ERROR</strong></div>
+        <div>{{ requestMessage }}. Please retry.</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -73,6 +85,7 @@ import Button from "U#/Button.vue";
 import Big from "big.js";
 import { computed, ref, toRefs, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
+import { useAuthStore } from "S#/auth.store";
 
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
@@ -114,7 +127,9 @@ const props = defineProps({
   }
 });
 
-const store = useCryptoStore();
+const cryptoStore = useCryptoStore();
+const authStore = useAuthStore();
+
 const { crypto, base } = toRefs(props);
 
 const selectedCrypto = ref(crypto.value);
@@ -123,8 +138,8 @@ const selectedBase = ref(base.value);
 // Convert each prop to ref
 const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
 
-const cryptoList = computed(() => Object.keys(store.tickerInfo));
-const quotes = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
+const cryptoList = computed(() => Object.keys(cryptoStore.tickerInfo));
+const quotes = computed(() => cryptoStore.tickerInfo[selectedCrypto.value]?.quotes || []);
 
 const currentDate = new Date();
 if (date.value.getTime() === 0) date.value = currentDate;
@@ -133,9 +148,24 @@ const totalInput = ref();
 // Check if the component has been called with quantity valorized, i.e if this must be a Transaction Detail
 const isDetail = !!quantity.value;
 
-const submitTransaction = () => {
-  console.log(isBuy.value, quantity.value, price.value, date.value, notes.value);
-}
+const requestSuccess = ref(null);
+const requestMessage = ref("");
+
+const submitTransaction = async () => {
+  const params = { 
+    crypto: selectedCrypto.value, 
+    base: selectedBase.value,
+    isBuy: isBuy.value,
+    price: price.value,
+    quantity: quantity.value,
+    date: date.value.getTime(),
+    notes: notes.value
+  };
+
+  const { success, msg } = await authStore.addTransaction(params);
+  requestSuccess.value = success;
+  requestMessage.value = msg;
+};
 
 watch([quantity, price], () => {
   if (!quantity.value || !price.value) return;
@@ -144,9 +174,7 @@ watch([quantity, price], () => {
 });
 </script>
 
-<style lang="sass">
-  $text-secondary-hex: #6D8AAC
-
+<style lang="sass" scoped>
   .container-popup
     position: absolute
     border: none
@@ -193,6 +221,29 @@ watch([quantity, price], () => {
 
   .gap
     gap: 1em
+
+  .response
+    position: fixed
+    bottom: 5%
+    right: 10%
+    padding: 1em 2.6em
+    border-radius: .5em
+
+    img
+      width: 48px
+      height: 48px
+      margin-right: .5em
+
+  .error
+    background-color: transparentize($red, 0.5)
+
+  .success
+    background-color: transparentize($green, 0.5)
+
+</style>
+
+<style lang="sass">
+  $text-secondary-hex: #6D8AAC
 
   .dp__theme_dark
     --dp-background-color: $bg-paper
@@ -257,5 +308,4 @@ watch([quantity, price], () => {
     border-bottom: 1px solid $text-primary
     &:hover
       border-bottom: 1px solid $text-primary
-
 </style>

@@ -15,14 +15,21 @@ import Transactions from "M#/wallet/Transactions.mobile.vue";
 import TransactionPopup from "M#/wallet/TransactionPopup.mobile.vue";
 import Button from "U#/Button.vue";
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { useAuthStore } from "S#/auth.store";
 
 const route = useRoute();
+const router = useRouter();
+const authStore = useAuthStore();
+
 const crypto = ref(route.params.crypto.toUpperCase());
 const base = ref("USDT");
 
 const displayPopup = ref(false);
-const openPopup = () => {
+const openPopup = async () => {
+  const isAuth = await authStore.checkAuth();
+  if (!isAuth) return router.push({ name: "login", params: { redirect: route.path } });
+
   window.scrollTo({top: 0, behavior: "smooth"});
   displayPopup.value = true;
 }
