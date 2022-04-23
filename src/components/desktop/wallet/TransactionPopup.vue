@@ -49,8 +49,8 @@
         <Input icon="notes" placeholder="Notes" :startValue="notes" v-model:value="notes" />
       </div>
 
-      <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" type="number" />
-      <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
+      <Input icon="dollar" placeholder="Total Value (USDT)" inputClasses="h4" placeholderClasses="h4" ref="totalInput" disabled />
+      <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;" @click="submitTransaction">Add</Button>
       <div v-else class="space-between gap">
         <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>
         <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;">DELETE</Button>
@@ -64,7 +64,7 @@ import Select from "U#/Select.vue";
 import Input from "U#/Input.vue";
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
@@ -101,8 +101,16 @@ const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, 
 const currentDate = new Date();
 if (date.value.getTime() === 0) date.value = currentDate;
 const datePicked = ref(date.value !== currentDate);
+const totalInput = ref();
 // Check if the component has been called with quantity valorized, i.e if this must be a Transaction Detail
 const isDetail = !!quantity.value;
+
+const submitTransaction = () => {
+}
+
+watch([quantity, price], () => {
+  totalInput.value.update("900");
+});
 </script>
 
 <style lang="sass">

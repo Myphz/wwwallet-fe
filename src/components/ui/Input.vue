@@ -12,6 +12,7 @@
           spellcheck="false"
           autocapitalize="none"
           :autocomplete="autocomplete"
+          :disabled="disabled"
           placeholder=" "
         >
         <label :class="'text-secondary ' + placeholderClasses">{{ placeholder }}</label>
@@ -57,6 +58,11 @@ const { icon, validate, startValue } = defineProps({
     default: _ => true
   },
 
+  disabled: {
+    type: Boolean,
+    default: false
+  },
+
   errorMessage: {
     type: String,
     default: ""
@@ -81,7 +87,7 @@ const { icon, validate, startValue } = defineProps({
 // Lazy loading component to import it from a string
 // Import the svg directly using vite-svg-loader to style the icon
 const Icon = defineAsyncComponent(() => import(`../../assets/icons/${icon}.svg`));
-const value = ref(startValue);
+const value = ref(startValue.value);
 let isValid = ref(true);
 
 const validator = () => {
@@ -92,6 +98,12 @@ const validator = () => {
   }
   isValid.value = validate(value.value);
 }
+
+const update = val => {
+  value.value = val;
+}
+
+defineExpose({ update });
 </script>
 
 <style lang="sass" scoped>
