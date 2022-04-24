@@ -11,6 +11,7 @@
     "big.js": "^6.1.1",
     "echarts": "^5.3.2",
     "pinia": "^2.0.13",
+    "toformat": "^2.0.0",
     "vue": "^3.2.33",
     "vue-echarts": "^6.0.2",
     "vue-router": "^4.0.14"
