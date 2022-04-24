@@ -7,7 +7,7 @@
     </div>
 
     <TransactionPopup 
-      v-if="displayPopup" 
+      v-show="displayPopup" 
       @close="displayPopup = false" 
       @success="value => success = value"
       @message="value => message = value"

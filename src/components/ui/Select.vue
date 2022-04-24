@@ -77,22 +77,30 @@ const open = ref(false);
 const search = ref("");
 const selected = ref(startValue.value || options.value[0]);
 
-const filterOptions = opt => opt !== selected.value && opt.includes(search.value.toUpperCase());
-const opts = ref(options.value.filter(filterOptions).sort(byMcap(store)));
+const filterOptions = options => options.filter(opt => opt !== selected.value && opt.includes(search.value.toUpperCase())).sort(byMcap(store));
+const opts = ref(filterOptions(options.value));
 
-watch([options, search, startValue], () => {
+watch(startValue, () => {
   reset();
   emit("update:modelValue", selected.value);
-  opts.value = options.value.filter(filterOptions).sort(byMcap(store));
+  opts.value = filterOptions(options.value);
+});
+
+watch(options, () => {
+  reset(selected.value);
+  emit("update:modelValue", selected.value);
+  opts.value = filterOptions(options.value);
+})
+
+watch(search, () => {
+  opts.value = filterOptions(options.value)
 });
 
 const select = option => {
   selected.value = option;
-  opts.value = options.value.filter(filterOptions).sort(byMcap(store));
   emit("update:modelValue", selected.value);
+  opts.value = filterOptions(options.value)
   open.value = !open.value;
-  search.value = "";
-  input.value.update("");
 };
 
 const detectScrollEnd = event => {
@@ -101,8 +109,9 @@ const detectScrollEnd = event => {
   page.value++;
 };
 
-const reset = () => {
-  selected.value = startValue.value && options.value.includes(startValue.value) ? startValue.value : options.value[0];
+const reset = newValue => {
+  const updateValue = newValue || startValue.value;
+  selected.value = updateValue && options.value.includes(updateValue) ? updateValue : options.value[0];
 };
 
 defineExpose({ reset });

@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref, toRefs, watch } from 'vue'
+import { defineAsyncComponent, getCurrentInstance, ref, toRefs, watch } from 'vue'
 
 const props = defineProps({
   icon: {
@@ -97,6 +97,8 @@ const Icon = defineAsyncComponent(() => import(`../../assets/icons/${icon}.svg`)
 const value = ref(startValue.value);
 let isValid = ref(true);
 
+const { emit } = getCurrentInstance();
+
 const validator = () => {
   // If the field is empty, there's nothing to validate
   if (!value.value) {
@@ -112,8 +114,13 @@ const update = val => {
 
 const reset = () => update("");
 
+// When startValue updates, update the current value and emit
 watch(startValue, () => {
   value.value = startValue.value;
+  isValid.value = validate(value.value);
+
+  emit("update:value", value.value);
+  emit("update:isValid", isValid.value);
 });
 
 defineExpose({ update, reset });

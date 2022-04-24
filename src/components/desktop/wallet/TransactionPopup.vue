@@ -7,7 +7,7 @@
         <h1 v-else>Add Transaction</h1>
         <Icon 
           icon="cross"
-          @click="$emit('close')"
+          @click="$emit('close'); resetFields()"
           clickable
         />
       </header>
@@ -156,7 +156,7 @@ const startPrice = ref("");
 
 // Watch only once
 const unwatch = watch(cryptoStore.prices, () => {
-  startPrice.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c || "";
+  startPrice.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c?.toString() || "";
   unwatch();
 });
 
@@ -178,6 +178,23 @@ const totalInput = ref();
 // Check if the component has been called with quantity valorized, i.e if this must be a Transaction Detail
 const isDetail = !!quantity.value;
 
+const resetFields = () => {
+  selectedCrypto.value = crypto.value;
+  selectedBase.value = base.value;
+  isBuy.value = true;
+  price.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c?.toString() || "";
+  quantity.value = "";
+  date.value = currentDate;
+  datePicked.value = false;
+  totalInput.value.update("");
+  notes.value = "";
+  // Check if the price field is not empty
+  Object.assign(inputsValid, [false, !!price.value]);
+  inputs.forEach(input => input.reset());
+  // Don't reset the price input field
+  inputs[3].update(price.value);
+};
+
 const submitTransaction = async () => {
   const params = { 
     crypto: selectedCrypto.value, 
@@ -193,26 +210,17 @@ const submitTransaction = async () => {
   emit("success", success);
   emit("message", msg);
   if (success) emit("close");
-
-  // Reset fields
-  selectedCrypto.value = crypto.value;
-  selectedBase.value = base.value;
-  isBuy.value = true;
-  price.value = "";
-  quantity.value = "";
-  date.value = currentDate;
-  datePicked.value = false;
-  totalInput.value.update("");
-  notes.value = "";
-  Object.assign(inputsValid, [false, false]);
-
-  inputs.forEach(input => input.reset());
+  resetFields();
 };
 
 watch([quantity, price], () => {
   if (inputsValid.some(e => !e)) return totalInput.value.reset();
   const total = Big(quantity.value).times(price.value);
   totalInput.value.update(total.toFixed(2));
+});
+
+watch([selectedCrypto, selectedBase], () => {
+  startPrice.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c?.toString() || "";
 });
 </script>
 

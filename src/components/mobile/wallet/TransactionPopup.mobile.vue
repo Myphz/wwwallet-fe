@@ -7,7 +7,7 @@
         <h2 v-else>Add Transaction</h2>
         <Icon 
           icon="cross"
-          @click="$emit('close')"
+          @click="$emit('close'); resetFields()"
           clickable
         />
       </header>
@@ -47,7 +47,6 @@
           icon="coins" 
           label="Quantity" 
           iconSmall 
-          :startValue="quantity" 
           v-model:value="quantity" 
           v-model:isValid="inputsValid[0]"
           :validate="isPositiveFloat"
@@ -59,7 +58,7 @@
           icon="exchange" 
           :label="`${selectedCrypto}/${selectedBase}`" 
           iconSmall 
-          :startValue="price" 
+          :startValue="startPrice" 
           v-model:value="price" 
           v-model:isValid="inputsValid[1]"
           :validate="isPositiveFloat"
@@ -161,6 +160,13 @@ const { crypto, base } = toRefs(props);
 const selectedCrypto = ref(crypto.value);
 const selectedBase = ref(base.value);
 
+const startPrice = ref("");
+// Watch only once
+const unwatch = watch(cryptoStore.prices, () => {
+  startPrice.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c?.toString() || "";
+  unwatch();
+});
+
 const { emit } = getCurrentInstance();
 
 // Convert each prop to ref
@@ -180,6 +186,23 @@ const totalInput = ref();
 // Check if the component has been called with quantity valorized, i.e if this must be a Transaction Detail
 const isDetail = !!quantity.value;
 
+const resetFields = () => {
+  selectedCrypto.value = crypto.value;
+  selectedBase.value = base.value;
+  isBuy.value = true;
+  price.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c?.toString() || "";
+  quantity.value = "";
+  date.value = currentDate;
+  datePicked.value = false;
+  totalInput.value.update("");
+  notes.value = "";
+  // Check if the price field is not empty
+  Object.assign(inputsValid, [false, !!price.value]);
+  inputs.forEach(input => input.reset());
+  // Don't reset the price input field
+  inputs[3].update(price.value);
+};
+
 const submitTransaction = async () => {
   const params = { 
     crypto: selectedCrypto.value, 
@@ -192,30 +215,20 @@ const submitTransaction = async () => {
   };
 
   const { success, msg } = await authStore.addTransaction(params);
-  console.log({ success, msg });
   emit("success", success);
   emit("message", msg);
   if (success) emit("close");
-
-  // Reset fields
-  selectedCrypto.value = crypto.value;
-  selectedBase.value = base.value;
-  isBuy.value = true;
-  price.value = "";
-  quantity.value = "";
-  date.value = currentDate;
-  datePicked.value = false;
-  totalInput.value.update("");
-  notes.value = "";
-  Object.assign(inputsValid, [false, false]);
-
-  inputs.forEach(input => input.reset());
+  resetFields();
 };
 
 watch([quantity, price], () => {
   if (inputsValid.some(e => !e)) return totalInput.value.reset();
   const total = Big(quantity.value).times(price.value);
   totalInput.value.update(total.toFixed(2));
+});
+
+watch([selectedCrypto, selectedBase], () => {
+  startPrice.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c?.toString() || "";
 });
 </script>
 
