@@ -6,7 +6,7 @@
           v-if="withIcon"
           :src="getCryptoIcon(selected)" 
           :alt="selected"
-          onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
+          onerror="this.src='/src/assets/icons/generic.svg'"
           :class="('icon-' + iconSize) + (mobile ? ' icon-mobile' : '')"
         >
         <span>{{ selected }}</span>

@@ -18,7 +18,7 @@ function formatBigValue(price) {
 
 export const formatValue = price => {
   if (!price) return "0.00";
-  if (price >= 500000) return formatBigValue(price);
+  if (price >= 1000000) return formatBigValue(price);
   const decimalDigits = getDecimalDigits(price);
   return price.toLocaleString(undefined, { minimumFractionDigits: decimalDigits, maximumFractionDigits: decimalDigits });
 }

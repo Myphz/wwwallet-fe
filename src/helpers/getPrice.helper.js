@@ -1,4 +1,4 @@
-const QUOTES_DOLLAR = ["USDT", "USDC", "BUSD", "UST", "DAI"];
+import { QUOTES_DOLLAR } from "@/config/config";
 
 // Helper function to retrieve the dollar price object of a given asset
 const getPriceObj = (crypto, prices) => {
