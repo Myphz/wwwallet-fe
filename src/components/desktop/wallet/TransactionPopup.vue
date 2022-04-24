@@ -81,7 +81,7 @@
         />
       </div>
 
-      <Input icon="dollar" label="Total Value (USDT)" inputClasses="h4" labelClasses="h4" ref="totalInput" disabled />
+      <Input icon="dollar" :label="`Total Value (${selectedBase})`" inputClasses="h4" labelClasses="h4" ref="totalInput" disabled />
       <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;" @click="submitTransaction">Add</Button>
       <div v-else class="space-between gap">
         <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>

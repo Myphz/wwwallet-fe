@@ -57,10 +57,15 @@ const { transaction , crypto } = defineProps({
 
 const store = useCryptoStore();
 let { isBuy, base, quantity, price, date } = transaction;
-price = new Big(price).toFormat(2);
 date = dateFormat(date);
-const value = computed(() => Big(getDollarPrice(crypto, store.prices)).times(quantity));
 
+let value;
+if (isBuy) 
+  value = computed(() => Big(getDollarPrice(crypto, store.prices)).times(quantity));
+else
+  value = Big(price).times(quantity);
+
+price = new Big(price).toFormat(2);
 const displayPopup = ref(false);
 const openPopup = () => {
   window.scrollTo({top: 0, behavior: "smooth"});
@@ -68,9 +73,11 @@ const openPopup = () => {
 };
 
 const isHigher = ref(null);
-watch(value, (newValue, oldValue) => {
-  isHigher.value = newValue.gt(oldValue);
-});
+if (isBuy) {
+  watch(value, (newValue, oldValue) => {
+    isHigher.value = newValue.gt(oldValue);
+  });
+}
 </script>
 
 <style lang="sass" scoped>
