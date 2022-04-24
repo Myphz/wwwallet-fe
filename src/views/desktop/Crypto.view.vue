@@ -1,9 +1,14 @@
 <template>
   <section>
     <CryptoChart :crypto="crypto" :base="base" v-model:Base="base" v-model:Crypto="crypto" />
-    <Transactions :crypto="crypto" />
+    <Suspense>
+      <Transactions :crypto="crypto" />
+      <template #fallback>
+        Loading
+      </template>
+    </Suspense>
     <div class="justify-center" style="margin-bottom: 2em">
-      <Button btnClass="h3 bg-dark bottom-rounded noborder" @click="openPopup">+ Add Transaction</Button>
+      <Button btnClass="h3 bg-dark bottom-rounded noborder" @click="authStore.openPopup(); displayPopup = true">+ Add Transaction</Button>
     </div>
     <TransactionPopup 
       v-show="displayPopup" 
@@ -25,12 +30,11 @@ import TransactionPopup from "D#/wallet/TransactionPopup.vue";
 import Popup from "U#/Popup.vue";
 
 import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { useAuthStore } from "S#/auth.store";
 
-const route = useRoute();
-const router = useRouter();
 const authStore = useAuthStore();
+const route = useRoute();
 
 const crypto = ref(route.params.crypto.toUpperCase());
 const base = ref("USDT");
@@ -38,12 +42,4 @@ const base = ref("USDT");
 const displayPopup = ref(false);
 const success = ref(null);
 const message = ref("");
-
-const openPopup = async () => {
-  const isAuth = await authStore.checkAuth();
-  if (!isAuth) return router.push({ name: "login", params: { redirect: route.path } });
-
-  window.scrollTo({top: 0, behavior: "smooth"});
-  displayPopup.value = true;
-}
 </script>

@@ -5,13 +5,13 @@
       <span class="title">Bitcoin</span>
       <span class="ticker">BTC</span>
     </td>
-    <td>BTC/USDT</td>
-    <td>BUY</td>
-    <td>2.15</td>
-    <td>$31982.23</td>
+    <td>{{ crypto }}/{{ base }}</td>
+    <td>{{ isBuy ? 'BUY' : 'SELL' }}</td>
+    <td>{{ quantity }}</td>
+    <td>${{ price }}</td>
     <td>$80982.34</td>
-    <td class="space-between align-center">
-      <span>20/12/2021 15:03</span>
+    <td>20/12/2021 15:03</td>
+    <td>
       <Button btnClass="bg-outline h4" @click="openPopup">Details</Button>
     </td>
   </tr>
@@ -23,8 +23,15 @@ import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
 import TransactionPopup from "D#/wallet/TransactionPopup.vue";
 import { ref } from "vue";
+import { dateFormat } from "@/helpers/formatDate.helper";
+import Big from "big.js";
 
-const { crypto } = defineProps({
+const { transaction } = defineProps({
+  transaction: {
+    type: Object,
+    required: true
+  },
+
   crypto: {
     type: String,
     required: true
@@ -45,6 +52,10 @@ const { crypto } = defineProps({
     default: false
   },
 });
+
+let { isBuy, base, quantity, price, date } = transaction;
+date = dateFormat(date);
+const value = Big(quantity).times(price).toFixed(2);
 
 const displayPopup = ref(false);
 const openPopup = () => {

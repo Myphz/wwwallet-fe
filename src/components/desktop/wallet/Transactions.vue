@@ -9,18 +9,29 @@
         <th>Price</th>
         <th>Value</th>
         <th>Date</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <Transaction v-for="i in 2" :key="i" :crypto="crypto" :withTicker="withTicker" :shorter="shorter" :fontSize="fontSize" />
+      <Transaction 
+        v-for="transaction in authStore.transactions?.[crypto] || []" 
+        :key="transaction._id" 
+        :crypto="crypto"
+        :transaction="transaction" 
+        :withTicker="withTicker" 
+        :shorter="shorter" 
+        :fontSize="fontSize" 
+      />
     </tbody>
   </table>
 </template>
 
 <script setup>
 import Transaction from "D#/wallet/Transaction.vue";
+import { ref, toRefs, watch } from "vue";
+import { useAuthStore } from "S#/auth.store";
 
-const { crypto } = defineProps({
+const props = defineProps({
   crypto: {
     type: String,
     required: true
@@ -45,8 +56,16 @@ const { crypto } = defineProps({
     type: Boolean,
     default: false
   }
-  
 });
+
+const { crypto } = toRefs(props);
+const authStore = useAuthStore();
+
+const isLogged = ref(await authStore.getTransactions());
+watch(crypto, async () => {
+  isLogged.value = await authStore.getTransactions();
+});
+
 </script>
 
 <style lang="sass" scoped>
