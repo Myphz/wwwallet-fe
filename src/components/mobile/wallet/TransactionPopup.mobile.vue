@@ -25,7 +25,6 @@
           :ref="e => inputs[0] = e"
           iconSize="small"
           bordered
-          withIcon
           mobile
         />
         <Select 
@@ -37,7 +36,6 @@
           v-model="selectedBase"
           :ref="e => inputs[1] = e"
           bordered
-          withIcon
           mobile
         />
       </div>
@@ -204,6 +202,7 @@ const resetFields = () => {
 };
 
 const submitTransaction = async () => {
+  if (inputsValid.some(input => !input)) return;
   const params = { 
     crypto: selectedCrypto.value, 
     base: selectedBase.value,

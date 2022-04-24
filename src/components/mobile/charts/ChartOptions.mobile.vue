@@ -1,11 +1,12 @@
 <template>
-  <header class="noselect space-between">
+  <header class="noselect space-between align-center">
     <span class="align-center">
       <Select 
         class="margin-left text-primary h2" 
         :options="cryptoList"
         :startValue="selectedCrypto"
         v-model="selectedCrypto"
+        iconSize="small"
         mobile
       />
 
@@ -15,6 +16,7 @@
         :startValue="base"
         v-model="selectedBase"
         @update:modelValue="$emit('update:Base', selectedBase)"
+        iconSize="small"
         mobile
       />
 

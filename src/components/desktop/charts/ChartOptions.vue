@@ -2,17 +2,19 @@
   <header class="noselect space-between">
     <span class="align-center">
       <Select 
-        class="pair text-primary h2" 
+        class="text-primary h2" 
         :options="cryptoList"
         :startValue="selectedCrypto"
         v-model="selectedCrypto"
+        iconSize="small"
       />
       <Select 
-        class="pair text-primary h2" 
+        class="text-primary h2" 
         :options="baseOptions"
         :startValue="base"
         v-model="selectedBase"
         @update:modelValue="$emit('update:Base', selectedBase)"
+        iconSize="small"
       />
     </span>
     <Icon icon="settings" />
@@ -70,8 +72,5 @@ watch(selectedCrypto, newCrypto => {
     height: 48px
     cursor: pointer
     margin-right: 4rem
-
-  .pair
-    margin-right: 1em
 
 </style>

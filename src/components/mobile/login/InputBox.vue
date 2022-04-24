@@ -95,7 +95,7 @@ if (login) {
       requestSuccess.value = false;
       requestMessage.value = msg;
     } else {
-      router.push(redirect || "/wallet");
+      router.push(redirect || "/dashboard");
     }
   };
 } else {
@@ -109,7 +109,7 @@ if (login) {
       requestSuccess.value = false;
       requestMessage.value = msg;
     } else {
-      router.push("/wallet");
+      router.push("/dashboard");
     }
   };
 }

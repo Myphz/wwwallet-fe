@@ -97,7 +97,7 @@ if (login) {
       requestSuccess.value = false;
       requestMessage.value = msg;
     } else {
-      router.push(redirect || "/wallet");
+      router.push(redirect || "/dasboard");
     }
   };
 } else {
@@ -111,7 +111,7 @@ if (login) {
       requestSuccess.value = false;
       requestMessage.value = msg;
     } else {
-      router.push("/wallet");
+      router.push("/dasboard");
     }
   };
 }
