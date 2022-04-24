@@ -1,6 +1,6 @@
 <template>
   <Transition name="fade" :onAfterEnter="() => $emit('endAnimation')">
-    <div v-show="success !== null" :class="'response h4 align-center ' + (success ? 'success' : 'error')">
+    <div v-show="success !== null" :class="'response h4 align-center ' + (mobile ? 'response-mobile ' : 'response-desktop ') + (success ? 'success' : 'error')">
       <Icon :icon="success ? 'check' : 'warning'" />
       <div v-if="success">
         <div><strong>SUCCESS</strong></div>
@@ -26,8 +26,14 @@ const props = defineProps({
   },
 
   message: {
-    validator: prop => ["string", "undefined"].includes(typeof prop),
+    // Accept Strings & undefined
+    validator: prop => typeof prop === "string" || typeof prop === "undefined",
     required: true
+  },
+
+  mobile: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -37,17 +43,36 @@ const { success, message } = toRefs(props);
 <style lang="sass" scoped>
   .response
     position: fixed
-    bottom: 5%
-    right: 10%
-    padding: 1em 2.6em
     border-radius: .5em
     opacity: 0
+    z-index: 9999999999999
+
+  .response-desktop
+    padding: 1em 2.6em
+    bottom: 5%
+    right: 10%
 
     img
       width: 48px
       height: 48px
       margin-right: .5em
+  
+  .response-mobile
+    bottom: 10%
+    left: 50%
+    transform: translateX(-50%)
+    padding: 1em
+    width: fit-content
+    max-width: 70%
 
+    img
+      width: 36px
+      height: 36px
+      margin-right: .5em
+
+    div
+      max-width: 100%
+    
   .error
     background-color: transparentize($red, 0.5)
 

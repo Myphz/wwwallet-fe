@@ -15,7 +15,7 @@
       :crypto="crypto" 
     />
   </section>
-  <Popup :success="success" :message="message" @endAnimation="success = null" />
+  <Popup :success="success" :message="message" @endAnimation="success = null" mobile />
 
 </template>
 
@@ -23,7 +23,7 @@
 import CryptoChart from "M#/charts/CryptoChart.mobile.vue";
 import Transactions from "M#/wallet/Transactions.mobile.vue";
 import TransactionPopup from "M#/wallet/TransactionPopup.mobile.vue";
-import Popup from "D#/wallet/Popup.vue";
+import Popup from "U#/Popup.vue";
 import Button from "U#/Button.vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";

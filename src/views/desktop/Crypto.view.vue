@@ -22,7 +22,7 @@ import CryptoChart from "D#/charts/CryptoChart.vue";
 import Button from "U#/Button.vue";
 import Transactions from "D#/wallet/Transactions.vue";
 import TransactionPopup from "D#/wallet/TransactionPopup.vue";
-import Popup from "D#/wallet/Popup.vue";
+import Popup from "U#/Popup.vue";
 
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
