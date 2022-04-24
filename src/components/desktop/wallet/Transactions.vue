@@ -9,7 +9,7 @@
         <th>Price</th>
         <th>Value</th>
         <th>Date</th>
-        <th></th>
+        <th v-if="!withTicker"></th>
       </tr>
     </thead>
     <tbody>

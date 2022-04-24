@@ -61,7 +61,7 @@ watch(selectedCrypto, newCrypto => {
     font-weight: normal
 
   span
-    margin: 0 4rem
+    margin: 0 2.5em
 
   header
     padding: 1em 0
@@ -71,6 +71,6 @@ watch(selectedCrypto, newCrypto => {
     width: 48px
     height: 48px
     cursor: pointer
-    margin-right: 4rem
+    margin-right: 4em
 
 </style>

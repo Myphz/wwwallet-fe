@@ -1,7 +1,12 @@
 <template>
   <section>
     <CryptoChart :crypto="crypto" :base="base" v-model:Base="base" v-model:Crypto="crypto" />
-    <Transactions :crypto="crypto" />
+    <Suspense>
+      <Transactions :crypto="crypto" />
+      <template #fallback>
+        Loading
+      </template>
+    </Suspense>
     <div class="justify-center bottom">
       <Button btnClass="h4 bg-dark bottom-rounded noborder" @click="authStore.openPopup(); displayPopup = true">+ Add Transaction</Button>
     </div>

@@ -6,8 +6,8 @@
         :alt="crypto"
         onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
       >
-      <span class="title">Bitcoin</span>
-      <span class="ticker">BTC</span>
+      <span class="title">{{ store.tickerInfo[crypto]?.name || crypto }}</span>
+      <span class="ticker">{{ crypto }}</span>
     </td>
     <td>{{ crypto }}/{{ base }}</td>
     <td>{{ isBuy ? 'BUY' : 'SELL' }}</td>
@@ -15,7 +15,7 @@
     <td>{{ price }}</td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ value && value.toFormat(2) || "" }}</td>
     <td>{{ date }}</td>
-    <td>
+    <td v-if="!withTicker">
       <Button btnClass="bg-outline h4" @click="openPopup">Details</Button>
     </td>
   </tr>
@@ -32,7 +32,7 @@ import Big from "@/helpers/big.helper";
 import { useCryptoStore } from "S#/crypto.store";
 import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
 
-const { transaction , crypto} = defineProps({
+const { transaction , crypto } = defineProps({
   transaction: {
     type: Object,
     required: true
@@ -61,6 +61,7 @@ const { transaction , crypto} = defineProps({
 
 const store = useCryptoStore();
 let { isBuy, base, quantity, price, date } = transaction;
+price = new Big(price).toFormat(2);
 date = dateFormat(date);
 const value = computed(() => Big(getDollarPrice(crypto, store.prices)).times(quantity));
 

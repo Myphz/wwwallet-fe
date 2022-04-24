@@ -10,15 +10,24 @@
       </tr>
     </thead>
     <tbody>
-      <Transaction v-for="i in 2" :key="i" :crypto="crypto" :withTicker="withTicker" :fontSize="fontSize" />
+      <Transaction 
+        v-for="transaction in authStore.transactions?.[crypto] || []" 
+        :key="transaction._id" 
+        :crypto="crypto"
+        :transaction="transaction" 
+        :withTicker="withTicker"
+        :fontSize="fontSize" 
+      />
     </tbody>
   </table>
 </template>
 
 <script setup>
 import Transaction from "M#/wallet/Transaction.mobile.vue";
+import { ref, toRefs, watch } from "vue";
+import { useAuthStore } from "S#/auth.store";
 
-const { crypto } = defineProps({
+const props = defineProps({
   crypto: {
     type: String,
     required: true
@@ -39,6 +48,14 @@ const { crypto } = defineProps({
     default: true
   }
 });
+
+const { crypto } = toRefs(props);
+const authStore = useAuthStore();
+
+const isLogged = ref(await authStore.getTransactions());
+watch(crypto, async () => {
+  isLogged.value = await authStore.getTransactions();
+});
 </script>
 
 <style lang="sass" scoped>
@@ -49,5 +66,8 @@ const { crypto } = defineProps({
     padding: 1em .5em
     text-align: left
     font-weight: bold
+
+  th:first-of-type, th:last-of-type
+    padding-left: 2em
 
 </style>

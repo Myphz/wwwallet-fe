@@ -75,7 +75,7 @@ watch(selectedCrypto, newCrypto => {
     cursor: pointer
 
   .margin-left
-    margin-left: 1em
+    margin-left: .5em
 
   .margin-right
     margin-right: 1em
