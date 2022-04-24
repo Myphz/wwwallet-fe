@@ -3,6 +3,7 @@
     <span class="align-center item-container" @click="open = !open; search = ''; input.update('')">
       <span class="align-center">
         <img 
+          v-if="withIcon"
           :src="getCryptoIcon(selected)" 
           :alt="selected"
           onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
@@ -16,6 +17,7 @@
       <Input icon="search" placeholder="Search" v-model:value="search" ref="input" containerClasses="bg-dark nohover" />
       <li v-for="option in opts.slice(0, 20*page)" :key="option" @click="select(option)" class="align-center">
         <img
+          v-if="withIcon"
           :src="getCryptoIcon(option)" 
           :alt="option"
           onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
@@ -43,6 +45,11 @@ const props = defineProps({
   startValue: {
     type: String,
     default: ""
+  },
+
+  withIcon: {
+    type: Boolean,
+    default: true
   },
 
   iconSize: {

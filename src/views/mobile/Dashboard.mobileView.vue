@@ -7,7 +7,7 @@
   <section class="analysis-section">
     <header class="assets-header">
       <h1>Assets Analysis</h1>
-      <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h2 with-border" />
+      <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h2 with-border" :withIcon="false" />
     </header>
     <div>
       <AssetsAnalysis :frequency="'DAILY'" />

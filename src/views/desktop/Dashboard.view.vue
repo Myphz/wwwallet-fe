@@ -10,7 +10,7 @@
   <section>
     <header class="space-between">
       <h1>Assets Analysis</h1>
-      <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h1" />
+      <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h1" :withIcon="false" />
     </header>
     <div class="bg-dark nohover assets-section">
       <AssetsAnalysis class="bg-dark nohover" :frequency="'DAILY'" />
