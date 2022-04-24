@@ -6,3 +6,8 @@ export function validateEmail(email) {
 export function validatePassword(password) {
   return password.length > 6; // TODO: Define password constraints
 };
+
+export function isPositiveFloat(value) {
+  const regex = /^[0-9]+(\.)?[0-9]*$/
+  return regex.test(value);
+}

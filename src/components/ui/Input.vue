@@ -5,7 +5,7 @@
       <span class="input-container">
         <input 
           :class="'text-primary ' + inputClasses"
-          :type="type"
+          type="text"
           :name="icon"
           v-model="value"
           @input="$emit('update:value', $event.target.value); validator(); $emit('update:isValid', isValid)"
@@ -45,11 +45,6 @@ const { icon, validate, startValue } = defineProps({
   startValue: {
     type: [String, Number],
     default: ""
-  },
-
-  type: {
-    type: String,
-    default: "text"
   },
 
   autocomplete: {
@@ -110,9 +105,11 @@ const validator = () => {
 
 const update = val => {
   value.value = val;
-}
+};
 
-defineExpose({ update });
+const reset = () => update("");
+
+defineExpose({ update, reset });
 </script>
 
 <style lang="sass" scoped>

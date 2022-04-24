@@ -22,6 +22,7 @@
           class="h2 width-50"
           :startValue="crypto"
           v-model="selectedCrypto"
+          :ref="e => inputs[0] = e"
           bordered
           withIcon
         />
@@ -31,15 +32,37 @@
           class="h2 width-50"
           :startValue="base"
           v-model="selectedBase"
+          :ref="e => inputs[1] = e"
           bordered
           withIcon
         />
       </div>
 
       <div class="space-between row margin-bottom">
-        <Input icon="coins" label="Quantity" type="number" :startValue="quantity" v-model:value="quantity" />
-        <Input icon="exchange" label="Price in USDT" type="number" :startValue="price" v-model:value="price" />
+        <Input 
+          icon="coins" 
+          label="Quantity" 
+          :startValue="quantity" 
+          v-model:value="quantity" 
+          v-model:isValid="inputsValid[0]"
+          :validate="isPositiveFloat"
+          errorMessage="Invalid value"
+          :ref="e => inputs[2] = e" 
+        />
+
+        <Input 
+          icon="exchange" 
+          label="Price in USDT" 
+          :startValue="price" 
+          v-model:value="price"
+          v-model:isValid="inputsValid[1]"
+          :validate="isPositiveFloat"
+          errorMessage="Invalid value"
+          :ref="e => inputs[3] = e"
+        />
+        
       </div>
+
       <div class="space-between row margin-bottom">
         <Datepicker 
           v-model="date" 
@@ -52,7 +75,13 @@
           @open.once="datePicked = true"
           dark 
         />
-        <Input icon="notes" label="Notes" :startValue="notes" v-model:value="notes" />
+        <Input 
+          icon="notes" 
+          label="Notes" 
+          :startValue="notes" 
+          v-model:value="notes" 
+          :ref="e => inputs[4] = e" 
+        />
       </div>
 
       <Input icon="dollar" label="Total Value (USDT)" inputClasses="h4" labelClasses="h4" ref="totalInput" disabled />
@@ -60,18 +89,6 @@
       <div v-else class="space-between gap">
         <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>
         <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;">DELETE</Button>
-      </div>
-    </div>
-
-    <div v-if="requestSuccess !== null" :class="'response h4 align-center ' + (requestSuccess ? 'success' : 'error')">
-      <Icon :icon="requestSuccess ? 'check' : 'warning'" />
-      <div v-if="requestSuccess">
-        <div><strong>SUCCESS</strong></div>
-        <div>Transaction successfully added!</div>
-      </div>
-      <div v-else>
-        <div><strong>ERROR</strong></div>
-        <div>{{ requestMessage }}. Please retry.</div>
       </div>
     </div>
   </div>
@@ -83,7 +100,8 @@ import Input from "U#/Input.vue";
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
 import Big from "big.js";
-import { computed, ref, toRefs, watch } from "vue";
+import { computed, getCurrentInstance, reactive, ref, toRefs, watch } from "vue";
+import { isPositiveFloat } from "@/helpers/validator.helper";
 import { useCryptoStore } from "S#/crypto.store";
 import { useAuthStore } from "S#/auth.store";
 
@@ -135,6 +153,7 @@ const { crypto, base } = toRefs(props);
 const selectedCrypto = ref(crypto.value);
 const selectedBase = ref(base.value);
 
+const { emit } = getCurrentInstance();
 // Convert each prop to ref
 const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
 
@@ -144,12 +163,13 @@ const quotes = computed(() => cryptoStore.tickerInfo[selectedCrypto.value]?.quot
 const currentDate = new Date();
 if (date.value.getTime() === 0) date.value = currentDate;
 const datePicked = ref(date.value !== currentDate);
+
+const inputs = reactive(new Array(5));
+const inputsValid = reactive([false, false]);
+
 const totalInput = ref();
 // Check if the component has been called with quantity valorized, i.e if this must be a Transaction Detail
 const isDetail = !!quantity.value;
-
-const requestSuccess = ref(null);
-const requestMessage = ref("");
 
 const submitTransaction = async () => {
   const params = { 
@@ -163,12 +183,26 @@ const submitTransaction = async () => {
   };
 
   const { success, msg } = await authStore.addTransaction(params);
-  requestSuccess.value = success;
-  requestMessage.value = msg;
+  emit("success", success);
+  emit("message", msg);
+  if (success) emit("close");
+
+  // Reset fields
+  selectedCrypto.value = crypto.value;
+  selectedBase.value = base.value;
+  isBuy.value = true;
+  price.value = "";
+  quantity.value = "";
+  date.value = currentDate;
+  datePicked.value = false;
+  totalInput.value.update("");
+  notes.value = "";
+
+  inputs.forEach(input => input.reset());
 };
 
 watch([quantity, price], () => {
-  if (!quantity.value || !price.value) return;
+  if (inputsValid.some(e => !e)) return totalInput.value.reset();
   const total = Big(quantity.value).times(price.value);
   totalInput.value.update(total.toFixed(2));
 });
@@ -221,25 +255,6 @@ watch([quantity, price], () => {
 
   .gap
     gap: 1em
-
-  .response
-    position: fixed
-    bottom: 5%
-    right: 10%
-    padding: 1em 2.6em
-    border-radius: .5em
-
-    img
-      width: 48px
-      height: 48px
-      margin-right: .5em
-
-  .error
-    background-color: transparentize($red, 0.5)
-
-  .success
-    background-color: transparentize($green, 0.5)
-
 </style>
 
 <style lang="sass">

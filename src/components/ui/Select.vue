@@ -81,7 +81,7 @@ const filterOptions = opt => opt !== selected.value && opt.includes(search.value
 const opts = ref(options.value.filter(filterOptions).sort(byMcap(store)));
 
 watch([options, search, startValue], () => {
-  selected.value = startValue.value && options.value.includes(startValue.value) ? startValue.value : options.value[0];
+  reset();
   emit("update:modelValue", selected.value);
   opts.value = options.value.filter(filterOptions).sort(byMcap(store));
 });
@@ -101,6 +101,11 @@ const detectScrollEnd = event => {
   page.value++;
 };
 
+const reset = () => {
+  selected.value = startValue.value && options.value.includes(startValue.value) ? startValue.value : options.value[0];
+};
+
+defineExpose({ reset });
 </script>
 
 <style lang="sass" scoped>
