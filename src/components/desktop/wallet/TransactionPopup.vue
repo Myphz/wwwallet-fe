@@ -209,8 +209,10 @@ const submitTransaction = async () => {
   const { success, msg } = await authStore.addTransaction(params);
   emit("success", success);
   emit("message", msg);
-  if (success) emit("close");
-  resetFields();
+  if (success) {
+    emit("close");
+    resetFields();
+  }
 };
 
 watch([quantity, price], () => {

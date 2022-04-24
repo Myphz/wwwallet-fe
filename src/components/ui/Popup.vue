@@ -46,6 +46,7 @@ const { success, message } = toRefs(props);
     border-radius: .5em
     opacity: 0
     z-index: 9999999999999
+    text-align: left
 
   .response-desktop
     padding: 1em 2.6em

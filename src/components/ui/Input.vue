@@ -5,7 +5,7 @@
       <span class="input-container">
         <input 
           :class="'text-primary ' + inputClasses"
-          type="text"
+          :type="type"
           :name="icon"
           v-model="value"
           @input="$emit('update:value', $event.target.value); validator(); $emit('update:isValid', isValid)"
@@ -35,6 +35,11 @@ const props = defineProps({
 
   label: {
     type: String,
+  },
+
+  type: {
+    type: String,
+    default: "text"
   },
 
   placeholder: {

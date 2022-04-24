@@ -47,18 +47,14 @@
         <RouterLink v-else class="link" to="/login"> Login</RouterLink>
       </span>
     </div>
-
-    <Transition name="fade">
-      <div class="error align-center" v-if="fetchError">
-        <span class="h4">{{ fetchError }}</span>
-      </div>
-    </Transition>
   </section>
+  <Popup :success="requestSuccess" :message="requestMessage" @endAnimation="requestSuccess = null" mobile />
 </template>
 
 <script setup>
 import Input from "U#/Input.vue";
 import Button from "U#/Button.vue";
+import Popup from "U#/Popup.vue";
 import { useAuthStore } from "S#/auth.store";
 import { reactive, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
@@ -71,7 +67,8 @@ const { login, redirect } = defineProps({
   },
 
   redirect: {
-    type: [String, undefined]
+    // Accept Strings & undefined
+    validator: prop => typeof prop === "string" || typeof prop === "undefined",
   }
 });
 
@@ -82,7 +79,8 @@ const values = reactive({});
 const areValuesValid = reactive(new Array(2 + !login).fill(false));
 const passwordEqual = () => values.password === values.confirmPassword;
 
-const fetchError = ref("");
+const requestSuccess = ref(null);
+const requestMessage = ref("");
 
 let subtext, header, submit;
 
@@ -92,10 +90,13 @@ if (login) {
   submit = async () => { 
     // Guard clause to check if all the values are valid before sending the request to backend
     if (areValuesValid.some(v => !v)) return; 
-    fetchError.value = "";
     const { success, msg } = await store.login(values);
-    if (!success) fetchError.value = msg;
-    else router.push(redirect || "/wallet");
+    if (!success) {
+      requestSuccess.value = false;
+      requestMessage.value = msg;
+    } else {
+      router.push(redirect || "/wallet");
+    }
   };
 } else {
   header = "Register";
@@ -103,10 +104,13 @@ if (login) {
   submit = async () => { 
     // Guard clause to check if all the values are valid before sending the request to backend
     if (areValuesValid.some(v => !v)) return; 
-    fetchError.value = "";
     const { success, msg } = await store.register(values);
-    if (!success) fetchError.value = msg;
-    else router.push("/wallet");
+    if (!success) {
+      requestSuccess.value = false;
+      requestMessage.value = msg;
+    } else {
+      router.push("/wallet");
+    }
   };
 }
 
@@ -144,31 +148,4 @@ if (login) {
     margin: 0.625em 0
     width: 100%
 
-  .error
-    margin-top: 10%
-    background-color: darken($red, 40%)
-    border-radius: .5em
-    padding: 1em 2em
-    width: fit-content
-    opacity: 0
-
-    position: absolute
-    left: 50%
-    transform: translateX(-50%)
-
-    svg
-      margin-right: .25em
-
-  @keyframes faded
-    0%
-      opacity: 0
-    20%
-      opacity: 1
-    80%
-      opacity: 1
-    100%
-      opacity: 0
-
-  .fade-enter-active
-    animation: faded 4s
 </style>
