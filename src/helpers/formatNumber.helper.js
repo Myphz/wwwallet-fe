@@ -1,9 +1,3 @@
-function getDecimalDigits(n) {
-  const str = n.toString();
-  const index = str.indexOf(".");
-  return index === -1 ? 0 : str.length - index - 1;
-}
-
 function formatBigValue(price) {
   // Try with billions first
   let N = price / 1000000000;
@@ -15,6 +9,12 @@ function formatBigValue(price) {
 
   return N.toFixed(2) + Nsuffix;
 };
+
+export const getDecimalDigits = n => {
+  const str = n.toString();
+  const index = str.indexOf(".");
+  return index === -1 ? 0 : str.length - index - 1;
+}
 
 export const formatValue = price => {
   if (!price) return "0.00";

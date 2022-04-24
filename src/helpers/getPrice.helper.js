@@ -2,11 +2,13 @@ import { QUOTES_DOLLAR } from "@/config/config";
 
 // Helper function to retrieve the dollar price object of a given asset
 const getPriceObj = (crypto, prices) => {
+  if (!prices) return;
   const quote = QUOTES_DOLLAR.find(quote => (crypto + quote) in prices);
   return prices[crypto + quote];
 }
 
 export const getDollarPrice = (crypto, prices) => {
+  if (QUOTES_DOLLAR.includes(crypto)) return 1;
   const price = getPriceObj(crypto, prices);
   return price?.c || 0
 }

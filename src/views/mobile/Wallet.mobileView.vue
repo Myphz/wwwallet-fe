@@ -2,7 +2,12 @@
   <section>
     <h1>Your Wallet</h1>
     <SearchBar />
-    <Wallet />
+    <Suspense>
+      <Wallet />
+      <template #fallback>
+        Loading.....
+      </template>
+    </Suspense>
     <div class="btn-container">
       <Button btnClass="h4 bg-primary rounded noborder" @click="openPopup">+ Add Transaction</Button>
     </div>

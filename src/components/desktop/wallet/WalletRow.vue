@@ -1,27 +1,44 @@
 <template>
   <tr :class="'h4 transition main-row'" @click="open = !open">
     <td class="align-center">
-      <Icon icon="bitcoin" class="icon" />
-      <span class="title">Bitcoin</span>
-      <span class="ticker">BTC</span>
+      <img 
+        :src="getCryptoIcon(crypto)" 
+        :alt="crypto"
+        onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
+      >
+      <span class="title">{{ cryptoStore.tickerInfo[crypto]?.name || crypto }}</span>
+      <span class="ticker">{{ crypto }}</span>
     </td>
-    <td>$19923.32</td>
-    <td>2.15</td>
-    <td>$31982.23</td>
-    <td>$80982.34</td>
-    <td>+20.32%</td>
+    <td>${{ avgPrices.buy.toFormat(getDecimalDigits(transactions[0]?.price)) }}</td>
+    <td>{{ !avgPrices.sell.eq(0) ? "$" + avgPrices.sell.toFormat(getDecimalDigits(transactions[0]?.price)) : "" }}</td>
+    <td>{{ totalQty.toFormat() }}</td>
+    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
+      ${{ currentValue.toFormat(2) }}
+    </td>
+    <td :class="totalEarnings.s === -1 ? 'red' : totalEarnings.eq(0) ? '' : 'green'">
+      {{ totalEarnings.s === -1 ? "-" : "" }}${{ totalEarnings.abs().toFormat(2) }}
+    </td>
+    <td :class="totalChange.s === -1 ? 'red' : totalChange.eq(0) ? '' : 'green'">
+      {{ totalChange.s === -1 ? "-" : "" }}{{ totalChange.abs().toFormat(2) }}%
+    </td>
     <td :class="'arrow ' + (open ? 'open' : '')"></td>
   </tr>
   <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
-    <td colspan="7">
+    <td colspan="8">
       <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" shorter />
     </td>
   </tr>
 </template>
+
 <script setup>
-import Icon from "U#/Icon.vue";
 import Transactions from "D#/wallet/Transactions.vue";
-import { ref } from "vue";
+import { ref, watch, computed } from "vue";
+import { useAuthStore } from "S#/auth.store";
+import { useCryptoStore } from "S#/crypto.store";
+import { getDollarPrice } from "@/helpers/getPrice.helper";
+import { getDecimalDigits } from "@/helpers/formatNumber.helper";
+import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
+import Big from "@/helpers/big.helper.js"
 
 const { crypto } = defineProps({
   crypto: {
@@ -30,7 +47,64 @@ const { crypto } = defineProps({
   },
 });
 
+const authStore = useAuthStore();
+const cryptoStore = useCryptoStore();
 const open = ref(false);
+
+const transactions = computed(() => authStore.transactions[crypto]);
+
+const totals = computed(() => {
+  return transactions.value.reduce((prev, curr) => {
+    const { isBuy, price, base, quantity } = curr;
+    if (isBuy) {
+      return { ...prev, 
+        buy: { 
+          totalQty: prev.buy.totalQty.plus(quantity), 
+          totalSum: prev.buy.totalSum.plus(new Big(getDollarPrice(base, cryptoStore.prices)).times(price).times(quantity)) 
+        }
+      };
+    }
+
+    return { 
+      ...prev, 
+      sell: { 
+        totalQty: prev.sell.totalQty.plus(quantity), 
+        totalSum: prev.sell.totalSum.plus(new Big(getDollarPrice(base, cryptoStore.prices)).times(price).times(quantity)) 
+      }
+    };
+  }, {
+      buy: { totalQty: new Big(0), totalSum: new Big(0) },
+      sell: { totalQty: new Big(0), totalSum: new Big(0) }
+     }
+  );
+});
+
+const avgPrices = computed(() => ({
+  buy: !totals.value.buy.totalQty.eq(0) ? totals.value.buy.totalSum.div(totals.value.buy.totalQty) : new Big(0), 
+  sell: !totals.value.sell.totalQty.eq(0) ? totals.value.sell.totalSum.div(totals.value.sell.totalQty) : new Big(0)
+}));
+
+const totalQty = computed(() => totals.value.buy.totalQty.minus(totals.value.sell.totalQty));
+const currentValue = computed(() => totalQty.value.times(getDollarPrice(crypto, cryptoStore.prices)));
+
+const totalEarnings = computed(() => {
+  // The formula is as follows:
+  // Total Earnings = Current Crypto Quantity * Current Price - Current Crypto Quantity * Avg Buy Price + Sold Quantity * (Average Sell Price - Average Buy Price)
+  const oldValue = totalQty.value.times(avgPrices.value.buy);
+  const soldEarnings = totals.value.sell.totalQty.times(avgPrices.value.sell.minus(avgPrices.value.buy));
+  return currentValue.value.minus(oldValue).plus(soldEarnings);
+});
+
+const totalChange = computed(() => {
+  if (currentValue.value.eq(0)) return Big(0);
+  const oldValue = totalQty.value.times(avgPrices.value.buy);
+  return currentValue.value.minus(oldValue).div(currentValue.value).times(100);
+});
+
+const isHigher = ref(null);
+watch(currentValue, (newValue, oldValue) => {
+  isHigher.value = newValue > oldValue;
+});
 </script>
 
 <style lang="sass" scoped>
@@ -43,12 +117,10 @@ const open = ref(false);
   img
     width: 48px
     height: 48px
+    margin-right: 1em
 
   .title
     font-weight: 600
-    margin-right: 1em
-
-  .icon
     margin-right: 1em
 
   .transactions-row
