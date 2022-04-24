@@ -25,9 +25,9 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, ref, toRefs, watch } from 'vue'
 
-const { icon, validate, startValue } = defineProps({
+const props = defineProps({
   icon: {
     type: String,
     required: true
@@ -88,6 +88,9 @@ const { icon, validate, startValue } = defineProps({
   }
 });
 
+const { icon, validate } = props;
+const { startValue } = toRefs(props);
+
 // Lazy loading component to import it from a string
 // Import the svg directly using vite-svg-loader to style the icon
 const Icon = defineAsyncComponent(() => import(`../../assets/icons/${icon}.svg`));
@@ -108,6 +111,10 @@ const update = val => {
 };
 
 const reset = () => update("");
+
+watch(startValue, () => {
+  value.value = startValue.value;
+});
 
 defineExpose({ update, reset });
 </script>

@@ -22,6 +22,7 @@
           class="h3 width-50"
           :startValue="crypto"
           v-model="selectedCrypto"
+          :ref="e => inputs[0] = e"
           iconSize="small"
           bordered
           withIcon
@@ -34,6 +35,7 @@
           iconSize="small"
           :startValue="base"
           v-model="selectedBase"
+          :ref="e => inputs[1] = e"
           bordered
           withIcon
           mobile
@@ -41,9 +43,31 @@
       </div>
 
       <div class="space-between-margin row">
-        <Input icon="coins" label="Quantity" iconSmall type="number" :startValue="quantity" v-model:value="quantity" />
-        <Input icon="exchange" label="BTC/USDT" iconSmall type="number" :startValue="price" v-model:value="price" />
+        <Input 
+          icon="coins" 
+          label="Quantity" 
+          iconSmall 
+          :startValue="quantity" 
+          v-model:value="quantity" 
+          v-model:isValid="inputsValid[0]"
+          :validate="isPositiveFloat"
+          errorMessage="Invalid value"
+          :ref="e => inputs[2] = e" 
+        />
+
+        <Input 
+          icon="exchange" 
+          :label="`${selectedCrypto}/${selectedBase}`" 
+          iconSmall 
+          :startValue="price" 
+          v-model:value="price" 
+          v-model:isValid="inputsValid[1]"
+          :validate="isPositiveFloat"
+          errorMessage="Invalid value"
+          :ref="e => inputs[3] = e" 
+        />
       </div>
+
       <div class="space-between-margin row">
         <Datepicker 
           v-model="date" 
@@ -57,11 +81,19 @@
           vertical
           dark 
         />
-        <Input icon="notes" label="Notes" iconSmall :startValue="notes" v-model:value="notes" />
+        <Input 
+          icon="notes" 
+          label="Notes" 
+          iconSmall
+          :startValue="notes" 
+          v-model:value="notes"
+          :ref="e => inputs[4] = e"  
+        />
       </div>
 
-      <Input icon="dollar" label="Total Value (USDT)" inputClasses="h4" labelClasses="h4" type="number" />
-      <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">Add</Button>
+      <Input icon="dollar" label="Total Value (USDT)" inputClasses="h4" labelClasses="h4" ref="totalInput" disabled />
+
+      <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;" @click="submitTransaction">Add</Button>
       <div v-else class="space-between-margin" style="margin-bottom: 0">
         <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>
         <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;">DELETE</Button>
@@ -75,8 +107,11 @@ import Select from "U#/Select.vue";
 import Input from "U#/Input.vue";
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
-import { computed, ref, toRefs, watch } from "vue";
+import Big from "big.js";
+import { computed, getCurrentInstance, reactive, ref, toRefs, watch } from "vue";
+import { isPositiveFloat } from "@/helpers/validator.helper";
 import { useCryptoStore } from "S#/crypto.store";
+import { useAuthStore } from "S#/auth.store";
 
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
@@ -118,26 +153,73 @@ const props = defineProps({
   }
 });
 
-const store = useCryptoStore();
+const cryptoStore = useCryptoStore();
+const authStore = useAuthStore();
+
 const { crypto, base } = toRefs(props);
 
 const selectedCrypto = ref(crypto.value);
 const selectedBase = ref(base.value);
 
+const { emit } = getCurrentInstance();
+
 // Convert each prop to ref
 const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
 
-const cryptoList = computed(() => Object.keys(store.tickerInfo));
-const quotes = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
+const cryptoList = computed(() => Object.keys(cryptoStore.tickerInfo));
+const quotes = computed(() => cryptoStore.tickerInfo[selectedCrypto.value]?.quotes || []);
 
 const currentDate = new Date();
 if (date.value.getTime() === 0) date.value = currentDate;
 const datePicked = ref(date.value !== currentDate);
+
+const inputs = reactive(new Array(5));
+const inputsValid = reactive([false, false]);
+
+const totalInput = ref();
 // Check if the component has been called with quantity valorized, i.e if this must be a Transaction Detail
 const isDetail = !!quantity.value;
+
+const submitTransaction = async () => {
+  const params = { 
+    crypto: selectedCrypto.value, 
+    base: selectedBase.value,
+    isBuy: isBuy.value,
+    price: price.value,
+    quantity: quantity.value,
+    date: date.value.getTime(),
+    notes: notes.value
+  };
+
+  const { success, msg } = await authStore.addTransaction(params);
+  console.log({ success, msg });
+  emit("success", success);
+  emit("message", msg);
+  if (success) emit("close");
+
+  // Reset fields
+  selectedCrypto.value = crypto.value;
+  selectedBase.value = base.value;
+  isBuy.value = true;
+  price.value = "";
+  quantity.value = "";
+  date.value = currentDate;
+  datePicked.value = false;
+  totalInput.value.update("");
+  notes.value = "";
+  Object.assign(inputsValid, [false, false]);
+
+  inputs.forEach(input => input.reset());
+};
+
+watch([quantity, price], () => {
+  if (inputsValid.some(e => !e)) return totalInput.value.reset();
+  const total = Big(quantity.value).times(price.value);
+  totalInput.value.update(total.toFixed(2));
+});
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
   .container-popup
     position: absolute
     border: none
@@ -193,7 +275,9 @@ const isDetail = !!quantity.value;
   img
     width: 36px
     height: 36px
+</style>
 
+<style lang="sass">
   .dp__theme_dark
     --dp-background-color: $bg-paper
     --dp-text-color: $text-primary

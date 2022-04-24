@@ -42,8 +42,7 @@
         <Input 
           icon="coins" 
           label="Quantity" 
-          :startValue="quantity" 
-          v-model:value="quantity" 
+          v-model:value="quantity"
           v-model:isValid="inputsValid[0]"
           :validate="isPositiveFloat"
           errorMessage="Invalid value"
@@ -52,8 +51,8 @@
 
         <Input 
           icon="exchange" 
-          label="Price in USDT" 
-          :startValue="price" 
+          :label="`${selectedCrypto}/${selectedBase}`" 
+          :startValue="startPrice"
           v-model:value="price"
           v-model:isValid="inputsValid[1]"
           :validate="isPositiveFloat"
@@ -153,6 +152,14 @@ const { crypto, base } = toRefs(props);
 const selectedCrypto = ref(crypto.value);
 const selectedBase = ref(base.value);
 
+const startPrice = ref("");
+
+// Watch only once
+const unwatch = watch(cryptoStore.prices, () => {
+  startPrice.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c || "";
+  unwatch();
+});
+
 const { emit } = getCurrentInstance();
 // Convert each prop to ref
 const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
@@ -197,6 +204,7 @@ const submitTransaction = async () => {
   datePicked.value = false;
   totalInput.value.update("");
   notes.value = "";
+  Object.assign(inputsValid, [false, false]);
 
   inputs.forEach(input => input.reset());
 };

@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { fetchBinance, fetchServer } from "@/helpers/fetch.helper.js";
 import createSocket from "@/helpers/createSocket.helper";
-import { getDollarPrice } from "@/helpers/getPrice.helper.js";
 import { KLINES_LIMIT } from "@/config/config";
 
 export const useCryptoStore = defineStore("crypto", {
