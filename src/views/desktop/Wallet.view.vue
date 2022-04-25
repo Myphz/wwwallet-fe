@@ -1,9 +1,9 @@
 <template>
   <section>
     <h1>Your Wallet</h1>
-    <SearchBar />
+    <SearchBar v-model="search" />
     <Suspense>
-      <Wallet />
+      <Wallet :search="search" />
       <template #fallback>
         Loading.....
       </template>
@@ -28,6 +28,7 @@ import TransactionPopup from "D#/wallet/TransactionPopup.vue";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
 
+const search = ref("");
 const displayPopup = ref(false);
 
 const request = ref({success: null, msg: ""});

@@ -85,7 +85,8 @@
           iconSmall
           :startValue="notes" 
           v-model:value="notes"
-          :ref="e => inputs[4] = e"  
+          :ref="e => inputs[4] = e" 
+          allowSpaces 
         />
       </div>
 

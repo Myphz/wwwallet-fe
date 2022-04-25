@@ -71,7 +71,7 @@ router.beforeEach(async to => {
     };
   }
 
-  to.params = { isAuth }
+  to.params = { ...(to.params), isAuth }
 });
 
 export default router

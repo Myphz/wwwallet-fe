@@ -14,6 +14,8 @@
           :autocomplete="autocomplete"
           :disabled="disabled"
           :placeholder="placeholder"
+          @keydown.space="e => allowSpaces ? null : e.preventDefault()"
+          :oninput="upperCase ? 'let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p)' : null"
         >
         <label :class="'text-secondary ' + labelClasses">{{ label }}</label>
       </span>
@@ -90,6 +92,16 @@ const props = defineProps({
   labelClasses: {
     type: String,
     default: "h4"
+  },
+
+  allowSpaces: {
+    type: Boolean,
+    default: false
+  },
+
+  upperCase: {
+    type: Boolean,
+    default: false
   }
 });
 

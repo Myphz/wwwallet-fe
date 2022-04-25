@@ -36,7 +36,7 @@ const ArrowIcon = defineAsyncComponent(() => import("../../../assets/icons/arrow
 const page = ref(0);
 const store = useCryptoStore();
 const crypto = computed(() => Object.keys(store.tickerInfo)
-                              .filter(ticker => ticker.includes(search.value.toUpperCase()))
+                              .filter(ticker => ticker.includes(search.value))
                               .sort(byMcap(store)));
 
 

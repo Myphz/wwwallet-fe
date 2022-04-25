@@ -14,7 +14,7 @@
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </span>
     <ul class="h3 text-secondary" @scroll="detectScrollEnd">
-      <Input icon="search" placeholder="Search" v-model:value="search" ref="input" containerClasses="bg-dark nohover" />
+      <Input icon="search" placeholder="Search" v-model:value="search" ref="input" containerClasses="bg-dark nohover" upperCase />
       <li v-for="option in opts.slice(0, 20*page)" :key="option" @click="select(option)" class="align-center">
         <img
           v-if="withIcon"
