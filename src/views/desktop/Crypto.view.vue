@@ -8,7 +8,7 @@
       </template>
     </Suspense>
     <div class="justify-center" style="margin-bottom: 2em">
-      <Button btnClass="h3 bg-dark bottom-rounded noborder" @click="authStore.openPopup(); displayPopup = true">+ Add Transaction</Button>
+      <Button btnClass="h3 bg-dark bottom-rounded noborder" @click="authStore.redirect(); displayPopup = true">+ Add Transaction</Button>
     </div>
     <TransactionPopup 
       v-show="displayPopup" 

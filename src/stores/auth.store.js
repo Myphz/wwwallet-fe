@@ -28,8 +28,8 @@ export const useAuthStore = defineStore("auth", {
       return success;
     },
 
-    // Utility function that gets called to open the 'Add Transaciton' Popup
-    async openPopup() {
+    // Utility function that redirects to the login page if not logged in
+    async redirect() {
       if (!await this.checkAuth()) { 
         return router.push({ name: "login", params: { redirect: router.currentRoute.value.path } });
       }
