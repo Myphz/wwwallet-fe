@@ -25,15 +25,13 @@
   </tr>
   <tr v-show="open" class="transactions-row">
     <td colspan="8">
-      <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" shorter @request="value => request = value" />
+      <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" shorter @request="value => $emit('request', value)" />
     </td>
   </tr>
-  <Popup :success="request.success" :message="request.msg" @endAnimation="request.success = null" />
 </template>
 
 <script setup>
 import Transactions from "D#/wallet/Transactions.vue";
-import Popup from "U#/Popup.vue";
 import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
 import Big from "@/helpers/big.helper.js"
 import { ref, watch, computed } from "vue";
@@ -49,11 +47,13 @@ const { crypto } = defineProps({
   },
 });
 
+defineEmits(["request"]);
+
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
 const open = ref(false);
 
-const transactions = computed(() => authStore.transactions[crypto]);
+const transactions = computed(() => authStore.transactions[crypto] || []);
 
 const totals = computed(() => {
   return transactions.value.reduce((prev, curr) => {
@@ -107,8 +107,6 @@ const isHigher = ref(null);
 watch(currentValue, (newValue, oldValue) => {
   isHigher.value = newValue > oldValue;
 });
-
-const request = ref({success: null});
 </script>
 
 <style lang="sass" scoped>

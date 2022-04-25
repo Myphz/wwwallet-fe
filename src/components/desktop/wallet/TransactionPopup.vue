@@ -86,7 +86,7 @@
       <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;" @click="() => submit(authStore.addTransaction)">Add</Button>
       <div v-else class="space-between gap">
         <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;" @click="() => submit(authStore.updateTransaction, { id: transaction._id, oldCrypto: crypto })">UPDATE</Button>
-        <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;">DELETE</Button>
+        <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;" @click="() => submit(authStore.deleteTransaction, { id: transaction._id, crypto })">DELETE</Button>
       </div>
     </div>
   </div>
