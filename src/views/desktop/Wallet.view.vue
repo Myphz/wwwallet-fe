@@ -30,7 +30,7 @@ const openPopup = () => {
   displayPopup.value = true;
 }
 
-const request = ref({success: null});
+const request = ref({success: null, msg: ""});
 </script>
 
 <style lang="sass" scoped>

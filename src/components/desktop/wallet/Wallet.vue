@@ -30,7 +30,7 @@ const authStore = useAuthStore();
 const isLogged = ref(await authStore.getTransactions());
 const cryptos = computed(() => Object.keys(authStore.transactions));
 
-const request = ref({success: null});
+const request = ref({success: null, msg: ""});
 </script>
 
 <style lang="sass" scoped>

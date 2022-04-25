@@ -39,5 +39,5 @@ const crypto = ref(route.params.crypto.toUpperCase());
 const base = ref("USDT");
 
 const displayPopup = ref(false);
-const request = ref({success: null});
+const request = ref({success: null, msg: ""});
 </script>

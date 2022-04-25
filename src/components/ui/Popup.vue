@@ -4,7 +4,7 @@
       <Icon :icon="success ? 'check' : 'warning'" />
       <div v-if="success">
         <div><strong>SUCCESS</strong></div>
-        <div>Transaction successfully added!</div>
+        <div>{{ message }}!</div>
       </div>
       <div v-else>
         <div><strong>ERROR</strong></div>
@@ -26,8 +26,7 @@ const props = defineProps({
   },
 
   message: {
-    // Accept Strings & undefined
-    validator: prop => typeof prop === "string" || typeof prop === "undefined",
+    type: String,
     required: true
   },
 
