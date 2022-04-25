@@ -40,6 +40,7 @@
         <Input 
           icon="coins" 
           label="Quantity" 
+          :startValue="quantity"
           v-model:value="quantity"
           v-model:isValid="inputsValid[0]"
           :validate="isPositiveFloat"
@@ -82,9 +83,9 @@
       </div>
 
       <Input icon="dollar" :label="`Total Value (${selectedBase})`" inputClasses="h4" labelClasses="h4" ref="totalInput" disabled />
-      <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;" @click="submitTransaction">Add</Button>
+      <Button v-if="!isDetail" btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;" @click="() => submit(authStore.addTransaction)">Add</Button>
       <div v-else class="space-between gap">
-        <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;">UPDATE</Button>
+        <Button btnClass="h3 bg-primary rounded" btnCss="width: 100%; margin-top: 1em;" @click="() => submit(authStore.updateTransaction, { id: transaction._id, oldCrypto: crypto })">UPDATE</Button>
         <Button btnClass="h3 bg-base rounded" btnCss="width: 100%; margin-top: 1em;">DELETE</Button>
       </div>
     </div>
@@ -97,7 +98,7 @@ import Input from "U#/Input.vue";
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
 import Big from "big.js";
-import { computed, getCurrentInstance, reactive, ref, toRefs, watch } from "vue";
+import { computed, getCurrentInstance, onMounted, reactive, ref, toRef, watch } from "vue";
 import { isPositiveFloat } from "@/helpers/validator.helper";
 import { useCryptoStore } from "S#/crypto.store";
 import { useAuthStore } from "S#/auth.store";
@@ -116,51 +117,58 @@ const props = defineProps({
     default: "USDT"
   },
 
-  isBuy: {
-    type: Boolean,
-    default: true,
+  transaction: {
+    type: Object,
+    default: null
   },
-
-  quantity: {
-    type: [Number, String],
-    default: "",
-  },
-
-  price: {
-    type: [Number, String],
-    default: "",
-  },
-
-  date: {
-    type: Date,
-    default: new Date(0)
-  },
-
-  notes: {
-    type: String,
-    default: ""
-  }
 });
 
 const cryptoStore = useCryptoStore();
 const authStore = useAuthStore();
 
-const { crypto, base } = toRefs(props);
+const { transaction } = props;
+
+const crypto = toRef(props, "crypto");
+
+let base, isBuy, quantity, price, date, notes, startPrice;
+const isDetail = transaction !== null;
+
+const totalInput = ref();
+
+if (isDetail) {
+  // Convert transaction values to refs
+  ({ base, isBuy, quantity, price, date, notes } = Object.keys(transaction).reduce((obj, key) => ({...obj, [key]: ref(transaction[key])}), {}));
+  if (!notes) notes = ref("");
+  date.value = new Date(date.value);
+  startPrice = price;
+
+  // Initially load the totalInput value
+  onMounted(() => {
+    const total = Big(quantity.value).times(price.value);
+    totalInput.value.update(total.toFixed(2));
+  });
+
+} else {
+  // Assign default values
+  base = toRef(props, "base");
+  isBuy = ref(true);
+  quantity = ref("");
+  price = ref("");
+  date = ref(new Date(0));
+  notes = ref("");
+  startPrice = ref("");
+
+  // Watch only once
+  const unwatch = watch(cryptoStore.prices, () => {
+    startPrice.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c?.toString() || "";
+    unwatch();
+  });
+}
 
 const selectedCrypto = ref(crypto.value);
 const selectedBase = ref(base.value);
 
-const startPrice = ref("");
-
-// Watch only once
-const unwatch = watch(cryptoStore.prices, () => {
-  startPrice.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c?.toString() || "";
-  unwatch();
-});
-
 const { emit } = getCurrentInstance();
-// Convert each prop to ref
-const { isBuy, quantity, price, date, notes } = Object.keys(props).reduce((obj, key) => ({...obj, [key]: ref(props[key])}), {});
 
 const cryptoList = computed(() => Object.keys(cryptoStore.tickerInfo));
 const quotes = computed(() => cryptoStore.tickerInfo[selectedCrypto.value]?.quotes || []);
@@ -170,11 +178,7 @@ if (date.value.getTime() === 0) date.value = currentDate;
 const datePicked = ref(date.value !== currentDate);
 
 const inputs = reactive(new Array(5));
-const inputsValid = reactive([false, false]);
-
-const totalInput = ref();
-// Check if the component has been called with quantity valorized, i.e if this must be a Transaction Detail
-const isDetail = !!quantity.value;
+const inputsValid = reactive(new Array(2).fill(isDetail));
 
 const resetFields = () => {
   selectedCrypto.value = crypto.value;
@@ -193,9 +197,10 @@ const resetFields = () => {
   inputs[3].update(price.value);
 };
 
-const submitTransaction = async () => {
+const submit = async (func, additionalParams) => {
   if (inputsValid.some(input => !input)) return;
   const params = { 
+    ...(additionalParams || {}),
     crypto: selectedCrypto.value, 
     base: selectedBase.value,
     isBuy: isBuy.value,
@@ -205,7 +210,7 @@ const submitTransaction = async () => {
     notes: notes.value
   };
 
-  const { success, msg } = await authStore.addTransaction(params);
+  const { success, msg } = await func(params);
   emit("success", success);
   emit("message", msg);
   if (success) {
@@ -220,9 +225,11 @@ watch([quantity, price], () => {
   totalInput.value.update(total.toFixed(2));
 });
 
-watch([selectedCrypto, selectedBase], () => {
-  startPrice.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c?.toString() || "";
-});
+if (!isDetail) {
+  watch([selectedCrypto, selectedBase], () => {
+    startPrice.value = cryptoStore.prices[selectedCrypto.value + selectedBase.value]?.c?.toString() || "";
+  });
+}
 </script>
 
 <style lang="sass" scoped>

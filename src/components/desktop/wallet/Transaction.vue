@@ -19,12 +19,21 @@
       <Button btnClass="bg-outline h4" @click="openPopup">Details</Button>
     </td>
   </tr>
-  <TransactionPopup v-if="displayPopup" :quantity="2342" @close="displayPopup = false" />
+  <TransactionPopup 
+    v-if="displayPopup" 
+    :crypto="crypto" 
+    :transaction="transaction" 
+    @success="value => success = value"
+    @message="value => message = value"
+    @close="displayPopup = false" 
+  />
+  <Popup :success="success" :message="message" @endAnimation="success = null" />
 </template>
 
 <script setup>
 import Button from "U#/Button.vue";
 import TransactionPopup from "D#/wallet/TransactionPopup.vue";
+import Popup from "U#/Popup.vue";
 import { ref, computed, watch } from "vue";
 import { dateFormat } from "@/helpers/formatDate.helper";
 import { getDollarPrice } from "@/helpers/getPrice.helper";
@@ -70,6 +79,7 @@ else
   value = Big(price).times(quantity);
 
 price = new Big(price).toFormat(2);
+
 const displayPopup = ref(false);
 const openPopup = () => {
   window.scrollTo({top: 0, behavior: "smooth"});
@@ -81,7 +91,10 @@ if (isBuy) {
   watch(value, (newValue, oldValue) => {
     isHigher.value = newValue.gt(oldValue);
   });
-}
+};
+
+const success = ref(null);
+const message = ref("");
 </script>
 
 <style lang="sass" scoped>

@@ -62,5 +62,28 @@ export const useAuthStore = defineStore("auth", {
       this.isAuthenticated = true;
       return true;
     },
+
+    async updateTransaction({ id, oldCrypto, crypto, base, isBuy, price, quantity, date, notes }) {
+      const params = { id, crypto, base, isBuy, price, quantity, date, notes };
+      const { success, newId, msg } = await fetchServer("transactions", params, { method: "PUT" });
+      // Add the transaction if they have been previously fetched, otherwise don't bother
+      if (!this.transactions || !success) return { success, msg };
+      
+      // Update existing transactions
+      let i = this.transactions[oldCrypto].findIndex(transaction => transaction._id === id);
+      if (oldCrypto !== crypto) {
+        this.transactions[oldCrypto].splice(i, 1);
+
+        if (!this.transactions[oldCrypto].length) delete this.transactions[oldCrypto];
+        if (!this.transactions[crypto]) this.transactions[crypto] = [];
+
+        this.transactions[crypto].push({ id: newId, oldCrypto, crypto, base, isBuy, price, quantity, date, ...(notes && { notes}) });
+        i = this.transactions[crypto].length - 1;
+      } else {
+        this.transactions[crypto][i] = { id: newId, oldCrypto, crypto, base, isBuy, price, quantity, date, ...(notes && { notes}) }
+      };
+
+      return { success, msg };
+    },
   }
 });
