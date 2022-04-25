@@ -15,7 +15,7 @@
     <td>{{ price }}</td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ value && value.toFormat(2) || "" }}</td>
     <td>{{ date }}</td>
-    <td v-if="!withTicker">
+    <td v-if="!withTicker && $route.params.isAuth">
       <Button btnClass="bg-outline h4" @click="displayPopup = true">Details</Button>
     </td>
   </tr>

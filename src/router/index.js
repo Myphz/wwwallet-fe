@@ -15,7 +15,6 @@ const router = createRouter({
       path: "/wallet",
       name: "wallet",
       component: () => routeView("Wallet"),
-      meta: { requiresAuth: true }
     },
 
     {
@@ -60,9 +59,9 @@ const router = createRouter({
 
 // Global route to check if the route is protected
 router.beforeEach(async to => {
+  const store = useAuthStore();
+  const isAuth = await store.checkAuth();
   if (to.meta.requiresAuth) {
-    const store = useAuthStore();
-    const isAuth = await store.checkAuth();
     if (isAuth) return true;
     return {
       name: "login",
@@ -71,6 +70,8 @@ router.beforeEach(async to => {
       }
     };
   }
+
+  to.params = { isAuth }
 });
 
 export default router

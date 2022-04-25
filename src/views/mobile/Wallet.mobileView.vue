@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section v-if="$route.params.isAuth">
     <h1>Your Wallet</h1>
     <SearchBar />
     <Suspense>
@@ -9,11 +9,15 @@
       </template>
     </Suspense>
     <div class="btn-container">
-      <Button btnClass="h4 bg-primary rounded noborder" @click="openPopup">+ Add Transaction</Button>
+      <Button btnClass="h4 bg-primary rounded noborder" @click="displayPopup = true">+ Add Transaction</Button>
     </div>
     <TransactionPopup v-show="displayPopup" @close="displayPopup = false" @request="value => request = value" />
+    <Popup :success="request.success" :message="request.msg" @endAnimation="request.success = null" mobile />
   </section>
-  <Popup :success="request.success" :message="request.msg" @endAnimation="request.success = null" mobile />
+  <section v-else>
+    <h1>Your Wallet</h1>
+    <h3>Please <RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> to check your wallet</h3>
+  </section>
 </template>
 
 <script setup>
@@ -26,16 +30,11 @@ import { ref } from "vue";
 
 const displayPopup = ref(false);
 
-const openPopup = () => {
-  window.scrollTo({top: 0, behavior: "smooth"});
-  displayPopup.value = true;
-}
-
 const request = ref({success: null, msg: ""});
 </script>
 
 <style lang="sass" scoped>
-  h1
+  h1, h3
     font-weight: normal
     margin-bottom: .5em
 

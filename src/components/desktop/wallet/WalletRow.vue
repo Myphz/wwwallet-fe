@@ -25,7 +25,15 @@
   </tr>
   <tr v-show="open" class="transactions-row">
     <td colspan="8">
-      <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" shorter @request="value => $emit('request', value)" />
+      <Transactions 
+        :crypto="crypto" 
+        :withTicker="false"
+        :transactions="$route.params.isAuth ? [] : transactions"
+        bgColor="bg-base-dark" 
+        fontSize="h5" 
+        shorter 
+        @request="value => $emit('request', value)" 
+      />
     </td>
   </tr>
 </template>
@@ -33,12 +41,14 @@
 <script setup>
 import Transactions from "D#/wallet/Transactions.vue";
 import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
-import Big from "@/helpers/big.helper.js"
+import Big from "@/helpers/big.helper.js";
+import generateRandomTransactions from "@/helpers/random.helper.js";
 import { ref, watch, computed } from "vue";
 import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import { getDollarPrice } from "@/helpers/getPrice.helper";
 import { getDecimalDigits } from "@/helpers/formatNumber.helper";
+import { useRoute } from "vue-router";
 
 const { crypto } = defineProps({
   crypto: {
@@ -47,13 +57,19 @@ const { crypto } = defineProps({
   },
 });
 
+const route = useRoute();
 defineEmits(["request"]);
 
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
 const open = ref(false);
 
-const transactions = computed(() => authStore.transactions[crypto] || []);
+const transactions = route.params.isAuth ? computed(() => authStore.transactions[crypto] || []) : ref([]);
+
+const unwatch = watch(cryptoStore.prices, () => {
+  transactions.value = generateRandomTransactions(crypto, cryptoStore);
+  unwatch();
+});
 
 const totals = computed(() => {
   return transactions.value.reduce((prev, curr) => {
@@ -119,10 +135,6 @@ watch(currentValue, (newValue, oldValue) => {
   img
     width: 48px
     height: 48px
-    margin-right: 1em
-
-  .title
-    font-weight: 600
     margin-right: 1em
 
   .transactions-row

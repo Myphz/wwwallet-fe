@@ -8,8 +8,11 @@
         Loading.....
       </template>
     </Suspense>
-    <div class="btn-container">
-      <Button btnClass="h3 bg-primary rounded noborder" @click="openPopup">+ Add Transaction</Button>
+    <div class="btn-container" v-if="$route.params.isAuth">
+      <Button btnClass="h3 bg-primary rounded noborder" @click="displayPopup = true">+ Add Transaction</Button>
+    </div>
+    <div v-else style="margin-top: 2em">
+      <h1><RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now to check your wallet</h1>
     </div>
     <TransactionPopup v-show="displayPopup" @close="displayPopup = false" @request="value => request = value" />
   </section>
@@ -23,12 +26,9 @@ import Wallet from "D#/wallet/Wallet.vue";
 import Button from "U#/Button.vue";
 import TransactionPopup from "D#/wallet/TransactionPopup.vue";
 import { ref } from "vue";
+import { RouterLink } from "vue-router";
 
 const displayPopup = ref(false);
-const openPopup = () => {
-  window.scrollTo({top: 0, behavior: "smooth"});
-  displayPopup.value = true;
-}
 
 const request = ref({success: null, msg: ""});
 </script>

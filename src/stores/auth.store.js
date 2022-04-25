@@ -4,7 +4,7 @@ import router from "@/router/index.js";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    isAuthenticated: false,
+    isAuthenticated: null,
     transactions: null
   }),
 
@@ -23,6 +23,7 @@ export const useAuthStore = defineStore("auth", {
 
     async checkAuth() {
       if (this.isAuthenticated) return true;
+      if (this.isAuthenticated === false) return false;
       const { success } = await fetchServer("auth/verify");
       this.isAuthenticated = success;
       return success;
@@ -54,6 +55,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async getTransactions() {
+      if (this.isAuthenticated === false) return false;
       // If the transactions haven't been fetched
       if (!this.transactions) {
         const { success, transactions } = await fetchServer("transactions");

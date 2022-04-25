@@ -11,6 +11,7 @@ function formatBigValue(price) {
 };
 
 export const getDecimalDigits = n => {
+  if (!n) return 0;
   const str = n.toString();
   const index = str.indexOf(".");
   return index === -1 ? 0 : str.length - index - 1;
