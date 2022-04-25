@@ -11,8 +11,9 @@
     <div class="btn-container">
       <Button btnClass="h4 bg-primary rounded noborder" @click="openPopup">+ Add Transaction</Button>
     </div>
-    <TransactionPopup v-show="displayPopup" @close="displayPopup = false"/>
+    <TransactionPopup v-show="displayPopup" @close="displayPopup = false" @request="value => request = value" />
   </section>
+  <Popup :success="request.success" :message="request.msg" @endAnimation="request.success = null" mobile />
 </template>
 
 <script setup>
@@ -20,6 +21,7 @@ import SearchBar from "U#/SearchBar.vue";
 import Wallet from "M#/wallet/Wallet.mobile.vue";
 import Button from "U#/Button.vue";
 import TransactionPopup from "M#/wallet/TransactionPopup.mobile.vue";
+import Popup from "U#/Popup.vue";
 import { ref } from "vue";
 
 const displayPopup = ref(false);
@@ -28,6 +30,8 @@ const openPopup = () => {
   window.scrollTo({top: 0, behavior: "smooth"});
   displayPopup.value = true;
 }
+
+const request = ref({success: null});
 </script>
 
 <style lang="sass" scoped>
