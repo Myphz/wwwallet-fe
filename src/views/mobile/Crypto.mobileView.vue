@@ -14,13 +14,12 @@
     <TransactionPopup 
       v-show="displayPopup" 
       @close="displayPopup = false" 
-      @success="value => success = value"
-      @message="value => message = value"
+      @request="value => request = value"
       :base="base" 
       :crypto="crypto" 
     />
   </section>
-  <Popup :success="success" :message="message" @endAnimation="success = null" mobile />
+  <Popup :success="request.success" :message="request.msg" @endAnimation="request.success = null" mobile />
 
 </template>
 
@@ -42,6 +41,5 @@ const crypto = ref(route.params.crypto.toUpperCase());
 const base = ref("USDT");
 
 const displayPopup = ref(false);
-const success = ref(null);
-const message = ref("");
+const request = ref({success: null});
 </script>

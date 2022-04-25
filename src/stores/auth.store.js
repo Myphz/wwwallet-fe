@@ -37,9 +37,11 @@ export const useAuthStore = defineStore("auth", {
     },
 
     // Transactions
-    async addTransaction({ crypto, base, isBuy, price, quantity, date, notes }) {
+    async addTransaction({ crypto, base, isBuy, price, quantity, date, notes }, emit) {
       const params = { crypto, base, isBuy, price, quantity, date, notes };
       const { success, id, msg } = await fetchServer("transactions", params);
+      // Emit the data BEFORE rearraging the transactions, as that would cause a rerender, losing the emit
+      emit("request", { success, msg });
       // Add the transaction if they have been previously fetched, otherwise don't bother
       if (this.transactions && success) {
         if (crypto in this.transactions) {
@@ -48,7 +50,7 @@ export const useAuthStore = defineStore("auth", {
           this.transactions[crypto] = [{ id, ...params}];
         }
       }
-      return { success, msg };
+      return success;
     },
 
     async getTransactions() {
@@ -63,12 +65,13 @@ export const useAuthStore = defineStore("auth", {
       return true;
     },
 
-    async updateTransaction({ id, oldCrypto, crypto, base, isBuy, price, quantity, date, notes }) {
+    async updateTransaction({ id, oldCrypto, crypto, base, isBuy, price, quantity, date, notes }, emit) {
       const params = { id, crypto, base, isBuy, price, quantity, date, notes };
       const { success, newId, msg } = await fetchServer("transactions", params, { method: "PUT" });
+      // Emit the data BEFORE rearraging the transactions, as that would cause a rerender, losing the emit
+      emit("request", { success, msg });
       // Add the transaction if they have been previously fetched, otherwise don't bother
-      if (!this.transactions || !success) return { success, msg };
-      
+      if (!this.transactions || !success) return success;
       // Update existing transactions
       let i = this.transactions[oldCrypto].findIndex(transaction => transaction._id === id);
       if (oldCrypto !== crypto) {
@@ -77,13 +80,13 @@ export const useAuthStore = defineStore("auth", {
         if (!this.transactions[oldCrypto].length) delete this.transactions[oldCrypto];
         if (!this.transactions[crypto]) this.transactions[crypto] = [];
 
-        this.transactions[crypto].push({ id: newId, oldCrypto, crypto, base, isBuy, price, quantity, date, ...(notes && { notes}) });
+        this.transactions[crypto].push({ _id: newId, oldCrypto, crypto, base, isBuy, price, quantity, date, ...(notes && { notes}) });
         i = this.transactions[crypto].length - 1;
       } else {
-        this.transactions[crypto][i] = { id: newId, oldCrypto, crypto, base, isBuy, price, quantity, date, ...(notes && { notes}) }
+        this.transactions[crypto][i] = { _id: newId, oldCrypto, crypto, base, isBuy, price, quantity, date, ...(notes && { notes}) }
       };
 
-      return { success, msg };
+      return msg;
     },
   }
 });

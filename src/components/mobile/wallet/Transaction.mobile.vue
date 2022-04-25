@@ -15,7 +15,13 @@
       <Button btnClass="bg-outline h4" btnCss="padding: 0.3em;" @click="openPopup">Details</Button>
     </td>
   </tr>
-  <TransactionPopup v-if="displayPopup" :quantity="2342" @close="displayPopup = false" />
+  <TransactionPopup 
+    v-if="displayPopup" 
+    :crypto="crypto" 
+    :transaction="transaction" 
+    @request="value => $parent.$emit('request', value)"
+    @close="displayPopup = false" 
+  />
 </template>
 
 <script setup>
@@ -66,6 +72,7 @@ else
   value = Big(price).times(quantity);
 
 price = new Big(price).toFormat(2);
+
 const displayPopup = ref(false);
 const openPopup = () => {
   window.scrollTo({top: 0, behavior: "smooth"});
@@ -77,7 +84,7 @@ if (isBuy) {
   watch(value, (newValue, oldValue) => {
     isHigher.value = newValue.gt(oldValue);
   });
-}
+};
 </script>
 
 <style lang="sass" scoped>
