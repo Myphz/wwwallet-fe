@@ -14,7 +14,14 @@
   </tr>
   <tr v-show="open" class="transactions-row">
     <td colspan="4">
-      <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" @request="value => $emit('request', value)" />
+      <Transactions 
+        :crypto="crypto" 
+        :withTicker="false" 
+        :transactions="$route.params.isAuth ? [] : transactions"
+        bgColor="bg-base-dark" 
+        fontSize="h5" 
+        @request="value => $emit('request', value)" 
+      />
     </td>
   </tr>
 </template>
@@ -26,7 +33,9 @@ import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import { getDollarPrice } from "@/helpers/getPrice.helper";
 import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
-import Big from "@/helpers/big.helper.js"
+import Big from "@/helpers/big.helper.js";
+import generateRandomTransactions from "@/helpers/random.helper.js";
+import { useRoute } from "vue-router";
 
 const { crypto } = defineProps({
   crypto: {
@@ -35,13 +44,21 @@ const { crypto } = defineProps({
   },
 });
 
+const route = useRoute();
+
 defineEmits(["request"]);
 
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
 const open = ref(false);
 
-const transactions = computed(() => authStore.transactions[crypto] || []);
+const transactions = route.params.isAuth ? computed(() => authStore.transactions[crypto] || []) : ref([]);
+if (!route.params.isAuth) {
+  const unwatch = watch(cryptoStore.prices, () => {
+    transactions.value = generateRandomTransactions(crypto, cryptoStore);
+    unwatch();
+  });
+}
 
 const totalQty = computed(() => {
   const ret = transactions.value.reduce((prev, curr) => {

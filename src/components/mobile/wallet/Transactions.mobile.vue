@@ -6,12 +6,12 @@
         <th>Side</th>
         <th>Quantity</th>
         <th>Price</th>
-        <th v-if="!withTicker"></th>
+        <th v-if="!withTicker && $route.params.isAuth"></th>
       </tr>
     </thead>
     <tbody>
       <Transaction 
-        v-for="transaction in authStore.transactions?.[crypto] || []" 
+        v-for="transaction in authStore.transactions?.[crypto] || transactions" 
         :key="transaction._id" 
         :crypto="crypto"
         :transaction="transaction" 
@@ -24,13 +24,18 @@
 
 <script setup>
 import Transaction from "M#/wallet/Transaction.mobile.vue";
-import { ref, toRefs, watch } from "vue";
+import { toRefs } from "vue";
 import { useAuthStore } from "S#/auth.store";
 
 const props = defineProps({
   crypto: {
     type: String,
     required: true
+  },
+
+  transactions: {
+    type: Array,
+    default: []
   },
 
   fontSize: {
@@ -51,11 +56,6 @@ const props = defineProps({
 
 const { crypto } = toRefs(props);
 const authStore = useAuthStore();
-
-const isLogged = ref(await authStore.getTransactions());
-watch(crypto, async () => {
-  isLogged.value = await authStore.getTransactions();
-});
 </script>
 
 <style lang="sass" scoped>

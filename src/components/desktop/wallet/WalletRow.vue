@@ -65,11 +65,12 @@ const cryptoStore = useCryptoStore();
 const open = ref(false);
 
 const transactions = route.params.isAuth ? computed(() => authStore.transactions[crypto] || []) : ref([]);
-
-const unwatch = watch(cryptoStore.prices, () => {
-  transactions.value = generateRandomTransactions(crypto, cryptoStore);
-  unwatch();
-});
+if (!route.params.isAuth) {
+  const unwatch = watch(cryptoStore.prices, () => {
+    transactions.value = generateRandomTransactions(crypto, cryptoStore);
+    unwatch();
+  });
+}
 
 const totals = computed(() => {
   return transactions.value.reduce((prev, curr) => {

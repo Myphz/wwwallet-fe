@@ -12,7 +12,7 @@
       <Button btnClass="h3 bg-primary rounded noborder" @click="displayPopup = true">+ Add Transaction</Button>
     </div>
     <div v-else style="margin-top: 2em">
-      <h1><RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now to check your wallet</h1>
+      <h2><RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now to check your wallet</h2>
     </div>
     <TransactionPopup v-show="displayPopup" @close="displayPopup = false" @request="value => request = value" />
   </section>
@@ -34,9 +34,13 @@ const request = ref({success: null, msg: ""});
 </script>
 
 <style lang="sass" scoped>
-  h1
+  h1, h2
     font-weight: normal
     margin-bottom: .5em
+
+  a
+    color: darken($text-primary, 15%)
+    text-decoration: underline
 
   .btn-container
     margin-top: 2em
