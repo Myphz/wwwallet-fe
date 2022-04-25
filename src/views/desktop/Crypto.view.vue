@@ -7,7 +7,7 @@
         Loading
       </template>
     </Suspense>
-    <div class="justify-center" style="margin-bottom: 2em">
+    <div class="justify-center" style="margin-bottom: 2em" v-if="$route.params.isAuth">
       <Button btnClass="h3 bg-dark bottom-rounded noborder" @click="authStore.redirect(); displayPopup = true">+ Add Transaction</Button>
     </div>
     <TransactionPopup 

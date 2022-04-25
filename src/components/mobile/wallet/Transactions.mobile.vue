@@ -1,5 +1,5 @@
 <template>
-  <table :class="'nohover ' + bgColor">
+  <table :class="'nohover ' + bgColor" v-if="(authStore.transactions?.[crypto] || transactions).length">
     <thead>
       <tr>
         <th v-if="withTicker">Token</th>
@@ -20,6 +20,12 @@
       />
     </tbody>
   </table>
+  <div v-else-if="$route.params.isAuth" :class="'nohover ' + bgColor">
+    <h4>No transactions registered for {{ crypto }} yet...</h4>
+  </div>
+  <div v-else :class="'nohover ' + bgColor">
+    <h4><RouterLink to="/login">Login</RouterLink> or <RouterLink to="/register">Register</RouterLink> to record transactions</h4>
+  </div>
 </template>
 
 <script setup>
@@ -69,5 +75,16 @@ const authStore = useAuthStore();
 
   th:first-of-type, th:last-of-type
     padding-left: 2em
+
+  div
+    border-radius: .5em
+    padding: 1.5em
+
+  h4
+    font-weight: normal
+
+  a
+    color: darken($text-primary, 15%)
+    text-decoration: underline
 
 </style>

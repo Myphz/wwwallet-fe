@@ -1,5 +1,5 @@
 <template>
-  <table :class="'nohover ' + bgColor + ' ' + (shorter ? 'short ' : '')">
+  <table :class="'nohover ' + bgColor + ' ' + (shorter ? 'short ' : '')" v-if="(authStore.transactions?.[crypto] || transactions).length">
     <thead>
       <tr>
         <th v-if="withTicker">Token</th>
@@ -24,12 +24,19 @@
       />
     </tbody>
   </table>
+  <div v-else-if="$route.params.isAuth" :class="'nohover ' + bgColor">
+    <h4>No transactions registered for {{ crypto }} yet...</h4>
+  </div>
+  <div v-else :class="'nohover ' + bgColor">
+    <h4><RouterLink to="/login">Login</RouterLink> or <RouterLink to="/register">Register</RouterLink> to record transactions</h4>
+  </div>
 </template>
 
 <script setup>
 import Transaction from "D#/wallet/Transaction.vue";
 import { toRefs } from "vue";
 import { useAuthStore } from "S#/auth.store";
+import { RouterLink } from "vue-router";
 
 const props = defineProps({
   crypto: {
@@ -74,5 +81,16 @@ const authStore = useAuthStore();
   .short
     th
       padding: .5em 1em
+
+  div
+    border-radius: .5em
+    padding: 1.5em
+
+  h4
+    font-weight: normal
+
+  a
+    color: darken($text-primary, 15%)
+    text-decoration: underline
 
 </style>
