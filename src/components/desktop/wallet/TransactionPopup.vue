@@ -43,8 +43,8 @@
           :startValue="quantity"
           v-model:value="quantity"
           v-model:isValid="inputsValid[0]"
-          :validate="isPositiveFloat"
-          errorMessage="Invalid value"
+          :validate="quantity => isPositiveFloat(quantity) && checkQty()"
+          :errorMessage="errorMessage"
           :ref="e => inputs[2] = e" 
         />
 
@@ -98,7 +98,7 @@ import Select from "U#/Select.vue";
 import Input from "U#/Input.vue";
 import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
-import Big from "big.js";
+import Big from "@/helpers/big.helper.js";
 import { computed, getCurrentInstance, onMounted, reactive, ref, toRef, watch } from "vue";
 import { isPositiveFloat } from "@/helpers/validator.helper";
 import { useCryptoStore } from "S#/crypto.store";
@@ -172,6 +172,12 @@ const selectedBase = ref(base.value);
 const { emit } = getCurrentInstance();
 
 const cryptoList = computed(() => Object.keys(cryptoStore.tickerInfo));
+const totalQty = computed(
+  () => (
+    authStore.transactions[selectedCrypto.value] || [])
+    .reduce((prev, curr) => curr.isBuy ? prev.plus(curr.quantity) : prev.minus(curr.quantity), Big(0)
+  )
+);
 const quotes = computed(() => cryptoStore.tickerInfo[selectedCrypto.value]?.quotes || []);
 
 const currentDate = new Date();
@@ -219,6 +225,18 @@ const submit = async (func, additionalParams) => {
     }
   }
 };
+
+const errorMessage = ref("Invalid value");
+const checkQty = () => {
+  if (isBuy.value || !quantity.value) return true;
+  if (totalQty.value.lt(quantity.value)) {
+    errorMessage.value = `Current balance: ${totalQty.value.toFormat()} ${selectedCrypto.value}`;
+    return false;
+  }
+  return true;
+};
+
+watch(isBuy, () => inputs[2].validator());
 
 watch([quantity, price], () => {
   if (inputsValid.some(e => !e)) return totalInput.value.reset();

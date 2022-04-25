@@ -8,7 +8,7 @@
           :type="type"
           :name="icon"
           v-model="value"
-          @input="$emit('update:value', $event.target.value); validator(); $emit('update:isValid', isValid)"
+          @input="$emit('update:value', $event.target.value); validator();"
           spellcheck="false"
           autocapitalize="none"
           :autocomplete="autocomplete"
@@ -123,6 +123,7 @@ const validator = () => {
     return;
   }
   isValid.value = validate(value.value);
+  emit("update:isValid", isValid.value);
 }
 
 const update = val => {
@@ -140,7 +141,7 @@ watch(startValue, () => {
   emit("update:isValid", isValid.value);
 });
 
-defineExpose({ update, reset });
+defineExpose({ update, reset, validator });
 </script>
 
 <style lang="sass" scoped>
