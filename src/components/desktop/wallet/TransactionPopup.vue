@@ -210,12 +210,12 @@ const submit = async (func, additionalParams) => {
     notes: notes.value
   };
 
-  const { success, msg } = await func(params);
-  emit("success", success);
-  emit("message", msg);
+  const success = await func(params, emit);
   if (success) {
     emit("close");
-    resetFields();
+    if (!isDetail) {
+      resetFields();
+    }
   }
 };
 
@@ -234,7 +234,7 @@ if (!isDetail) {
 
 <style lang="sass" scoped>
   .container-popup
-    position: absolute
+    position: fixed
     border: none
     left: 50%
     top: 50%

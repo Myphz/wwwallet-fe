@@ -16,24 +16,21 @@
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ value && value.toFormat(2) || "" }}</td>
     <td>{{ date }}</td>
     <td v-if="!withTicker">
-      <Button btnClass="bg-outline h4" @click="openPopup">Details</Button>
+      <Button btnClass="bg-outline h4" @click="displayPopup = true">Details</Button>
     </td>
   </tr>
   <TransactionPopup 
     v-if="displayPopup" 
     :crypto="crypto" 
     :transaction="transaction" 
-    @success="value => success = value"
-    @message="value => message = value"
+    @request="value => $parent.$emit('request', value)"
     @close="displayPopup = false" 
   />
-  <Popup :success="success" :message="message" @endAnimation="success = null" />
 </template>
 
 <script setup>
 import Button from "U#/Button.vue";
 import TransactionPopup from "D#/wallet/TransactionPopup.vue";
-import Popup from "U#/Popup.vue";
 import { ref, computed, watch } from "vue";
 import { dateFormat } from "@/helpers/formatDate.helper";
 import { getDollarPrice } from "@/helpers/getPrice.helper";
@@ -81,10 +78,6 @@ else
 price = new Big(price).toFormat(2);
 
 const displayPopup = ref(false);
-const openPopup = () => {
-  window.scrollTo({top: 0, behavior: "smooth"});
-  displayPopup.value = true;
-};
 
 const isHigher = ref(null);
 if (isBuy) {
@@ -92,9 +85,6 @@ if (isBuy) {
     isHigher.value = newValue.gt(oldValue);
   });
 };
-
-const success = ref(null);
-const message = ref("");
 </script>
 
 <style lang="sass" scoped>

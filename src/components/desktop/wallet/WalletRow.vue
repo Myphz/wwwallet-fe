@@ -25,13 +25,15 @@
   </tr>
   <tr v-show="open" class="transactions-row">
     <td colspan="8">
-      <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" shorter />
+      <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" shorter @request="value => request = value" />
     </td>
   </tr>
+  <Popup :success="request.success" :message="request.msg" @endAnimation="request.success = null" />
 </template>
 
 <script setup>
 import Transactions from "D#/wallet/Transactions.vue";
+import Popup from "U#/Popup.vue";
 import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
 import Big from "@/helpers/big.helper.js"
 import { ref, watch, computed } from "vue";
@@ -105,6 +107,8 @@ const isHigher = ref(null);
 watch(currentValue, (newValue, oldValue) => {
   isHigher.value = newValue > oldValue;
 });
+
+const request = ref({success: null});
 </script>
 
 <style lang="sass" scoped>

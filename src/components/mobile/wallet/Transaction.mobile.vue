@@ -12,7 +12,7 @@
     <td>{{ quantity }}</td>
     <td>{{ price }}</td>
     <td v-if="!withTicker" class="right-align">
-      <Button btnClass="bg-outline h4" btnCss="padding: 0.3em;" @click="openPopup">Details</Button>
+      <Button btnClass="bg-outline h4" btnCss="padding: 0.3em;" @click="displayPopup = true">Details</Button>
     </td>
   </tr>
   <TransactionPopup 
@@ -74,10 +74,6 @@ else
 price = new Big(price).toFormat(2);
 
 const displayPopup = ref(false);
-const openPopup = () => {
-  window.scrollTo({top: 0, behavior: "smooth"});
-  displayPopup.value = true;
-};
 
 const isHigher = ref(null);
 if (isBuy) {

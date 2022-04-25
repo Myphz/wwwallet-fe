@@ -200,7 +200,7 @@ const resetFields = () => {
   notes.value = "";
   // Check if the price field is not empty
   Object.assign(inputsValid, [false, !!price.value]);
-  inputs && inputs.forEach(input => input.reset());
+  inputs.forEach(input => input.reset());
   // Don't reset the price input field
   inputs[3].update(price.value);
 };
@@ -242,7 +242,7 @@ if (!isDetail) {
 
 <style lang="sass" scoped>
   .container-popup
-    position: absolute
+    position: fixed
     border: none
     left: 50%
     top: 50%

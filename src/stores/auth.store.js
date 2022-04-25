@@ -33,7 +33,6 @@ export const useAuthStore = defineStore("auth", {
       if (!await this.checkAuth()) { 
         return router.push({ name: "login", params: { redirect: router.currentRoute.value.path } });
       }
-      window.scrollTo({top: 0, behavior: "smooth"});
     },
 
     // Transactions
