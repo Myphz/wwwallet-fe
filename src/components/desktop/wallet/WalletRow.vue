@@ -23,7 +23,7 @@
     </td>
     <td :class="'arrow ' + (open ? 'open' : '')"></td>
   </tr>
-  <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
+  <tr v-show="open" class="transactions-row">
     <td colspan="8">
       <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" shorter />
     </td>
@@ -32,13 +32,13 @@
 
 <script setup>
 import Transactions from "D#/wallet/Transactions.vue";
+import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
+import Big from "@/helpers/big.helper.js"
 import { ref, watch, computed } from "vue";
 import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import { getDollarPrice } from "@/helpers/getPrice.helper";
 import { getDecimalDigits } from "@/helpers/formatNumber.helper";
-import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
-import Big from "@/helpers/big.helper.js"
 
 const { crypto } = defineProps({
   crypto: {
@@ -125,8 +125,4 @@ watch(currentValue, (newValue, oldValue) => {
 
   .transactions-row
     background-color: darken($bg-base, 2%)
-    display: none
-
-  .row-open
-    display: table-row
 </style>

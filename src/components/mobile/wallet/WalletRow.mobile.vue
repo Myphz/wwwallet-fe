@@ -1,24 +1,33 @@
 <template>
   <tr :class="'h4 transition main-row'" @click="open = !open">
     <td class="align-center">
-      <Icon icon="bitcoin" class="icon" />
-      <span class="ticker">BTC</span>
+      <img 
+        :src="getCryptoIcon(crypto)" 
+        :alt="crypto"
+        onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
+      >
+      <span class="ticker">{{ crypto }}</span>
     </td>
-    <td>$31982.23</td>
-    <td>2.15</td>
+    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ currentValue.toFormat(2) }}</td>
+    <td>{{ totalQty.toFormat() }}</td>
     <td :class="'arrow ' + (open ? 'open' : '')"></td>
   </tr>
-  <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
+  <tr v-show="open" class="transactions-row">
     <td colspan="4">
       <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" />
     </td>
   </tr>
 </template>
-<script setup>
-import Icon from "U#/Icon.vue";
-import Transactions from "M#/wallet/Transactions.mobile.vue";
 
-import { ref } from "vue";
+<script setup>
+import Transactions from "M#/wallet/Transactions.mobile.vue";
+import { ref, watch, computed } from "vue";
+import { useAuthStore } from "S#/auth.store";
+import { useCryptoStore } from "S#/crypto.store";
+import { getDollarPrice } from "@/helpers/getPrice.helper";
+import { getDecimalDigits } from "@/helpers/formatNumber.helper";
+import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
+import Big from "@/helpers/big.helper.js"
 
 const { crypto } = defineProps({
   crypto: {
@@ -27,7 +36,47 @@ const { crypto } = defineProps({
   },
 });
 
+const authStore = useAuthStore();
+const cryptoStore = useCryptoStore();
 const open = ref(false);
+
+const transactions = computed(() => authStore.transactions[crypto]);
+
+const totalQty = computed(() => {
+  const ret = transactions.value.reduce((prev, curr) => {
+    const { isBuy, price, base, quantity } = curr;
+    if (isBuy) {
+      return { 
+        ...prev, 
+        buy: { 
+          totalQty: prev.buy.totalQty.plus(quantity), 
+          totalSum: prev.buy.totalSum.plus(new Big(getDollarPrice(base, cryptoStore.prices)).times(price).times(quantity)) 
+        }
+      };
+    }
+
+    return { 
+      ...prev, 
+      sell: { 
+        totalQty: prev.sell.totalQty.plus(quantity), 
+        totalSum: prev.sell.totalSum.plus(new Big(getDollarPrice(base, cryptoStore.prices)).times(price).times(quantity)) 
+      }
+    };
+  }, {
+      buy: { totalQty: new Big(0), totalSum: new Big(0) },
+      sell: { totalQty: new Big(0), totalSum: new Big(0) }
+     }
+  );
+
+  return ret.buy.totalQty.minus(ret.sell.totalQty);
+});
+
+const currentValue = computed(() => totalQty.value.times(getDollarPrice(crypto, cryptoStore.prices)));
+
+const isHigher = ref(null);
+watch(currentValue, (newValue, oldValue) => {
+  isHigher.value = newValue > oldValue;
+});
 </script>
 
 <style lang="sass" scoped>
@@ -40,14 +89,8 @@ const open = ref(false);
   img
     width: 36px
     height: 36px
-
-  .icon
     margin-right: 1em
 
   .transactions-row
     background-color: darken($bg-base, 2%)
-    display: none
-
-  .row-open
-    display: table-row
 </style>

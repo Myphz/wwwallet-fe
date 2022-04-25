@@ -9,14 +9,20 @@
       </tr>
     </thead>
     <tbody>
-      <WalletRow v-for="crypto in cryptos" :crypto="crypto" />
+      <WalletRow v-for="crypto in cryptos" :key="crypto" :crypto="crypto" />
     </tbody>
   </table>
 </template>
 
 <script setup>
 import WalletRow from "M#/wallet/WalletRow.mobile.vue";
-const cryptos = ["BTC", "ETH"]
+import { useAuthStore } from "S#/auth.store";
+import { computed, ref } from "vue";
+
+const authStore = useAuthStore();
+
+const isLogged = ref(await authStore.getTransactions());
+const cryptos = computed(() => Object.keys(authStore.transactions));
 </script>
 
 <style lang="sass" scoped>

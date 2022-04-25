@@ -23,6 +23,7 @@ import TransactionPopup from "M#/wallet/TransactionPopup.mobile.vue";
 import { ref } from "vue";
 
 const displayPopup = ref(false);
+
 const openPopup = () => {
   window.scrollTo({top: 0, behavior: "smooth"});
   displayPopup.value = true;
