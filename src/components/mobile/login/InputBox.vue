@@ -23,6 +23,7 @@
           v-model:isValid="areValuesValid[1]"
           :validate="login ? undefined : validatePassword"
           errorMessage="Use 8 or more characters with a mix of letters, capital letters and numbers."
+          allowSpaces
         />
 
         <Input
@@ -35,6 +36,7 @@
           v-model:isValid="areValuesValid[2]"
           :validate="passwordEqual"
           errorMessage="The passwords don't match"
+          allowSpaces
         />
 
         <span v-if="login" class="forgot h6 link">Forgot your password?</span>
