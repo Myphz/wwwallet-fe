@@ -42,7 +42,7 @@ export const useAuthStore = defineStore("auth", {
       const { success, id, msg } = await fetchServer("transactions", params);
       // Emit the data BEFORE rearraging the transactions, as that would cause a rerender, losing the emit
       emit("request", { success, msg });
-      // Add the transaction if they have been previously fetched, otherwise don't bother
+      // Add the transaction if they have been previously fetched
       if (this.transactions && success) {
         if (crypto in this.transactions) {
           this.transactions[crypto].push({ _id: id, ...params});
@@ -59,7 +59,10 @@ export const useAuthStore = defineStore("auth", {
       // If the transactions haven't been fetched
       if (!this.transactions) {
         const { success, transactions } = await fetchServer("transactions");
-        if (!success) return false;
+        if (!success) {
+          this.isAuthenticated = false;
+          return false
+        };
         this.transactions = transactions;
       }
       // If the request didn't fail, you are authenticated
@@ -72,7 +75,6 @@ export const useAuthStore = defineStore("auth", {
       const { success, newId, msg } = await fetchServer("transactions", params, { method: "PUT" });
       // Emit the data BEFORE rearraging the transactions, as that would cause a rerender, losing the emit
       emit("request", { success, msg });
-      // Add the transaction if they have been previously fetched, otherwise don't bother
       if (!this.transactions || !success) return success;
       // Update existing transactions
       let i = this.transactions[oldCrypto].findIndex(transaction => transaction._id === id);
