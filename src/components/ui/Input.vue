@@ -1,11 +1,11 @@
 <template>
   <span>
     <div :class="'box-container align-center bordered ' + (value ? 'border-primary ' : '') + containerClasses">
-      <Icon :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-05' : '')" />
+      <InputIcon :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-05' : '')" />
       <span class="input-container">
         <input 
           :class="'text-primary ' + inputClasses"
-          :type="type"
+          :type="type === 'password' ? show ? 'text' : type : type"
           :name="icon"
           v-model="value"
           @input="$emit('update:value', $event.target.value); validator();"
@@ -19,6 +19,13 @@
         >
         <label :class="'text-secondary ' + labelClasses">{{ label }}</label>
       </span>
+      <component
+        :is="show ? EyeClose : EyeOpen" 
+        v-if="type === 'password'" 
+        :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-05' : '')" 
+        style="margin-left: auto; margin-right: 1em; transform: scale(1.1); cursor: pointer" 
+        @click="show = !show"
+      />
     </div>
     <div v-show="!isValid && value" class="error text-red h6">
       <span>{{ errorMessage }}</span>
@@ -27,7 +34,7 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, getCurrentInstance, ref, toRefs, watch } from 'vue'
+import { defineAsyncComponent, getCurrentInstance, ref, toRefs, watch } from "vue";
 
 const props = defineProps({
   icon: {
@@ -110,9 +117,13 @@ const { startValue } = toRefs(props);
 
 // Lazy loading component to import it from a string
 // Import the svg directly using vite-svg-loader to style the icon
-const Icon = defineAsyncComponent(() => import(`../../assets/icons/${icon}.svg`));
+const InputIcon = defineAsyncComponent(() => import(`../../assets/icons/${icon}.svg`));
+const EyeOpen = defineAsyncComponent(() => import("../../assets/icons/eye-open.svg"));
+const EyeClose = defineAsyncComponent(() => import("../../assets/icons/eye-close.svg"));
+
 const value = ref(startValue.value);
-let isValid = ref(true);
+const isValid = ref(true);
+const show = ref(false);
 
 const { emit } = getCurrentInstance();
 
