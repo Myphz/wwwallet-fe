@@ -27,6 +27,7 @@ import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
 import { computed, ref, toRef } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
+import getBaseLCM from "@/helpers/getBaseLCM.helper.js";
 
 const props = defineProps({
   crypto: {
@@ -63,8 +64,12 @@ if (!dashboard) {
   baseOptions = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
   cryptoList = computed(() => Object.keys(store.tickerInfo));
 } else {
-  cryptoList = computed(() => ["TOTAL", ...Object.keys(totals.value)]);
-  baseOptions = ["USDT", "USDC"];
+  const keys = Object.keys(totals.value);
+  cryptoList = computed(() => ["TOTAL", ...keys]);
+  baseOptions = computed(() => selectedCrypto.value === "TOTAL" ? 
+    getBaseLCM(keys, store.tickerInfo) : 
+    store.tickerInfo[selectedCrypto.value]?.quotes || []
+  );
 }
 </script>
 

@@ -1,6 +1,15 @@
 <template>
   <section>
-    <ChartOptions :crypto="crypto" :base="base" v-model:Base="currentBase" v-model:Crypto="currentCrypto" :dashboard="dashboard" :totals="totals" />
+    <ChartOptions 
+      :crypto="crypto" 
+      :base="base" 
+      v-model:Crypto="currentCrypto" 
+      @update:Crypto="$emit('update:Crypto', currentCrypto)"
+      v-model:Base="currentBase" 
+      @update:Base="$emit('update:Base', currentBase)"
+      :dashboard="dashboard" 
+      :totals="totals" 
+    />
     <div class="stats">
       <span :class="'price ' + (isHigher ? 'green' : isHigher !== null ? 'red' : '')">
         <h2>{{ formatValue(price) }}</h2>
@@ -109,21 +118,14 @@ if (!dashboard) {
   high24 = computed(() => helper("h"));
   low24 = computed(() => helper("l"));
   const open = computed(() => helper("o"));
-  pctChange = computed(() => price.value.minus(open.value).div(price.value.eq(0) ? 1 : price.value).times(100));
+  pctChange = computed(() => !price.value || price.value.minus(open.value).div(price.value.eq(0) ? 1 : price.value).times(100));
+  pctChange = 2;
 }
 
 const isHigher = ref(null);
 watch(price, (newPrice, oldPrice) => {
   if (newPrice instanceof Big) return isHigher.value = newPrice.gt(oldPrice);
   isHigher.value = newPrice > oldPrice;
-});
-
-watch(currentCrypto, () => {
-  emit("update:Crypto", currentCrypto.value);
-});
-
-watch(currentBase, () => {
-  emit("update:Base", currentBase.value);
 });
 </script>
 
