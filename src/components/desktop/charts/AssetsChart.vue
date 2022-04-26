@@ -2,20 +2,45 @@
   <section>
     <div class="main-info">
       <h4 class="text-secondary">TOTAL ASSET VALUE</h4>
-      <h2>$192,002.42</h2>
+      <h2>${{ total.toFormat(2) }}</h2>
     </div>
     <div class="chart-container">
-      <PieChart />
+      <PieChart :totals="totals" :currentValues="currentValues" />
     </div>
+    
     <div class="main-info">
       <h4 class="text-secondary">TOTAL EARNINGS</h4>
-      <h2>$2,002.42</h2>
+      <h2>{{ totalEarnings.s === -1 ? "-" : "" }}${{ totalEarnings.abs().toFormat(2) }}</h2>
     </div>
   </section>
 </template>
 
 <script setup>
+import { computed } from "@vue/reactivity";
 import PieChart from "D#/charts/PieChart.vue";
+import { toRefs } from "vue";
+
+const props = defineProps({
+  totals: {
+    type: Object,
+    required: true,
+  },
+
+  currentValues: {
+    type: Object,
+    required: true,
+  },
+
+  earnings: {
+    type: Object,
+    required: true
+  }
+});
+
+const { totals, currentValues, earnings } = toRefs(props);
+
+const total = computed(() => Object.values(currentValues.value).reduce((prev, curr) => prev.plus(curr)));
+const totalEarnings = computed(() => Object.values(earnings.value).reduce((prev, curr) => prev.plus(curr)));
 </script>
 
 <style lang="sass" scoped>

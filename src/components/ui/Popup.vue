@@ -8,7 +8,7 @@
       </div>
       <div v-else>
         <div><strong>ERROR</strong></div>
-        <div>{{ message }}. Please retry.</div>
+        <div>{{ message + (message.includes("Please") ? "" : ". Please retry.") }}</div>
       </div>
     </div>
   </Transition>
