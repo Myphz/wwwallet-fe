@@ -86,9 +86,9 @@ const totals = computed(() => {
 
     ret[crypto].avgBuyPrice = buyPriceSum.div(ret[crypto].buyQuantity);
     ret[crypto].avgSellPrice = ret[crypto].sellQuantity.eq(0) ? Big(0) : sellPriceSum.div(ret[crypto].sellQuantity);
-
-    return ret;
   }
+
+  return ret;
 });
 
 // Computed variable to store an object with the following format:
