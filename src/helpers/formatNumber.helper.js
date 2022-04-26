@@ -1,3 +1,5 @@
+import Big from "@/helpers/big.helper.js";
+
 function formatBigValue(price) {
   // Try with billions first
   let N = price / 1000000000;
@@ -18,6 +20,7 @@ export const getDecimalDigits = n => {
 }
 
 export const formatValue = price => {
+  if (price instanceof Big) return price.toFormat();
   if (!price) return "0.00";
   if (price >= 1000000) return formatBigValue(price);
   const decimalDigits = getDecimalDigits(price);
@@ -25,8 +28,9 @@ export const formatValue = price => {
 }
 
 export const formatPercentage = pct => {
+  if (pct instanceof Big) return (pct.gt(0) ? "+" : "") + pct.toFormat(2);
   if (!pct) return "0.00%";
-  const ret = (pct*100).toFixed(2) + "%";
+  const ret = (pct*100).toFixed(2);
   if (pct > 0) return "+" + ret;
   return ret;
 }

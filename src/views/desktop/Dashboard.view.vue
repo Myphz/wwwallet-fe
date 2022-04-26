@@ -7,7 +7,13 @@
         :currentValues="currentValues"
         :earnings="earnings"
       />
-      <CryptoChart class="chart" crypto="BTC" base="USDT" dashboard />
+      <CryptoChart 
+        class="chart" 
+        crypto="TOTAL"
+        base="USDT" 
+        :totals="totals"
+        dashboard 
+      />
     </div>
   </section>
 
