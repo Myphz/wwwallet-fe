@@ -1,7 +1,9 @@
 import { defineStore } from "pinia";
 import { fetchBinance, fetchServer } from "@/helpers/fetch.helper.js";
 import createSocket from "@/helpers/createSocket.helper";
+import getPastQuantity from "@/helpers/getPastQuantity.helper";
 import { KLINES_LIMIT } from "@/config/config";
+import { useAuthStore } from "S#/auth.store";
 
 export const useCryptoStore = defineStore("crypto", {
   state: () => ({
@@ -93,11 +95,12 @@ export const useCryptoStore = defineStore("crypto", {
       };
     },
 
-    async getDashboardKlines(crypto, base, interval, totals, opts) {
+    async getDashboardKlines(crypto, base, interval, opts) {
+      const transactions = useAuthStore().transactions;
       // Helper function to shrink the klines and multiply each value by the quantity
       const convertKlines = (crypto, klines) => {
         // Loop over each kline and multiply its value by the quantity (except the time)
-        return klines.map(kline => [kline[0], ...kline.slice(1, 5).map(v => totals[crypto].totalQuantity.times(v).toNumber() )]);
+        return klines.map(kline => [kline[0], ...kline.slice(1, 5).map(v => getPastQuantity(kline[6], transactions[crypto]).times(v).toNumber() )]);
       };
 
       if (crypto !== "TOTAL") {
@@ -109,7 +112,7 @@ export const useCryptoStore = defineStore("crypto", {
 
       const { end, noSocket } = opts || {};
       // Get all cryptos and klines for every crypto
-      const cryptos = Object.keys(totals);
+      const cryptos = Object.keys(transactions);
       let klinesAll = await Promise.all(cryptos.map(key => 
         fetchBinance(`klines?symbol=${key}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}` + (end ? `&endTime=${end}` : "")) 
       )); 
@@ -130,7 +133,7 @@ export const useCryptoStore = defineStore("crypto", {
         socket = createSocket("stream?streams=" + cryptos.map(crypto => `${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`).join("/"));
 
       return {
-        klines: retKlines,
+        klines: retKlines.filter(kline => kline[1]),
         socket
       };
     },

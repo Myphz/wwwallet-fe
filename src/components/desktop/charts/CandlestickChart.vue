@@ -129,13 +129,13 @@ export default {
       klinesBuffer = {};
 
       if (!totals.value) ({ klines, socket } = await store.getKlines(crypto.value, base.value, interval.value));
-      else ({ klines, socket } = await store.getDashboardKlines(crypto.value, base.value, interval.value, totals.value));
+      else ({ klines, socket } = await store.getDashboardKlines(crypto.value, base.value, interval.value));
 
       if (!klines?.length) return;
       // Set white space to the right of the chart 
-      option.xAxis.max = klines[klines.length - 1][0] + (klines[klines.length - 1][0] - klines[klines.length - 2][0]) * klines.length / 200;
+      option.xAxis.max = klines[klines.length - 1][0] + (klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0)) * klines.length / 200;
       // Set maximum zoom
-      option.dataZoom.minSpan = 3000 / klines.length;
+      option.dataZoom.minSpan = 2000 / klines.length;
 
       lastTime = klines[klines.length - 1][0]
       option.series.data = klines;
@@ -170,7 +170,7 @@ export default {
           })
         );
       } else {
-        ({ klines } = await store.getDashboardKlines(crypto.value, base.value, interval.value, totals.value,
+        ({ klines } = await store.getDashboardKlines(crypto.value, base.value, interval.value,
           { 
             end: option.series.data[0][0] - (option.series.data[1][0] - option.series.data[0][0]), 
             noSocket: true 
@@ -178,12 +178,17 @@ export default {
         );
       };
 
+      allLoaded = klines.length !== KLINES_LIMIT;
+
+      if (!klines.length) return;
+
       // Temporary disable animation
       option.animation = false;
       // Add data
       option.series.data = [...klines, ...option.series.data];
       // Set maximum zoom
-      option.dataZoom.minSpan = 3000 / klines.length / option.series.data.length / klines.length;
+      option.dataZoom.minSpan = 2000 / klines.length / option.series.data.length / klines.length;
+      console.log(option.dataZoom.minSpan);
 
       // Return to the last position
       chart.value.dispatchAction({
@@ -192,7 +197,7 @@ export default {
         end: 100 / (option.series.data.length / klines.length) + kline.end / (option.series.data.length / klines.length)
       });
 
-      allLoaded = klines.length !== KLINES_LIMIT;
+      
       isLoading = false;
     };
 
