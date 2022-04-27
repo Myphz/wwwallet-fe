@@ -29,7 +29,7 @@ export const useCryptoStore = defineStore("crypto", {
       });
 
       // Initialize socket to subscribe to all miniTickers and get real time updates
-      const socket = createSocket("!miniTicker@arr");
+      const socket = createSocket("ws/!miniTicker@arr");
       socket.onmessage = this.priceUpdate;
       // For every crypto, get its possible quotes and precision
       exchangeInfo.symbols.forEach(crypto => {
@@ -85,12 +85,50 @@ export const useCryptoStore = defineStore("crypto", {
       const klines = await fetchBinance(url);
 
       let socket;
-      if (!noSocket) socket = createSocket(`${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`);
-
+      if (!noSocket) socket = createSocket(`ws/${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`);
+      
       return {
         klines: klines.length && klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k))),
         socket
       };
-    }
+    },
+
+    async getDashboardKlines(crypto, base, interval, totals, opts) {
+      // Helper function to shrink the klines and multiply each value by the quantity
+      const convertKlines = (crypto, klines) => {
+        // Loop over each kline and multiply its value by the quantity (except the time)
+        return klines.map(kline => [kline[0], ...kline.slice(1, 5).map(v => totals[crypto].totalQuantity.times(v).toNumber() )]);
+      };
+
+      if (crypto !== "TOTAL") {
+        // If the selected view is not "TOTAL", just return the klines applied to the convertKlines function
+        let { klines, socket } = await this.getKlines(crypto, base, interval, opts);
+        klines = convertKlines(crypto, klines);
+        return { klines, socket };
+      };
+
+      const { end, noSocket } = opts || {};
+      // Get all cryptos and klines for every crypto
+      const cryptos = Object.keys(totals);
+      const klinesAll = await Promise.all(cryptos.map(key => 
+        fetchBinance(`klines?symbol=${key}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}` + (end ? `&endTime=${end}` : "")) 
+      )); 
+      // Initialize retKlines with the first converted series of klines
+      let retKlines = convertKlines(cryptos[0], klinesAll[0]);
+      for (let i = 1; i < klinesAll.length; i++) {
+        const klines = convertKlines(cryptos[i], klinesAll[i]);
+        // Loop over each next klines, convert them and add each single value to retKlines
+        retKlines = retKlines.map((kline, j) => [kline[0], ...kline.slice(1).map((v, k) => v + klines[j][k+1])]);
+      }
+
+      let socket;
+      if (!noSocket) 
+        socket = createSocket("stream?streams=" + cryptos.map(crypto => `${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`).join("/"));
+
+      return {
+        klines: retKlines,
+        socket
+      };
+    },
   }
 });

@@ -33,7 +33,7 @@
       </span>
     </div>
     <div :class="dashboard ? 'chart-container-dashboard' : 'chart-container'">
-      <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" dashboard />
+      <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" :totals="totals" />
     </div>
   </section>
 </template>
@@ -42,7 +42,7 @@
 import ChartOptions from "D#/charts/ChartOptions.vue";
 import CandlestickChart from "D#/charts/CandlestickChart.vue";
 import { TIMES } from "@/config/config.js";
-import { computed, getCurrentInstance, ref, toRef, watch } from "vue";
+import { computed, ref, toRef, watch } from "vue";
 import { formatValue, formatPercentage } from "@/helpers/formatNumber.helper";
 import { calculatePercentage } from "@/helpers/getPrice.helper";
 import { useCryptoStore } from "S#/crypto.store";
@@ -77,8 +77,6 @@ const currentBase = ref(base);
 const currentCrypto = ref(crypto);
 
 const activeTime = ref(0);
-const { emit } = getCurrentInstance();
-
 const store = useCryptoStore();
 
 let price, pctChange, high24, low24;
