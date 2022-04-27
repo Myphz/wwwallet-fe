@@ -16,7 +16,7 @@
       </span>
       <span class="statsgroup">
         <span>24h Change</span>
-        <span :class="pctChange.toString().startsWith('+') ? 'green' : pctChange.toString().startsWith('-') ? 'red' : ''">{{ formatPercentage(pctChange) }}%</span>
+        <span :class="parseFloat(pctChange) > 0 ? 'green' : parseFloat(pctChange) < 0 ? 'red' : ''">{{ formatPercentage(pctChange) }}</span>
       </span>
       <span class="statsgroup">
         <span>24h High</span>

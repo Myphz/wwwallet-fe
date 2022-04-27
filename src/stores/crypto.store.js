@@ -110,15 +110,19 @@ export const useCryptoStore = defineStore("crypto", {
       const { end, noSocket } = opts || {};
       // Get all cryptos and klines for every crypto
       const cryptos = Object.keys(totals);
-      const klinesAll = await Promise.all(cryptos.map(key => 
+      let klinesAll = await Promise.all(cryptos.map(key => 
         fetchBinance(`klines?symbol=${key}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}` + (end ? `&endTime=${end}` : "")) 
       )); 
+      // Add start padding if the length is not the same
+      const maxLength = Math.max(...klinesAll.map(klines => klines.length));
+      klinesAll = klinesAll.map(klines => [...Array(maxLength - klines.length).fill([0,0,0,0,0]), ...klines]);
       // Initialize retKlines with the first converted series of klines
       let retKlines = convertKlines(cryptos[0], klinesAll[0]);
+      
       for (let i = 1; i < klinesAll.length; i++) {
         const klines = convertKlines(cryptos[i], klinesAll[i]);
         // Loop over each next klines, convert them and add each single value to retKlines
-        retKlines = retKlines.map((kline, j) => [kline[0], ...kline.slice(1).map((v, k) => v + klines[j][k+1])]);
+        retKlines = retKlines.map((kline, j) => [kline[0], ...kline.slice(1).map((v, k) => v + (klines[j]?.[k+1] || 0))]);
       }
 
       let socket;

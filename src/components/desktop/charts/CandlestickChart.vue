@@ -151,7 +151,7 @@ export default {
 
     // Load the data when mounted and when base or interval change
     onMounted(loadData);
-    watch([crypto, base, interval], loadData);
+    watch([crypto, base, interval, totals], loadData);
 
     // Function to load more data if the user has dragged the chart all the way to the left
     const checkEnd = async ({ batch }) => {
@@ -160,13 +160,23 @@ export default {
       if (kline.start || isLoading || allLoaded) return;
       isLoading = true;
       // The end of the chart has been reached: need to load more data.
-      const { klines } = await store.getKlines(
-        crypto.value, base.value, interval.value, 
-        { 
-          end: option.series.data[0][0] - (option.series.data[1][0] - option.series.data[0][0]), 
-          noSocket: true 
-        }
-      );
+      let klines;
+
+      if (!totals.value) {
+        ({ klines } = await store.getKlines(crypto.value, base.value, interval.value, 
+          { 
+            end: option.series.data[0][0] - (option.series.data[1][0] - option.series.data[0][0]), 
+            noSocket: true 
+          })
+        );
+      } else {
+        ({ klines } = await store.getDashboardKlines(crypto.value, base.value, interval.value, totals.value,
+          { 
+            end: option.series.data[0][0] - (option.series.data[1][0] - option.series.data[0][0]), 
+            noSocket: true 
+          })
+        );
+      };
 
       // Temporary disable animation
       option.animation = false;

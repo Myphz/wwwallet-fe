@@ -28,9 +28,9 @@ export const formatValue = price => {
 }
 
 export const formatPercentage = pct => {
-  if (pct instanceof Big) return (pct.gt(0) ? "+" : "") + pct.toFormat(2);
+  if (pct instanceof Big) return (pct.gt(0) ? "+" : "") + pct.toFormat(2) + "%";
   if (!pct) return "0.00%";
   const ret = (pct*100).toFixed(2);
-  if (pct > 0) return "+" + ret;
-  return ret;
+  if (pct > 0) return "+" + ret + "%";
+  return ret + "%";
 }
