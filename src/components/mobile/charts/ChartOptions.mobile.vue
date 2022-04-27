@@ -6,6 +6,7 @@
         :options="cryptoList"
         :startValue="selectedCrypto"
         v-model="selectedCrypto"
+        @update:modelValue="$emit('update:Crypto', selectedCrypto); !dashboard && $router.replace({ name: 'crypto', params: { crypto: selectedCrypto } })"
         iconSize="small"
         mobile
       />
@@ -29,11 +30,11 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
-import { computed, getCurrentInstance, ref, watch } from "vue";
+import { computed, ref, toRef } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
-import { useRouter } from "vue-router";
+import getBaseLCM from "@/helpers/getBaseLCM.helper.js";
 
-const { crypto, base } = defineProps({
+const props = defineProps({
   crypto: {
     type: String,
     required: true
@@ -42,23 +43,39 @@ const { crypto, base } = defineProps({
   base: {
     type: String,
     required: true
+  },
+
+  totals: {
+    type: Object,
+    default: null
+  },
+
+  dashboard: {
+    type: Boolean,
+    default: false
   }
 });
 
+const { crypto, base, dashboard } = props;
+const totals = toRef(props, "totals");
+
 const store = useCryptoStore();
-const router = useRouter();
 
 const selectedCrypto = ref(crypto);
 const selectedBase = ref(base);
 
-const baseOptions = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
-const cryptoList = computed(() => Object.keys(store.tickerInfo));
-
-const { emit } = getCurrentInstance();
-watch(selectedCrypto, newCrypto => {
-  router.replace({ name: "crypto", params: { crypto: newCrypto } });
-  emit("update:Crypto", newCrypto);
-});
+let baseOptions, cryptoList;
+if (!dashboard) {
+  baseOptions = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
+  cryptoList = computed(() => Object.keys(store.tickerInfo));
+} else {
+  const keys = Object.keys(totals.value);
+  cryptoList = computed(() => ["TOTAL", ...keys]);
+  baseOptions = computed(() => selectedCrypto.value === "TOTAL" ? 
+    getBaseLCM(keys, store.tickerInfo) : 
+    store.tickerInfo[selectedCrypto.value]?.quotes || []
+  );
+}
 </script>
 
 <style lang="sass" scoped>
