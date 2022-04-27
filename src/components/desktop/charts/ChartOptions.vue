@@ -6,7 +6,7 @@
         :options="cryptoList"
         :startValue="selectedCrypto"
         v-model="selectedCrypto"
-        @update:modelValue="$emit('update:Crypto', selectedCrypto)"
+        @update:modelValue="$emit('update:Crypto', selectedCrypto); !dashboard && $router.replace({ name: 'crypto', params: { crypto: selectedCrypto } })"
         iconSize="small"
       />
       <Select 

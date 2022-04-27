@@ -119,7 +119,6 @@ if (!dashboard) {
   low24 = computed(() => helper("l"));
   const open = computed(() => helper("o"));
   pctChange = computed(() => !price.value || price.value.minus(open.value).div(price.value.eq(0) ? 1 : price.value).times(100));
-  pctChange = 2;
 }
 
 const isHigher = ref(null);
