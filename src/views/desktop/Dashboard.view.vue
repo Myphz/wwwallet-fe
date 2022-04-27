@@ -20,10 +20,10 @@
   <section>
     <header class="space-between">
       <h1>Assets Analysis</h1>
-      <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h1" :withIcon="false" />
+      <Select :options="Object.keys(ANALYSIS_TIMES)" class="h1" :withIcon="false" />
     </header>
     <div class="bg-dark nohover assets-section">
-      <AssetsAnalysis class="bg-dark nohover" :frequency="'DAILY'" />
+      <AssetsAnalysis class="bg-dark nohover" :frequency="'DAILY'" :totals="totals" :earnings="earnings" />
     </div>
   </section>
 
@@ -41,6 +41,7 @@ import EarningsChart from "D#/charts/EarningsChart.vue";
 import Select from "U#/Select.vue";
 import AssetsAnalysis from "D#/dashboard/AssetsAnalysis.vue";
 
+import { ANALYSIS_TIMES } from "@/config/config";
 import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";

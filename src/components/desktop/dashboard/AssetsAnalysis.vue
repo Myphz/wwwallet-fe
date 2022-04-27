@@ -3,26 +3,39 @@
     <thead>
       <tr>
         <th>Token</th>
-        <th>Average Price</th>
+        <th>Average Buy Price</th>
+        <th>Average Sell Price</th>
+        <th>Earnings</th>
         <th>Change</th>
-        <th>Revenue</th>
-        <th></th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-      <AssetAnalysis v-for="i in 10" />
+      <AssetAnalysis v-for="crypto in Object.keys(totals)" :key="crypto" :crypto="crypto" :totals="totals[crypto]" :earnings="earnings[crypto]" />
     </tbody>
   </table>
 </template>
 
 <script setup>
 import AssetAnalysis from "D#/dashboard/AssetAnalysis.vue";
+import { toRefs } from "vue";
 
-const { frequency } = defineProps({
+const props = defineProps({
   frequency: {
     type: String,
     required: true
+  },
+
+  totals: {
+    type: Object,
+    required: true
+  },
+
+  earnings: {
+    type: Object,
+    required: true
   }
 });
+
+const { frequency, totals, earnings } = toRefs(props);
 </script>
