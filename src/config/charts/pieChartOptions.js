@@ -25,7 +25,7 @@ export default {
     tooltip: {
       formatter({ marker, data, percent }) {
         const { value, name } = data;
-        return `${marker} <strong>${name}</strong> - $${formatValue(value)} (${percent}%)`
+        return `${marker} <strong>${name}</strong> - $${formatValue(value, 2)} (${percent}%)`
       },
 
       backgroundColor: bgColor,

@@ -16,10 +16,10 @@
   <section class="analysis-section">
     <header class="assets-header">
       <h1>Assets Analysis</h1>
-      <Select :options='["TOTAL", "MONTHLY", "WEEKLY", "DAILY"]' class="h2 with-border" :withIcon="false" />
+      <Select :options="Object.keys(ANALYSIS_TIMES)" class="h2 with-border" :withIcon="false"  v-model="frequency" />
     </header>
     <div>
-      <AssetsAnalysis :frequency="'DAILY'" />
+      <AssetsAnalysis :frequency="frequency" :totals="totals" :currentValues="currentValues" :earnings="earnings" />
     </div>
   </section>
   <section class="analysis-section">
@@ -35,15 +35,16 @@ import EarningsChart from "M#/charts/EarningsChart.mobile.vue";
 import Select from "U#/Select.vue";
 import AssetsAnalysis from "M#/dashboard/AssetsAnalysis.mobile.vue";
 
+import { ANALYSIS_TIMES } from "@/config/config";
 import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { getDollarPrice } from "@/helpers/getPrice.helper";
 
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
-
+const frequency = ref("TOTAL");
 
 // Computed variable to store some transaction statistics.
 // Example format:

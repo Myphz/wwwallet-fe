@@ -62,10 +62,10 @@ export default {
       // If it's not from dashboard
       if (!totals.value) {
         // Convert to float if it's not in the dashboard
-         newKline = [t, o, h, l, c].map(k => parseFloat(k))
+         newKline = [t, o, h, l, c].map(k => parseFloat(k));
       } else {
         // Otherwise, multiply it by the total crypto quantity
-        newKline = [t, ...[o, h, l, c].map(k => totals.value[crypto.value].totalQuantity.times(k).toNumber())]
+        newKline = [t, ...[o, h, l, c].map(k => parseFloat(totals.value[crypto.value].totalQuantity.times(k).toFixed(2)))];
       }
       // Check if it's a new candle
       if (t !== option.series.data[option.series.data.length - 1][0]) {
@@ -108,7 +108,7 @@ export default {
         const { t, o, h, l, c } = kline.k;
         const klineArr = [t, o, h, l, c];
         // Return the values of this kline, multiplied by the quantity of the crypto, plus the previous values
-        return [klineArr[0], ...klineArr.slice(1, 5).map((v, i) => totals.value[crypto].totalQuantity.times(v).plus(prev[i+1]).toNumber()) ];
+        return [klineArr[0], ...klineArr.slice(1, 5).map((v, i) => parseFloat(totals.value[crypto].totalQuantity.times(v).plus(prev[i+1]).toFixed(2)))];
       }, [0,0,0,0,0]);
 
       // If it's a new candle, push it

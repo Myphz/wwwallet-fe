@@ -1,5 +1,6 @@
 import extractSass from "@/helpers/extractSass.helper.js";
 import { timeFormat, dateFormat } from "@/helpers/formatDate.helper.js";
+import { formatValue } from "@/helpers/formatNumber.helper.js";
 
 const gridColor = extractSass("grid-color");
 const textColor = extractSass("primary");
@@ -7,7 +8,7 @@ const backgroundColor = extractSass("bg-dark");
 
 function withClass(value, isPositive, withSymbol) {
   const styleClass = isPositive ? "green" : "red";
-  return `<span class="${styleClass}">${withSymbol ? (isPositive ? "+" : "") : ""}${value}</span>`
+  return `<span class="${styleClass}">${withSymbol ? (isPositive ? "+" : "") : ""}${formatValue(value)}</span>`
 }
 
 export default {
