@@ -98,7 +98,7 @@ const currentPrice = computed(() => getDollarPrice(crypto.value, store.prices));
 
 const pctChange = computed(() => {
   if (!currentPrice.value) return 0;
-  return Big(currentPrice.value).minus(totals.value.avgBuyPrice).div(currentPrice.value).times(100);
+  return Big(currentPrice.value).minus(totals.value.avgBuyPrice).div(totals.value.avgBuyPrice).times(100);
 });
 
 const open = ref(false);

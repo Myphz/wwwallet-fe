@@ -26,7 +26,7 @@
     </td>
   </tr>
   <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
-    <td colspan="6">
+    <td colspan="7">
       <TransactionsAnalysis />
     </td>
   </tr>
@@ -42,6 +42,8 @@ import { useCryptoStore } from "S#/crypto.store";
 import { formatValue, formatPercentage } from "@/helpers/formatNumber.helper";
 import { computed } from "@vue/reactivity";
 import { getDollarPrice } from "@/helpers/getPrice.helper";
+import { getPastStats } from "@/helpers/getPastQuantity.helper";
+import { ANALYSIS_TIMES } from "@/config/config";
 
 const props = defineProps({
   crypto:  {
@@ -54,8 +56,13 @@ const props = defineProps({
     required: true
   },
 
-  earnings: {
+  currentValue: {
     type: Big,
+    required: true
+  },
+
+  transactions: {
+    type: Object,
     required: true
   },
 
@@ -65,13 +72,34 @@ const props = defineProps({
   }
 });
 
-const { crypto, totals, earnings, frequency } = toRefs(props);
+const { crypto, totals, currentValue, frequency, transactions } = toRefs(props);
 const store = useCryptoStore();
 
+let avgBuyPrice = totals.value.avgBuyPrice;
 const currentPrice = computed(() => getDollarPrice(crypto.value, store.prices));
 const pctChange = computed(() => {
   if (!currentPrice.value) return 0;
-  return Big(currentPrice.value).minus(totals.value.avgBuyPrice).div(currentPrice.value).times(100);
+  return Big(currentPrice.value).minus(avgBuyPrice).div(avgBuyPrice).times(100);
+});
+
+const earnings = computed(() => {
+  let totalQuantity, sellQuantity, avgSellPrice; 
+  
+  if (frequency.value === "TOTAL") {
+    ({ totalQuantity, sellQuantity, avgSellPrice, avgBuyPrice } = totals.value);
+  } else {
+    ({ totalQuantity, sellQuantity, avgSellPrice } = getPastStats(+new Date() - ANALYSIS_TIMES[frequency.value], transactions.value));
+  };
+
+  if (totalQuantity.eq(0)) return Big(0);
+  const oldValue = totalQuantity.times(avgBuyPrice)
+  const soldValue = sellQuantity.times( avgSellPrice.minus(avgBuyPrice) );
+  return currentValue.value && currentValue.value.minus(oldValue).plus(soldValue);
+});
+
+watch(frequency, async () => {
+  if (frequency.value === "TOTAL") return avgBuyPrice = totals.value.avgBuyPrice;
+  avgBuyPrice = await store.getPastPrice(+new Date() - ANALYSIS_TIMES[frequency.value], crypto.value);
 });
 
 const open = ref(false);

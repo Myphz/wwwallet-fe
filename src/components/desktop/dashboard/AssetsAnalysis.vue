@@ -17,7 +17,8 @@
         :key="crypto" 
         :crypto="crypto" 
         :totals="totals[crypto]" 
-        :earnings="earnings[crypto]"
+        :currentValue="currentValues[crypto]"
+        :transactions="transactions[crypto]"
         :frequency="frequency"
       />
     </tbody>
@@ -26,6 +27,8 @@
 
 <script setup>
 import AssetAnalysis from "D#/dashboard/AssetAnalysis.vue";
+import { useAuthStore } from "S#/auth.store.js";
+
 defineProps({
   frequency: {
     type: String,
@@ -37,9 +40,11 @@ defineProps({
     required: true
   },
 
-  earnings: {
+  currentValues: {
     type: Object,
     required: true
   }
 });
+
+const transactions = useAuthStore().transactions;
 </script>

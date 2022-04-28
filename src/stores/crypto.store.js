@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import { fetchBinance, fetchServer } from "@/helpers/fetch.helper.js";
 import createSocket from "@/helpers/createSocket.helper";
-import getPastQuantity from "@/helpers/getPastQuantity.helper";
+import { getPastQuantity } from "@/helpers/getPastQuantity.helper";
+import { getPair } from "@/helpers/getPrice.helper";
 import { KLINES_LIMIT } from "@/config/config";
 import { useAuthStore } from "S#/auth.store";
 
@@ -134,9 +135,15 @@ export const useCryptoStore = defineStore("crypto", {
         socket = createSocket("stream?streams=" + cryptos.map(crypto => `${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`).join("/"));
 
       return {
-        klines: retKlines.filter(kline => kline[1]),
+        // Remove empty candles and round every number to 2 digits
+        klines: retKlines.filter(kline => kline[1]).map(kline => kline.map(k => parseFloat(k.toFixed(2)))),
         socket
       };
     },
+
+    async getPastPrice(time, crypto) {
+      const [res] = await fetchBinance(`klines?symbol=${getPair(crypto, this.prices)}&interval=1m&startTime=${time}&endTime=${time + 60000}&limit=1`);
+      return res?.[4] || 0;
+    }
   }
 });

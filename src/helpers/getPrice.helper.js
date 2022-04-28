@@ -1,5 +1,9 @@
 import { QUOTES_DOLLAR } from "@/config/config";
 
+export const getPair = (crypto, prices) => {
+  return crypto + QUOTES_DOLLAR.find(quote => (crypto + quote) in prices);
+};
+
 // Helper function to retrieve the dollar price object of a given asset
 const getPriceObj = (crypto, prices) => {
   if (!prices) return;
@@ -15,7 +19,7 @@ export const getDollarPrice = (crypto, prices) => {
 
 export const calculatePercentage = price => {
   if (!price) return 0;
-  return (price.c - price.o) / price.c;
+  return (price.c - price.o) / price.o;
 }
 
 export const getPercentageChange = (crypto, prices) => {

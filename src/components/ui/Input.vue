@@ -131,6 +131,7 @@ const validator = () => {
   // If the field is empty, there's nothing to validate
   if (!value.value) {
     isValid.value = false;
+    emit("update:isValid", isValid.value);
     return;
   }
   isValid.value = validate(value.value);

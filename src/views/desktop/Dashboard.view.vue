@@ -23,7 +23,7 @@
       <Select :options="Object.keys(ANALYSIS_TIMES)" class="h1" :withIcon="false" v-model="frequency" />
     </header>
     <div class="bg-dark nohover assets-section">
-      <AssetsAnalysis class="bg-dark nohover" :frequency="frequency" :totals="totals" :earnings="earnings" />
+      <AssetsAnalysis class="bg-dark nohover" :frequency="frequency" :totals="totals" :currentValues="currentValues" />
     </div>
   </section>
 
