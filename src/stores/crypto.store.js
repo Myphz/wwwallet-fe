@@ -81,7 +81,7 @@ export const useCryptoStore = defineStore("crypto", {
     },
 
     async getKlines(crypto, base, interval, opts) {
-      const { end, start, noSocket } = opts || {};
+      const { end, start, noSocket, noSlice } = opts || {};
       let url = `klines?symbol=${crypto.toUpperCase()}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}`;
       if (end) url += `&endTime=${end}`;
       if (start) url += `&startTime=${start}`;
@@ -91,7 +91,7 @@ export const useCryptoStore = defineStore("crypto", {
       if (!noSocket) socket = createSocket(`ws/${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`);
       
       return {
-        klines: klines.length && klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k))),
+        klines: klines.length && (noSlice ? klines : klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k)))),
         socket
       };
     },
@@ -106,9 +106,9 @@ export const useCryptoStore = defineStore("crypto", {
 
       if (crypto !== "TOTAL") {
         // If the selected view is not "TOTAL", just return the klines applied to the convertKlines function
-        let { klines, socket } = await this.getKlines(crypto, base, interval, opts);
+        let { klines, socket } = await this.getKlines(crypto, base, interval, { noSlice: true, ...opts });
         klines = convertKlines(crypto, klines);
-        return { klines, socket };
+        return { klines: klines.filter(kline => kline[1]), socket };
       };
 
       const { end, noSocket } = opts || {};

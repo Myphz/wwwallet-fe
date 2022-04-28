@@ -15,6 +15,7 @@
         </div>
       </div>
     </td>
+    
     <td>${{ formatValue(totals.avgBuyPrice) }}</td>
     <td>${{ formatValue(totals.avgSellPrice) }}</td>
     <td :class="earnings.s === -1 ? 'red' : earnings.eq(0) ? '' : 'green'">{{ earnings.s === -1 ? "-" : "" }}${{ formatValue(earnings.abs()) }}</td>

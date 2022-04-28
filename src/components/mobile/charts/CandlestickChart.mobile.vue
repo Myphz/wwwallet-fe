@@ -113,6 +113,8 @@ export default {
 
       // If it's a new candle, push it
       if (lastTime !== option.series.data[option.series.data.length - 1][0]) {
+        // Update the maximum x axis value
+        option.xAxis.max += lastTime - option.series.data[option.series.data.length - 1][0];
         option.series.data.push(newKline);
       } else {
         // Otherwise, modify the last one
@@ -131,7 +133,10 @@ export default {
 
       if (!klines?.length) return;
       // Set white space to the right of the chart 
-      option.xAxis.max = klines[klines.length - 1][0] + (klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0)) * klines.length / 400;
+      option.xAxis.max = Math.max(
+        klines[klines.length - 1][0] + (klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0)) * klines.length / 400, 
+        klines[klines.length-1][0] + (klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0)) * 2
+      );
       // Set maximum zoom
       option.dataZoom.minSpan = 1500 / klines.length;
 
