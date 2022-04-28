@@ -19,7 +19,7 @@
       <Select :options="Object.keys(ANALYSIS_TIMES)" class="h2 with-border" :withIcon="false"  v-model="frequency" />
     </header>
     <div>
-      <AssetsAnalysis :frequency="frequency" :totals="totals" :currentValues="currentValues" :earnings="earnings" />
+      <AssetsAnalysis :frequency="frequency" :totals="totals" :currentValues="currentValues" />
     </div>
   </section>
   <section class="analysis-section">

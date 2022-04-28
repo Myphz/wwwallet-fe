@@ -62,7 +62,7 @@ const props = defineProps({
   },
 
   transactions: {
-    type: Object,
+    type: Array,
     required: true
   },
 
@@ -74,11 +74,12 @@ const props = defineProps({
 
 const { crypto, totals, currentValue, frequency, transactions } = toRefs(props);
 const store = useCryptoStore();
+let validTime = true;
 
 let avgBuyPrice = totals.value.avgBuyPrice;
 const currentPrice = computed(() => getDollarPrice(crypto.value, store.prices));
 const pctChange = computed(() => {
-  if (!currentPrice.value) return 0;
+  if (!currentPrice.value || !validTime) return 0;
   return Big(currentPrice.value).minus(avgBuyPrice).div(avgBuyPrice).times(100);
 });
 
@@ -86,12 +87,17 @@ const earnings = computed(() => {
   let totalQuantity, sellQuantity, avgSellPrice; 
   
   if (frequency.value === "TOTAL") {
-    ({ totalQuantity, sellQuantity, avgSellPrice, avgBuyPrice } = totals.value);
+    ({ totalQuantity, sellQuantity, avgSellPrice } = totals.value);
   } else {
     ({ totalQuantity, sellQuantity, avgSellPrice } = getPastStats(+new Date() - ANALYSIS_TIMES[frequency.value], transactions.value));
   };
 
-  if (totalQuantity.eq(0)) return Big(0);
+  if (totalQuantity.eq(0)) {
+    validTime = false;
+    return Big(0);
+  }
+  validTime = true;
+
   const oldValue = totalQuantity.times(avgBuyPrice)
   const soldValue = sellQuantity.times( avgSellPrice.minus(avgBuyPrice) );
   return currentValue.value && currentValue.value.minus(oldValue).plus(soldValue);
