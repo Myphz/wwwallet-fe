@@ -11,7 +11,7 @@
         <span class="title">{{ store.tickerInfo?.[crypto]?.name || crypto }}</span>
         <span class="ticker">{{ crypto }}</span>
         <div id="chart" :style="'height: ' + chartHeight">
-          <LineChart v-if="chartHeight != '100%'" />
+          <LineChart v-if="chartHeight != '100%'" :crypto="crypto" :frequency="frequency" />
         </div>
       </div>
     </td>
@@ -55,10 +55,15 @@ const props = defineProps({
   earnings: {
     type: Big,
     required: true
+  },
+
+  frequency: {
+    type: String,
+    required: true
   }
 });
 
-const { crypto, totals, earnings } = toRefs(props);
+const { crypto, totals, earnings, frequency } = toRefs(props);
 const store = useCryptoStore();
 
 const pctChange = computed(() => {

@@ -20,10 +20,10 @@
   <section>
     <header class="space-between">
       <h1>Assets Analysis</h1>
-      <Select :options="Object.keys(ANALYSIS_TIMES)" class="h1" :withIcon="false" />
+      <Select :options="Object.keys(ANALYSIS_TIMES)" class="h1" :withIcon="false" v-model="frequency" />
     </header>
     <div class="bg-dark nohover assets-section">
-      <AssetsAnalysis class="bg-dark nohover" :frequency="'DAILY'" :totals="totals" :earnings="earnings" />
+      <AssetsAnalysis class="bg-dark nohover" :frequency="frequency" :totals="totals" :earnings="earnings" />
     </div>
   </section>
 
@@ -45,12 +45,12 @@ import { ANALYSIS_TIMES } from "@/config/config";
 import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { getDollarPrice } from "@/helpers/getPrice.helper";
 
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
-
+const frequency = ref("TOTAL");
 
 // Computed variable to store some transaction statistics.
 // Example format:

@@ -11,7 +11,14 @@
       </tr>
     </thead>
     <tbody>
-      <AssetAnalysis v-for="crypto in Object.keys(totals)" :key="crypto" :crypto="crypto" :totals="totals[crypto]" :earnings="earnings[crypto]" />
+      <AssetAnalysis 
+        v-for="crypto in Object.keys(totals)" 
+        :key="crypto" 
+        :crypto="crypto" 
+        :totals="totals[crypto]" 
+        :earnings="earnings[crypto]"
+        :frequency="frequency"
+      />
     </tbody>
   </table>
 </template>

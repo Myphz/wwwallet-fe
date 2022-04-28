@@ -20,7 +20,7 @@ export const getDecimalDigits = n => {
 }
 
 export const formatValue = price => {
-  if (price instanceof Big) return price.toFormat();
+  if (price instanceof Big) return price.toFormat(2);
   if (!price) return "0.00";
   if (price >= 1000000) return formatBigValue(price);
   const decimalDigits = getDecimalDigits(price);

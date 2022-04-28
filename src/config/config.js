@@ -6,4 +6,4 @@ export const QUOTES_DOLLAR = ["USDT", "USDC", "BUSD", "UST", "DAI"];
 
 export const KLINES_LIMIT = 1000;
 export const TIMES = ["1m", "15m", "1h", "4h", "1d", "1w", "1M"];
-export const ANALYSIS_TIMES = { TOTAL: null, MONTHLY: "1M", WEEKLY: "1w", DAILY: "1d" }
+export const ANALYSIS_TIMES = { TOTAL: 0, MONTHLY: 2592000000, WEEKLY: 604800000, DAILY: 86400000 }

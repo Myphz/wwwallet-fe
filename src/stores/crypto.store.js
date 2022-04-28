@@ -81,9 +81,10 @@ export const useCryptoStore = defineStore("crypto", {
     },
 
     async getKlines(crypto, base, interval, opts) {
-      const { end, noSocket } = opts || {};
+      const { end, start, noSocket } = opts || {};
       let url = `klines?symbol=${crypto.toUpperCase()}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}`;
       if (end) url += `&endTime=${end}`;
+      if (start) url += `&startTime=${start}`;
       const klines = await fetchBinance(url);
 
       let socket;
@@ -100,7 +101,7 @@ export const useCryptoStore = defineStore("crypto", {
       // Helper function to shrink the klines and multiply each value by the quantity
       const convertKlines = (crypto, klines) => {
         // Loop over each kline and multiply its value by the quantity (except the time)
-        return klines.map(kline => [kline[0], ...kline.slice(1, 5).map(v => getPastQuantity(kline[6], transactions[crypto]).times(v).toNumber() )]);
+        return klines.map(kline => [kline[0], ...kline.slice(1, 5).map(v => parseFloat(getPastQuantity(kline[6], transactions[crypto]).times(v).toFixed(2)) )]);
       };
 
       if (crypto !== "TOTAL") {
