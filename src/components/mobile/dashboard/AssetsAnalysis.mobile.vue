@@ -12,9 +12,7 @@
 
 <script setup>
 import AssetAnalysis from "M#/dashboard/AssetAnalysis.mobile.vue";
-import { toRefs } from "vue";
-
-const props = defineProps({
+defineProps({
   frequency: {
     type: String,
     required: true
@@ -35,6 +33,4 @@ const props = defineProps({
     required: true
   }
 });
-
-const { frequency, totals, earnings } = toRefs(props);
 </script>

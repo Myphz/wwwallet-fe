@@ -5,6 +5,7 @@
         <th>Token</th>
         <th>Average Buy Price</th>
         <th>Average Sell Price</th>
+        <th>Current Price</th>
         <th>Earnings</th>
         <th>Change</th>
         <th></th>
@@ -25,9 +26,7 @@
 
 <script setup>
 import AssetAnalysis from "D#/dashboard/AssetAnalysis.vue";
-import { toRefs } from "vue";
-
-const props = defineProps({
+defineProps({
   frequency: {
     type: String,
     required: true
@@ -43,6 +42,4 @@ const props = defineProps({
     required: true
   }
 });
-
-const { frequency, totals, earnings } = toRefs(props);
 </script>

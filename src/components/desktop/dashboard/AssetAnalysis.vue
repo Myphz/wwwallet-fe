@@ -18,6 +18,7 @@
     
     <td>${{ formatValue(totals.avgBuyPrice) }}</td>
     <td>${{ formatValue(totals.avgSellPrice) }}</td>
+    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ formatValue(currentPrice) }}</td>
     <td :class="earnings.s === -1 ? 'red' : earnings.eq(0) ? '' : 'green'">{{ earnings.s === -1 ? "-" : "" }}${{ formatValue(earnings.abs()) }}</td>
     <td :class="parseFloat(pctChange) > 0 ? 'green' : parseFloat(pctChange) < 0 ? 'red' : ''">{{ formatPercentage(pctChange) }}</td>
     <td class="arrow-cell">
@@ -67,10 +68,10 @@ const props = defineProps({
 const { crypto, totals, earnings, frequency } = toRefs(props);
 const store = useCryptoStore();
 
+const currentPrice = computed(() => getDollarPrice(crypto.value, store.prices));
 const pctChange = computed(() => {
-  const currentPrice = getDollarPrice(crypto.value, store.prices);
-  if (!currentPrice) return 0;
-  return Big(currentPrice).minus(totals.value.avgBuyPrice).div(currentPrice).times(100);
+  if (!currentPrice.value) return 0;
+  return Big(currentPrice.value).minus(totals.value.avgBuyPrice).div(currentPrice.value).times(100);
 });
 
 const open = ref(false);
@@ -87,9 +88,9 @@ onMounted(() => {
 });
 
 const isHigher = ref(null);
-watch(earnings, (newEarnings, oldEarnings) => {
-  if (newEarnings instanceof Big) return isHigher.value = newEarnings.gt(oldEarnings);
-  isHigher.value = newEarnings > oldEarnings;
+watch(currentPrice, (newPrice, oldPrice) => {
+  if (newPrice instanceof Big) return isHigher.value = newPrice.gt(oldPrice);
+  isHigher.value = newPrice > oldPrice;
 });
 </script>
 
