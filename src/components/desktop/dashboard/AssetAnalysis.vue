@@ -27,7 +27,7 @@
   </tr>
   <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
     <td colspan="7">
-      <TransactionsAnalysis />
+      <TransactionsAnalysis :transactions="computedTransactions" :crypto="crypto" :currentValue="currentValue" />
     </td>
   </tr>
 </template>
@@ -42,7 +42,7 @@ import { useCryptoStore } from "S#/crypto.store";
 import { formatValue, formatPercentage } from "@/helpers/formatNumber.helper";
 import { computed } from "@vue/reactivity";
 import { getDollarPrice } from "@/helpers/getPrice.helper";
-import { getPastStats } from "@/helpers/getPastQuantity.helper";
+import { addEarnings } from "@/helpers/getPastQuantity.helper";
 import { ANALYSIS_TIMES } from "@/config/config";
 
 const props = defineProps({
@@ -74,38 +74,43 @@ const props = defineProps({
 
 const { crypto, totals, currentValue, frequency, transactions } = toRefs(props);
 const store = useCryptoStore();
-let validTime = true;
 
-let avgBuyPrice = totals.value.avgBuyPrice;
+let pastPrice = ref();
+let end = ref();
+
 const currentPrice = computed(() => getDollarPrice(crypto.value, store.prices));
+
+const computedTransactions = computed(() => addEarnings(transactions.value, currentPrice.value, { pastPrice: pastPrice.value, end: end.value, copy: true }));
+
 const pctChange = computed(() => {
-  if (!currentPrice.value || !validTime) return 0;
-  return Big(currentPrice.value).minus(avgBuyPrice).div(avgBuyPrice).times(100);
+  // Weighted average
+  let ret = Big(0);
+  let totVal = Big(0);
+  for (const transaction of computedTransactions.value) {
+    const val = Big(transaction.quantity).times(transaction.price);
+    totVal = totVal.plus( val );
+    ret = ret.plus(transaction.change.times(val));
+  }
+  return ret.div(totVal);
 });
 
 const earnings = computed(() => {
-  let totalQuantity, sellQuantity, avgSellPrice; 
-  
-  if (frequency.value === "TOTAL") {
-    ({ totalQuantity, sellQuantity, avgSellPrice } = totals.value);
-  } else {
-    ({ totalQuantity, sellQuantity, avgSellPrice } = getPastStats(+new Date() - ANALYSIS_TIMES[frequency.value], transactions.value));
+  let ret = Big(0);
+  for (const transaction of computedTransactions.value) {
+    ret = ret.plus(transaction.earnings);
   };
-
-  if (totalQuantity.eq(0)) {
-    validTime = false;
-    return Big(0);
-  }
-  validTime = true;
-
-  const oldValue = totalQuantity.times(avgBuyPrice)
-  const soldValue = sellQuantity.times( avgSellPrice.minus(avgBuyPrice) );
-  return currentValue.value && currentValue.value.minus(oldValue).plus(soldValue);
+  return ret;
 });
 
 watch(frequency, async () => {
-  if (frequency.value === "TOTAL") return avgBuyPrice = totals.value.avgBuyPrice;
-  avgBuyPrice = await store.getPastPrice(+new Date() - ANALYSIS_TIMES[frequency.value], crypto.value);
+  if (frequency.value === "TOTAL") {
+    pastPrice.value = undefined;
+    end.value = undefined;
+    return;
+  }
+
+  end.value = +new Date() - ANALYSIS_TIMES[frequency.value];
+  pastPrice.value = await store.getPastPrice(end.value, crypto.value);
 });
 
 const open = ref(false);

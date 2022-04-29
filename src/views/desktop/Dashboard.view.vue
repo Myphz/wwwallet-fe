@@ -23,7 +23,7 @@
       <Select :options="Object.keys(ANALYSIS_TIMES)" class="h1" :withIcon="false" v-model="frequency" />
     </header>
     <div class="bg-dark nohover assets-section">
-      <AssetsAnalysis class="bg-dark nohover" :frequency="frequency" :totals="totals" :currentValues="currentValues" />
+      <AssetsAnalysis class="bg-dark nohover" :frequency="frequency" :totals="totals" :currentValues="currentValues" :transactions="transactions" />
     </div>
   </section>
 
@@ -47,6 +47,7 @@ import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";
 import { computed, ref } from "vue";
 import { getDollarPrice } from "@/helpers/getPrice.helper";
+import { addEarnings } from "@/helpers/getPastQuantity.helper";
 
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
@@ -109,14 +110,18 @@ const currentValues = computed(() => {
   return ret;
 });
 
+// Add "earnings" field to each transaction
+const transactions = computed(() => addEarnings(authStore.transactions, cryptoStore.prices));
+
 // Computed variable to store an object with the following format:
 // { [crypto]: [crypto's earnings in user's favorite currency] }
 const earnings = computed(() => {
   const ret = {};
-  for (const [crypto, stats] of Object.entries(totals.value)) {
-    const oldValue = stats.totalQuantity.times(stats.avgBuyPrice);
-    const soldValue = stats.sellQuantity.times( stats.avgSellPrice.minus(stats.avgBuyPrice) );
-    ret[crypto] = currentValues.value && currentValues.value[crypto].minus(oldValue).plus(soldValue);
+  for (const [crypto, trans] of Object.entries(transactions.value)) {
+    ret[crypto] = Big(0);
+    for (const { earnings } of trans) {
+      ret[crypto] = ret[crypto].plus(earnings);
+    }
   };
 
   return ret;

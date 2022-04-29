@@ -27,7 +27,6 @@
 
 <script setup>
 import AssetAnalysis from "D#/dashboard/AssetAnalysis.vue";
-import { useAuthStore } from "S#/auth.store.js";
 
 defineProps({
   frequency: {
@@ -40,11 +39,14 @@ defineProps({
     required: true
   },
 
+  transactions: {
+    type: Object,
+    required: true
+  },
+
   currentValues: {
     type: Object,
     required: true
   }
 });
-
-const transactions = useAuthStore().transactions;
 </script>

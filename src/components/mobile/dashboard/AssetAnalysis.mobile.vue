@@ -110,7 +110,7 @@ const earnings = computed(() => {
   if (frequency.value === "TOTAL") {
     ({ totalQuantity, sellQuantity, avgSellPrice } = totals.value);
   } else {
-    ({ totalQuantity, sellQuantity, avgSellPrice } = getPastStats(+new Date() - ANALYSIS_TIMES[frequency.value], transactions.value));
+    ({ totalQuantity, sellQuantity, avgSellPrice } = getPastStats(transactions.value, {end: +new Date() - ANALYSIS_TIMES[frequency.value]}));
   };
 
   if (totalQuantity.eq(0)) {
