@@ -133,16 +133,16 @@ export default {
       klinesBuffer = {};
 
       if (!totals.value) ({ klines, socket, isValid } = await store.getKlines(crypto.value, base.value, interval.value));
-      else ({ klines, socket, isValid } = await store.getDashboardKlines(crypto.value, base.value, interval.value));
-
-      if (!klines?.length) {
-        disabled.value = true;
-        return ctx.emit("empty");
-      }
+      else ({ klines, socket, isValid } = await store.getDashboardKlines(crypto.value, base.value, interval.value, { totals }));
 
       if (isValid === false) {
         disabled.value = true;
         ctx.emit("empty");
+      }
+
+      if (!klines?.length) {
+        disabled.value = true;
+        return ctx.emit("empty");
       }
       // Set white space to the right of the chart 
       option.xAxis.max = Math.max(
@@ -156,7 +156,7 @@ export default {
       lastTime = klines[klines.length - 1][0]
       option.series.data = klines;
 
-      socket.onmessage = totals.value && crypto.value === "TOTAL" ? klineUpdateTotal : klineUpdate;
+      if (socket) socket.onmessage = totals.value && crypto.value === "TOTAL" ? klineUpdateTotal : klineUpdate;
       klinesSocket = socket;
       // Zoom on chart
       chart.value.dispatchAction({

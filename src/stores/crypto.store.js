@@ -100,8 +100,9 @@ export const useCryptoStore = defineStore("crypto", {
     async getDashboardKlines(crypto, base, interval, opts) {
       let isValid = true;
       let transactions = useAuthStore().transactions;
+      const { end, noSocket, fake } = opts || {};
 
-      if (!transactions || !Object.keys(transactions).length) {
+      if (!transactions || !Object.keys(transactions).length || fake) {
         transactions = {
           BTC: generateTransactions("BTC", this),
           ETH: generateTransactions("ETH", this),
@@ -123,7 +124,6 @@ export const useCryptoStore = defineStore("crypto", {
         return { klines: klines.filter(kline => kline[1]), socket, isValid };
       };
 
-      const { end, noSocket } = opts || {};
       // Get all cryptos and klines for every crypto
       const cryptos = Object.keys(transactions);
       
@@ -143,12 +143,15 @@ export const useCryptoStore = defineStore("crypto", {
       }
 
       let socket;
-      if (!noSocket) 
+      if (!noSocket && isValid) 
         socket = createSocket("stream?streams=" + cryptos.map(crypto => `${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`).join("/"));
+
+      retKlines = retKlines.filter(kline => kline[1]).map(kline => kline.map(k => parseFloat(k.toFixed(2))));
+      if (!retKlines.length) return this.getDashboardKlines(crypto, base, interval, {...opts, fake: true});
 
       return {
         // Remove empty candles and round every number to 2 digits
-        klines: retKlines.filter(kline => kline[1]).map(kline => kline.map(k => parseFloat(k.toFixed(2)))),
+        klines: retKlines,
         socket,
         isValid
       };

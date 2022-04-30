@@ -28,8 +28,9 @@ export default {
     const { currentValues } = toRefs(props);
 
     const convert = () => {
-      // console.log(currentValues.value);
-      option.series.data = Object.entries(currentValues.value).reduce((prev, [name, value]) => [...prev, { name, value: value.toNumber() }], []);
+      option.series.data = Object.entries(currentValues.value)
+        .filter(([name, value]) => value.gt(0))
+        .reduce((prev, [name, value]) => [...prev, { name, value: value.toNumber() }], []);
     };
     convert();
 
