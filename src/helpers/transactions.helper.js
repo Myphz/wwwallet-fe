@@ -17,7 +17,7 @@ export function generateTransactions(crypto, store) {
     const transaction = { base: "USDT" };
     transaction.isBuy = i < 2;
     let pct = randomFloat(-0.2, 0.2);
-    const price = getDollarPrice(crypto, store.prices);
+    const price = getDollarPrice(crypto, store.prices) || 30000;
     transaction.price = (price + price *  pct).toFixed(2);
     if (transaction.isBuy) transaction.quantity = "" + randomFloat(1000 / price, 5000 / price);
     else transaction.quantity = "" + randomFloat(1000 / price, ret[ret.length - 1].quantity);

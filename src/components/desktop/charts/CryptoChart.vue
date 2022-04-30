@@ -33,7 +33,11 @@
       </span>
     </div>
     <div :class="dashboard ? 'chart-container-dashboard' : 'chart-container'">
-      <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" :totals="totals" />
+      <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" :totals="totals" @empty.once="empty = true" />
+      <div v-if="empty && $route.params.isAuth" class="note h2">No transactions registered yet...</div>
+      <h2 v-else-if="empty" class="note">
+        <RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now to check your wallet
+      </h2>
     </div>
   </section>
 </template>
@@ -47,6 +51,7 @@ import { formatValue, formatPercentage } from "@/helpers/formatter.helper";
 import { calculatePercentage } from "@/helpers/crypto.helper";
 import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";
+import { RouterLink } from "vue-router";
 
 const props = defineProps({
   crypto: {
@@ -79,6 +84,7 @@ const currentCrypto = ref(crypto);
 const activeTime = ref(0);
 const store = useCryptoStore();
 
+let empty = ref(false);
 let price, pctChange, high24, low24;
 
 const getValue = (crypto, where, key, multiplier) => {
@@ -135,11 +141,13 @@ watch(price, (newPrice, oldPrice) => {
     font-weight: normal
 
   .chart-container
+    position: relative
     height: 70vh
     width: 100%
     margin-bottom: 2em
 
   .chart-container-dashboard
+    position: relative
     height: 34vh
     width: 100%
 
@@ -167,4 +175,16 @@ watch(price, (newPrice, oldPrice) => {
     display: inline-flex
     flex-direction: column
     justify-content: center
+
+  .note
+    position: absolute
+    top: 40%
+    left: 50%
+    transform: translate(-50%, -50%)
+    text-align: center
+    background-color: $bg-base
+    box-shadow: 0 30px 40px rgba(0,0,0,.1)
+    border-radius: .25em
+    padding: .5em .25em
+    opacity: .85
 </style>

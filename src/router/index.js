@@ -33,7 +33,6 @@ const router = createRouter({
       path: "/dashboard",
       name: "dashboard",
       component: () => routeView("Dashboard"),
-      meta: { requiresAuth: true }
     },
 
     {

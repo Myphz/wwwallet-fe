@@ -39,10 +39,6 @@ const request = ref({success: null, msg: ""});
     font-weight: normal
     margin-bottom: .5em
 
-  a
-    color: darken($text-primary, 15%)
-    text-decoration: underline
-
   .btn-container
     margin-top: 2em
 </style>

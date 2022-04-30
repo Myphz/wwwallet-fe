@@ -44,9 +44,9 @@
       </form>
 
       <span class="h6 text-secondary">
-        <span>{{ subtext }}</span>
-        <RouterLink v-if="login" class="link" to="/register"> Sign up</RouterLink>
-        <RouterLink v-else class="link" to="/login"> Login</RouterLink>
+        <span>{{ subtext }}&nbsp;</span>
+        <RouterLink v-if="login" class="link" to="/register">Sign up</RouterLink>
+        <RouterLink v-else class="link" to="/login">Login</RouterLink>
       </span>
     </div>
   </section>

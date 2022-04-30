@@ -1,5 +1,5 @@
 <template>
-  <VChart :option="option" ref="chart" @datazoom="checkEnd" />
+  <VChart :option="option" ref="chart" @datazoom="checkEnd" :class="disabled ? 'disabled' : ''" />
 </template>
 
 <script>
@@ -38,13 +38,15 @@ export default {
   },
 
   components: { VChart },
+  emits: ["empty"],
 
-  setup(props) {
+  setup(props, ctx) {
     use([CandlestickChart, CanvasRenderer, GridComponent, DataZoomComponent, TooltipComponent]);
     const chart = ref(null);
     const store = useCryptoStore();
     const { crypto, base, interval, totals } = toRefs(props);
     const option = reactive(options);
+    const disabled = ref(false);
     let klinesSocket;
 
     let klinesBuffer;
@@ -127,13 +129,21 @@ export default {
     const loadData = async () => {
       // Close possibly existing socket
       klinesSocket && klinesSocket.close();
-      let klines, socket;
+      let klines, socket, isValid;
       klinesBuffer = {};
 
-      if (!totals.value) ({ klines, socket } = await store.getKlines(crypto.value, base.value, interval.value));
-      else ({ klines, socket } = await store.getDashboardKlines(crypto.value, base.value, interval.value));
+      if (!totals.value) ({ klines, socket, isValid } = await store.getKlines(crypto.value, base.value, interval.value));
+      else ({ klines, socket, isValid } = await store.getDashboardKlines(crypto.value, base.value, interval.value));
 
-      if (!klines?.length) return;
+      if (!klines?.length) {
+        disabled.value = true;
+        return ctx.emit("empty");
+      }
+
+      if (isValid === false) {
+        disabled.value = true;
+        ctx.emit("empty");
+      }
       // Set white space to the right of the chart 
       option.xAxis.max = Math.max(
         klines[klines.length - 1][0] + (klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0)) * klines.length / 200, 
@@ -209,7 +219,7 @@ export default {
 
     // Close the socket when the component is unmounted
     onUnmounted(() => klinesSocket && klinesSocket.close());
-    return { chart, option, checkEnd };
+    return { chart, option, checkEnd, disabled };
   }
 }
 </script>
@@ -218,4 +228,10 @@ export default {
   canvas
     border-radius: 0 0 1.5em 1.5em
     cursor: crosshair
+</style>
+
+<style lang="sass" scoped>
+  .disabled
+    filter: blur(10px)
+    pointer-events: none
 </style>
