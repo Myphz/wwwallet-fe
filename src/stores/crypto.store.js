@@ -115,6 +115,8 @@ export const useCryptoStore = defineStore("crypto", {
       const { end, noSocket } = opts || {};
       // Get all cryptos and klines for every crypto
       const cryptos = Object.keys(transactions);
+      if (!cryptos.length) return [];
+      
       let klinesAll = await Promise.all(cryptos.map(key => 
         fetchBinance(`klines?symbol=${key}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}` + (end ? `&endTime=${end}` : "")) 
       )); 

@@ -20,6 +20,8 @@ import { computed } from "@vue/reactivity";
 import PieChart from "D#/charts/PieChart.vue";
 import { ref, toRefs, watch } from "vue";
 
+import Big from "@/helpers/big.helper";
+
 const props = defineProps({
   totals: {
     type: Object,
@@ -38,8 +40,8 @@ const props = defineProps({
 });
 
 const { totals, currentValues, earnings } = toRefs(props);
-const total = computed(() => Object.values(currentValues.value).reduce((prev, curr) => prev.plus(curr)));
-const totalEarnings = computed(() => Object.values(earnings.value).reduce((prev, curr) => prev.plus(curr)));
+const total = computed(() => Object.values(currentValues.value).reduce((prev, curr) => prev.plus(curr), Big(0)));
+const totalEarnings = computed(() => Object.values(earnings.value).reduce((prev, curr) => prev.plus(curr), Big(0)));
 
 const isHigher = ref(null);
 watch(total, (newTotal, oldTotal) => {

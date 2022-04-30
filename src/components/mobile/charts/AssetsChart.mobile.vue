@@ -17,6 +17,7 @@
 <script setup>
 import PieChart from "M#/charts/PieChart.mobile.vue";
 import { ref, toRefs, watch, computed } from "vue";
+import Big from "@/helpers/big.helper";
 
 const props = defineProps({
   totals: {
@@ -36,8 +37,8 @@ const props = defineProps({
 });
 
 const { totals, currentValues, earnings } = toRefs(props);
-const total = computed(() => Object.values(currentValues.value).reduce((prev, curr) => prev.plus(curr)));
-const totalEarnings = computed(() => Object.values(earnings.value).reduce((prev, curr) => prev.plus(curr)));
+const total = computed(() => Object.values(currentValues.value).reduce((prev, curr) => prev.plus(curr), Big(0)));
+const totalEarnings = computed(() => Object.values(earnings.value).reduce((prev, curr) => prev.plus(curr), Big(0)));
 
 const isHigher = ref(null);
 watch(total, (newTotal, oldTotal) => {
