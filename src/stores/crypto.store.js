@@ -1,10 +1,9 @@
 import { defineStore } from "pinia";
 import { fetchBinance, fetchServer } from "@/helpers/fetch.helper.js";
 import createSocket from "@/helpers/createSocket.helper";
-import { getPastQuantity, generateTransactions } from "@/helpers/transactions.helper";
+import { getPastQuantity } from "@/helpers/transactions.helper";
 import { getPair } from "@/helpers/crypto.helper";
 import { KLINES_LIMIT } from "@/config/config";
-import { useAuthStore } from "S#/auth.store";
 
 export const useCryptoStore = defineStore("crypto", {
   state: () => ({
@@ -97,20 +96,9 @@ export const useCryptoStore = defineStore("crypto", {
       };
     },
 
-    async getDashboardKlines(crypto, base, interval, opts) {
-      let isValid = true;
-      let transactions = useAuthStore().transactions;
-      const { end, noSocket, fake } = opts || {};
+    async getDashboardKlines(crypto, base, interval, transactions, opts) {
+      const { end, noSocket, isAuth } = opts || {};
 
-      if (!transactions || !Object.keys(transactions).length || fake) {
-        transactions = {
-          BTC: generateTransactions("BTC", this),
-          ETH: generateTransactions("ETH", this),
-          LUNA: generateTransactions("LUNA", this),
-        };
-
-        isValid = false
-      };
       // Helper function to shrink the klines and multiply each value by the quantity
       const convertKlines = (crypto, klines) => {
         // Loop over each kline and multiply its value by the quantity (except the time)
@@ -120,8 +108,9 @@ export const useCryptoStore = defineStore("crypto", {
       if (crypto !== "TOTAL") {
         // If the selected view is not "TOTAL", just return the klines applied to the convertKlines function
         let { klines, socket } = await this.getKlines(crypto, base, interval, { noSlice: true, ...opts });
+        if (!klines) return { klines: [] };
         klines = convertKlines(crypto, klines);
-        return { klines: klines.filter(kline => kline[1]), socket, isValid };
+        return { klines: klines.filter(kline => kline[1]), socket };
       };
 
       // Get all cryptos and klines for every crypto
@@ -130,6 +119,8 @@ export const useCryptoStore = defineStore("crypto", {
       let klinesAll = await Promise.all(cryptos.map(key => 
         fetchBinance(`klines?symbol=${key}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}` + (end ? `&endTime=${end}` : "")) 
       )); 
+
+      if (!klinesAll.length) return { klines: [] };
       // Add start padding if the length is not the same
       const maxLength = Math.max(...klinesAll.map(klines => klines.length));
       klinesAll = klinesAll.map(klines => [...Array(maxLength - klines.length).fill([0,0,0,0,0]), ...klines]);
@@ -143,17 +134,15 @@ export const useCryptoStore = defineStore("crypto", {
       }
 
       let socket;
-      if (!noSocket && isValid) 
+      if (!noSocket && isAuth) 
         socket = createSocket("stream?streams=" + cryptos.map(crypto => `${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`).join("/"));
 
       retKlines = retKlines.filter(kline => kline[1]).map(kline => kline.map(k => parseFloat(k.toFixed(2))));
-      if (!retKlines.length) return this.getDashboardKlines(crypto, base, interval, {...opts, fake: true});
 
       return {
         // Remove empty candles and round every number to 2 digits
         klines: retKlines,
         socket,
-        isValid
       };
     },
 

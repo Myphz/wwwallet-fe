@@ -1,4 +1,6 @@
 import { getDollarPrice } from "@/helpers/crypto.helper.js";
+import { QUOTES_DOLLAR } from "@/config/config.js";
+import byMcap from "@/helpers/sortByMcap.helper.js";
 import Big from "@/helpers/big.helper.js";
 
 function randomInt(min, max) {
@@ -10,6 +12,11 @@ function randomFloat(min, max) {
 }
 
 export function generateTransactions(crypto, store) {
+  if (!store) {
+    const cryptos = Object.keys(crypto.tickerInfo).filter(key=>!QUOTES_DOLLAR.includes(key)).sort(byMcap(crypto)).slice(0, 5);
+    return cryptos.reduce((prev, curr) => ({...prev, [curr]: generateTransactions(curr, crypto)}), {});
+  }
+
   const nTransactions = randomInt(1, 3);
   const ret = [];
 
@@ -22,7 +29,7 @@ export function generateTransactions(crypto, store) {
     if (transaction.isBuy) transaction.quantity = "" + randomFloat(1000 / price, 5000 / price);
     else transaction.quantity = "" + randomFloat(1000 / price, ret[ret.length - 1].quantity);
     const now = +new Date();
-    pct = randomFloat(-0.1, 0);
+    pct = randomFloat(transaction.isBuy ? -.1 : -.001, -.001);
     transaction.date = Math.floor(now + now * pct);
     ret.push(transaction);
   }

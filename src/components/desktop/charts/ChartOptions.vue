@@ -64,10 +64,10 @@ if (!dashboard) {
   baseOptions = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
   cryptoList = computed(() => Object.keys(store.tickerInfo));
 } else {
-  const keys = Object.keys(totals.value);
-  cryptoList = computed(() => ["TOTAL", ...keys]);
+  const keys = computed(() => Object.keys(totals.value));
+  cryptoList = computed(() => ["TOTAL", ...keys.value]);
   baseOptions = computed(() => selectedCrypto.value === "TOTAL" ? 
-    getBaseLCM(keys, store.tickerInfo) : 
+    getBaseLCM(keys.value, store.tickerInfo) : 
     store.tickerInfo[selectedCrypto.value]?.quotes || []
   );
 }

@@ -12,6 +12,7 @@
         crypto="TOTAL"
         base="USDT" 
         :totals="totals"
+        :transactions="transactions"
         dashboard 
       />
     </div>
@@ -23,7 +24,7 @@
       <Select :options="Object.keys(ANALYSIS_TIMES)" class="h1" :withIcon="false" v-model="frequency" />
     </header>
     <div class="bg-dark nohover assets-section">
-      <AssetsAnalysis class="bg-dark nohover" :frequency="frequency" :totals="totals" :currentValues="currentValues" :transactions="transactions" />
+      <AssetsAnalysis :frequency="frequency" :totals="totals" :currentValues="currentValues" :transactions="transactions" />
     </div>
   </section>
 
@@ -45,9 +46,10 @@ import { ANALYSIS_TIMES } from "@/config/config";
 import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { getDollarPrice } from "@/helpers/crypto.helper";
 import { addEarnings } from "@/helpers/transactions.helper";
+import { generateTransactions } from "../../helpers/transactions.helper";
 
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
@@ -66,9 +68,19 @@ const frequency = ref("TOTAL");
   
 //   "ETH": {... }
 // }
+
+const authTransactions = ref(authStore.transactions);
+if (!authTransactions.value) {
+  authTransactions.value = {};
+  const unwatch = watch(cryptoStore.prices, () => {
+    authTransactions.value = generateTransactions(cryptoStore);
+    unwatch();
+  })
+};
+
 const totals = computed(() => {
   const ret = {}; 
-  for (const [crypto, transactions] of Object.entries(authStore.transactions || {})) {
+  for (const [crypto, transactions] of Object.entries(authTransactions.value)) {
     ret[crypto] = { 
       totalQuantity: Big(0), 
       buyQuantity: Big(0), 
@@ -111,7 +123,7 @@ const currentValues = computed(() => {
 });
 
 // Add "earnings" field to each transaction
-const transactions = computed(() => addEarnings(authStore.transactions, cryptoStore.prices));
+const transactions = computed(() => addEarnings(authTransactions.value, cryptoStore.prices));
 
 // Computed variable to store an object with the following format:
 // { [crypto]: [crypto's earnings in user's favorite currency] }

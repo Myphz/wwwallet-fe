@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table v-if="!$route.params.isAuth || Object.keys(transactions).length" class="bg-dark nohover">
     <thead>
       <tr>
         <th>Token</th>
@@ -23,10 +23,15 @@
       />
     </tbody>
   </table>
+  <h3 v-if="$route.params.isAuth && !Object.keys(transactions).length" style="font-weight: normal">No transactions registered yet...</h3>
+  <h4 v-if="!$route.params.isAuth" style="margin-top: 1em; white-space: nowrap; font-weight: normal">
+    <RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now to receive real-time updates
+  </h4>
 </template>
 
 <script setup>
 import AssetAnalysis from "D#/dashboard/AssetAnalysis.vue";
+import { RouterLink } from "vue-router";
 
 defineProps({
   frequency: {
@@ -40,7 +45,7 @@ defineProps({
   },
 
   transactions: {
-    validator: prop => typeof prop === "object" || prop === null,
+    type: Object,
     required: true
   },
 
