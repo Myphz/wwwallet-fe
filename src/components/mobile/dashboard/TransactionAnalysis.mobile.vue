@@ -1,38 +1,69 @@
 <template>
   <div class="trans h5">
-    <div class="h3">
-      Transaction #2
+    <div class="h3 margin-bottom">
+      Transaction #{{n}}
     </div>
-    <div>BTC/USDT</div>
 
     <div class="space-between header">
+      <span>Pair</span>
       <span>Side</span>
-      <span>Quantity</span>
     </div>
-    <div class="space-between">
-      <span>BUY</span>
-      <span>2.42</span>
+    <div class="space-between margin-bottom">
+      <span>{{ crypto }}/{{ transaction.base }}</span>
+      <span>{{ transaction.isBuy ? 'BUY' : 'SELL' }}</span>
     </div>
 
-    <div class="space-between">
-      <span class="header">Price</span>
-      <span class="header">Avg Price</span>
+    <div class="space-between header">
+      <span>Quantity</span>
+      <span>Price</span>
     </div>
-    <div class="space-between">
-      <span>$50,982.32</span>
-      <span>$55,231.17</span>
+    <div class="space-between margin-bottom">
+      <span>{{ Big(transaction.quantity).toFormat() }}</span>
+      <span>{{ Big(transaction.price).toFormat() }}</span>
     </div>
 
     <div class="space-between header">
       <span>Earnings</span>
       <span>% Change</span>
     </div>
-    <div class="space-between">
-      <span>+$9,008.22</span>
-      <span>+42.22%</span>
+    <div class="space-between margin-bottom">
+      <span :class="parseFloat(transaction.earnings) > 0 ? 'green' : parseFloat(transaction.earnings) < 0 ? 'red' : ''">{{ formatValue(transaction.earnings) }}</span>
+      <span :class="parseFloat(transaction.earnings) > 0 ? 'green' : parseFloat(transaction.earnings) < 0 ? 'red' : ''">{{ formatPercentage(transaction.change) }}</span>
     </div>
   </div>
 </template>
+
+<script setup>
+import Big from "@/helpers/big.helper.js";
+import { formatValue, formatPercentage, formatDate } from "@/helpers/formatter.helper.js";
+
+defineProps({
+  crypto: {
+    type: String,
+    required: true
+  },
+
+  currentValue: {
+    type: Big,
+    required: true
+  },
+
+  n: {
+    type: Number,
+    required: true
+  },
+
+  transaction: {
+    type: Object,
+    required: true
+  },
+
+  transactions: {
+    type: Array,
+    required: true
+  }
+});
+</script>
 
 <style lang="sass" scoped>
   .trans
@@ -44,4 +75,7 @@
   .header
     font-weight: bold
     color: $text-secondary 
+
+  .margin-bottom
+    margin-bottom: .5em
 </style>

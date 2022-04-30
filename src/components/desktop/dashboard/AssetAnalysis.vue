@@ -25,7 +25,7 @@
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </td>
   </tr>
-  <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
+  <tr class="transactions-row" v-show="open" style="cursor: default">
     <td colspan="7">
       <TransactionsAnalysis :transactions="computedTransactions" :crypto="crypto" :currentValue="currentValue" />
     </td>
@@ -149,9 +149,5 @@ watch(currentPrice, (newPrice, oldPrice) => {
 
   .transactions-row
     background-color: darken($bg-base, 2%)
-    display: none
-
-  .row-open
-    display: table-row
       
 </style>

@@ -3,7 +3,7 @@
     <td>{{ crypto }}/{{ transaction.base }}</td>
     <td>{{ transaction.isBuy ? 'BUY' : 'SELL' }}</td>
     <td>{{ Big(transaction.quantity).toFormat() }}</td>
-    <td>{{ formatValue(transaction.price) }}</td>
+    <td>{{ Big(transaction.price).toFormat() }}</td>
     <td :class="parseFloat(transaction.earnings) > 0 ? 'green' : parseFloat(transaction.earnings) < 0 ? 'red' : ''">{{ formatValue(transaction.earnings) }}</td>
     <td :class="parseFloat(transaction.change) > 0 ? 'green' : parseFloat(transaction.change) < 0 ? 'red' : ''">{{ formatPercentage(transaction.change) }}</td>
     <td>{{ formatDate(transaction.date) }}</td>
