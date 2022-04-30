@@ -15,9 +15,8 @@
 </template>
 
 <script setup>
-import { computed } from "@vue/reactivity";
 import PieChart from "M#/charts/PieChart.mobile.vue";
-import { ref, toRefs, watch } from "vue";
+import { ref, toRefs, watch, computed } from "vue";
 
 const props = defineProps({
   totals: {

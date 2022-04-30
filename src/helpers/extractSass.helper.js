@@ -1,5 +1,5 @@
 /* 
-  Unfortunately, SASS doesn't provide any rules to directly export variables. 
+  SASS doesn't provide any rules to directly export variables. 
   SCSS does that using ::export rule.
   The ::export rule still works with SASS, but it can't be as easily imported with a single import instruction.
   This function imports the entire SASS file, which returns a string with the exported properties and

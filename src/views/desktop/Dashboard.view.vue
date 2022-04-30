@@ -46,8 +46,8 @@ import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";
 import { computed, ref } from "vue";
-import { getDollarPrice } from "@/helpers/getPrice.helper";
-import { addEarnings } from "@/helpers/getPastQuantity.helper";
+import { getDollarPrice } from "@/helpers/crypto.helper";
+import { addEarnings } from "@/helpers/transactions.helper";
 
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();

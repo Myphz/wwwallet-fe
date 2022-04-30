@@ -1,5 +1,6 @@
 import extractSass from "@/helpers/extractSass.helper.js";
-import { formatValue } from "@/helpers/formatNumber.helper.js";
+import { formatValue } from "@/helpers/formatter.helper.js";
+
 const textPrimary = extractSass("text-primary");
 const bgColor = extractSass("bg-base");
 

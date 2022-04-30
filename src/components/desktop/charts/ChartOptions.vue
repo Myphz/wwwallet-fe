@@ -27,7 +27,7 @@ import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
 import { computed, ref, toRef } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
-import getBaseLCM from "@/helpers/getBaseLCM.helper.js";
+import { getBaseLCM } from "@/helpers/crypto.helper";
 
 const props = defineProps({
   crypto: {

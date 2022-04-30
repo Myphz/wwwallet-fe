@@ -3,9 +3,7 @@
 </template>
 
 <script setup>
-import { toRefs } from 'vue';
-
-const props = defineProps({
+defineProps({
   icon: {
     type: String,
     required: true
@@ -16,8 +14,6 @@ const props = defineProps({
     default: false
   }
 });
-
-const { icon } = toRefs(props);
 </script>
 
 <style lang="sass" scoped>

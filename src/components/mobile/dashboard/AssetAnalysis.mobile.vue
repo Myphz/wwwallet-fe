@@ -2,7 +2,7 @@
   <div class="main bg-dark nohover h4 transition">
     <div class="crypto align-center h2">
       <img 
-        :src="getCryptoIcon(crypto)" 
+        :src="getIcon(crypto)" 
         :alt="crypto"
         onerror="this.src='/src/assets/icons/generic.svg'"
       >
@@ -56,14 +56,12 @@
 <script setup>
 import LineChart from "M#/charts/LineChart.mobile.vue";
 import TransactionsAnalysis from "M#/dashboard/TransactionsAnalysis.mobile.vue";
-import { ref, toRefs, watch } from "vue";
-import getCryptoIcon from "@/helpers/getCryptoIcon.helper.js";
+import { ref, toRefs, watch, computed } from "vue";
 import Big from "@/helpers/big.helper.js";
 import { useCryptoStore } from "S#/crypto.store";
-import { formatValue, formatPercentage } from "@/helpers/formatNumber.helper";
-import { computed } from "@vue/reactivity";
-import { getDollarPrice } from "@/helpers/getPrice.helper";
-import { getPastStats } from "@/helpers/getPastQuantity.helper";
+import { formatValue, formatPercentage } from "@/helpers/formatter.helper";
+import { getDollarPrice, getIcon } from "@/helpers/crypto.helper";
+import { getPastStats } from "@/helpers/transactions.helper";
 import { ANALYSIS_TIMES } from "@/config/config";
 
 const props = defineProps({

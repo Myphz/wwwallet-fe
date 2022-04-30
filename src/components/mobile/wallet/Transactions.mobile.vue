@@ -30,10 +30,9 @@
 
 <script setup>
 import Transaction from "M#/wallet/Transaction.mobile.vue";
-import { toRefs } from "vue";
 import { useAuthStore } from "S#/auth.store";
 
-const props = defineProps({
+defineProps({
   crypto: {
     type: String,
     required: true
@@ -60,7 +59,6 @@ const props = defineProps({
   }
 });
 
-const { crypto } = toRefs(props);
 const authStore = useAuthStore();
 </script>
 

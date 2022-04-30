@@ -4,7 +4,7 @@
       <span class="align-center">
         <img 
           v-if="withIcon"
-          :src="getCryptoIcon(selected)" 
+          :src="getIcon(selected)" 
           :alt="selected"
           onerror="this.src='/src/assets/icons/generic.svg'"
           :class="('icon-' + iconSize) + (mobile ? ' icon-mobile' : '')"
@@ -18,7 +18,7 @@
       <li v-for="option in opts.slice(0, 20*page)" :key="option" @click="select(option)" class="align-center">
         <img
           v-if="withIcon"
-          :src="getCryptoIcon(option)" 
+          :src="getIcon(option)" 
           :alt="option"
           onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
           :class="'icon-small' + (mobile ? ' icon-mobile-li' : '')"
@@ -34,7 +34,7 @@ import { getCurrentInstance, ref, toRefs, watch } from "vue";
 import Input from "U#/Input.vue";
 import { useCryptoStore } from "S#/crypto.store";
 import byMcap from "@/helpers/sortByMcap.helper";
-import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
+import { getIcon } from "@/helpers/crypto.helper";
 
 const props = defineProps({
   options: {

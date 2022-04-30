@@ -1,5 +1,6 @@
 import big from "big.js";
 import toFormat from "toformat";
+
 // Import & export Big with the added toFormat utility, correctly configured for the current locale
 function getLocaleSeparators() {
   const n = 1000.1;

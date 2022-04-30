@@ -1,6 +1,5 @@
 import extractSass from "@/helpers/extractSass.helper.js";
-import { timeFormat, dateFormat } from "@/helpers/formatDate.helper.js";
-import { formatValue } from "@/helpers/formatNumber.helper.js";
+import { formatValue, formatDate, formatTime } from "@/helpers/formatter.helper.js";
 
 const gridColor = extractSass("grid-color");
 const textColor = extractSass("primary");
@@ -23,7 +22,7 @@ export default {
     type: "time",
     axisLabel: {
       show: false,
-      formatter: timeFormat,
+      formatter: formatTime,
       color: textColor,
       fontSize: "1em"
     },
@@ -37,7 +36,7 @@ export default {
 
     axisPointer: {
       label: {
-        formatter: ({ value }) => dateFormat(value),
+        formatter: ({ value }) => formatDate(value),
       }
     },
 

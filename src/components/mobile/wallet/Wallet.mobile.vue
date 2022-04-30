@@ -26,10 +26,11 @@
 import WalletRow from "M#/wallet/WalletRow.mobile.vue";
 import Popup from "U#/Popup.vue";
 import byMcap from "@/helpers/sortByMcap.helper.js";
+import { computed, ref, toRefs } from "vue";
+
 import { QUOTES_DOLLAR } from "@/config/config.js";
 import { useAuthStore } from "S#/auth.store.js";
 import { useCryptoStore } from "S#/crypto.store.js";
-import { computed, ref, toRefs } from "vue";
 
 const props = defineProps({
   search: {

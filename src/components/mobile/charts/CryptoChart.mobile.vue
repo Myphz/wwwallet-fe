@@ -44,8 +44,8 @@ import ChartOptions from "M#/charts/ChartOptions.mobile.vue";
 import CandlestickChart from "M#/charts/CandlestickChart.mobile.vue";
 import { TIMES } from "@/config/config.js";
 import { computed, ref, toRef, watch } from "vue";
-import { formatValue, formatPercentage } from "@/helpers/formatNumber.helper";
-import { calculatePercentage } from "@/helpers/getPrice.helper";
+import { formatValue, formatPercentage } from "@/helpers/formatter.helper";
+import { calculatePercentage } from "@/helpers/crypto.helper";
 import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";
 

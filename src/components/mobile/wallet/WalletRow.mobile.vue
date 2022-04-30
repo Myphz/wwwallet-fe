@@ -2,7 +2,7 @@
   <tr :class="'h4 transition main-row'" @click="open = !open">
     <td class="align-center">
       <img 
-        :src="getCryptoIcon(crypto)" 
+        :src="getIcon(crypto)" 
         :alt="crypto"
         onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
       >
@@ -29,12 +29,13 @@
 <script setup>
 import Transactions from "M#/wallet/Transactions.mobile.vue";
 import { ref, watch, computed } from "vue";
+
+import Big from "@/helpers/big.helper.js";
+import { generateTransactions } from "@/helpers/transactions.helper.js";
 import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
-import { getDollarPrice } from "@/helpers/getPrice.helper";
-import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
-import Big from "@/helpers/big.helper.js";
-import generateRandomTransactions from "@/helpers/random.helper.js";
+import { getDollarPrice } from "@/helpers/crypto.helper";
+import { getIcon } from "@/helpers/crypto.helper";;
 import { useRoute } from "vue-router";
 
 const { crypto } = defineProps({
@@ -55,7 +56,7 @@ const open = ref(false);
 const transactions = route.params.isAuth ? computed(() => authStore.transactions[crypto] || []) : ref([]);
 if (!route.params.isAuth) {
   const unwatch = watch(cryptoStore.prices, () => {
-    transactions.value = generateRandomTransactions(crypto, cryptoStore);
+    transactions.value = generateTransactions(crypto, cryptoStore);
     unwatch();
   });
 }

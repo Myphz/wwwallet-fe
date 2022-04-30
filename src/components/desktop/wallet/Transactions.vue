@@ -34,11 +34,10 @@
 
 <script setup>
 import Transaction from "D#/wallet/Transaction.vue";
-import { toRefs } from "vue";
 import { useAuthStore } from "S#/auth.store";
 import { RouterLink } from "vue-router";
 
-const props = defineProps({
+defineProps({
   crypto: {
     type: String,
     required: true
@@ -70,7 +69,6 @@ const props = defineProps({
   }
 });
 
-const { crypto } = toRefs(props);
 const authStore = useAuthStore();
 </script>
 

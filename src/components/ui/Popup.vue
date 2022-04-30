@@ -16,9 +16,8 @@
 
 <script setup>
 import Icon from "U#/Icon.vue";
-import { toRefs } from "vue";
 
-const props = defineProps({
+defineProps({
   success: {
     // Accept Booleans & null
     validator: prop => typeof prop === "boolean" || prop === null,
@@ -35,8 +34,6 @@ const props = defineProps({
     default: false
   }
 });
-
-const { success, message } = toRefs(props);
 </script>
 
 <style lang="sass" scoped>
