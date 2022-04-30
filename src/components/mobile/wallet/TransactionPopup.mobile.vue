@@ -339,9 +339,20 @@ if (!isDetail) {
     &:hover
       background-color: darken($primary, 5%) !important
 
-  .dp__cell_inner, .dp__button, .dp__month_year_select, .dp__inner_nav, .dp__inc_dec_button, .dp__time_display, .dp__overlay_cell
+  .dp__cell_inner, .dp__button, .dp__month_year_select, .dp__inner_nav, .dp__inc_dec_button, .dp__time_display
     &:hover
       background-color: darken($bg-dark, 3%)
+
+  .dp__overlay_cell
+    border: 1px solid $primary
+    &:hover
+      background-color: darken($bg-dark, 3%)
+
+  .dp__overlay_cell_disabled
+    background-color: black
+    border: none
+    &:hover
+     background-color: black 
 
   .dp__button_bottom
     background-color: lighten($bg-dark, 10%)
