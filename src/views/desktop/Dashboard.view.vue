@@ -29,7 +29,7 @@
 
   <section>
     <h1>Earnings Analysis</h1>
-    <EarningsChart />
+    <EarningsChart :earnings="earnings" />
   </section>
  
 </template>

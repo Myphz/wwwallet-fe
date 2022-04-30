@@ -1,11 +1,10 @@
 import extractSass from "@/helpers/extractSass.helper.js";
+import { formatValue } from "@/helpers/formatter.helper.js";
+
 const primary = extractSass("primary");
 const textPrimary = extractSass("text-primary");
 const gridColor = extractSass("grid-color");
 const bgColor = extractSass("bg-base");
-
-const green = "#47B262";
-const red = "#EB5454";
 
 export default {
   tooltip: {
@@ -18,7 +17,7 @@ export default {
     },
 
     formatter([{ axisValueLabel, marker, value }]) {
-      return `${marker} <strong>${axisValueLabel}</strong>: ${value} (+2.54%)`;
+      return `${marker} <strong>${axisValueLabel}</strong>: ${formatValue(value, 2)}`;
     },
 
     backgroundColor: bgColor,
@@ -35,7 +34,7 @@ export default {
   },
 
   xAxis: {
-    type: 'value',
+    type: "value",
     splitLine: {
       lineStyle: {
         color: gridColor,
@@ -68,30 +67,9 @@ export default {
       fontSize: 20,
       color: textPrimary
     },
-
-    data: ["BTC", "MATIC", "ETH", "LUNA"]
   },
   
   series: {
-    type: 'bar',
-
-    data: [
-      {
-        value: 120,
-        itemStyle: {color: green},
-      },
-      {
-        value: 120,
-        itemStyle: {color: green},
-      },
-      {
-        value: -20,
-        itemStyle: {color: red},
-      },
-      {
-        value: -500,
-        itemStyle: {color: red},
-      }
-    ]
+    type: "bar"
   }
 }

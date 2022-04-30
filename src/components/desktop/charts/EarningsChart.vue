@@ -1,11 +1,18 @@
 <template>
   <div class="chart-container bg-dark nohover">
-    <BarChart />
+    <BarChart :earnings="earnings" />
   </div>
 </template>
 
 <script setup>
 import BarChart from "D#/charts/BarChart.vue";
+
+defineProps({
+  earnings: {
+    type: Object,
+    required: true
+  }
+});
 </script>
 
 <style lang="sass" scoped>
