@@ -1,5 +1,5 @@
 <template>
-  <table v-if="!$route.params.isAuth || Object.keys(transactions).length" class="bg-dark nohover">
+  <table v-if="!$route.params.isAuth || Object.keys(transactions).length" class="bg-dark nohover shadow">
     <thead>
       <tr>
         <th>Token</th>

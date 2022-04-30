@@ -7,6 +7,7 @@ import options from "@/config/charts/candlestickChartOptions.mobile.js";
 import { onMounted, onUnmounted, reactive, ref, toRefs, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 import { KLINES_LIMIT } from "@/config/config";
+import { useRoute } from "vue-router";
 
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -31,6 +32,11 @@ export default {
       required: true
     },
 
+    transactions: {
+      type: Object,
+      required: true
+    },
+
     totals: {
       type: Object,
       default: null
@@ -41,13 +47,16 @@ export default {
 
   setup(props, ctx) {
     use([CandlestickChart, CanvasRenderer, GridComponent, DataZoomComponent, TooltipComponent]);
+
     const chart = ref(null);
     const store = useCryptoStore();
-    const { crypto, base, interval, totals } = toRefs(props);
+
+    const { crypto, base, interval, transactions, totals } = toRefs(props);
+    const route = useRoute();
     const option = reactive(options);
     const disabled = ref(false);
-    let klinesSocket;
 
+    let klinesSocket;
     let klinesBuffer;
     let lastTime;
 
@@ -126,20 +135,20 @@ export default {
     const loadData = async () => {
       // Close possibly existing socket
       klinesSocket && klinesSocket.close();
-      let klines, socket, isValid;
+      let klines, socket;
       klinesBuffer = {};
 
-      if (!totals.value) ({ klines, socket, isValid } = await store.getKlines(crypto.value, base.value, interval.value));
-      else ({ klines, socket, isValid } = await store.getDashboardKlines(crypto.value, base.value, interval.value));
-
-      if (isValid === false) {
-        disabled.value = true;
-        ctx.emit("empty");
-      }
+      if (!totals.value) ({ klines, socket } = await store.getKlines(crypto.value, base.value, interval.value, { noSocket: !route.params.isAuth }));
+      else ({ klines, socket } = await store.getDashboardKlines(crypto.value, base.value, interval.value, transactions.value, { isAuth: route.params.isAuth }));
 
       if (!klines?.length) {
         disabled.value = true;
         return ctx.emit("empty");
+      }
+
+      if (!route.params.isAuth) {
+        disabled.value = true;
+        ctx.emit("empty");
       }
       // Set white space to the right of the chart 
       option.xAxis.max = Math.max(
@@ -182,10 +191,11 @@ export default {
           })
         );
       } else {
-        ({ klines } = await store.getDashboardKlines(crypto.value, base.value, interval.value,
+        ({ klines } = await store.getDashboardKlines(crypto.value, base.value, interval.value, transactions.value,
           { 
             end: option.series.data[0][0] - (option.series.data[1][0] - option.series.data[0][0]), 
-            noSocket: true 
+            noSocket: true,
+            isAuth: route.params.isAuth
           })
         );
       };

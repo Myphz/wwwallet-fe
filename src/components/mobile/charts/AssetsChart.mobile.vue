@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="shadow">
     <div class="main-info">
       <h4 class="text-secondary">TOTAL ASSET VALUE</h4>
       <h2 :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ total.toFormat(2) }}</h2>

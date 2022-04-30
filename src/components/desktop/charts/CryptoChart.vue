@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="shadow">
     <ChartOptions 
       :crypto="crypto" 
       :base="base" 
@@ -32,10 +32,10 @@
         {{ time.toUpperCase() }}
       </span>
     </div>
-    <div :class="dashboard ? 'chart-container-dashboard' : 'chart-container'">
+    <div :class="'shadow ' + (dashboard ? 'chart-container-dashboard' : 'chart-container')">
       <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" :totals="totals" :transactions="transactions" @empty.once="empty = true" />
       <div v-if="empty && $route.params.isAuth" class="note h2">Nothing to show yet...</div>
-      <h2 v-else-if="empty" class="note">
+      <h2 v-else-if="empty" class="note shadow">
         <RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now to check your wallet
       </h2>
     </div>
@@ -188,7 +188,6 @@ watch(price, (newPrice, oldPrice) => {
     transform: translate(-50%, -50%)
     text-align: center
     background-color: $bg-base
-    box-shadow: 0 30px 40px rgba(0,0,0,.1)
     border-radius: .25em
     padding: .5em .25em
     opacity: .9

@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container bg-dark nohover">
+  <div class="chart-container bg-dark nohover shadow">
     <BarChart :earnings="earnings" />
   </div>
 </template>

@@ -23,7 +23,7 @@
       <h1>Assets Analysis</h1>
       <Select :options="Object.keys(ANALYSIS_TIMES)" class="h1" :withIcon="false" v-model="frequency" />
     </header>
-    <div class="bg-dark nohover assets-section">
+    <div class="bg-dark nohover assets-section shadow">
       <AssetsAnalysis :frequency="frequency" :totals="totals" :currentValues="currentValues" :transactions="transactions" />
     </div>
   </section>
@@ -49,12 +49,21 @@ import Big from "@/helpers/big.helper";
 import { computed, ref, watch } from "vue";
 import { getDollarPrice } from "@/helpers/crypto.helper";
 import { addEarnings } from "@/helpers/transactions.helper";
-import { generateTransactions } from "../../helpers/transactions.helper";
+import { generateTransactions } from "@/helpers/transactions.helper";
 
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
 const frequency = ref("TOTAL");
 
+// Mock transactions if the user is not logged in
+const authTransactions = ref(authStore.transactions);
+if (!authTransactions.value) {
+  authTransactions.value = {};
+  const unwatch = watch(cryptoStore.prices, () => {
+    authTransactions.value = generateTransactions(cryptoStore);
+    unwatch();
+  })
+};
 // Computed variable to store some transaction statistics.
 // Example format:
 // { 
@@ -68,16 +77,6 @@ const frequency = ref("TOTAL");
   
 //   "ETH": {... }
 // }
-
-const authTransactions = ref(authStore.transactions);
-if (!authTransactions.value) {
-  authTransactions.value = {};
-  const unwatch = watch(cryptoStore.prices, () => {
-    authTransactions.value = generateTransactions(cryptoStore);
-    unwatch();
-  })
-};
-
 const totals = computed(() => {
   const ret = {}; 
   for (const [crypto, transactions] of Object.entries(authTransactions.value)) {

@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="shadow">
     <ChartOptions 
       :crypto="crypto" 
       :base="base" 
@@ -33,7 +33,7 @@
       </span>
     </div>
     <div class="chart-container">
-      <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" :totals="totals" @empty.once="empty = true" />
+      <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" :totals="totals" :transactions="transactions" @empty.once="empty = true" />
       <div v-if="empty && $route.params.isAuth" class="note h2">Nothing to show yet...</div>
       <h2 v-else-if="empty" class="note">
         <RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now<br>to check your wallet
@@ -67,6 +67,11 @@ const props = defineProps({
   totals: {
     type: Object,
     default: null
+  },
+
+  transactions: {
+    type: Object,
+    required: true
   },
 
   dashboard: {

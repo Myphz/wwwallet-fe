@@ -1,8 +1,8 @@
 <template>
-  <header class="noselect space-between align-center">
+  <header class="noselect space-between align-center shadow">
     <span class="align-center">
       <Select 
-        class="margin-left text-primary h2" 
+        class="margin-left text-primary h3" 
         :options="cryptoList"
         :startValue="selectedCrypto"
         v-model="selectedCrypto"
@@ -12,7 +12,7 @@
       />
 
       <Select 
-        class="text-primary h2" 
+        class="text-primary h3" 
         :options="baseOptions"
         :startValue="base"
         v-model="selectedBase"
@@ -69,10 +69,10 @@ if (!dashboard) {
   baseOptions = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
   cryptoList = computed(() => Object.keys(store.tickerInfo));
 } else {
-  const keys = Object.keys(totals.value);
-  cryptoList = computed(() => ["TOTAL", ...keys]);
+  const keys = computed(() => Object.keys(totals.value));
+  cryptoList = computed(() => ["TOTAL", ...keys.value]);
   baseOptions = computed(() => selectedCrypto.value === "TOTAL" ? 
-    getBaseLCM(keys, store.tickerInfo) : 
+    getBaseLCM(keys.value, store.tickerInfo) : 
     store.tickerInfo[selectedCrypto.value]?.quotes || []
   );
 }
