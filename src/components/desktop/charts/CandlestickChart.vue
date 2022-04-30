@@ -133,7 +133,7 @@ export default {
       klinesBuffer = {};
 
       if (!totals.value) ({ klines, socket, isValid } = await store.getKlines(crypto.value, base.value, interval.value));
-      else ({ klines, socket, isValid } = await store.getDashboardKlines(crypto.value, base.value, interval.value, { totals }));
+      else ({ klines, socket, isValid } = await store.getDashboardKlines(crypto.value, base.value, interval.value));
 
       if (isValid === false) {
         disabled.value = true;

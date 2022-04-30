@@ -62,7 +62,7 @@ const frequency = ref("TOTAL");
 // }
 const totals = computed(() => {
   const ret = {}; 
-  for (const [crypto, transactions] of Object.entries(authStore.transactions)) {
+  for (const [crypto, transactions] of Object.entries(authStore.transactions || {})) {
     ret[crypto] = { 
       totalQuantity: Big(0), 
       buyQuantity: Big(0), 
@@ -111,7 +111,7 @@ const transactions = computed(() => addEarnings(authStore.transactions, cryptoSt
 // { [crypto]: [crypto's earnings in user's favorite currency] }
 const earnings = computed(() => {
   const ret = {};
-  for (const [crypto, trans] of Object.entries(transactions.value)) {
+  for (const [crypto, trans] of Object.entries(transactions.value || {})) {
     ret[crypto] = Big(0);
     for (const { earnings } of trans) {
       ret[crypto] = ret[crypto].plus(earnings);

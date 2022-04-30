@@ -84,7 +84,7 @@ const currentCrypto = ref(crypto);
 const activeTime = ref(0);
 const store = useCryptoStore();
 
-let empty = ref(false);
+const empty = ref(false);
 let price, pctChange, high24, low24;
 
 const getValue = (crypto, where, key, multiplier) => {

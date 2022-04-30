@@ -25,7 +25,7 @@ defineProps({
   },
 
   transactions: {
-    type: Object,
+    validator: prop => typeof prop === "object" || prop === null,
     required: true
   },
 
