@@ -20,8 +20,8 @@
         <span>Current Price</span>
       </div>
       <div class="space-between margin-bottom">
-        <span>${{ formatValue(totals.avgBuyPrice) }}</span>
-        <span :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ formatValue(currentPrice) }}</span>
+        <span>{{ formatValue(totals.avgBuyPrice) }}</span>
+        <span :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentPrice) }}</span>
       </div>
 
       <div class="space-between header">
@@ -29,8 +29,8 @@
         <span>Current Value</span>
       </div>
       <div class="space-between margin-bottom">
-        <span>${{ formatValue(totals.avgSellPrice) }}</span>
-        <span :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ formatValue(currentValue) }}</span>
+        <span>{{ formatValue(totals.avgSellPrice) }}</span>
+        <span :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentValue) }}</span>
       </div>
 
       <div class="space-between header">
@@ -39,7 +39,7 @@
       </div>
       <div class="space-between margin-bottom">
         <span :class="parseFloat(pctChange) > 0 ? 'green' : parseFloat(pctChange) < 0 ? 'red' : ''">{{ formatPercentage(pctChange) }}</span>
-        <span :class="earnings.s === -1 ? 'red' : earnings.eq(0) ? '' : 'green'">{{ earnings.s === -1 ? "-" : "" }}${{ formatValue(earnings.abs()) }}</span>
+        <span :class="earnings.s === -1 ? 'red' : earnings.eq(0) ? '' : 'green'">{{ earnings.s === -1 ? "-" : "" }}{{ formatValue(earnings.abs()) }}</span>
       </div>
     </div>
 
@@ -60,7 +60,7 @@ import { ref, toRefs, watch, computed } from "vue";
 import Big from "@/helpers/big.helper.js";
 import { useCryptoStore } from "S#/crypto.store";
 import { formatValue, formatPercentage } from "@/helpers/formatter.helper";
-import { getDollarPrice, getIcon } from "@/helpers/crypto.helper";
+import { getFavPrice, getIcon } from "@/helpers/crypto.helper";
 import { addEarnings } from "@/helpers/transactions.helper";
 import { ANALYSIS_TIMES } from "@/config/config";
 
@@ -97,7 +97,7 @@ const store = useCryptoStore();
 let pastPrice = ref();
 let end = ref();
 
-const currentPrice = computed(() => getDollarPrice(crypto.value, store.prices));
+const currentPrice = computed(() => getFavPrice(crypto.value, store.prices));
 
 const computedTransactions = computed(() => addEarnings(transactions.value, crypto.value, store.prices, { pastPrice: pastPrice.value, end: end.value, copy: true }));
 
@@ -107,7 +107,7 @@ const pctChange = computed(() => {
   let totVal = Big(0);
   for (const transaction of computedTransactions.value) {
     if (transaction.earnings.eq(0)) continue;
-    const val = Big(transaction.quantity).times(getDollarPrice(transaction.base, store.prices));
+    const val = Big(transaction.quantity).times(getFavPrice(transaction.base, store.prices));
     totVal = totVal.plus(val)
     ret = ret.plus(transaction.change.times(val));
   }
@@ -117,7 +117,7 @@ const pctChange = computed(() => {
 const earnings = computed(() => {
   let ret = Big(0);
   for (const transaction of computedTransactions.value) {
-    ret = ret.plus(transaction.earnings.times(getDollarPrice(transaction.base, store.prices)));
+    ret = ret.plus(transaction.earnings.times(getFavPrice(transaction.base, store.prices)));
   };
   return ret;
 });

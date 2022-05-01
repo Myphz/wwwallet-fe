@@ -9,11 +9,11 @@
       <span class="title">{{ cryptoStore.tickerInfo[crypto]?.name || crypto }}</span>
       <span class="ticker">{{ crypto }}</span>
     </td>
-    <td>${{ totals.avgBuyPrice.toFormat(getDecimalDigits(transactions[0]?.price)) }}</td>
-    <td>{{ !totals.avgSellPrice.eq(0) ? "$" + totals.avgSellPrice.toFormat(getDecimalDigits(transactions[0]?.price)) : "" }}</td>
+    <td>{{ formatValue(totals.avgBuyPrice, getDecimalDigits(transactions[0]?.price)) }}</td>
+    <td>{{ !totals.avgSellPrice.eq(0) ? formatValue(totals.avgSellPrice, getDecimalDigits(transactions[0]?.price)) : "" }}</td>
     <td>{{ totals.totalQuantity.toFormat() }}</td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
-      ${{ currentValue.toFormat(2) }}
+      {{ formatValue(currentValue) }}
     </td>
     <td :class="totalEarnings.s === -1 ? 'red' : totalEarnings.eq(0) ? '' : 'green'">
       {{ formatValue(totalEarnings) }}
@@ -45,7 +45,7 @@ import { ref, watch, computed, toRefs } from "vue";
 import Big from "@/helpers/big.helper.js";
 import { addEarnings } from "@/helpers/transactions.helper.js";
 import { useCryptoStore } from "S#/crypto.store";
-import { getDollarPrice, getIcon } from "@/helpers/crypto.helper";
+import { getFavPrice, getIcon } from "@/helpers/crypto.helper";
 import { getDecimalDigits, formatPercentage, formatValue } from "@/helpers/formatter.helper";
 
 const props = defineProps({
@@ -93,7 +93,7 @@ const pctChange = computed(() => {
   let totVal = Big(0);
   for (const transaction of computedTransactions.value) {
     if (transaction.earnings.eq(0)) continue;
-    const val = Big(transaction.quantity).times(getDollarPrice(transaction.base, cryptoStore.prices));
+    const val = Big(transaction.quantity).times(getFavPrice(transaction.base, cryptoStore.prices));
     totVal = totVal.plus(val)
     ret = ret.plus(transaction.change.times(val));
   }

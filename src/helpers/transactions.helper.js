@@ -1,5 +1,5 @@
-import { getDollarPrice, getPrice } from "@/helpers/crypto.helper.js";
-import { QUOTES_DOLLAR } from "@/config/config.js";
+import { getFavPrice, getPrice } from "@/helpers/crypto.helper.js";
+import { QUOTES } from "@/config/config.js";
 import { byMcap } from "@/helpers/sort.helper.js";
 import Big from "@/helpers/big.helper.js";
 
@@ -13,7 +13,7 @@ function randomFloat(min, max) {
 
 export function generateTransactions(crypto, store) {
   if (!store) {
-    const cryptos = Object.keys(crypto.tickerInfo).filter(key=>!QUOTES_DOLLAR.includes(key)).sort(byMcap(crypto)).slice(0, 5);
+    const cryptos = Object.keys(crypto.tickerInfo).filter(key=>!QUOTES["USD"].includes(key)).sort(byMcap(crypto)).slice(0, 5);
     return cryptos.reduce((prev, curr) => ({...prev, [curr]: generateTransactions(curr, crypto)}), {});
   }
 
@@ -24,7 +24,7 @@ export function generateTransactions(crypto, store) {
     const transaction = { base: "USDT" };
     transaction.isBuy = i < 2;
     let pct = randomFloat(-0.2, 0.2);
-    const price = getDollarPrice(crypto, store.prices) || 30000;
+    const price = getFavPrice(crypto, store.prices) || 30000;
     transaction.price = (price + price *  pct).toFixed(2);
     if (transaction.isBuy) transaction.quantity = "" + randomFloat(1000 / price, 5000 / price);
     else transaction.quantity = "" + randomFloat(1000 / price, ret[ret.length - 1].quantity);
@@ -81,11 +81,11 @@ export function getStats(transactions, prices, opts) {
     if (transaction.isBuy) {
       ret.totalQuantity = ret.totalQuantity.plus(transaction.quantity);
       ret.buyQuantity = ret.buyQuantity.plus(transaction.quantity);
-      buyPriceSum = buyPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getDollarPrice(transaction.base, prices)) );
+      buyPriceSum = buyPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getFavPrice(transaction.base, prices)) );
     } else {
       ret.totalQuantity = ret.totalQuantity.minus(transaction.quantity);
       ret.sellQuantity= ret.sellQuantity.plus(transaction.quantity);
-      sellPriceSum = sellPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getDollarPrice(transaction.base, prices)) );
+      sellPriceSum = sellPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getFavPrice(transaction.base, prices)) );
     }
   };
 

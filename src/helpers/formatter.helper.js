@@ -12,7 +12,6 @@ export function formatDate(value) {
   return ret + formatTime(value);
 };
 
-
 // Numbers
 function formatBigValue(price) {
   // Try with billions first
@@ -33,12 +32,14 @@ export function getDecimalDigits(n) {
   return index === -1 ? 0 : str.length - index - 1;
 }
 
-export function formatValue(price, precision) {
-  if (price instanceof Big) return price.toFormat(2);
-  if (!price) return "0.00";
-  if (price >= 1000000) return formatBigValue(price);
+export function formatValue(price, precision, noSymbol) {
+  const symbol = noSymbol ? "" : (localStorage.getItem("currencySymbol") || "$");
+  if (price?.constructor?.name === "String") return price;
+  if (price instanceof Big) return (price.lt(0) ? "-" : "") + symbol + price.abs().toFormat(precision || 2);
+  if (!price) return symbol + "0.00";
+  if (price >= 1000000) return symbol + formatBigValue(price);
   const decimalDigits = precision || getDecimalDigits(price);
-  return price.toLocaleString(undefined, { minimumFractionDigits: decimalDigits, maximumFractionDigits: decimalDigits });
+  return (price < 0 ? "-" : "") + symbol + Math.abs(price).toLocaleString(undefined, { minimumFractionDigits: decimalDigits, maximumFractionDigits: decimalDigits });
 }
 
 export function formatPercentage(pct) {

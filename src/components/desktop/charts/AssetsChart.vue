@@ -2,7 +2,7 @@
   <section class="shadow">
     <div class="main-info">
       <h4 class="text-secondary">TOTAL ASSET VALUE</h4>
-      <h2 :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ total.toFormat(2) }}</h2>
+      <h2 :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(total) }}</h2>
     </div>
     <div class="chart-container">
       <PieChart :totals="totals" :currentValues="currentValues" />
@@ -10,7 +10,7 @@
     
     <div class="main-info">
       <h4 class="text-secondary">TOTAL EARNINGS</h4>
-      <h2 :class="totalEarnings.s === -1 ? 'red' : 'green'">{{ totalEarnings.s === -1 ? "-" : "" }}${{ totalEarnings.abs().toFormat(2) }}</h2>
+      <h2 :class="totalEarnings.s === -1 ? 'red' : 'green'">{{ formatValue(totalEarnings) }}</h2>
     </div>
   </section>
 </template>
@@ -19,7 +19,7 @@
 import { computed } from "@vue/reactivity";
 import PieChart from "D#/charts/PieChart.vue";
 import { ref, toRefs, watch } from "vue";
-
+import { formatValue } from "@/helpers/formatter.helper";
 import Big from "@/helpers/big.helper";
 
 const props = defineProps({
@@ -65,4 +65,6 @@ watch(total, (newTotal, oldTotal) => {
     display: flex
     flex-direction: column
     align-items: center
+    h2
+      font-weight: 550
 </style>

@@ -12,7 +12,7 @@
     />
     <div class="stats">
       <span :class="'price ' + (isHigher ? 'green' : isHigher !== null ? 'red' : '')">
-        <h3>{{ formatValue(price) }}</h3>
+        <h3>{{ formatValue(price, null, true) }}</h3>
       </span>
       <span class="statsgroup">
         <span>Change</span>
@@ -20,11 +20,11 @@
       </span>
       <span class="statsgroup">
         <span>High</span>
-        <span class="green">{{ formatValue(high24) }}</span>
+        <span class="green">{{ formatValue(high24, null, true) }}</span>
       </span>
       <span class="statsgroup">
         <span>Low</span>
-        <span class="red">{{ formatValue(low24) }}</span>
+        <span class="red">{{ formatValue(low24, null, true) }}</span>
       </span>
     </div>
     <div class="stats time noselect">
@@ -35,7 +35,7 @@
     <div class="chart-container">
       <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" :totals="totals" :transactions="transactions" @empty.once="empty = true" />
       <h2 v-if="empty && $route.params.isAuth" class="note shadow">Nothing to show yet...</h2>
-      <h2 v-else-if="empty" class="note">
+      <h2 v-else-if="empty" class="note shadow">
         <RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now<br>to check your wallet
       </h2>
     </div>
@@ -70,8 +70,8 @@ const props = defineProps({
   },
 
   transactions: {
-    type: Object,
-    required: true
+    type: [Object, null],
+    default: null
   },
 
   dashboard: {
@@ -168,6 +168,8 @@ watch(price, (newPrice, oldPrice) => {
   .price
     padding: 0 1em 0 0
     border-right: 1px solid $text-primary
+    *
+      font-weight: normal
 
   .statsgroup
     display: inline-flex

@@ -12,8 +12,8 @@
     <td>{{ crypto }}/{{ base }}</td>
     <td>{{ isBuy ? 'BUY' : 'SELL' }}</td>
     <td>{{ quantity }}</td>
-    <td>{{ Big(price).toFormat(2) }}</td>
-    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ value && value.toFormat(2) || "" }}</td>
+    <td>{{ formatValue(Big(price)) }}</td>
+    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ value && formatValue(value) || "" }}</td>
     <td>{{ formatDate(date) }}</td>
     <td v-if="!withTicker && $route.params.isAuth">
       <Button btnClass="bg-outline h4" @click="displayPopup = true">Details</Button>
@@ -33,8 +33,8 @@ import Button from "U#/Button.vue";
 import TransactionPopup from "D#/wallet/TransactionPopup.vue";
 import { ref, computed, watch } from "vue";
 
-import { formatDate } from "@/helpers/formatter.helper";
-import { getDollarPrice, getIcon } from "@/helpers/crypto.helper";
+import { formatDate, formatValue } from "@/helpers/formatter.helper";
+import { getFavPrice, getIcon } from "@/helpers/crypto.helper";
 import Big from "@/helpers/big.helper";
 import { useCryptoStore } from "S#/crypto.store";
 
@@ -70,7 +70,7 @@ let { isBuy, base, quantity, price, date } = transaction;
 
 let value;
 if (isBuy) 
-  value = computed(() => Big(getDollarPrice(crypto, store.prices)).times(quantity));
+  value = computed(() => Big(getFavPrice(crypto, store.prices)).times(quantity));
 else
   value = Big(price).times(quantity);
 

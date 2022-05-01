@@ -18,7 +18,6 @@ import { computed, reactive, toRefs } from "vue";
 import extractSass from "@/helpers/extractSass.helper.js";
 import { RouterLink } from "vue-router";
 
-
 export default {
   components: { VChart },
 

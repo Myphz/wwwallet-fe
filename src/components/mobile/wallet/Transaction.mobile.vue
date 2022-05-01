@@ -10,7 +10,7 @@
     </td>
     <td>{{ isBuy ? 'BUY' : 'SELL' }}</td>
     <td>{{ quantity }}</td>
-    <td>{{ Big(price).toFormat(2) }}</td>
+    <td>{{ formatValue(Big(price)) }}</td>
     <td v-if="!withTicker && $route.params.isAuth" class="right-align">
       <Button btnClass="bg-outline h4" btnCss="padding: 0.3em;" @click="displayPopup = true">Details</Button>
     </td>
@@ -28,10 +28,10 @@
 import Button from "U#/Button.vue";
 import TransactionPopup from "M#/wallet/TransactionPopup.mobile.vue";
 import { ref, computed, watch } from "vue";
-import { getDollarPrice } from "@/helpers/crypto.helper";
+import { getFavPrice, getIcon } from "@/helpers/crypto.helper";
 import Big from "@/helpers/big.helper";
 import { useCryptoStore } from "S#/crypto.store";
-import { getIcon } from "@/helpers/crypto.helper";;
+import { formatValue } from "@/helpers/formatter.helper"
 
 const { transaction , crypto } = defineProps({
   transaction: {
@@ -65,7 +65,7 @@ let { isBuy, base, quantity, price } = transaction;
 
 let value;
 if (isBuy) 
-  value = computed(() => Big(getDollarPrice(crypto, store.prices)).times(quantity));
+  value = computed(() => Big(getFavPrice(crypto, store.prices)).times(quantity));
 else
   value = Big(price).times(quantity);
 

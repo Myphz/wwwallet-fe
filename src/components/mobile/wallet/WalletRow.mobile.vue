@@ -8,7 +8,7 @@
       >
       <span class="ticker">{{ crypto }}</span>
     </td>
-    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ currentValue.toFormat(2) }}</td>
+    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentValue) }}</td>
     <td>{{ totals.totalQuantity.toFormat() }}</td>
     <td :class="'arrow ' + (open ? 'open' : '')"></td>
   </tr>
@@ -31,7 +31,8 @@ import Transactions from "M#/wallet/Transactions.mobile.vue";
 import { ref, watch, toRefs } from "vue";
 
 import Big from "@/helpers/big.helper.js";
-import { getIcon } from "@/helpers/crypto.helper";;
+import { getIcon } from "@/helpers/crypto.helper";
+import { formatValue } from "@/helpers/formatter.helper";
 
 const props = defineProps({
   crypto: {

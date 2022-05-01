@@ -17,7 +17,7 @@
     </td>
 
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
-      ${{ price }}
+      {{ price }}
     </td>
 
     <td :class="pctChange.startsWith('+') ? 'green' : pctChange.startsWith('-') ? 'red' : ''">
@@ -26,7 +26,7 @@
 
     <td>
       <div class="align-center space-between">
-        <span>${{ mcap }}</span>
+        <span>{{ mcap }}</span>
         <Button btnClass="bg-outline h4" :link="`/crypto/${crypto}`">
           <span class="align-center">
             <span>Chart</span>
@@ -43,7 +43,7 @@ import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
 import { computed, ref, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
-import { getDollarPrice, getPercentageChange, getIcon } from "@/helpers/crypto.helper";
+import { getFavPrice, getPercentageChange, getIcon } from "@/helpers/crypto.helper";
 import { formatPercentage, formatValue } from "@/helpers/formatter.helper";
 
 const { crypto } = defineProps({
@@ -55,7 +55,7 @@ const { crypto } = defineProps({
 
 const store = useCryptoStore();
 
-const price = computed(() => formatValue(getDollarPrice(crypto, store.prices)));
+const price = computed(() => formatValue(getFavPrice(crypto, store.prices)));
 const mcap = formatValue(store.tickerInfo[crypto].mcap);
 const pctChange = computed(() => formatPercentage(getPercentageChange(crypto, store.prices)));
 

@@ -7,7 +7,7 @@ const backgroundColor = extractSass("bg-dark");
 
 function withClass(value, isPositive, withSymbol) {
   const styleClass = isPositive ? "green" : "red";
-  return `<span class="${styleClass}">${withSymbol ? (isPositive ? "+" : "") : ""}${formatValue(value)}</span>`
+  return `<span class="${styleClass}">${withSymbol ? (isPositive ? "+" : "") : ""}${formatValue(value, null, true)}</span>`
 }
 
 export default {

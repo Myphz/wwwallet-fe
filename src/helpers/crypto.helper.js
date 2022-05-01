@@ -1,10 +1,53 @@
-import { QUOTES_DOLLAR, GATEIO_ICON_URL } from "@/config/config";
+import { QUOTES, GATEIO_ICON_URL } from "@/config/config";
+import { getDecimalDigits } from "@/helpers/formatter.helper";
 
-// Helper function to retrieve the dollar price object of a given asset
-const getPriceObj = (crypto, prices) => {
+// Helper function to retrieve the cryptoStore price object of a given asset
+const getPriceObj = (crypto, prices, curr, once) => {
   if (!prices) return;
-  const quote = QUOTES_DOLLAR.find(quote => (crypto + quote) in prices);
-  return prices[crypto + quote];
+  const currency = curr || (localStorage.getItem("currency") || "USD");
+  const quote = QUOTES[currency].find(quote => (crypto + quote) in prices);
+  if (quote) return prices[crypto + quote];
+  if (once) return;
+
+  // Try to get price in USD, BTC or BNB (all of Binance crypto have at least one of these as quote)
+  let price, supportCurrency;
+
+  for (const testCurrency of ["USD", "BTC", "BNB"]) {
+    [price, supportCurrency] = [getPriceObj(crypto, prices, testCurrency, true), testCurrency];
+    if (price) break;
+  }
+
+  let conversionFactor, originalDigits;
+
+  // Check if current crypto + support currency quote exists
+  // e.g: if the price of the selected crypto has been found in USD and the wanted currency is EUR, try to find an EURUSD pair
+  // to convert the retrieved USD price
+  for (const testCurrency of QUOTES[supportCurrency]) {
+    const quote = QUOTES[currency].find(quote => (quote + testCurrency) in prices);
+    if (quote) {
+      conversionFactor = 1 / prices[quote + testCurrency].c;
+      originalDigits = getDecimalDigits(prices[quote + testCurrency].c);
+      break;
+    }
+  };
+
+  if (conversionFactor) 
+    return Object.fromEntries(Object.entries(price).map(([_, value]) => [_, parseFloat((value * conversionFactor).toFixed(originalDigits))]));
+
+  // Check if current crypto + support currency quote exists
+  // e.g: if the price of the selected crypto has been found in USD and the wanted currency is EUR, try to find an USDEUR pair
+  // to convert the retrieved USD price
+  for (const testCurrency of QUOTES[supportCurrency]) {
+    const quote = QUOTES[currency].find(quote => (testCurrency + quote) in prices);
+    if (quote) {
+      conversionFactor = prices[testCurrency + quote].c;
+      originalDigits = getDecimalDigits(prices[testCurrency + quote].c);
+      break;
+    }
+  };
+
+  if (conversionFactor) 
+    return Object.fromEntries(Object.entries(price).map(([_, value]) => [_, parseFloat((value * conversionFactor).toFixed(originalDigits))]));
 }
 
 export function getPrice(crypto, base, prices) {
@@ -12,8 +55,8 @@ export function getPrice(crypto, base, prices) {
   return prices[crypto + base]?.c || 0;
 }
 
-export function getDollarPrice(crypto, prices) {
-  if (QUOTES_DOLLAR.includes(crypto)) return 1;
+// Retrieve asset's price in user's favorite currency
+export function getFavPrice(crypto, prices) {
   const price = getPriceObj(crypto, prices);
   return price?.c || 0
 };

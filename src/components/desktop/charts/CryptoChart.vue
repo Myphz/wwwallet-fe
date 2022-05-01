@@ -12,7 +12,7 @@
     />
     <div class="stats">
       <span :class="'price ' + (isHigher ? 'green' : isHigher !== null ? 'red' : '')">
-        <h2>{{ formatValue(price) }}</h2>
+        <h2>{{ formatValue(price, null, true) }}</h2>
       </span>
       <span class="statsgroup">
         <span>24h Change</span>
@@ -20,11 +20,11 @@
       </span>
       <span class="statsgroup">
         <span>24h High</span>
-        <span class="green">{{ formatValue(high24) }}</span>
+        <span class="green">{{ formatValue(high24, null, true) }}</span>
       </span>
       <span class="statsgroup">
         <span>24h Low</span>
-        <span class="red">{{ formatValue(low24) }}</span>
+        <span class="red">{{ formatValue(low24, null, true) }}</span>
       </span>
     </div>
     <div class="time stats noselect">
@@ -70,8 +70,8 @@ const props = defineProps({
   },
 
   transactions: {
-    type: Object,
-    required: true
+    type: [Object, null],
+    default: null
   },
 
   dashboard: {
@@ -171,7 +171,8 @@ watch(price, (newPrice, oldPrice) => {
   .price
     padding: 0 1em 0 0
     border-right: 1px solid $text-primary
-    font-weight: 550
+    *
+      font-weight: 550
 
   .statsgroup
     display: inline-flex

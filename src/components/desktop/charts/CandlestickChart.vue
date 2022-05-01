@@ -33,8 +33,8 @@ export default {
     },
 
     transactions: {
-      type: Object,
-      required: true
+      type: [Object, null],
+      default: null
     },
 
     totals: {

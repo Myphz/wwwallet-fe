@@ -21,7 +21,7 @@
 import Card from "M#/markets/Card.mobile.vue";
 import { computed, defineAsyncComponent, ref, toRefs } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
-import byMcap from "@/helpers/sortByMcap.helper";
+import { byMcap } from "@/helpers/sort.helper";
 
 const props = defineProps({
   search: {

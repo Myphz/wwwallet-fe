@@ -47,7 +47,7 @@ import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";
 import { computed, ref, watch } from "vue";
-import { getDollarPrice } from "@/helpers/crypto.helper";
+import { getFavPrice } from "@/helpers/crypto.helper";
 import { addEarnings } from "@/helpers/transactions.helper";
 import { generateTransactions, getStats } from "@/helpers/transactions.helper";
 
@@ -88,7 +88,7 @@ const totals = computed(() => getStats(transactions.value));
 const currentValues = computed(() => {
   const ret = {};
   for (const [crypto, { totalQuantity }] of Object.entries(totals.value)) {
-    ret[crypto] = totalQuantity.times(getDollarPrice(crypto, cryptoStore.prices))
+    ret[crypto] = totalQuantity.times(getFavPrice(crypto, cryptoStore.prices))
   };
 
   return ret;
@@ -101,7 +101,7 @@ const earnings = computed(() => {
   for (const [crypto, trans] of Object.entries(transactions.value || {})) {
     ret[crypto] = Big(0);
     for (const { base, earnings } of trans) {
-      ret[crypto] = ret[crypto].plus(earnings.times(getDollarPrice(base, cryptoStore.prices)));
+      ret[crypto] = ret[crypto].plus(earnings.times(getFavPrice(base, cryptoStore.prices)));
     }
   };
 

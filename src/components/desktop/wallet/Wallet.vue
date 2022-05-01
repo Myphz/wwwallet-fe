@@ -37,7 +37,7 @@ import { computed, ref, watch } from "vue";
 import { byValue } from "@/helpers/sort.helper";
 import { useAuthStore } from "S#/auth.store.js";
 import { useCryptoStore } from "S#/crypto.store.js";
-import { getDollarPrice } from "@/helpers/crypto.helper";
+import { getFavPrice } from "@/helpers/crypto.helper";
 import { getStats, generateTransactions } from "@/helpers/transactions.helper";
 
 defineProps({
@@ -64,7 +64,7 @@ const totals = computed(() => getStats(transactions.value, cryptoStore.prices));
 const currentValues = computed(() => {
   const ret = {};
   for (const [crypto, { totalQuantity }] of Object.entries(totals.value)) {
-    ret[crypto] = totalQuantity.times(getDollarPrice(crypto, cryptoStore.prices))
+    ret[crypto] = totalQuantity.times(getFavPrice(crypto, cryptoStore.prices))
   };
 
   return ret;
