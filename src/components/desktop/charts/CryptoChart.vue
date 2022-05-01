@@ -34,7 +34,7 @@
     </div>
     <div :class="'shadow ' + (dashboard ? 'chart-container-dashboard' : 'chart-container')">
       <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" :totals="totals" :transactions="transactions" @empty.once="empty = true" />
-      <div v-if="empty && $route.params.isAuth" class="note h2">Nothing to show yet...</div>
+      <h2 v-if="empty && $route.params.isAuth" class="note">Nothing to show yet...</h2>
       <h2 v-else-if="empty" class="note shadow">
         <RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now to check your wallet
       </h2>
@@ -142,9 +142,6 @@ watch(price, (newPrice, oldPrice) => {
     background-color: $bg-dark
     border-radius: 1.5em
 
-  h2
-    font-weight: normal
-
   .chart-container
     position: relative
     height: 70vh
@@ -189,6 +186,6 @@ watch(price, (newPrice, oldPrice) => {
     text-align: center
     background-color: $bg-base
     border-radius: .25em
-    padding: .5em .25em
+    padding: .5em
     opacity: .9
 </style>

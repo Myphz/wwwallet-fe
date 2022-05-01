@@ -17,6 +17,7 @@ defineProps({
 
 <style lang="sass" scoped>
   .chart-container
+    position: relative
     height: 40vh
     border-radius: 1.5em
 
