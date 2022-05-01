@@ -12,6 +12,8 @@ export default {
   textStyle: {
     fontSize: 16,
   },
+
+  color: ["#DB8C00", "#4DA3FF", "#EE6666", "#3BA272", "#9A60B4", "#FFDA19", "#EA7CCC", "#00FEEA", "#5F00FE"],
   
   series: {
     type: 'pie',

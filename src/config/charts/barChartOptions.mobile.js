@@ -7,6 +7,8 @@ const gridColor = extractSass("grid-color");
 const bgColor = extractSass("bg-base");
 
 export default {
+  animation: false,
+  
   tooltip: {
     trigger: 'axis',
     axisPointer: {
