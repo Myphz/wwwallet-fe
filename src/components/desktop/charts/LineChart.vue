@@ -31,7 +31,9 @@ export default {
 
   setup(props) {
     use([LineChart, CanvasRenderer]);
-    const option = reactive(options);
+    // Deep copy option not to alter the original
+    const optionCopy = JSON.parse(JSON.stringify(options));
+    const option = reactive(optionCopy);
 
     const { crypto, frequency } = toRefs(props);
     const store = useCryptoStore();
@@ -45,7 +47,7 @@ export default {
     };
     onMounted(loadData);
 
-    watch([crypto, frequency], loadData)
+    watch([crypto, frequency], loadData);
     return { option };
   }
 }
