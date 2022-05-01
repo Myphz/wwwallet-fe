@@ -147,7 +147,7 @@ export default {
 
       if (!totals.value) ({ klines, socket } = await store.getKlines(crypto.value, base.value, interval.value, { noSocket: !route.params.isAuth }));
       else ({ klines, socket } = await store.getDashboardKlines(crypto.value, base.value, interval.value, transactions.value, { isAuth: route.params.isAuth }));
-
+      
       if (!klines?.length) {
         disabled.value = true;
         return ctx.emit("empty");
@@ -182,6 +182,8 @@ export default {
     // Load the data when mounted and when base or interval change
     onMounted(loadData);
     watch([crypto, base, interval], loadData);
+    // Watch transactions once
+    const unwatch = watch(transactions, () => { loadData(), unwatch() });
 
     // Function to load more data if the user has dragged the chart all the way to the left
     const checkEnd = async ({ batch }) => {
