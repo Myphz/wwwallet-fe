@@ -4,11 +4,18 @@ export const SERVER_BASE_URL = "http://localhost:3000/api/";
 
 // Stablecoins with a specific value
 export const QUOTES = {
-  USD: ["USDT", "USDC", "BUSD", "UST", "DAI"],
-  EUR: ["EUR"],
-  GBP: ["GBP"],
-  BTC: ["BTC"],
-  BNB: ["BNB"]
+  USD: {
+    quotes: ["USDT", "USDC", "BUSD", "UST", "DAI"],
+    symbol: "$",
+  },
+  EUR: {
+    quotes: ["EUR"],
+    symbol: "€",
+  },
+  GBP: {
+    quotes: ["GBP"],
+    symbol: "£",
+  }
 };
 
 export const KLINES_LIMIT = 1000;

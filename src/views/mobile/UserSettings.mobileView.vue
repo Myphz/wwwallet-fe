@@ -7,7 +7,13 @@
         <Icon icon="coins" class="margin-right" />
         <span>Base Currency</span>
       </div>
-      <Select :options="['USD', 'EUR']" mobile />
+      <Select 
+        :options="Object.keys(QUOTES)" 
+        iconSize="small" 
+        mobile 
+        @update:modelValue="updateCurrency" 
+        :startValue="startValue || 'USD'" 
+      />
     </div>
 
   </section>
@@ -59,8 +65,17 @@
 import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
 import { defineAsyncComponent } from "vue";
+import { QUOTES } from "@/config/config"
+
 const UserIcon = defineAsyncComponent(() => import("../../assets/icons/user.svg"));
 const CrossIcon = defineAsyncComponent(() => import("../../assets/icons/cross.svg"));
+
+const startValue = localStorage.getItem("currency");
+
+const updateCurrency = newCurrency => {
+  localStorage.setItem("currency", newCurrency);
+  localStorage.setItem("currencySymbol", QUOTES[newCurrency].symbol);
+};
 </script>
 
 <style lang="sass" scoped>
@@ -74,7 +89,7 @@ const CrossIcon = defineAsyncComponent(() => import("../../assets/icons/cross.sv
       display: flex
       justify-content: space-between
       align-items: center
-      padding: .5em 0
+      padding: .25em 0
       margin-bottom: .5em
       border-radius: .2em
       border-bottom: 1px solid $primary

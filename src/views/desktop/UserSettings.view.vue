@@ -1,19 +1,24 @@
 <template>
-  <section class="h3">
-    <h1>Preferences</h1>
+  <section class="h4">
+    <h2>Preferences</h2>
 
     <div>
       <div class="align-center">
         <Icon icon="coins" class="margin-right" />
         <span>Base Currency</span>
       </div>
-      <Select :options="['USD', 'EUR']"/>
+      <Select 
+        :options="Object.keys(QUOTES)" 
+        iconSize="small" 
+        @update:modelValue="updateCurrency" 
+        :startValue="startValue || 'USD'" 
+      />
     </div>
 
   </section>
 
-  <section class="h3">
-    <h1>Security</h1>
+  <section class="h4">
+    <h2>Security</h2>
 
     <div class="bg-base transition pointer">
       <div class="align-center">
@@ -33,8 +38,8 @@
 
   </section>
 
-  <section class="h3">
-    <h1>Advanced</h1>
+  <section class="h4">
+    <h2>Advanced</h2>
 
     <div class="bg-base transition pointer">
       <div class="align-center">
@@ -59,12 +64,21 @@
 import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
 import { defineAsyncComponent } from "vue";
+import { QUOTES } from "@/config/config"
+
 const UserIcon = defineAsyncComponent(() => import("../../assets/icons/user.svg"));
 const CrossIcon = defineAsyncComponent(() => import("../../assets/icons/cross.svg"));
+
+const startValue = localStorage.getItem("currency");
+
+const updateCurrency = newCurrency => {
+  localStorage.setItem("currency", newCurrency);
+  localStorage.setItem("currencySymbol", QUOTES[newCurrency].symbol);
+};
 </script>
 
 <style lang="sass" scoped>
-  h1
+  h2
     margin-bottom: .5em
 
   section

@@ -14,11 +14,11 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 
 const route = useRoute();
-const tabs = [
+const tabs = computed(() => [
   {
     endpoint: ["/crypto"],
     icon: "chart",
@@ -41,7 +41,7 @@ const tabs = [
   },
 ].map(tab => (
   {...tab, icon: defineAsyncComponent(() => import(`../../assets/icons/${tab.icon}.svg`)) }
-));
+)));
 </script>
 
 <style lang="sass">

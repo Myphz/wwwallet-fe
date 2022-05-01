@@ -5,25 +5,28 @@ import { getDecimalDigits } from "@/helpers/formatter.helper";
 const getPriceObj = (crypto, prices, curr, once) => {
   if (!prices) return;
   const currency = curr || (localStorage.getItem("currency") || "USD");
-  const quote = QUOTES[currency].find(quote => (crypto + quote) in prices);
+  const quotes = QUOTES?.[currency]?.quotes || [currency];
+  const quote = quotes.find(quote => (crypto + quote) in prices);
   if (quote) return prices[crypto + quote];
   if (once) return;
 
-  // Try to get price in USD, BTC or BNB (all of Binance crypto have at least one of these as quote)
+  // Try to get price in USD, BTC or BNB (99.99% of Binance crypto have at least one of these as quote)
   let price, supportCurrency;
 
-  for (const testCurrency of ["USD", "BTC", "BNB"]) {
+  for (const testCurrency of ["USD", "BTC", "BNB", "ETH"]) {
     [price, supportCurrency] = [getPriceObj(crypto, prices, testCurrency, true), testCurrency];
     if (price) break;
   }
+
+  if(!price) return;
 
   let conversionFactor, originalDigits;
 
   // Check if current crypto + support currency quote exists
   // e.g: if the price of the selected crypto has been found in USD and the wanted currency is EUR, try to find an EURUSD pair
   // to convert the retrieved USD price
-  for (const testCurrency of QUOTES[supportCurrency]) {
-    const quote = QUOTES[currency].find(quote => (quote + testCurrency) in prices);
+  for (const testCurrency of (QUOTES?.[supportCurrency]?.quotes || [supportCurrency])) {
+    const quote = quotes.find(quote => (quote + testCurrency) in prices);
     if (quote) {
       conversionFactor = 1 / prices[quote + testCurrency].c;
       originalDigits = getDecimalDigits(prices[quote + testCurrency].c);
@@ -37,8 +40,8 @@ const getPriceObj = (crypto, prices, curr, once) => {
   // Check if current crypto + support currency quote exists
   // e.g: if the price of the selected crypto has been found in USD and the wanted currency is EUR, try to find an USDEUR pair
   // to convert the retrieved USD price
-  for (const testCurrency of QUOTES[supportCurrency]) {
-    const quote = QUOTES[currency].find(quote => (testCurrency + quote) in prices);
+  for (const testCurrency of (QUOTES?.[supportCurrency]?.quotes || [supportCurrency])) {
+    const quote = quotes.find(quote => (testCurrency + quote) in prices);
     if (quote) {
       conversionFactor = prices[testCurrency + quote].c;
       originalDigits = getDecimalDigits(prices[testCurrency + quote].c);
