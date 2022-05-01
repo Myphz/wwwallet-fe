@@ -51,7 +51,7 @@ export function getPastQuantity(time, transactions) {
 }
 
 // Function to extract general transactions statistics at a specific timestamp in the past
-export function getPastStats(transactions, opts) {
+export function getPastStats(transactions, prices, opts) {
   const { end=Number.MAX_SAFE_INTEGER, start=0 } = opts || {};
   const ret = { 
     totalQuantity: Big(0), 
@@ -70,11 +70,11 @@ export function getPastStats(transactions, opts) {
     if (transaction.isBuy) {
       ret.totalQuantity = ret.totalQuantity.plus(transaction.quantity);
       ret.buyQuantity = ret.buyQuantity.plus(transaction.quantity);
-      buyPriceSum = buyPriceSum.plus( Big(transaction.price).times(transaction.quantity) );
+      buyPriceSum = buyPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getDollarPrice(transaction.base, prices)) );
     } else {
       ret.totalQuantity = ret.totalQuantity.minus(transaction.quantity);
       ret.sellQuantity= ret.sellQuantity.plus(transaction.quantity);
-      sellPriceSum = sellPriceSum.plus( Big(transaction.price).times(transaction.quantity) );
+      sellPriceSum = sellPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getDollarPrice(transaction.base, prices)) );
     }
   };
 
@@ -100,7 +100,7 @@ export function addEarnings(allTransactions, crypto, prices, opts) {
   // Parse parameters
   const { pastPrice, end=Number.MAX_SAFE_INTEGER, start=0, copy=false } = opts || {};
   // Get the total sell quantity
-  let { sellQuantity: totSell } = getPastStats(allTransactions, opts);
+  let { sellQuantity: totSell } = getPastStats(allTransactions, prices, opts);
 
   const ret = [];
   // Loop over all the transactions
@@ -138,7 +138,7 @@ export function addEarnings(allTransactions, crypto, prices, opts) {
       transaction.earnings = quantity.times(getPrice(crypto, transaction.base, prices)).minus(quantity.times(price));
       transaction.change = transaction.earnings.div(quantity.times(price)).times(100);
     } else {
-      const { avgBuyPrice } = getPastStats(allTransactions, { end: transaction.date  });
+      const { avgBuyPrice } = getPastStats(allTransactions, prices, { end: transaction.date  });
       // Earnings = Transaction quantity * transaction price - Avg Buy price * transaction quantity
       transaction.earnings = quantity.times(price).minus(avgBuyPrice.times(quantity));
       transaction.change = transaction.earnings.div(quantity.times(avgBuyPrice)).times(100);

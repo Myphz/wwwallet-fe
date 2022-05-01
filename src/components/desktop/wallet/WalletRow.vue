@@ -16,10 +16,10 @@
       ${{ currentValue.toFormat(2) }}
     </td>
     <td :class="totalEarnings.s === -1 ? 'red' : totalEarnings.eq(0) ? '' : 'green'">
-      {{ totalEarnings.s === -1 ? "-" : "" }}${{ totalEarnings.abs().toFormat(2) }}
+      {{ formatValue(totalEarnings) }}
     </td>
-    <td :class="totalChange.s === -1 ? 'red' : totalChange.eq(0) ? '' : 'green'">
-      {{ totalChange.s === -1 ? "-" : "" }}{{ totalChange.abs().toFormat(2) }}%
+    <td :class="pctChange.s === -1 ? 'red' : pctChange.eq(0) ? '' : 'green'">
+      {{ formatPercentage(pctChange) }}
     </td>
     <td :class="'arrow ' + (open ? 'open' : '')"></td>
   </tr>
@@ -43,11 +43,11 @@ import Transactions from "D#/wallet/Transactions.vue";
 import { ref, watch, computed } from "vue";
 
 import Big from "@/helpers/big.helper.js";
-import { generateTransactions } from "@/helpers/transactions.helper.js";
+import { generateTransactions, addEarnings } from "@/helpers/transactions.helper.js";
 import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import { getDollarPrice, getIcon } from "@/helpers/crypto.helper";
-import { getDecimalDigits } from "@/helpers/formatter.helper";
+import { getDecimalDigits, formatPercentage, formatValue } from "@/helpers/formatter.helper";
 import { useRoute } from "vue-router";
 
 const { crypto } = defineProps({
@@ -65,6 +65,8 @@ const cryptoStore = useCryptoStore();
 const open = ref(false);
 
 const transactions = route.params.isAuth ? computed(() => authStore.transactions[crypto] || []) : ref([]);
+const computedTransactions = computed(() => addEarnings(transactions.value, crypto, cryptoStore.prices))
+
 if (!route.params.isAuth) {
   const unwatch = watch(cryptoStore.prices, () => {
     transactions.value = generateTransactions(crypto, cryptoStore);
@@ -114,10 +116,17 @@ const totalEarnings = computed(() => {
   return currentValue.value.minus(oldValue).plus(soldEarnings);
 });
 
-const totalChange = computed(() => {
-  if (currentValue.value.eq(0)) return Big(0);
-  const oldValue = totalQty.value.times(avgPrices.value.buy);
-  return currentValue.value.minus(oldValue).div(currentValue.value).times(100);
+const pctChange = computed(() => {
+  // Weighted average
+  let ret = Big(0);
+  let totVal = Big(0);
+  for (const transaction of computedTransactions.value) {
+    if (transaction.earnings.eq(0)) continue;
+    const val = Big(transaction.quantity).times(getDollarPrice(transaction.base, cryptoStore.prices));
+    totVal = totVal.plus(val)
+    ret = ret.plus(transaction.change.times(val));
+  }
+  return totVal.eq(0) ? Big(0) : ret.div(totVal);
 });
 
 const isHigher = ref(null);
