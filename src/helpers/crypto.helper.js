@@ -18,7 +18,8 @@ const getPriceObj = (crypto, prices, curr, once) => {
     if (price) break;
   }
 
-  if(!price) return;
+  // If a suiting pair has not been found, give up
+  if(!price) return {};
 
   let conversionFactor, originalDigits;
 
