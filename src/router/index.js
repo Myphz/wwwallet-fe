@@ -58,8 +58,7 @@ const router = createRouter({
 
 // Global route to check if the route is protected
 router.beforeEach(async to => {
-  const store = useAuthStore();
-  const isAuth = await store.checkAuth();
+  const isAuth = await useAuthStore().checkAuth();
   if (to.meta.requiresAuth) {
     if (isAuth) return true;
     return {

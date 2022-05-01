@@ -7,7 +7,7 @@
         <Icon icon="coins" class="margin-right" />
         <span>Base Currency</span>
       </div>
-      <Select :options="['USD', 'EUR']"/>
+      <Select :options="['USD', 'EUR']" mobile />
     </div>
 
   </section>

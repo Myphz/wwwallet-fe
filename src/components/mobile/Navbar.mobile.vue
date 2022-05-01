@@ -16,6 +16,8 @@
 <script setup>
 import { defineAsyncComponent } from "vue";
 import { RouterLink, useRoute } from "vue-router";
+
+const route = useRoute();
 const tabs = [
   {
     endpoint: ["/crypto"],
@@ -33,15 +35,13 @@ const tabs = [
     title: "Wallet"
   },
   {
-    endpoint: ["/login", "/register"],
+    endpoint: route.params.isAuth ? ["/settings", "/register", "/login"] : ["/register", "/login", "/settings"],
     icon: "user",
     title: "Account"
   },
 ].map(tab => (
   {...tab, icon: defineAsyncComponent(() => import(`../../assets/icons/${tab.icon}.svg`)) }
 ));
-
-const route = useRoute();
 </script>
 
 <style lang="sass">
