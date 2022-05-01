@@ -1,30 +1,73 @@
 <template>
-  <div>
-    <InputBox />
-  </div>
+  <section class="noselect">
+    <div class="align-center">
+      <div>
+        <Logo />
+        
+        <div class="text-header">
+          <h1>Managing your crypto</h1>
+          <h2>has never been <span><i>this easy</i></span></h2>
+        </div>
+
+        <div class="img-section" style="text-align: justify;">
+          <img src="/src/assets/images/phone_mockup.png" alt="phone_mockup">
+          <h3 class="img-text">
+            <div>Track your<br><span>crypto wallet</span><br>everywhere.</div>
+            <div>Receive<br><span>real time updates</span><br>with many useful statistics.</div>
+            <div>Completely<br><span>free</span> and <span>open source</span>.</div>
+          </h3>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="align-center justify-center">
+      <InputBox />
+    </div>
+
+  </section>
 </template>
 
 <script setup>
-import { onBeforeMount, onUnmounted } from "vue";
+import Logo from "U#/Logo.vue";
 import InputBox from "D#/login/InputBox.vue";
-import { useRoute } from "vue-router";
-
-const route = useRoute();
-
-onBeforeMount(() => {
-  document.body.classList.add("bg");
-});
-
-onUnmounted(() => {
-  if (route.path != "/login") document.body.classList.remove("bg");
-});
-
 </script>
 
-<style lang="sass">
-  .bg
-    background-image: url("/src/assets/images/bg.png")
-    background-size: cover
-    background-repeat: no-repeat
-    
+<style lang="sass" scoped>
+  section
+    position: absolute
+    left: 0
+    top: 0
+    width: 100%
+    height: 100%
+    display: flex
+    justify-content: space-around
+    background-image: linear-gradient(135deg, $bg-base 0%, rgba(0,6,13,1) 100%)
+
+  .text-header
+    margin-top: 2.5em
+
+  .img-section
+    margin-top: 5em
+    display: flex
+    align-items: center
+    gap: 5em
+
+  .img-text
+    display: flex
+    height: 50vh
+    flex-direction: column
+    justify-content: space-around
+
+  span
+    color: darken($text-primary, 15%)
+    font-weight: bold
+
+  img
+    height: 50vh
+    width: auto
+
+  h1, h2, h3
+    font-weight: normal
+
 </style>

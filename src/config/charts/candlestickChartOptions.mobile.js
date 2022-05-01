@@ -1,5 +1,5 @@
 import extractSass from "@/helpers/extractSass.helper.js";
-import { timeFormat, dateFormat } from "@/helpers/formatDate.helper.js";
+import { formatValue, formatDate, formatTime } from "@/helpers/formatter.helper.js";
 
 const gridColor = extractSass("grid-color");
 const textColor = extractSass("primary");
@@ -7,7 +7,7 @@ const backgroundColor = extractSass("bg-dark");
 
 function withClass(value, isPositive, withSymbol) {
   const styleClass = isPositive ? "green" : "red";
-  return `<span class="${styleClass}">${withSymbol ? (isPositive ? "+" : "") : ""}${value}</span>`
+  return `<span class="${styleClass}">${withSymbol ? (isPositive ? "+" : "") : ""}${formatValue(value, null, true)}</span>`
 }
 
 export default {
@@ -22,7 +22,7 @@ export default {
     type: "time",
     axisLabel: {
       show: false,
-      formatter: timeFormat,
+      formatter: formatTime,
       color: textColor,
       fontSize: "1em"
     },
@@ -36,7 +36,7 @@ export default {
 
     axisPointer: {
       label: {
-        formatter: ({ value }) => dateFormat(value),
+        formatter: ({ value }) => formatDate(value),
       }
     },
 

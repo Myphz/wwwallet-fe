@@ -1,14 +1,24 @@
 <template>
-  <header class="noselect space-between">
+  <header class="noselect space-between align-center shadow">
     <span class="align-center">
-      <h2 class="margin-left margin-right">{{ crypto }}</h2>
+      <Select 
+        class="margin-left text-primary h3" 
+        :options="cryptoList"
+        :startValue="selectedCrypto"
+        v-model="selectedCrypto"
+        @update:modelValue="$emit('update:Crypto', selectedCrypto); !dashboard && $router.replace({ name: 'crypto', params: { crypto: selectedCrypto } })"
+        iconSize="small"
+        mobile
+      />
 
       <Select 
-        class="text-primary h2" 
+        class="text-primary h3" 
         :options="baseOptions"
-        :startValue="selectedBase"
+        :startValue="base"
         v-model="selectedBase"
-        @update:modelValue="$emit('update:modelValue', selectedBase)"
+        @update:modelValue="$emit('update:Base', selectedBase)"
+        iconSize="small"
+        mobile
       />
 
     </span>
@@ -20,10 +30,11 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
-import { computed, getCurrentInstance, ref, watch } from "vue";
+import { computed, ref, toRef } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
+import { getBaseLCM } from "@/helpers/crypto.helper";
 
-const { crypto, base } = defineProps({
+const props = defineProps({
   crypto: {
     type: String,
     required: true
@@ -32,18 +43,39 @@ const { crypto, base } = defineProps({
   base: {
     type: String,
     required: true
+  },
+
+  totals: {
+    type: Object,
+    default: null
+  },
+
+  dashboard: {
+    type: Boolean,
+    default: false
   }
 });
 
+const { crypto, base, dashboard } = props;
+const totals = toRef(props, "totals");
+
 const store = useCryptoStore();
-const baseOptions = computed(() => store.tickerInfo[crypto]?.quotes || []);
 
+const selectedCrypto = ref(crypto);
 const selectedBase = ref(base);
-const { emit } = getCurrentInstance();
 
-watch(selectedBase, newBase => {
-  emit("update:modelValue", newBase);
-});
+let baseOptions, cryptoList;
+if (!dashboard) {
+  baseOptions = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
+  cryptoList = computed(() => Object.keys(store.tickerInfo));
+} else {
+  const keys = computed(() => Object.keys(totals.value));
+  cryptoList = computed(() => ["TOTAL", ...keys.value]);
+  baseOptions = computed(() => selectedCrypto.value === "TOTAL" ? 
+    getBaseLCM(keys.value, store.tickerInfo) : 
+    store.tickerInfo[selectedCrypto.value]?.quotes || []
+  );
+}
 </script>
 
 <style lang="sass" scoped>
@@ -60,7 +92,7 @@ watch(selectedBase, newBase => {
     cursor: pointer
 
   .margin-left
-    margin-left: 1em
+    margin-left: .5em
 
   .margin-right
     margin-right: 1em

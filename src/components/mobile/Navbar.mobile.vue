@@ -2,8 +2,8 @@
   <section class="bg-dark nohover nav-section">
     <nav class="noselect">
       <ul>
-        <li v-for="tab in tabs" :key="tab.endpoint">
-          <RouterLink :to="tab.endpoint" :class="route.path.startsWith(tab.endpoint) ? 'current-page' : ''">
+        <li v-for="tab in tabs" :key="tab.endpoint[0]">
+          <RouterLink :to="tab.endpoint[0]" :class="tab.endpoint.some(endpoint => route.path.startsWith(endpoint)) ? 'current-page' : ''">
             <component :is="tab.icon" />
             <span>{{ tab.title }}</span>
           </RouterLink>
@@ -14,34 +14,34 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent } from "vue";
 import { RouterLink, useRoute } from "vue-router";
-const tabs = [
+
+const route = useRoute();
+const tabs = computed(() => [
   {
-    endpoint: "/crypto",
+    endpoint: ["/crypto"],
     icon: "chart",
     title: "Markets"
   },
   {
-    endpoint: "/dashboard",
+    endpoint: ["/dashboard"],
     icon: "dashboard",
     title: "Dashboard"
   },
   {
-    endpoint: "/wallet",
+    endpoint: ["/wallet"],
     icon: "wallet",
     title: "Wallet"
   },
   {
-    endpoint: "/login",
+    endpoint: route.params.isAuth ? ["/settings", "/register", "/login"] : ["/register", "/login", "/settings"],
     icon: "user",
     title: "Account"
   },
 ].map(tab => (
   {...tab, icon: defineAsyncComponent(() => import(`../../assets/icons/${tab.icon}.svg`)) }
-));
-
-const route = useRoute();
+)));
 </script>
 
 <style lang="sass">

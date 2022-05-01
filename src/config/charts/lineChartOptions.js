@@ -3,12 +3,14 @@ const primaryColor = extractSass("text-primary");
 
 export default {
   yAxis: {
+    type: "value",
     show: false,
-    min: value => value.min * (1 + (value.min - value.max) / value.min),
-    max: value => value.max * (1 + (value.max - value.min) / value.max),
+    scale: true,
+    boundaryGap: ["50%", "50%"],
   },
 
   xAxis: {
+    type: "time",
     show: false,
     scale: true,
   },

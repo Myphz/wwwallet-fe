@@ -9,28 +9,46 @@ import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { LineChart } from "echarts/charts";
 import VChart from "vue-echarts";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, toRefs, watch } from "vue";
+
+import { useCryptoStore } from "S#/crypto.store";
+import { ANALYSIS_TIMES } from "@/config/config";
 
 export default {
   components: { VChart },
 
-  setup() {
+  props: {
+    crypto: {
+      type: String,
+      required: true
+    },
+
+    frequency: {
+      type: String,
+      required: true
+    }
+  },
+
+  setup(props) {
     use([LineChart, CanvasRenderer]);
-    const option = reactive(options);
+    // Deep copy option not to alter the original
+    const optionCopy = JSON.parse(JSON.stringify(options));
+    const option = reactive(optionCopy);
 
-    onMounted(() => {
-      fetch("https://api.binance.com/api/v3/klines?symbol=ETHEUR&interval=1m")
-        .then(res => res.json())
-        .then(data => {
-          data = data.slice(-3600, -1);
-          // Convert to float
-          let i = 0;
-          data = data.map(candle => [i++, parseFloat(candle[4])]);
-          option.series.data = data;
+    const { crypto, frequency } = toRefs(props);
+    const store = useCryptoStore();
+
+    const loadData = async () => {
+      const { klines } = await store.getKlines(crypto.value, "USDT", "1h", { 
+        noSocket: true, 
+        start: frequency.value !== "TOTAL" ? (+new Date() - ANALYSIS_TIMES[frequency.value]) : null
       });
-    });
+      option.series.data = klines;
+    };
+    onMounted(loadData);
 
-    return { option }
+    watch([crypto, frequency], loadData)
+    return { option };
   }
 }
 </script>

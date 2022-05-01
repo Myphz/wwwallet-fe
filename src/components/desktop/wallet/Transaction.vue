@@ -1,30 +1,49 @@
 <template>
   <tr :class="'transition nohover ' + fontSize + ' ' + (shorter ? 'short' : '')">
     <td v-if="withTicker" class="align-center">
-      <Icon icon="bitcoin" class="icon" />
-      <span class="title">Bitcoin</span>
-      <span class="ticker">BTC</span>
+      <img 
+        :src="getIcon(crypto)" 
+        :alt="crypto"
+        onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
+      >
+      <span class="title">{{ store.tickerInfo[crypto]?.name || crypto }}</span>
+      <span class="ticker">{{ crypto }}</span>
     </td>
-    <td>BTC/USDT</td>
-    <td>BUY</td>
-    <td>2.15</td>
-    <td>$31982.23</td>
-    <td>$80982.34</td>
-    <td class="space-between align-center">
-      <span>20/12/2021 15:03</span>
-      <Button btnClass="bg-outline h4" @click="openPopup">Details</Button>
+    <td>{{ crypto }}/{{ base }}</td>
+    <td>{{ isBuy ? 'BUY' : 'SELL' }}</td>
+    <td>{{ quantity }}</td>
+    <td>{{ formatValue(Big(price)) }}</td>
+    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ value && formatValue(value) || "" }}</td>
+    <td>{{ formatDate(date) }}</td>
+    <td v-if="!withTicker && $route.params.isAuth">
+      <Button btnClass="bg-outline h4" @click="displayPopup = true">Details</Button>
     </td>
   </tr>
-  <TransactionPopup v-if="displayPopup" :quantity="2342" @close="displayPopup = false" />
+  <TransactionPopup 
+    v-if="displayPopup" 
+    :crypto="crypto" 
+    :transaction="transaction" 
+    @request="value => $parent.$emit('request', value)"
+    @close="displayPopup = false" 
+  />
 </template>
 
 <script setup>
-import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
 import TransactionPopup from "D#/wallet/TransactionPopup.vue";
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
 
-const { crypto } = defineProps({
+import { formatDate, formatValue } from "@/helpers/formatter.helper";
+import { getFavPrice, getIcon } from "@/helpers/crypto.helper";
+import Big from "@/helpers/big.helper";
+import { useCryptoStore } from "S#/crypto.store";
+
+const { transaction , crypto } = defineProps({
+  transaction: {
+    type: Object,
+    required: true
+  },
+
   crypto: {
     type: String,
     required: true
@@ -46,21 +65,31 @@ const { crypto } = defineProps({
   },
 });
 
+const store = useCryptoStore();
+let { isBuy, base, quantity, price, date } = transaction;
+
+let value;
+if (isBuy) 
+  value = computed(() => Big(getFavPrice(crypto, store.prices)).times(quantity));
+else
+  value = Big(price).times(quantity);
+
 const displayPopup = ref(false);
-const openPopup = () => {
-  window.scrollTo({top: 0, behavior: "smooth"});
-  displayPopup.value = true;
-}
+
+const isHigher = ref(null);
+if (isBuy) {
+  watch(value, (newValue, oldValue) => {
+    isHigher.value = newValue.gt(oldValue);
+  });
+};
 </script>
 
 <style lang="sass" scoped>
   img
     width: 48px
     height: 48px
-
-  .icon
     margin-right: 1em
-
+    
   .icon-small
     width: 36px
     height: 36px

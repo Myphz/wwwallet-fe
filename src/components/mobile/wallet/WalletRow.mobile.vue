@@ -1,33 +1,70 @@
 <template>
   <tr :class="'h4 transition main-row'" @click="open = !open">
     <td class="align-center">
-      <Icon icon="bitcoin" class="icon" />
-      <span class="ticker">BTC</span>
+      <img 
+        :src="getIcon(crypto)" 
+        :alt="crypto"
+        onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
+      >
+      <span class="ticker">{{ crypto }}</span>
     </td>
-    <td>$31982.23</td>
-    <td>2.15</td>
+    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentValue) }}</td>
+    <td>{{ totals.totalQuantity.toFormat() }}</td>
     <td :class="'arrow ' + (open ? 'open' : '')"></td>
   </tr>
-  <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
+  <tr v-show="open" class="transactions-row">
     <td colspan="4">
-      <Transactions :crypto="crypto" :withTicker="false" bgColor="bg-base-dark" fontSize="h5" />
+      <Transactions 
+        :crypto="crypto" 
+        :withTicker="false" 
+        :transactions="$route.params.isAuth ? [] : transactions"
+        bgColor="bg-base-dark" 
+        fontSize="h5" 
+        @request="value => $emit('request', value)" 
+      />
     </td>
   </tr>
 </template>
+
 <script setup>
-import Icon from "U#/Icon.vue";
 import Transactions from "M#/wallet/Transactions.mobile.vue";
+import { ref, watch, toRefs } from "vue";
 
-import { ref } from "vue";
+import Big from "@/helpers/big.helper.js";
+import { getIcon } from "@/helpers/crypto.helper";
+import { formatValue } from "@/helpers/formatter.helper";
 
-const { crypto } = defineProps({
+const props = defineProps({
   crypto: {
     type: String,
     required: true,
   },
+
+  transactions: {
+    type: Object,
+    required: true
+  },
+
+  totals: {
+    type: Object,
+    required: true
+  },
+
+  currentValue: {
+    type: Big,
+    required: true
+  }
 });
 
+const { currentValue } = toRefs(props);
+
+defineEmits(["request"]);
+
 const open = ref(false);
+const isHigher = ref(null);
+watch(currentValue, (newValue, oldValue) => {
+  isHigher.value = newValue > oldValue;
+});
 </script>
 
 <style lang="sass" scoped>
@@ -40,14 +77,8 @@ const open = ref(false);
   img
     width: 36px
     height: 36px
-
-  .icon
     margin-right: 1em
 
   .transactions-row
     background-color: darken($bg-base, 2%)
-    display: none
-
-  .row-open
-    display: table-row
 </style>

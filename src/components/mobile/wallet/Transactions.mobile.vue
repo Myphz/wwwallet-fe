@@ -1,27 +1,46 @@
 <template>
-  <table :class="'nohover ' + bgColor">
+  <table :class="'nohover ' + bgColor" v-if="(authStore.transactions?.[crypto] || transactions).length">
     <thead>
       <tr>
         <th v-if="withTicker">Token</th>
         <th>Side</th>
         <th>Quantity</th>
         <th>Price</th>
-        <th v-if="!withTicker"></th>
+        <th v-if="!withTicker && $route.params.isAuth"></th>
       </tr>
     </thead>
     <tbody>
-      <Transaction v-for="i in 2" :key="i" :crypto="crypto" :withTicker="withTicker" :fontSize="fontSize" />
+      <Transaction 
+        v-for="transaction in (authStore.transactions?.[crypto] || transactions).slice().reverse()" 
+        :key="transaction._id" 
+        :crypto="crypto"
+        :transaction="transaction" 
+        :withTicker="withTicker"
+        :fontSize="fontSize" 
+      />
     </tbody>
   </table>
+  <div v-else-if="$route.params.isAuth" :class="'nohover ' + bgColor">
+    <h4>No transactions registered for {{ crypto }} yet...</h4>
+  </div>
+  <div v-else :class="'nohover ' + bgColor">
+    <h4><RouterLink to="/login">Login</RouterLink> or <RouterLink to="/register">Register</RouterLink> to record transactions</h4>
+  </div>
 </template>
 
 <script setup>
 import Transaction from "M#/wallet/Transaction.mobile.vue";
+import { useAuthStore } from "S#/auth.store";
 
-const { crypto } = defineProps({
+defineProps({
   crypto: {
     type: String,
     required: true
+  },
+
+  transactions: {
+    type: Array,
+    default: []
   },
 
   fontSize: {
@@ -39,6 +58,8 @@ const { crypto } = defineProps({
     default: true
   }
 });
+
+const authStore = useAuthStore();
 </script>
 
 <style lang="sass" scoped>
@@ -49,5 +70,19 @@ const { crypto } = defineProps({
     padding: 1em .5em
     text-align: left
     font-weight: bold
+
+  th:first-of-type, th:last-of-type
+    padding-left: 2em
+
+  div
+    border-radius: .5em
+    padding: 1.5em
+
+  h4
+    font-weight: normal
+
+  a
+    color: darken($text-primary, 15%)
+    text-decoration: underline
 
 </style>

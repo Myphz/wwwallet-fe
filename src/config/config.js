@@ -1,4 +1,23 @@
-export const BINANCE_BASE_URL_WS = "wss://stream.binance.com:9443/ws/";
-export const BINANCE_BASE_URL_HTTPS = "https://api.binance.com/api/v3/";
-export const GATEIO_ICON = "https://www.gate.io/images/coin_icon/";
-export const TIMES = ["1m", "15m", "1H", "4H", "1D", "1W", "1M"];
+export const BINANCE_BASE_URL_WS = "wss://stream.binance.com:9443/";
+export const GATEIO_ICON_URL = "https://www.gate.io/images/coin_icon/64/";
+export const SERVER_BASE_URL = "http://localhost:3000/api/";
+
+// Stablecoins with a specific value
+export const QUOTES = {
+  USD: {
+    quotes: ["USDT", "USDC", "BUSD", "UST", "DAI"],
+    symbol: "$",
+  },
+  EUR: {
+    quotes: ["EUR"],
+    symbol: "€",
+  },
+  GBP: {
+    quotes: ["GBP"],
+    symbol: "£",
+  }
+};
+
+export const KLINES_LIMIT = 1000;
+export const TIMES = ["1m", "15m", "1h", "4h", "1d", "1w", "1M"];
+export const ANALYSIS_TIMES = { TOTAL: 0, MONTHLY: 2592000000, WEEKLY: 604800000, DAILY: 86400000 }

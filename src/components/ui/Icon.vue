@@ -1,26 +1,19 @@
 <template>
-  <img :src="icon" :class="'noselect ' + (clickable ? 'clickable' : '')">
+  <img :src="`/src/assets/icons/${icon}.svg`" :class="'noselect ' + (clickable ? 'clickable' : '')" :alt="icon">
 </template>
 
-<script>
-export default {
-  props: {
-    icon: {
-      type: String,
-      required: true
-    },
-
-    clickable: {
-      type: Boolean,
-      default: false
-    }
+<script setup>
+defineProps({
+  icon: {
+    type: String,
+    required: true
   },
 
-  setup ({ icon }) {
-    const iconFile = `/src/assets/icons/${icon}.svg`;
-    return { icon: iconFile };
+  clickable: {
+    type: Boolean,
+    default: false
   }
-}
+});
 </script>
 
 <style lang="sass" scoped>

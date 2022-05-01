@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
 import { routeView } from "../helpers/route.helper";
+import { useAuthStore } from "S#/auth.store";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,13 +8,13 @@ const router = createRouter({
     {
       path: "/",
       name: "homepage",
-      component: () => routeView("Home")
+      component: () => routeView("Home"),
     },
 
     {
       path: "/wallet",
       name: "wallet",
-      component: () => routeView("Wallet")
+      component: () => routeView("Wallet"),
     },
 
     {
@@ -31,7 +32,7 @@ const router = createRouter({
     {
       path: "/dashboard",
       name: "dashboard",
-      component: () => routeView("Dashboard")
+      component: () => routeView("Dashboard"),
     },
 
     {
@@ -49,9 +50,26 @@ const router = createRouter({
     {
       path: "/settings",
       name: "settings",
-      component: () => routeView("UserSettings")
+      component: () => routeView("UserSettings"),
+      meta: { requiresAuth: true }
     },
   ]
+});
+
+// Global route to check if the route is protected
+router.beforeEach(async to => {
+  const isAuth = await useAuthStore().checkAuth();
+  if (to.meta.requiresAuth) {
+    if (isAuth) return true;
+    return {
+      name: "login",
+      params: {
+        redirect: to.path,
+      }
+    };
+  }
+
+  to.params = { ...(to.params), isAuth }
 });
 
 export default router

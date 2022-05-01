@@ -6,7 +6,7 @@
       <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
       <li><RouterLink to="/wallet">Wallet</RouterLink></li>
     </ul>
-    <RouterLink to="/login" class="align-center"><UserIcon class="user-icon" /></RouterLink>
+    <RouterLink :to="$route.params.isAuth ? '/settings' : '/login'" class="align-center"><UserIcon class="user-icon" /></RouterLink>
   </nav>
 </template>
 

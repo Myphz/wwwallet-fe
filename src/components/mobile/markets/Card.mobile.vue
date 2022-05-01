@@ -3,18 +3,18 @@
     <tr @click="navigate" class="h4 transition">
       <td class="align-center">
         <img 
-          :src="iconUrl" 
+          :src="getIcon(crypto)"
           :alt="crypto" 
           onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
           class="icon"
         >
         <span>
-          <div class="title">{{ name }}</div> <div class="ticker">{{ crypto }}</div>
+          <div class="title">{{ store.tickerInfo[crypto].name || crypto }}</div> <div class="ticker">{{ crypto }}</div>
         </span>
       </td>
 
       <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
-        ${{ price }}
+        {{ price }}
       </td>
 
       <td :class="pctChange.startsWith('+') ? 'green' : pctChange.startsWith('-') ? 'red' : ''">
@@ -28,11 +28,8 @@
 import { RouterLink } from "vue-router";
 import { computed, ref, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
-import { getDollarPrice, getPercentageChange } from "@/helpers/getPrice.helper";
-import { formatPercentage, formatValue } from "@/helpers/formatNumber.helper";
-import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
-import { cryptoSymbol } from "crypto-symbol";
-const { nameLookup } = cryptoSymbol({});
+import { getFavPrice, getPercentageChange, getIcon } from "@/helpers/crypto.helper";
+import { formatPercentage, formatValue } from "@/helpers/formatter.helper";
 
 const { crypto } = defineProps({
   crypto: {
@@ -41,12 +38,9 @@ const { crypto } = defineProps({
   }
 });
 
-const name = nameLookup(crypto, {exact: true}) || crypto;
-const iconUrl = getCryptoIcon(crypto);
-
 const store = useCryptoStore();
-const price = computed(() => formatValue(getDollarPrice(crypto, store.prices)));
-const volume = formatValue(store.tickerInfo[crypto].volume);
+
+const price = computed(() => formatValue(getFavPrice(crypto, store.prices)));
 const pctChange = computed(() => formatPercentage(getPercentageChange(crypto, store.prices)));
 
 const isHigher = ref(null);

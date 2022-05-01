@@ -3,12 +3,12 @@
     <td>
       <div class="align-center">
         <img 
-          :src="iconUrl" 
+          :src="getIcon(crypto)" 
           :alt="crypto" 
           onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
           class="icon"
         >
-        <span class="title">{{ name }}</span>
+        <span class="title">{{ store.tickerInfo[crypto].name || crypto }}</span>
       </div>
     </td>
 
@@ -17,7 +17,7 @@
     </td>
 
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
-      ${{ price }}
+      {{ price }}
     </td>
 
     <td :class="pctChange.startsWith('+') ? 'green' : pctChange.startsWith('-') ? 'red' : ''">
@@ -26,7 +26,7 @@
 
     <td>
       <div class="align-center space-between">
-        <span>${{ volume }}</span>
+        <span>{{ mcap }}</span>
         <Button btnClass="bg-outline h4" :link="`/crypto/${crypto}`">
           <span class="align-center">
             <span>Chart</span>
@@ -43,11 +43,8 @@ import Icon from "U#/Icon.vue";
 import Button from "U#/Button.vue";
 import { computed, ref, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
-import { getDollarPrice, getPercentageChange } from "@/helpers/getPrice.helper";
-import { formatPercentage, formatValue } from "@/helpers/formatNumber.helper";
-import getCryptoIcon from "@/helpers/getCryptoIcon.helper";
-import { cryptoSymbol } from "crypto-symbol";
-const { nameLookup } = cryptoSymbol({});
+import { getFavPrice, getPercentageChange, getIcon } from "@/helpers/crypto.helper";
+import { formatPercentage, formatValue } from "@/helpers/formatter.helper";
 
 const { crypto } = defineProps({
   crypto: {
@@ -56,12 +53,10 @@ const { crypto } = defineProps({
   }
 });
 
-const name = nameLookup(crypto, {exact: true}) || crypto;
-const iconUrl = getCryptoIcon(crypto);
-
 const store = useCryptoStore();
-const price = computed(() => formatValue(getDollarPrice(crypto, store.prices)));
-const volume = formatValue(store.tickerInfo[crypto].volume);
+
+const price = computed(() => formatValue(getFavPrice(crypto, store.prices)));
+const mcap = formatValue(store.tickerInfo[crypto].mcap);
 const pctChange = computed(() => formatPercentage(getPercentageChange(crypto, store.prices)));
 
 const isHigher = ref(null);

@@ -1,39 +1,120 @@
 <template>
   <tr class="h4 bg-dark transition" @click="open = !open">
-    <td class="align-center">
-      <Icon icon="bitcoin" class="icon" />
-      <span class="title">Bitcoin</span>
-      <span class="ticker">BTC</span>
-    </td>
-    <td>$50,233.78</td>
-    <td>+20.32%</td>
-    <td>+$30,231.42</td>
-    <td id="chart">
-      <div :style="'width: 50%; height: ' + chartHeight">
-        <LineChart v-if="chartHeight != '100%'" />
+    <td class="align-center" id="chart">
+      <img 
+        :src="getIcon(crypto)" 
+        :alt="crypto"
+        onerror="this.src='/src/assets/icons/generic.svg'"
+      >
+
+      <div>
+        <span class="title">{{ store.tickerInfo?.[crypto]?.name || crypto }}</span>
+        <span class="ticker">{{ crypto }}</span>
+        <div id="chart" :style="'height: ' + chartHeight">
+          <LineChart v-if="chartHeight != '100%'" :crypto="crypto" :frequency="frequency" />
+        </div>
       </div>
     </td>
+    
+    <td>{{ formatValue(totals.avgBuyPrice) }}</td>
+    <td>{{ formatValue(totals.avgSellPrice) }}</td>
+    <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentPrice) }}</td>
+    <td :class="earnings.s === -1 ? 'red' : earnings.eq(0) ? '' : 'green'">{{ earnings.s === -1 ? "-" : "" }}{{ formatValue(earnings.abs()) }}</td>
+    <td :class="parseFloat(pctChange) > 0 ? 'green' : parseFloat(pctChange) < 0 ? 'red' : ''">{{ formatPercentage(pctChange) }}</td>
     <td class="arrow-cell">
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </td>
   </tr>
-  <tr :class="'transactions-row ' + (open ? 'row-open' : '')">
-    <td colspan="6">
-      <TransactionsAnalysis />
+  <tr class="transactions-row" v-show="open" style="cursor: default">
+    <td colspan="7">
+      <TransactionsAnalysis :transactions="computedTransactions" :crypto="crypto" :currentValue="currentValue" />
     </td>
   </tr>
 </template>
 
 <script setup>
-import Icon from "U#/Icon.vue";
 import LineChart from "D#/charts/LineChart.vue";
 import TransactionsAnalysis from "D#/dashboard/TransactionsAnalysis.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, toRefs, watch, computed } from "vue";
+import Big from "@/helpers/big.helper.js";
+import { useCryptoStore } from "S#/crypto.store";
+import { formatValue, formatPercentage } from "@/helpers/formatter.helper";
+import { getFavPrice, getIcon } from "@/helpers/crypto.helper";
+import { addEarnings } from "@/helpers/transactions.helper";
+import { ANALYSIS_TIMES } from "@/config/config";
+
+const props = defineProps({
+  crypto:  {
+    type: String,
+    required: true
+  },
+
+  totals: {
+    type: Object,
+    required: true
+  },
+
+  currentValue: {
+    type: Big,
+    required: true
+  },
+
+  transactions: {
+    type: Array,
+    required: true
+  },
+
+  frequency: {
+    type: String,
+    required: true
+  }
+});
+
+const { crypto, totals, currentValue, frequency, transactions } = toRefs(props);
+const store = useCryptoStore();
+
+let pastPrice = ref();
+let end = ref();
+
+const currentPrice = computed(() => getFavPrice(crypto.value, store.prices));
+
+const computedTransactions = computed(() => addEarnings(transactions.value, crypto.value, store.prices, { pastPrice: pastPrice.value, end: end.value, copy: true }));
+
+const pctChange = computed(() => {
+  // Weighted average
+  let ret = Big(0);
+  let totVal = Big(0);
+  for (const transaction of computedTransactions.value) {
+    if (transaction.earnings.eq(0)) continue;
+    const val = Big(transaction.quantity).times(getFavPrice(transaction.base, store.prices));
+    totVal = totVal.plus(val)
+    ret = ret.plus(transaction.change.times(val));
+  }
+  return totVal.eq(0) ? Big(0) : ret.div(totVal);
+});
+
+const earnings = computed(() => {
+  let ret = Big(0);
+  for (const transaction of computedTransactions.value) {
+    ret = ret.plus(transaction.earnings.times(getFavPrice(transaction.base, store.prices)));
+  };
+  return ret;
+});
+
+watch(frequency, async () => {
+  if (frequency.value === "TOTAL") {
+    pastPrice.value = undefined;
+    end.value = undefined;
+    return;
+  }
+
+  end.value = +new Date() - ANALYSIS_TIMES[frequency.value];
+  pastPrice.value = await store.getPastPrices(end.value, crypto.value, computedTransactions.value);
+});
 
 const open = ref(false);
 // Initial height of the cell. It needs to be modified to make the echarts library work by setting an explicit amount in pixels
 const chartHeight = ref("100%");
-
 // Hook to convert the chart cell height to pixels (to make echarts library work, as the height needs to be explicit)
 onMounted(() => {
   // Get the cell element
@@ -44,6 +125,11 @@ onMounted(() => {
   chartHeight.value = (element.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)) + "px";
 });
 
+const isHigher = ref(null);
+watch(currentPrice, (newPrice, oldPrice) => {
+  if (newPrice instanceof Big) return isHigher.value = newPrice.gt(oldPrice);
+  isHigher.value = newPrice > oldPrice;
+});
 </script>
 
 <style lang="sass" scoped>
@@ -57,16 +143,12 @@ onMounted(() => {
     cursor: pointer
 
   td
-    padding: 1em
+    padding: .25em 1em
   
   .arrow-cell
     text-align: right
 
   .transactions-row
     background-color: darken($bg-base, 2%)
-    display: none
-
-  .row-open
-    display: table-row
       
 </style>
