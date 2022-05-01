@@ -27,7 +27,7 @@
       <span>% Change</span>
     </div>
     <div class="space-between margin-bottom">
-      <span :class="parseFloat(transaction.earnings) > 0 ? 'green' : parseFloat(transaction.earnings) < 0 ? 'red' : ''">{{ formatValue(transaction.earnings) }}</span>
+      <span :class="parseFloat(transaction.earnings) > 0 ? 'green' : parseFloat(transaction.earnings) < 0 ? 'red' : ''">{{ transaction.earnings.toFormat() }}</span>
       <span :class="parseFloat(transaction.earnings) > 0 ? 'green' : parseFloat(transaction.earnings) < 0 ? 'red' : ''">{{ formatPercentage(transaction.change) }}</span>
     </div>
   </div>
@@ -35,7 +35,7 @@
 
 <script setup>
 import Big from "@/helpers/big.helper.js";
-import { formatValue, formatPercentage, formatDate } from "@/helpers/formatter.helper.js";
+import { formatPercentage } from "@/helpers/formatter.helper.js";
 
 defineProps({
   crypto: {

@@ -145,9 +145,18 @@ export const useCryptoStore = defineStore("crypto", {
       };
     },
 
-    async getPastPrice(time, crypto) {
-      const [res] = await fetchBinance(`klines?symbol=${getPair(crypto, this.prices)}&interval=1m&startTime=${time}&endTime=${time + 60000}&limit=1`);
-      return res?.[4] || 0;
+    async getPastPrices(time, crypto, transactions) {
+      let bases = new Set();
+      transactions.forEach(({ base }) => bases.add(base));
+      bases = [...bases]; // Convert it back to an Array to ensure order
+
+      const prices = await Promise.all(bases.map(base => 
+        fetchBinance(`klines?symbol=${crypto}${base}&interval=1m&startTime=${time}&endTime=${time + 60000}&limit=1`)
+      ));
+
+      const ret = {};
+      bases.forEach((base, i) => ret[base] = prices[i][0]?.[4]);
+      return ret;
     }
   }
 });

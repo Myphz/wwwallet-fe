@@ -115,7 +115,7 @@ export function addEarnings(allTransactions, crypto, prices, opts) {
       continue;
     };
     // Get the price of reference
-    const price = pastPrice || transaction.price;
+    const price = pastPrice?.[transaction.base] || transaction.price;
     // Get previous average buy price
     let quantity = Big(transaction.quantity);
 

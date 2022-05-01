@@ -86,11 +86,11 @@ const pctChange = computed(() => {
   let totVal = Big(0);
   for (const transaction of computedTransactions.value) {
     if (transaction.earnings.eq(0)) continue;
-    const val = Big(transaction.quantity).times(transaction.price);
-    totVal = totVal.plus(val);
+    const val = Big(transaction.quantity).times(getDollarPrice(transaction.base, store.prices));
+    totVal = totVal.plus(val)
     ret = ret.plus(transaction.change.times(val));
   }
-  return ret.div(totVal);
+  return totVal.eq(0) ? Big(0) : ret.div(totVal);
 });
 
 const earnings = computed(() => {
@@ -109,7 +109,7 @@ watch(frequency, async () => {
   }
 
   end.value = +new Date() - ANALYSIS_TIMES[frequency.value];
-  pastPrice.value = await store.getPastPrice(end.value, crypto.value);
+  pastPrice.value = await store.getPastPrices(end.value, crypto.value, computedTransactions.value);
 });
 
 const open = ref(false);
