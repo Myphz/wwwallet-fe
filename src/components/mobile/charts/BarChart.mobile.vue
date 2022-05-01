@@ -1,6 +1,9 @@
 <template>
-  <VChart v-if="Object.keys(earnings).length" :option="option" />
-  <h2 class="note shadow" v-else>Nothing to show yet...</h2>
+  <VChart v-if="Object.keys(earnings).length" :option="option" :class="$route.params.isAuth ? '' : 'disabled'" />
+  <h2 class="note shadow" v-else-if="$route.params.isAuth">Nothing to show yet...</h2>
+  <h2 class="note shadow" v-if="!$route.params.isAuth">
+    <RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now<br>to check your wallet
+  </h2>
 </template>
 
 <script>
@@ -12,8 +15,8 @@ import { BarChart } from "echarts/charts";
 import { TooltipComponent, LegendComponent } from "echarts/components";
 import VChart from "vue-echarts";
 import { computed, reactive, toRefs } from "vue";
-
 import extractSass from "@/helpers/extractSass.helper.js";
+import { RouterLink } from "vue-router";
 
 export default {
   components: { VChart },
@@ -47,6 +50,10 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+  .disabled
+    filter: blur(10px)
+    pointer-events: none
+    
   .note
     position: absolute
     top: 50%
