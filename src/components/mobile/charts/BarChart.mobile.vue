@@ -1,5 +1,6 @@
 <template>
-  <VChart :option="option" />
+  <VChart v-if="Object.keys(earnings).length" :option="option" />
+  <h2 class="note shadow" v-else>Nothing to show yet...</h2>
 </template>
 
 <script>
@@ -44,3 +45,17 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+  .note
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    text-align: center
+    background-color: $bg-base
+    border-radius: .25em
+    padding: .5em
+    white-space: nowrap
+    opacity: .9
+</style> 
