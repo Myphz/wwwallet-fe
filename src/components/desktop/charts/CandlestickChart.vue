@@ -80,6 +80,8 @@ export default {
       }
       // Restore animation if previously disabled
       if (!option.animation) option.animation = true;
+      // Don't push empty candles
+      if (!newKline[1]) return;
       // Check if it's a new candle
       if (t !== option.series.data[option.series.data.length - 1][0]) {
         // Update the maximum x axis value
@@ -124,6 +126,8 @@ export default {
         return [klineArr[0], ...klineArr.slice(1, 5).map((v, i) => parseFloat(totals.value[crypto].totalQuantity.times(v).plus(prev[i+1]).toFixed(2))) ];
       }, [0,0,0,0,0]);
 
+      // Don't push empty candles
+      if (!newKline[1]) return;
       // If it's a new candle, push it
       if (lastTime !== option.series.data[option.series.data.length - 1][0]) {
         // Update the maximum x axis value
@@ -157,7 +161,7 @@ export default {
       // Set white space to the right of the chart 
       option.xAxis.max = Math.max(
         klines[klines.length - 1][0] + (klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0)) * klines.length / 200, 
-        klines[klines.length-1][0] + (klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0)) * 5
+        klines[klines.length-1][0] + (klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0)) * 1.5
       );
       
       // Set maximum zoom
@@ -215,7 +219,6 @@ export default {
       option.series.data = [...klines, ...option.series.data];
       // Set maximum zoom
       option.dataZoom.minSpan = 2000 / klines.length / option.series.data.length / klines.length;
-      console.log(option.dataZoom.minSpan);
 
       // Return to the last position
       chart.value.dispatchAction({

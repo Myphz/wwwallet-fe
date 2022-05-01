@@ -12,10 +12,6 @@ export function getPrice(crypto, base, prices) {
   return prices[crypto + base]?.c || 0;
 }
 
-export function getPair(crypto, prices) {
-  return crypto + QUOTES_DOLLAR.find(quote => (crypto + quote) in prices);
-};
-
 export function getDollarPrice(crypto, prices) {
   if (QUOTES_DOLLAR.includes(crypto)) return 1;
   const price = getPriceObj(crypto, prices);

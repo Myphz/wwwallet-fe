@@ -77,6 +77,9 @@ export default {
         // Otherwise, multiply it by the total crypto quantity
         newKline = [t, ...[o, h, l, c].map(k => parseFloat(totals.value[crypto.value].totalQuantity.times(k).toFixed(2)))];
       }
+
+      // Don't push empty candles
+      if (!newKline[1]) return;
       // Check if it's a new candle
       if (t !== option.series.data[option.series.data.length - 1][0]) {
         // Update the maximum x axis value
@@ -121,6 +124,8 @@ export default {
         return [klineArr[0], ...klineArr.slice(1, 5).map((v, i) => parseFloat(totals.value[crypto].totalQuantity.times(v).plus(prev[i+1]).toFixed(2)))];
       }, [0,0,0,0,0]);
 
+      // Don't push empty candles
+      if (!newKline[1]) return;
       // If it's a new candle, push it
       if (lastTime !== option.series.data[option.series.data.length - 1][0]) {
         // Update the maximum x axis value

@@ -11,7 +11,7 @@
     </thead>
     <tbody>
       <Transaction 
-        v-for="transaction in authStore.transactions?.[crypto] || transactions" 
+        v-for="transaction in (authStore.transactions?.[crypto] || transactions).slice().reverse()" 
         :key="transaction._id" 
         :crypto="crypto"
         :transaction="transaction" 
