@@ -1,6 +1,6 @@
 import { getDollarPrice, getPrice } from "@/helpers/crypto.helper.js";
 import { QUOTES_DOLLAR } from "@/config/config.js";
-import byMcap from "@/helpers/sortByMcap.helper.js";
+import { byMcap } from "@/helpers/sort.helper.js";
 import Big from "@/helpers/big.helper.js";
 
 function randomInt(min, max) {
@@ -51,7 +51,18 @@ export function getPastQuantity(time, transactions) {
 }
 
 // Function to extract general transactions statistics at a specific timestamp in the past
-export function getPastStats(transactions, prices, opts) {
+export function getStats(transactions, prices, opts) {
+  if (!transactions) return transactions;
+  if (transactions.constructor.name === "Object") {
+    const ret = {};
+    for (const [crypto, trans] of Object.entries(transactions)) {
+      // Treat crypto as prices
+      ret[crypto] = getStats(trans, prices, opts);
+    }
+
+    return ret;
+  };
+
   const { end=Number.MAX_SAFE_INTEGER, start=0 } = opts || {};
   const ret = { 
     totalQuantity: Big(0), 
@@ -100,7 +111,7 @@ export function addEarnings(allTransactions, crypto, prices, opts) {
   // Parse parameters
   const { pastPrice, end=Number.MAX_SAFE_INTEGER, start=0, copy=false } = opts || {};
   // Get the total sell quantity
-  let { sellQuantity: totSell } = getPastStats(allTransactions, prices, opts);
+  let { sellQuantity: totSell } = getStats(allTransactions, prices, opts);
 
   const ret = [];
   // Loop over all the transactions
@@ -138,7 +149,7 @@ export function addEarnings(allTransactions, crypto, prices, opts) {
       transaction.earnings = quantity.times(getPrice(crypto, transaction.base, prices)).minus(quantity.times(price));
       transaction.change = transaction.earnings.div(quantity.times(price)).times(100);
     } else {
-      const { avgBuyPrice } = getPastStats(allTransactions, prices, { end: transaction.date  });
+      const { avgBuyPrice } = getStats(allTransactions, prices, { end: transaction.date  });
       // Earnings = Transaction quantity * transaction price - Avg Buy price * transaction quantity
       transaction.earnings = quantity.times(price).minus(avgBuyPrice.times(quantity));
       transaction.change = transaction.earnings.div(quantity.times(avgBuyPrice)).times(100);

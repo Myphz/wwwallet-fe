@@ -33,7 +33,7 @@
 import { getCurrentInstance, ref, toRefs, watch } from "vue";
 import Input from "U#/Input.vue";
 import { useCryptoStore } from "S#/crypto.store";
-import byMcap from "@/helpers/sortByMcap.helper";
+import { byMcap } from "@/helpers/sort.helper";
 import { getIcon } from "@/helpers/crypto.helper";
 
 const props = defineProps({

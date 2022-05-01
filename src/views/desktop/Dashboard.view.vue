@@ -49,7 +49,7 @@ import Big from "@/helpers/big.helper";
 import { computed, ref, watch } from "vue";
 import { getDollarPrice } from "@/helpers/crypto.helper";
 import { addEarnings } from "@/helpers/transactions.helper";
-import { generateTransactions } from "@/helpers/transactions.helper";
+import { generateTransactions, getStats } from "@/helpers/transactions.helper";
 
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
@@ -64,6 +64,10 @@ if (!authTransactions.value) {
     unwatch();
   })
 };
+
+// Add "earnings" field to each transaction
+const transactions = computed(() => addEarnings(authTransactions.value, cryptoStore.prices));
+
 // Computed variable to store some transaction statistics.
 // Example format:
 // { 
@@ -77,38 +81,7 @@ if (!authTransactions.value) {
   
 //   "ETH": {... }
 // }
-const totals = computed(() => {
-  const ret = {}; 
-  for (const [crypto, transactions] of Object.entries(authTransactions.value)) {
-    ret[crypto] = { 
-      totalQuantity: Big(0), 
-      buyQuantity: Big(0), 
-      sellQuantity: Big(0), 
-      avgBuyPrice: null, 
-      avgSellPrice: null 
-    };
-  
-    let buyPriceSum = Big(0);
-    let sellPriceSum = Big(0);
-
-    for (const transaction of transactions) {
-      if (transaction.isBuy) {
-        ret[crypto].totalQuantity = ret[crypto].totalQuantity.plus(transaction.quantity);
-        ret[crypto].buyQuantity = ret[crypto].buyQuantity.plus(transaction.quantity);
-        buyPriceSum = buyPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getDollarPrice(transaction.base, cryptoStore.prices)) );
-      } else {
-        ret[crypto].totalQuantity = ret[crypto].totalQuantity.minus(transaction.quantity);
-        ret[crypto].sellQuantity= ret[crypto].sellQuantity.plus(transaction.quantity);
-        sellPriceSum = sellPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getDollarPrice(transaction.base, cryptoStore.prices)) );
-      }
-    };
-
-    ret[crypto].avgBuyPrice = buyPriceSum.div(ret[crypto].buyQuantity);
-    ret[crypto].avgSellPrice = ret[crypto].sellQuantity.eq(0) ? Big(0) : sellPriceSum.div(ret[crypto].sellQuantity);
-  }
-
-  return ret;
-});
+const totals = computed(() => getStats(transactions.value));
 
 // Computed variable to store an object with the following format:
 // { [crypto]: [crypto current value (real time) in user's favorite currency] }
@@ -121,8 +94,7 @@ const currentValues = computed(() => {
   return ret;
 });
 
-// Add "earnings" field to each transaction
-const transactions = computed(() => addEarnings(authTransactions.value, cryptoStore.prices));
+
 
 // Computed variable to store an object with the following format:
 // { [crypto]: [crypto's earnings in user's favorite currency] }

@@ -9,9 +9,9 @@
       <span class="title">{{ cryptoStore.tickerInfo[crypto]?.name || crypto }}</span>
       <span class="ticker">{{ crypto }}</span>
     </td>
-    <td>${{ avgPrices.buy.toFormat(getDecimalDigits(transactions[0]?.price)) }}</td>
-    <td>{{ !avgPrices.sell.eq(0) ? "$" + avgPrices.sell.toFormat(getDecimalDigits(transactions[0]?.price)) : "" }}</td>
-    <td>{{ totalQty.toFormat() }}</td>
+    <td>${{ totals.avgBuyPrice.toFormat(getDecimalDigits(transactions[0]?.price)) }}</td>
+    <td>{{ !totals.avgSellPrice.eq(0) ? "$" + totals.avgSellPrice.toFormat(getDecimalDigits(transactions[0]?.price)) : "" }}</td>
+    <td>{{ totals.totalQuantity.toFormat() }}</td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
       ${{ currentValue.toFormat(2) }}
     </td>
@@ -40,79 +40,50 @@
 
 <script setup>
 import Transactions from "D#/wallet/Transactions.vue";
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, toRefs } from "vue";
 
 import Big from "@/helpers/big.helper.js";
-import { generateTransactions, addEarnings } from "@/helpers/transactions.helper.js";
-import { useAuthStore } from "S#/auth.store";
+import { addEarnings } from "@/helpers/transactions.helper.js";
 import { useCryptoStore } from "S#/crypto.store";
 import { getDollarPrice, getIcon } from "@/helpers/crypto.helper";
 import { getDecimalDigits, formatPercentage, formatValue } from "@/helpers/formatter.helper";
-import { useRoute } from "vue-router";
 
-const { crypto } = defineProps({
+const props = defineProps({
   crypto: {
     type: String,
     required: true,
   },
+
+  transactions: {
+    type: Object,
+    required: true
+  },
+
+  totals: {
+    type: Object,
+    required: true
+  },
+
+  currentValue: {
+    type: Big,
+    required: true
+  }
 });
 
-const route = useRoute();
+const { crypto } = props;
+const { transactions, totals, currentValue } = toRefs(props);
+
 defineEmits(["request"]);
 
-const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
 const open = ref(false);
 
-const transactions = route.params.isAuth ? computed(() => authStore.transactions[crypto] || []) : ref([]);
 const computedTransactions = computed(() => addEarnings(transactions.value, crypto, cryptoStore.prices))
-
-if (!route.params.isAuth) {
-  const unwatch = watch(cryptoStore.prices, () => {
-    transactions.value = generateTransactions(crypto, cryptoStore);
-    unwatch();
-  });
-}
-
-const totals = computed(() => {
-  return transactions.value.reduce((prev, curr) => {
-    const { isBuy, price, base, quantity } = curr;
-    if (isBuy) {
-      return { ...prev, 
-        buy: { 
-          totalQty: prev.buy.totalQty.plus(quantity), 
-          totalSum: prev.buy.totalSum.plus(new Big(getDollarPrice(base, cryptoStore.prices)).times(price).times(quantity)) 
-        }
-      };
-    }
-
-    return { 
-      ...prev, 
-      sell: { 
-        totalQty: prev.sell.totalQty.plus(quantity), 
-        totalSum: prev.sell.totalSum.plus(new Big(getDollarPrice(base, cryptoStore.prices)).times(price).times(quantity)) 
-      }
-    };
-  }, {
-      buy: { totalQty: new Big(0), totalSum: new Big(0) },
-      sell: { totalQty: new Big(0), totalSum: new Big(0) }
-     }
-  );
-});
-
-const avgPrices = computed(() => ({
-  buy: !totals.value.buy.totalQty.eq(0) ? totals.value.buy.totalSum.div(totals.value.buy.totalQty) : new Big(0), 
-  sell: !totals.value.sell.totalQty.eq(0) ? totals.value.sell.totalSum.div(totals.value.sell.totalQty) : new Big(0)
-}));
-
-const totalQty = computed(() => totals.value.buy.totalQty.minus(totals.value.sell.totalQty));
-const currentValue = computed(() => totalQty.value.times(getDollarPrice(crypto, cryptoStore.prices)));
-
 const totalEarnings = computed(() => {
   // The formula is as follows:
   // Total Earnings = Current Crypto Quantity * Current Price - Current Crypto Quantity * Avg Buy Price + Sold Quantity * (Average Sell Price - Average Buy Price)
-  const oldValue = totalQty.value.times(avgPrices.value.buy);
-  const soldEarnings = totals.value.sell.totalQty.times(avgPrices.value.sell.minus(avgPrices.value.buy));
+  const oldValue = totals.value.totalQuantity.times(totals.value.avgBuyPrice);
+  const soldEarnings = totals.value.sellQuantity.times(totals.value.avgSellPrice.minus(totals.value.avgBuyPrice));
   return currentValue.value.minus(oldValue).plus(soldEarnings);
 });
 

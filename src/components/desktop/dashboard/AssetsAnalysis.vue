@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <AssetAnalysis 
-        v-for="crypto in Object.keys(totals)" 
+        v-for="crypto in Object.keys(totals).sort(byValue(currentValues))" 
         :key="crypto" 
         :crypto="crypto" 
         :totals="totals[crypto]" 
@@ -31,6 +31,7 @@
 
 <script setup>
 import AssetAnalysis from "D#/dashboard/AssetAnalysis.vue";
+import { byValue } from "@/helpers/sort.helper";
 import { RouterLink } from "vue-router";
 
 defineProps({
