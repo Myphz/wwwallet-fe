@@ -94,8 +94,6 @@ const currentValues = computed(() => {
   return ret;
 });
 
-
-
 // Computed variable to store an object with the following format:
 // { [crypto]: [crypto's earnings in user's favorite currency] }
 const earnings = computed(() => {
