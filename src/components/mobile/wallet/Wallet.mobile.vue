@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table v-if="Object.keys(transactions).length">
     <thead>
       <tr>
         <th>Token</th>
@@ -20,6 +20,9 @@
       />
     </tbody>
   </table>
+  <h3 v-else style="font-weight: normal">
+    No transactions registered yet...
+  </h3>
   <Popup :success="request.success" :message="request.msg" @endAnimation="request.success = null" mobile />
 </template>
 
