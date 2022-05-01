@@ -8,14 +8,15 @@
         <th></th>
       </tr>
     </thead>
-    <tbody v-if="$route.params.isAuth">
-      <WalletRow v-for="crypto in cryptos" :key="crypto" :crypto="crypto" @request="value => request = value" />
-    </tbody>
-    <tbody v-else>
+    <tbody>
       <WalletRow 
-        v-for="crypto in Object.keys(cryptoStore.tickerInfo).filter(key=>!QUOTES_DOLLAR.includes(key)).sort(byMcap(cryptoStore)).slice(0, 5).filter(k=>k.includes(search))" 
+        v-for="crypto in Object.keys(transactions).filter(crypto => crypto.includes(search)).sort(byValue(currentValues))" 
         :key="crypto" 
-        :crypto="crypto"
+        :crypto="crypto" 
+        :transactions="transactions[crypto]"
+        :totals="totals[crypto]"
+        :currentValue="currentValues[crypto]"
+        @request="value => request = value" 
       />
     </tbody>
   </table>
@@ -25,28 +26,42 @@
 <script setup>
 import WalletRow from "M#/wallet/WalletRow.mobile.vue";
 import Popup from "U#/Popup.vue";
-import byMcap from "@/helpers/sortByMcap.helper.js";
-import { computed, ref, toRefs } from "vue";
-
-import { QUOTES_DOLLAR } from "@/config/config.js";
+import { computed, ref, watch } from "vue";
+import { byValue } from "@/helpers/sort.helper";
 import { useAuthStore } from "S#/auth.store.js";
 import { useCryptoStore } from "S#/crypto.store.js";
+import { getDollarPrice } from "@/helpers/crypto.helper";
+import { getStats, generateTransactions } from "@/helpers/transactions.helper";
 
-const props = defineProps({
+defineProps({
   search: {
     type: String,
     required: true
   }
 });
 
-const { search } = toRefs(props);
-
 const authStore = useAuthStore();
-await authStore.getTransactions();
-
 const cryptoStore = useCryptoStore();
 
-const cryptos = computed(() => Object.keys(authStore.transactions).filter(key => key.includes(search.value)));
+// Mock transactions if the user is not logged in
+const transactions = ref(authStore.transactions);
+if (!transactions.value) {
+  transactions.value = {};
+  const unwatch = watch(cryptoStore.prices, () => {
+    transactions.value = generateTransactions(cryptoStore);
+    unwatch();
+  })
+};
+
+const totals = computed(() => getStats(transactions.value, cryptoStore.prices));
+const currentValues = computed(() => {
+  const ret = {};
+  for (const [crypto, { totalQuantity }] of Object.entries(totals.value)) {
+    ret[crypto] = totalQuantity.times(getDollarPrice(crypto, cryptoStore.prices))
+  };
+
+  return ret;
+});
 
 const request = ref({success: null, msg: ""});
 </script>

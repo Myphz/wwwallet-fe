@@ -12,7 +12,7 @@
         <th></th>
       </tr>
     </thead>
-    <tbody v-if="$route.params.isAuth">
+    <tbody>
       <WalletRow 
         v-for="crypto in Object.keys(transactions).filter(crypto => crypto.includes(search)).sort(byValue(currentValues))" 
         :key="crypto" 
@@ -30,7 +30,7 @@
 <script setup>
 import WalletRow from "D#/wallet/WalletRow.vue";
 import Popup from "U#/Popup.vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { byValue } from "@/helpers/sort.helper";
 import { useAuthStore } from "S#/auth.store.js";
 import { useCryptoStore } from "S#/crypto.store.js";

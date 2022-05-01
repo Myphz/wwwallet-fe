@@ -2,12 +2,7 @@
   <section>
     <h1>Your Wallet</h1>
     <SearchBar v-model="search" />
-    <Suspense>
-      <Wallet :search="search" />
-      <template #fallback>
-        Loading.....
-      </template>
-    </Suspense>
+    <Wallet :search="search" />
     <div class="btn-container" v-if="$route.params.isAuth">
       <Button btnClass="h4 bg-primary rounded noborder" @click="displayPopup = true">+ Add Transaction</Button>
     </div>

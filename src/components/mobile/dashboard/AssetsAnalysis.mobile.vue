@@ -4,7 +4,7 @@
   </h4>
   <section v-if="!$route.params.isAuth || Object.keys(transactions).length">
     <AssetAnalysis 
-      v-for="crypto in Object.keys(totals)" 
+      v-for="crypto in Object.keys(totals).sort(byValue(currentValues))" 
       :key="crypto" 
       :crypto="crypto" 
       :totals="totals[crypto]" 
@@ -24,6 +24,7 @@
 
 <script setup>
 import AssetAnalysis from "M#/dashboard/AssetAnalysis.mobile.vue";
+import { byValue } from "@/helpers/sort.helper";
 import { RouterLink } from "vue-router";
 
 defineProps({

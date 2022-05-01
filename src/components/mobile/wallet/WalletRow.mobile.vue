@@ -9,7 +9,7 @@
       <span class="ticker">{{ crypto }}</span>
     </td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">${{ currentValue.toFormat(2) }}</td>
-    <td>{{ totalQty.toFormat() }}</td>
+    <td>{{ totals.totalQuantity.toFormat() }}</td>
     <td :class="'arrow ' + (open ? 'open' : '')"></td>
   </tr>
   <tr v-show="open" class="transactions-row">
@@ -28,70 +28,38 @@
 
 <script setup>
 import Transactions from "M#/wallet/Transactions.mobile.vue";
-import { ref, watch, computed } from "vue";
+import { ref, watch, toRefs } from "vue";
 
 import Big from "@/helpers/big.helper.js";
-import { generateTransactions } from "@/helpers/transactions.helper.js";
-import { useAuthStore } from "S#/auth.store";
-import { useCryptoStore } from "S#/crypto.store";
-import { getDollarPrice } from "@/helpers/crypto.helper";
 import { getIcon } from "@/helpers/crypto.helper";;
-import { useRoute } from "vue-router";
 
-const { crypto } = defineProps({
+const props = defineProps({
   crypto: {
     type: String,
     required: true,
   },
+
+  transactions: {
+    type: Object,
+    required: true
+  },
+
+  totals: {
+    type: Object,
+    required: true
+  },
+
+  currentValue: {
+    type: Big,
+    required: true
+  }
 });
 
-const route = useRoute();
+const { currentValue } = toRefs(props);
 
 defineEmits(["request"]);
 
-const authStore = useAuthStore();
-const cryptoStore = useCryptoStore();
 const open = ref(false);
-
-const transactions = route.params.isAuth ? computed(() => authStore.transactions[crypto] || []) : ref([]);
-if (!route.params.isAuth) {
-  const unwatch = watch(cryptoStore.prices, () => {
-    transactions.value = generateTransactions(crypto, cryptoStore);
-    unwatch();
-  });
-}
-
-const totalQty = computed(() => {
-  const ret = transactions.value.reduce((prev, curr) => {
-    const { isBuy, price, base, quantity } = curr;
-    if (isBuy) {
-      return { 
-        ...prev, 
-        buy: { 
-          totalQty: prev.buy.totalQty.plus(quantity), 
-          totalSum: prev.buy.totalSum.plus(new Big(getDollarPrice(base, cryptoStore.prices)).times(price).times(quantity)) 
-        }
-      };
-    }
-
-    return { 
-      ...prev, 
-      sell: { 
-        totalQty: prev.sell.totalQty.plus(quantity), 
-        totalSum: prev.sell.totalSum.plus(new Big(getDollarPrice(base, cryptoStore.prices)).times(price).times(quantity)) 
-      }
-    };
-  }, {
-      buy: { totalQty: new Big(0), totalSum: new Big(0) },
-      sell: { totalQty: new Big(0), totalSum: new Big(0) }
-     }
-  );
-
-  return ret.buy.totalQty.minus(ret.sell.totalQty);
-});
-
-const currentValue = computed(() => totalQty.value.times(getDollarPrice(crypto, cryptoStore.prices)));
-
 const isHigher = ref(null);
 watch(currentValue, (newValue, oldValue) => {
   isHigher.value = newValue > oldValue;
