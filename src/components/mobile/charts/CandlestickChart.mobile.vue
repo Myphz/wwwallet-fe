@@ -212,7 +212,6 @@ export default {
       option.series.data = [...klines, ...option.series.data];
       // Set maximum zoom
       option.dataZoom.minSpan = 1500 / klines.length / option.series.data.length / klines.length;
-      console.log(option.dataZoom.minSpan);
 
       // Return to the last position
       chart.value.dispatchAction({
