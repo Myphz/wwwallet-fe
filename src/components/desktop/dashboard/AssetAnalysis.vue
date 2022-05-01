@@ -78,15 +78,16 @@ let end = ref();
 
 const currentPrice = computed(() => getDollarPrice(crypto.value, store.prices));
 
-const computedTransactions = computed(() => addEarnings(transactions.value, currentPrice.value, { pastPrice: pastPrice.value, end: end.value, copy: true }));
+const computedTransactions = computed(() => addEarnings(transactions.value, crypto.value, store.prices, { pastPrice: pastPrice.value, end: end.value, copy: true }));
 
 const pctChange = computed(() => {
   // Weighted average
   let ret = Big(0);
   let totVal = Big(0);
   for (const transaction of computedTransactions.value) {
+    if (transaction.earnings.eq(0)) continue;
     const val = Big(transaction.quantity).times(transaction.price);
-    totVal = totVal.plus( val );
+    totVal = totVal.plus(val);
     ret = ret.plus(transaction.change.times(val));
   }
   return ret.div(totVal);
@@ -95,7 +96,7 @@ const pctChange = computed(() => {
 const earnings = computed(() => {
   let ret = Big(0);
   for (const transaction of computedTransactions.value) {
-    ret = ret.plus(transaction.earnings);
+    ret = ret.plus(transaction.earnings.times(getDollarPrice(transaction.base, store.prices)));
   };
   return ret;
 });

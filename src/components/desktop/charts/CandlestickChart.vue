@@ -177,7 +177,7 @@ export default {
 
     // Load the data when mounted and when base or interval change
     onMounted(loadData);
-    watch([crypto, base, interval, totals], loadData);
+    watch([crypto, base, interval], loadData);
 
     // Function to load more data if the user has dragged the chart all the way to the left
     const checkEnd = async ({ batch }) => {

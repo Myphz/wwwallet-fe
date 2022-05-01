@@ -95,11 +95,11 @@ const totals = computed(() => {
       if (transaction.isBuy) {
         ret[crypto].totalQuantity = ret[crypto].totalQuantity.plus(transaction.quantity);
         ret[crypto].buyQuantity = ret[crypto].buyQuantity.plus(transaction.quantity);
-        buyPriceSum = buyPriceSum.plus( Big(transaction.price).times(transaction.quantity) );
+        buyPriceSum = buyPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getDollarPrice(transaction.base, cryptoStore.prices)) );
       } else {
         ret[crypto].totalQuantity = ret[crypto].totalQuantity.minus(transaction.quantity);
         ret[crypto].sellQuantity= ret[crypto].sellQuantity.plus(transaction.quantity);
-        sellPriceSum = sellPriceSum.plus( Big(transaction.price).times(transaction.quantity) );
+        sellPriceSum = sellPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getDollarPrice(transaction.base, cryptoStore.prices)) );
       }
     };
 
@@ -130,8 +130,8 @@ const earnings = computed(() => {
   const ret = {};
   for (const [crypto, trans] of Object.entries(transactions.value || {})) {
     ret[crypto] = Big(0);
-    for (const { earnings } of trans) {
-      ret[crypto] = ret[crypto].plus(earnings);
+    for (const { base, earnings } of trans) {
+      ret[crypto] = ret[crypto].plus(earnings.times(getDollarPrice(base, cryptoStore.prices)));
     }
   };
 

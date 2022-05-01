@@ -1,4 +1,4 @@
-import { getDollarPrice } from "@/helpers/crypto.helper.js";
+import { getDollarPrice, getPrice } from "@/helpers/crypto.helper.js";
 import { QUOTES_DOLLAR } from "@/config/config.js";
 import byMcap from "@/helpers/sortByMcap.helper.js";
 import Big from "@/helpers/big.helper.js";
@@ -84,15 +84,15 @@ export function getPastStats(transactions, opts) {
   return ret;
 }
 
-export function addEarnings(allTransactions, currentPrice, opts) {
+export function addEarnings(allTransactions, crypto, prices, opts) {
   if (!allTransactions) return allTransactions;
   // If it's an object
   if (allTransactions.constructor.name === "Object") {
     // Call itself recursively and return the final object
     const ret = {};
-    for (const [crypto, transactions] of Object.entries(allTransactions)) {
-      // Treat the currentPrice value as cryptoStore.prices
-      ret[crypto] = addEarnings(transactions, getDollarPrice(crypto, currentPrice), opts);
+    for (const [base, transactions] of Object.entries(allTransactions)) {
+      // Treat crypto as prices
+      ret[base] = addEarnings(transactions, base, crypto, opts);
     }
     return ret;
   }
@@ -116,6 +116,7 @@ export function addEarnings(allTransactions, currentPrice, opts) {
     };
     // Get the price of reference
     const price = pastPrice || transaction.price;
+    // Get previous average buy price
     let quantity = Big(transaction.quantity);
 
     if (transaction.isBuy) {
@@ -134,15 +135,15 @@ export function addEarnings(allTransactions, currentPrice, opts) {
       }
 
       // Otherwise, multiply what's remaining by the current price and subtract the original cost
-      transaction.earnings = quantity.times(currentPrice).minus(quantity.times(price));
+      transaction.earnings = quantity.times(getPrice(crypto, transaction.base, prices)).minus(quantity.times(price));
+      transaction.change = transaction.earnings.div(quantity.times(price)).times(100);
     } else {
-      // Get previous average buy price
       const { avgBuyPrice } = getPastStats(allTransactions, { end: transaction.date  });
       // Earnings = Transaction quantity * transaction price - Avg Buy price * transaction quantity
-      transaction.earnings = quantity.times(price).minus( avgBuyPrice.times(quantity) );
+      transaction.earnings = quantity.times(price).minus(avgBuyPrice.times(quantity));
+      transaction.change = transaction.earnings.div(quantity.times(avgBuyPrice)).times(100);
     };
 
-    transaction.change = transaction.earnings.div(quantity.times(price)).times(100);
     ret.push(transaction);
   };
   return ret;

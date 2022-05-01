@@ -13,12 +13,11 @@ export const useCryptoStore = defineStore("crypto", {
 
   actions: {
     async init() {
-      // Get 24h prices and volume for every ticker
-      const startPrices = await fetchBinance("ticker/24hr");
-      // Get exchange information for every ticker
-      const exchangeInfo = await fetchBinance("exchangeInfo");
-      // Get market cap and symbol-name conversion for every ticker
-      const cryptoInfo = await fetchServer("crypto/info");
+      // 1. Get 24h prices and volume for every ticker
+      // 2. Get exchange information for every ticker
+      // 3. Get market cap and symbol-name conversion for every ticker
+      const [startPrices, exchangeInfo, cryptoInfo] = await Promise.all([fetchBinance("ticker/24hr"), fetchBinance("exchangeInfo"), fetchServer("crypto/info")]);
+
       // Initialize this.prices following miniTicker's convention
       startPrices.forEach(crypto => {
         const { symbol, openPrice, highPrice, lowPrice, lastPrice } = crypto;
