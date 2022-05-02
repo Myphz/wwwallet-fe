@@ -48,6 +48,12 @@ const router = createRouter({
     },
 
     {
+      path: "/register/verify",
+      name: "verify",
+      component: () => routeView("RegisterVerify")
+    },
+
+    {
       path: "/settings",
       name: "settings",
       component: () => routeView("UserSettings"),

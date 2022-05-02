@@ -113,7 +113,7 @@ if (login) {
       requestSuccess.value = false;
       requestMessage.value = msg;
     } else {
-      router.push("/dashboard");
+      router.push({ name: "verify", params: { email: values.email } });
     }
   };
 }

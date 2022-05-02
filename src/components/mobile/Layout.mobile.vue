@@ -5,19 +5,17 @@
   <main>
     <router-view />
   </main>
-  <Footer v-if="path !== '/login' && path !== '/register'" />
+  <Footer v-if="!NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
   <Navbar />
 </template>
 
 <script setup>
-import { RouterView, useRoute } from "vue-router";
+import { RouterView } from "vue-router";
 import Navbar from "M#/Navbar.mobile.vue";
 import Logo from "U#/Logo.vue";
 import Footer from "M#/Footer.mobile.vue";
-import { computed } from "vue";
 
-const route = useRoute();
-const path = computed( () => route.path );
+const NO_NAVBAR_PATHS = ["/login", "/register"];
 </script>
 
 <style lang="sass">

@@ -1,19 +1,17 @@
 <template>
-  <Navbar v-if="path !== '/login' && path !== '/register'"/>
+  <Navbar v-if="!NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
   <main>
     <router-view />
   </main>
-  <Footer v-if="path !== '/login' && path !== '/register'" />
+  <Footer v-if="!NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useRoute, RouterView } from "vue-router";
+import { RouterView } from "vue-router";
 import Navbar from "D#/Navbar.vue";
 import Footer from "D#/Footer.vue";
 
-const route = useRoute();
-const path = computed( () => route.path );
+const NO_NAVBAR_PATHS = ["/login", "/register"];
 </script>
 
 <style lang="sass">
