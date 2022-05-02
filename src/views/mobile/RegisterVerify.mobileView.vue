@@ -1,7 +1,7 @@
 <template>
   <section class="align-center justify-center">
     <div class="container">
-      <Logo />
+      <Logo small />
       <hr style="margin: 1em 0">
       <p class="h4">
         The account has been successfully created.<br>
@@ -37,10 +37,9 @@ import Logo from "U#/Logo.vue";
     background-image: linear-gradient(135deg, $bg-base 0%, rgba(0,6,13,1) 100%)
 
   .container
-    min-width: 25vw
-    width: fit-content
     padding: 3em 2.6em
     border-radius: 1em
+    width: 70%
     background-color: $box-color
     backdrop-filter: blur(12px)
 

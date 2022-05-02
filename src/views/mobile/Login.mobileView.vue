@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import InputBox from "M#/login/InputBox.vue";
+import InputBox from "M#/login/InputBox.mobile.vue";
 </script>
 
 <style lang="sass" scoped>
