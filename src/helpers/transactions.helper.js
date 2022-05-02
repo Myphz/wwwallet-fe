@@ -13,7 +13,7 @@ function randomFloat(min, max) {
 
 export function generateTransactions(crypto, store) {
   if (!store) {
-    const cryptos = Object.keys(crypto.tickerInfo).filter(key=>!QUOTES["USD"].includes(key)).sort(byMcap(crypto)).slice(0, 5);
+    const cryptos = Object.keys(crypto.tickerInfo).filter(key=>!QUOTES["USD"].quotes.includes(key)).sort(byMcap(crypto)).slice(0, 5);
     return cryptos.reduce((prev, curr) => ({...prev, [curr]: generateTransactions(curr, crypto)}), {});
   }
 
