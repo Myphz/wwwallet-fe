@@ -11,14 +11,13 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async login({ email, password }) {
       const res = await fetchServer("auth/login", { email, password });
-      this.isAuthenticated = res.success;
+      this.isAuthenticated = res.success && res.isVerified;
+      if (res.success && !res.isVerified) return router.push({ name: "verify", params: { email, password } });
       return res;
     },
 
-    async register({ email, password }) {
-      const res = await fetchServer("auth/register", { email, password });
-      this.isAuthenticated = res.success;
-      return res;
+    async register({ email, password, resend }) {
+      return await fetchServer("auth/register", { email, password, resend });
     },
 
     async checkAuth() {
@@ -31,9 +30,7 @@ export const useAuthStore = defineStore("auth", {
 
     // Utility function that redirects to the login page if not logged in
     async redirect() {
-      if (!await this.checkAuth()) { 
-        return router.push({ name: "login", params: { redirect: router.currentRoute.value.path } });
-      }
+      if (!await this.checkAuth()) return router.push({ name: "login", params: { redirect: router.currentRoute.value.path } });
     },
 
     // Transactions

@@ -94,7 +94,11 @@ if (login) {
   submit = async () => { 
     // Guard clause to check if all the values are valid before sending the request to backend
     if (areValuesValid.some(v => !v)) return; 
-    const { success, msg } = await store.login(values);
+
+    const res = await store.login(values);
+    if (!res) return;
+    const { success, msg } = res;
+    
     if (!success) {
       requestSuccess.value = false;
       requestMessage.value = msg;
@@ -113,7 +117,7 @@ if (login) {
       requestSuccess.value = false;
       requestMessage.value = msg;
     } else {
-      router.push({ name: "verify", params: { email: values.email } });
+      router.push({ name: "verify", params: { email: values.email, password: values.password } });
     }
   };
 }

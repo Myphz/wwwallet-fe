@@ -111,7 +111,7 @@ if (login) {
       requestSuccess.value = false;
       requestMessage.value = msg;
     } else {
-      router.push({ name: "verify", params: { email: values.email } });
+      router.push({ name: "verify", params: { email: values.email, password: values.password } });
     }
   };
 }
