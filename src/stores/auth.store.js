@@ -20,6 +20,12 @@ export const useAuthStore = defineStore("auth", {
       return await fetchServer("auth/register", { email, password, resend });
     },
 
+    async verify(jwt) {
+      const res = await fetchServer("auth/register/verify", { jwt });
+      this.isAuthenticated = res.success;
+      return res;
+    },
+
     async checkAuth() {
       if (this.isAuthenticated) return true;
       if (this.isAuthenticated === false) return false;
