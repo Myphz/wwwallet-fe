@@ -14,15 +14,31 @@
         If the email is wrong, please register again.<br>
       </p>
 
-      <Button>Resend email</Button>
+      <Button @click="resend">Resend email</Button>
 
     </div>
   </section>
+  <Popup :success="request.success" :message="request.msg" @endAnimation="request.success = null" />
 </template>
 
 <script setup>
 import Button from "U#/Button.vue";
 import Logo from "U#/Logo.vue";
+import Popup from "U#/Popup.vue";
+import { useAuthStore } from "S#/auth.store";
+import { useRoute, useRouter } from "vue-router";
+import { ref } from "vue";
+
+const store = useAuthStore();
+const [route, router] = [useRoute(), useRouter()];
+const { email, password } = route.params;
+const request = ref({ success: null, msg: "" });
+
+if (!email || !password) router.replace("/register");
+
+const resend = async () => {
+  request.value = await store.register({ email, password, resend: true });
+}
 </script>
 
 <style lang="sass" scoped>
@@ -33,7 +49,7 @@ import Logo from "U#/Logo.vue";
     left: 0
     top: 0
     width: 100%
-    height: 100%
+    height: calc(100% - 60px)
     background-image: linear-gradient(135deg, $bg-base 0%, rgba(0,6,13,1) 100%)
 
   .container
