@@ -81,7 +81,7 @@
   <Dialog v-if="passwordDialog">
     <div class="space-between">
       <h2>Change password</h2>
-      <Icon icon="cross" clickable @click="emailDialog = false" />
+      <Icon icon="cross" clickable @click="passwordDialog = false" />
     </div>
     <span class="h4">Click the button to receive an email to change your current password</span><br>
     <Button btnCss="margin-top: 1em" @click="changePassword">Submit</Button>
