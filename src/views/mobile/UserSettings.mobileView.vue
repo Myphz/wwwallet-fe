@@ -23,8 +23,8 @@
 
     <div class="bg-base transition pointer">
       <div class="align-center">
-        <UserIcon class="margin-right" />
-        <span>Username</span>
+        <Icon icon="email" class="margin-right" />
+        <span>Email</span>
       </div>
       <Icon icon="arrow" class="margin-left" />
     </div>
@@ -67,7 +67,6 @@ import Select from "U#/Select.vue";
 import { defineAsyncComponent } from "vue";
 import { QUOTES } from "@/config/config"
 
-const UserIcon = defineAsyncComponent(() => import("../../assets/icons/user.svg"));
 const CrossIcon = defineAsyncComponent(() => import("../../assets/icons/cross.svg"));
 
 const startValue = localStorage.getItem("currency");

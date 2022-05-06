@@ -65,17 +65,17 @@ const router = createRouter({
 // Global route to check if the route is protected
 router.beforeEach(async to => {
   const isAuth = await useAuthStore().checkAuth();
-  if (to.meta.requiresAuth) {
-    if (isAuth) return true;
-    return {
-      name: "login",
-      params: {
-        redirect: to.path,
-      }
-    };
-  }
+  to.params = { ...(to.params), isAuth };
 
-  to.params = { ...(to.params), isAuth }
+  if (to.meta.requiresAuth) {
+    if (!isAuth)
+      return {
+        name: "login",
+        params: {
+          redirect: to.path,
+        }
+      };
+  }
 });
 
 export default router
