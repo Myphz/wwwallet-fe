@@ -64,6 +64,7 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
+import Dialog from "U#/Dialog.vue";
 import { defineAsyncComponent } from "vue";
 import { QUOTES } from "@/config/config"
 
