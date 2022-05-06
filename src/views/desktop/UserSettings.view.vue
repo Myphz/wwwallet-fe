@@ -20,7 +20,7 @@
   <section class="h4">
     <h2>Security</h2>
 
-    <div class="bg-base transition pointer" @click="openDialog = true">
+    <div class="bg-base transition pointer" @click="emailDialog = true">
       <div class="align-center">
         <Icon icon="email" class="margin-right" />
         <span>Email</span>
@@ -28,7 +28,7 @@
       <Icon icon="arrow" class="margin-left" />
     </div>
 
-    <div class="bg-base transition pointer">
+    <div class="bg-base transition pointer" @click="passwordDialog = true">
       <div class="align-center">
         <Icon icon="password" class="margin-right" />
         <span>Password</span>
@@ -58,10 +58,10 @@
     </div>
   </section>
 
-  <Dialog v-if="openDialog">
+  <Dialog v-if="emailDialog">
     <div class="space-between">
       <h2>Change email</h2>
-      <Icon icon="cross" clickable @click="openDialog = false" />
+      <Icon icon="cross" clickable @click="emailDialog = false" />
     </div>
     <span class="h4">Type your new email to update your account</span>
     <form @submit.prevent="changeEmail" style="margin-top: 3em">
@@ -70,16 +70,24 @@
         label="Email" 
         autocomplete="email" 
         :validate="validateEmail" 
-        errorMessage="Invalid Email" 
+        errorMessage="Invalid email" 
         v-model:value="values.email" 
-        v-model:isValid="values.isEmailValid" 
+        v-model:isValid="values.emailValid" 
       />
       <Button style="margin-top: 2em" submit>Submit</Button>
     </form>
   </Dialog>
 
+  <Dialog v-if="passwordDialog">
+    <div class="space-between">
+      <h2>Change password</h2>
+      <Icon icon="cross" clickable @click="emailDialog = false" />
+    </div>
+    <span class="h4">Click the button to receive an email to change your current password</span><br>
+    <Button btnCss="margin-top: 1em" @click="changePassword">Submit</Button>
+  </Dialog>
+
   <Popup :success="popup.success" :message="popup.msg" @endAnimation="popup.success = null" />
-    
 </template>
 
 <script setup>
@@ -92,7 +100,7 @@ import Button from "U#/Button.vue";
 import { defineAsyncComponent, ref } from "vue";
 import { QUOTES } from "@/config/config"
 
-import { validateEmail, validatePassword } from "@/helpers/validator.helper";
+import { validateEmail } from "@/helpers/validator.helper";
 import { fetchServer } from "@/helpers/fetch.helper";
 
 const CrossIcon = defineAsyncComponent(() => import("../../assets/icons/cross.svg"));
@@ -105,15 +113,22 @@ const updateCurrency = newCurrency => {
 };
 
 // User update/delete
-const openDialog = ref(false);
+const emailDialog = ref(false);
+const passwordDialog = ref(false);
+
 const values = ref({});
 const popup = ref({ success: null, msg: "" });
 
 const changeEmail = async () => {
-  if (!values.value.isEmailValid) return;
+  if (!values.value.emailValid) return;
   popup.value = await fetchServer("account/update", { email: values.value.email });
-  openDialog.value = false;
-}
+  emailDialog.value = false;
+};
+
+const changePassword = async () => {
+  popup.value = await fetchServer("account/update", null, { method: "POST" });
+  passwordDialog.value = false;
+};
 </script>
 
 <style lang="sass" scoped>
