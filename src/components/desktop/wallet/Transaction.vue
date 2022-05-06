@@ -12,7 +12,7 @@
     <td>{{ crypto }}/{{ base }}</td>
     <td>{{ isBuy ? 'BUY' : 'SELL' }}</td>
     <td>{{ quantity }}</td>
-    <td>{{ formatValue(Big(price)) }}</td>
+    <td>{{ Big(price).toFormat() }}</td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ value && formatValue(value) || "" }}</td>
     <td>{{ formatDate(date) }}</td>
     <td v-if="!withTicker && $route.params.isAuth">

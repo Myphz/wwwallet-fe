@@ -105,6 +105,25 @@ export const useAuthStore = defineStore("auth", {
       this.transactions[crypto].splice(i, 1);
       if (!this.transactions[crypto].length) delete this.transactions[crypto];
       return success;
+    },
+
+    // Advanced
+    async changeEmailRequest(email) {
+      return await fetchServer("account/update", { email });
+    },
+
+    async changePasswordRequest() {
+      return await fetchServer("account/update", null, { method: "POST" });
+    },
+
+    async deleteTransactions() {
+      const ret = await fetchServer("account/delete/transactions", null, { method: "DELETE" });
+      if (ret.success) this.transactions = {};
+      return ret;
+    },
+
+    async deleteAccountRequest() {
+      return await fetchServer("account/delete", null, { method: "POST" });
     }
   }
 });

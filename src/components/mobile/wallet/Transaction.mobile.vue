@@ -10,7 +10,7 @@
     </td>
     <td>{{ isBuy ? 'BUY' : 'SELL' }}</td>
     <td>{{ quantity }}</td>
-    <td>{{ formatValue(Big(price)) }}</td>
+    <td>{{ Big(price).toFormat() }}</td>
     <td v-if="!withTicker && $route.params.isAuth" class="right-align">
       <Button btnClass="bg-outline h4" btnCss="padding: 0.3em;" @click="displayPopup = true">Details</Button>
     </td>
