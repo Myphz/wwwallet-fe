@@ -60,7 +60,7 @@ const response = ref({ success: null, msg: "" });
 
 const changePassword = async () => {
   if (!values.value.passwordValid) return;
-  response.value = await store.changePassword(jwt, values.password);
+  response.value = await store.changePassword(jwt, values.value.password);
   if (response.value.success) setTimeout(() => router.replace("/login"), 5000);
 };
 

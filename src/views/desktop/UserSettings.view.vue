@@ -71,7 +71,7 @@
       <h2>Change email</h2>
       <Icon icon="cross" clickable @click="dialogMode = false" />
     </div>
-    <span class="h4">Type your new email to update your account</span>
+    <span class="h4">Type your new email to update your account.<br>The message will be sent to the new email address.</span>
     <form @submit.prevent="changeEmail" style="margin-top: 3em">
       <Input 
         icon="email" 
