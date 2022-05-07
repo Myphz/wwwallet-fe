@@ -40,7 +40,7 @@
         allowSpaces
       />
 
-      <span v-if="login" class="forgot h6 link">Forgot your password?</span>
+      <RouterLink v-if="login" to="/forgot" class="forgot h6 link">Forgot your password?</RouterLink>
       <Button class="btn" submit>{{ header }}</Button>
     </form>
 

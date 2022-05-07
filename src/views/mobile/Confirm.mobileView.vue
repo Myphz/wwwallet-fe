@@ -78,7 +78,7 @@ onMounted(async () => {
     left: 0
     top: 0
     width: 100%
-    height: 100%
+    height: calc(100% - 60px)
     background-image: linear-gradient(135deg, $bg-base 0%, rgba(0,6,13,1) 100%)
 
   .container
