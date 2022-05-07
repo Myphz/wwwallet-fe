@@ -46,8 +46,9 @@ export const useAuthStore = defineStore("auth", {
       const { success, id, msg } = await fetchServer("transactions", params);
       // Emit the data BEFORE rearraging the transactions, as that would cause a rerender, losing the emit
       emit("request", { success, msg });
-      // Add the transaction if they have been previously fetched
-      if (this.transactions && success) {
+
+      if (success) {
+        if (!this.transactions) this.transactions = {};
         if (crypto in this.transactions) {
           this.transactions[crypto].push({ _id: id, ...params});
         } else {
@@ -79,7 +80,7 @@ export const useAuthStore = defineStore("auth", {
       const { success, newId, msg } = await fetchServer("transactions", params, { method: "PUT" });
       // Emit the data BEFORE rearraging the transactions, as that would cause a rerender, losing the emit
       emit("request", { success, msg });
-      if (!this.transactions || !success) return success;
+      if (!success) return success;
       // Update existing transactions
       let i = this.transactions[oldCrypto].findIndex(transaction => transaction._id === id);
       if (oldCrypto !== crypto) {
@@ -100,7 +101,7 @@ export const useAuthStore = defineStore("auth", {
     async deleteTransaction({ id, crypto }, emit) {
       const { success, msg } = await fetchServer("transactions", { id }, { method: "DELETE" });
       emit("request", { success, msg });
-      if (!this.transactions || !success) return success;
+      if (!success) return success;
       
       const i = this.transactions[crypto].findIndex(transaction => transaction._id === id);
       this.transactions[crypto].splice(i, 1);
