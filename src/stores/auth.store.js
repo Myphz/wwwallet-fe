@@ -12,6 +12,7 @@ export const useAuthStore = defineStore("auth", {
     async login({ email, password }) {
       const res = await fetchServer("auth/login", { email, password });
       this.isAuthenticated = res.success && res.isVerified;
+      if (this.isAuthenticated) await this.getTransactions();
       if (res.success && !res.isVerified) return router.push({ name: "verify", params: { email, password } });
       return res;
     },
@@ -58,7 +59,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async getTransactions() {
-      if (this.isAuthenticated === false) return false;
+      if (this.isAuthenticated === false) return null;
       // If the transactions haven't been fetched
       if (!this.transactions) {
         const { success, transactions } = await fetchServer("transactions");
@@ -110,6 +111,7 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       await fetchServer("auth/login", null, { method: "DELETE" });
       this.isAuthenticated = false;
+      this.transactions = null;
       router.push("/login");
     },
 
