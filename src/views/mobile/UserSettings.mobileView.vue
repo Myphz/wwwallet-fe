@@ -21,6 +21,14 @@
   <section class="h4">
     <h1>Security</h1>
 
+    <div class="bg-base transition pointer" @click="store.logout">
+      <div class="align-center">
+        <Icon icon="logout" class="margin-right" />
+        <span>Logout</span>
+      </div>
+      <Icon icon="arrow" class="margin-left" />
+    </div>
+
     <div class="bg-base transition pointer" @click="dialogMode = 'email'">
       <div class="align-center">
         <Icon icon="email" class="margin-right" />
@@ -64,8 +72,8 @@
       <h2>Change email</h2>
       <Icon icon="cross" clickable @click="dialogMode = false" />
     </div>
-    <span class="h4">Type your new email to update your account</span>
-    <form @submit.prevent="changeEmail" style="margin-top: 3em">
+    <span class="h4">Type your new email to update your account. <br>The message will be sent to the new email address.</span>
+    <form @submit.prevent="changeEmail" style="margin-top: 2.5em">
       <Input 
         icon="email" 
         label="Email" 
