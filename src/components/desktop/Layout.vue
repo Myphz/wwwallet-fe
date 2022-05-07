@@ -11,7 +11,7 @@ import { RouterView } from "vue-router";
 import Navbar from "D#/Navbar.vue";
 import Footer from "D#/Footer.vue";
 
-const NO_NAVBAR_PATHS = ["/login", "/register", "/confirm"];
+const NO_NAVBAR_PATHS = ["/login", "/register", "/confirm", "/forgot"];
 </script>
 
 <style lang="sass">
