@@ -153,7 +153,7 @@ export default {
         return ctx.emit("empty");
       }
 
-      if (!route.params.isAuth) {
+      if (!route.params.isAuth && totals.value) {
         disabled.value = true;
         ctx.emit("empty");
       }
