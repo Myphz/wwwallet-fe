@@ -20,6 +20,14 @@
   <section class="h4">
     <h2>Security</h2>
 
+    <div class="bg-base transition pointer" @click="store.logout">
+      <div class="align-center">
+        <Icon icon="logout" class="margin-right" />
+        <span>Logout</span>
+      </div>
+      <Icon icon="arrow" class="margin-left" />
+    </div>
+
     <div class="bg-base transition pointer" @click="dialogMode = 'email'">
       <div class="align-center">
         <Icon icon="email" class="margin-right" />

@@ -107,6 +107,12 @@ export const useAuthStore = defineStore("auth", {
       return success;
     },
 
+    async logout() {
+      await fetchServer("auth/login", null, { method: "DELETE" });
+      this.isAuthenticated = false;
+      router.push("/login");
+    },
+
     // Advanced
     async changeEmailRequest(email) {
       return await fetchServer("account/update", { email });
