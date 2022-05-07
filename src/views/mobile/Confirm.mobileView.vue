@@ -22,7 +22,7 @@
           allowSpaces
         />
       </div>
-      <Button @click="changePassword">Submit</Button>
+      <Button @click.once="changePassword">Submit</Button>
     </div>
 
     <div class="container" v-if="update === 'delete'">
