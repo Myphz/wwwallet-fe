@@ -81,7 +81,7 @@ const transactions = computed(() => addEarnings(authTransactions.value, cryptoSt
   
 //   "ETH": {... }
 // }
-const totals = computed(() => getStats(transactions.value));
+const totals = computed(() => getStats(transactions.value, cryptoStore.prices));
 
 // Computed variable to store an object with the following format:
 // { [crypto]: [crypto current value (real time) in user's favorite currency] }
