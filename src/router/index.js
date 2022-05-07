@@ -38,19 +38,27 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: () => routeView("Login")
+      component: () => routeView("Login"),
+      meta: { noAuth: true }
     },
 
     {
       path: "/register",
       name: "register",
-      component: () => routeView("Register")
+      component: () => routeView("Register"),
+      meta: { noAuth: true }
     },
 
     {
       path: "/register/verify",
       name: "verify",
       component: () => routeView("RegisterVerify")
+    },
+
+    {
+      path: "/confirm",
+      name: "confirm",
+      component: () => routeView("Confirm")
     },
 
     {
@@ -76,6 +84,12 @@ router.beforeEach(async to => {
         }
       };
   }
+
+  else if (to.meta.noAuth && isAuth) 
+    return {
+      name: "dashboard",
+      params: { isAuth }
+    };
 });
 
 export default router
