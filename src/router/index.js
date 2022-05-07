@@ -52,19 +52,21 @@ const router = createRouter({
     {
       path: "/register/verify",
       name: "verify",
-      component: () => routeView("RegisterVerify")
+      component: () => routeView("RegisterVerify"),
+      meta: { noAuth: true }
     },
 
     {
       path: "/confirm",
       name: "confirm",
-      component: () => routeView("Confirm")
+      component: () => routeView("Confirm"),
     },
 
     {
       path: "/forgot",
       name: "forgot",
-      component: () => routeView("Forgot")
+      component: () => routeView("Forgot"),
+      meta: { noAuth: true }
     },
 
     {

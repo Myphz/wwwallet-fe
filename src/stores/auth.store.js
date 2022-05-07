@@ -141,7 +141,9 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async deleteAccount(jwt) {
-      return await fetchServer(`account/delete?jwt=${jwt}`, null, { method: "DELETE" });
+      const ret = await fetchServer(`account/delete?jwt=${jwt}`, null, { method: "DELETE" });
+      this.isAuthenticated = false;
+      return ret;
     },
 
     async forgotPassword(email) {
