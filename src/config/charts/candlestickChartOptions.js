@@ -1,5 +1,5 @@
 import extractSass from "@/helpers/extractSass.helper.js";
-import { formatValue, formatDate, formatTime } from "@/helpers/formatter.helper.js";
+import { formatValue, formatDate, formatTime, getDecimalDigits } from "@/helpers/formatter.helper.js";
 
 const gridColor = extractSass("grid-color");
 const textColor = extractSass("primary");
@@ -104,10 +104,11 @@ export default {
     formatter: ([{ data }]) => {
       const [___, open, high, low, close] = data;
       const isPositive = close >= open;
-      const change = ((close - open) / open * 100).toFixed(2) + "%";
+      const diff = close - open;
+      const change = (diff / open * 100).toFixed(2) + "%";
       return `Open: ${withClass(open, isPositive)} High: ${withClass(high, isPositive)} Low: \
       ${withClass(low, isPositive)} Close: ${withClass(close, isPositive)} \
-      Change: ${withClass(change, isPositive, true)}`
+      Change: ${withClass(change, isPositive, true)} (${withClass(diff.toFixed(getDecimalDigits(open)), isPositive, true)})`
     },
 
     backgroundColor: "rgba(0, 0, 0, 0)",
