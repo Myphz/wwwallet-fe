@@ -21,11 +21,11 @@
       <section>
         <div>
           <h4>Project</h4>
-          <RouterLink to="/">Contribute</RouterLink>
           <div class="align-center pointer" style="flex-direction: row; gap: .5em" @click="openLink('https://github.com/Myphz/wwwallet-fe')">
             <Icon icon="github" />
             <a>GitHub</a>
           </div>
+          <RouterLink to="/">Contribute</RouterLink>
         </div>
 
         <div>
@@ -35,19 +35,12 @@
         </div>
       </section>
     </section>
-
-    
   </footer>
 </template>
 
 <script setup>
 import Icon from "U#/Icon.vue";
-import { ref } from "vue";
 import { RouterLink } from "vue-router";
-
-const fixed = ref(false);
-const observer = new ResizeObserver(() => fixed.value = window.innerHeight > document.body.scrollHeight + 64);
-observer.observe(document.body);
 
 const openLink = link => {
   window.open(link, "_blank");
@@ -58,12 +51,7 @@ const openLink = link => {
   footer
     padding: 2em 5vw 11vh 5vw
     background-color: $bg-dark
-
-  .footer-fixed
-    position: fixed
-    bottom: 0
-    left: 0
-    width: calc(100% - 10vw)
+    flex-grow: 1
 
   .main-section
     display: flex

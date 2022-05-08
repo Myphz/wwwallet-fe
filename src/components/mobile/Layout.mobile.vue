@@ -2,9 +2,15 @@
   <header v-if="$route.path !== '/'" class="logo">
     <Logo small />
   </header>
-  <main>
-    <router-view />
-  </main>
+
+  <router-view v-slot="{ Component, route }">
+    <Transition name="route" mode="out-in">
+      <main :key="route.path">
+        <component :is="Component" />
+      </main>
+    </Transition>
+  </router-view>
+
   <Footer v-if="$route.path !== '/' && !NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
   <Navbar />
 </template>
@@ -27,6 +33,14 @@ const NO_NAVBAR_PATHS = ["/login", "/register"];
     background-color: $bg-base
     color: $text-primary
     font-family: $font-base
+    height: 100%
+  
+  #app
+    height: 100%
+    display: flex
+    flex-direction: column
+    & > *
+      flex-shrink: 0
 
   main
     margin: 1.5em 5vw 4vh 5vw
@@ -34,4 +48,21 @@ const NO_NAVBAR_PATHS = ["/login", "/register"];
   .logo
     padding: .5em 1.5em
     background-color: $bg-dark
+</style>
+
+<style lang="sass" scoped>
+  .route-enter-from
+    opacity: 0
+    transform: translateX(5%)
+
+  .route-enter-active
+    transition: all 0.3s ease-out
+
+  .route-leave-to
+    opacity: 0
+    transform: translateX(-5%)
+
+  .route-leave-active
+    transition: all 0.3s ease-in
+
 </style>
