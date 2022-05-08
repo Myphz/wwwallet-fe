@@ -88,7 +88,7 @@ const router = createRouter({
 
     {
       path: "/cookiepolicy",
-      name: "Privacy Policy",
+      name: "Cookie Policy",
       component: () => import("../views/legal/CookiePolicy.view.vue")
     },
   ]

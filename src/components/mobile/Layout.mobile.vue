@@ -4,7 +4,12 @@
   </header>
 
   <router-view v-slot="{ Component, route }">
-    <Transition name="route" mode="out-in">
+    <Transition 
+      :name="route.path !== '/' && !NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path)) && 
+      !NO_NAVBAR_PATHS.some(path => $router.options.history.state.back.startsWith(path)) && 
+      $router.options.history.state.back !== '/' ? 'route' : ''" 
+      mode="out-in"
+    >
       <main :key="route.path">
         <component :is="Component" />
       </main>

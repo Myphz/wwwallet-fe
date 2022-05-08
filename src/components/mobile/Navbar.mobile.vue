@@ -35,7 +35,7 @@ const tabs = computed(() => [
     title: "Wallet"
   },
   {
-    endpoint: route.params.isAuth ? ["/settings", "/register", "/login"] : ["/register", "/login", "/settings"],
+    endpoint: route.params.isAuth ? ["/settings", "/login", "/register"] : ["/login", "/register", "/settings"],
     icon: "user",
     title: "Account"
   },

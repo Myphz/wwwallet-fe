@@ -70,7 +70,7 @@ import Logo from "U#/Logo.vue";
 
   .logo
     padding: .5em 1.5em
-    margin-bottom: .5em
+    margin-bottom: 1em
     background-color: $bg-dark
 
   h1
