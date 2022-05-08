@@ -1,11 +1,11 @@
 <template>
-  <header class="logo">
+  <header v-if="$route.path !== '/'" class="logo">
     <Logo small />
   </header>
   <main>
     <router-view />
   </main>
-  <Footer v-if="!NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
+  <Footer v-if="$route.path !== '/' && !NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
   <Navbar />
 </template>
 

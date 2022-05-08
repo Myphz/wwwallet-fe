@@ -1,5 +1,5 @@
 <template>
-  <section @scroll="e">
+  <section>
     <div class="page" ref="first" id="first">
       <Navbar noPadding />
       <div class="content-wrapper">
@@ -8,7 +8,7 @@
             <h1>Managing your crypto<br>has never been <i><span>this easy</span></i></h1>
             <h2>Keep track of your crypto wallet<br>in real-time, everywhere</h2>
             <h2>Completely <span>free</span> and <span>open source</span></h2>
-            <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em">GET STARTED</Button>
+            <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em"><RouterLink to="/dashboard">GET STARTED</RouterLink></Button>
           </div>
           <div>
             <img src="/src/assets/images/tablet_mockup.png" alt="Dashboard" class="tablet-image">
@@ -51,8 +51,10 @@
           </div>
         </div>
         <div>
-          <h1>Keep up with crypto now</h1>
-          <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em; margin-top: -2em">REGITER NOW</Button>
+          <h1>Keep up with crypto</h1>
+          <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em; margin-top: -2em">
+            <RouterLink to="/register">REGISTER NOW</RouterLink>
+          </Button>
         </div>
       </div>
     </div>
