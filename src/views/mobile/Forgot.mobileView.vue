@@ -48,7 +48,7 @@ const resetPassword = async () => {
     top: 0
     width: 100%
     height: calc(100% - 60px)
-    background-image: linear-gradient(135deg, $bg-base 0%, rgba(0,6,13,1) 100%)
+    background-image: $gradient
 
   .container
     min-width: 25vw
