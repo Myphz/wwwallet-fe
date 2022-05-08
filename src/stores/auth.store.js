@@ -151,6 +151,10 @@ export const useAuthStore = defineStore("auth", {
 
     async forgotPassword(email) {
       return await fetchServer("account/forgot", { email });
+    },
+
+    async feedback(text) {
+      return await fetchServer("account/feedback", { msg: text })
     }
   }
 });

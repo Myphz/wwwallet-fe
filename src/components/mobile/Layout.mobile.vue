@@ -5,9 +5,10 @@
 
   <router-view v-slot="{ Component, route }">
     <Transition 
-      :name="route.path !== '/' && !NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path)) && 
-      !NO_NAVBAR_PATHS.some(path => $router.options.history.state.back.startsWith(path)) && 
-      $router.options.history.state.back !== '/' ? 'route' : ''" 
+      :name="
+        (route.path !== '/' && $router.options.history.state.back !== '/') &&
+        (!NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path) || $router.options.history?.state?.back?.startsWith(path))) 
+        ? 'route' : ''" 
       mode="out-in"
     >
       <main :key="route.path">

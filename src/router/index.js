@@ -81,6 +81,13 @@ const router = createRouter({
     },
 
     {
+      path: "/feedback",
+      name: "feedback",
+      component: () => routeView("Feedback"),
+      meta: { requiresAuth: true }
+    },
+
+    {
       path: "/privacypolicy",
       name: "Privacy Policy",
       component: () => import("../views/legal/PrivacyPolicy.view.vue")
