@@ -1,9 +1,9 @@
 <template>
-  <Navbar v-if="!NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
+  <Navbar v-if="$route.path !== '/' && !NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
   <main>
     <router-view />
   </main>
-  <Footer v-if="!NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
+  <Footer v-if="$route.path !== '/' && !NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
 </template>
 
 <script setup>

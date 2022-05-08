@@ -1,5 +1,5 @@
 <template>
-  <nav class="noselect">
+  <nav :class="'noselect ' + noPadding ? '' : 'padded'">
     <Logo />
     <ul class="h2">
       <li><RouterLink to="/crypto">Markets</RouterLink></li>
@@ -15,13 +15,23 @@ import Logo from "U#/Logo.vue"
 import { RouterLink } from "vue-router";
 import { defineAsyncComponent } from "vue";
 const UserIcon = defineAsyncComponent(() => import("../../assets/icons/user.svg"));
+
+defineProps({
+  noPadding: {
+    type: Boolean,
+    default: false
+  }
+});
 </script>
 
 <style lang="sass" scoped>
   nav
     display: flex
     justify-content: space-between
-    margin: 2em 0 3em 0
+    padding-top: 2em
+
+  .padded
+     padding-bottom: 3em
 
   ul
     list-style-type: none
