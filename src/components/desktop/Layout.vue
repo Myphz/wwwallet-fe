@@ -20,4 +20,5 @@ const NO_NAVBAR_PATHS = ["/login", "/register", "/confirm", "/forgot"];
     color: $text-primary
     font-family: $font-base
     margin: 0 16.66vw
+    scroll-behavior: smooth
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <nav :class="'noselect ' + noPadding ? '' : 'padded'">
+  <nav :class="'noselect ' + (noPadding ? '' : 'padded')">
     <Logo />
     <ul class="h2">
       <li><RouterLink to="/crypto">Markets</RouterLink></li>
