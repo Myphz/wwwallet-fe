@@ -1,5 +1,5 @@
 <template>
-  <footer class="h5 text-secondary">
+  <footer :class="'h5 text-secondary ' + (fixed ? 'footer-fixed' : '')">
     <section class="main-section">
       <section>
         <div>
@@ -42,7 +42,12 @@
 
 <script setup>
 import Icon from "U#/Icon.vue";
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
+
+const fixed = ref(false);
+const observer = new ResizeObserver(() => fixed.value = window.innerHeight > document.body.scrollHeight + 64);
+observer.observe(document.body);
 
 const openLink = link => {
   window.open(link, "_blank");
@@ -53,6 +58,12 @@ const openLink = link => {
   footer
     padding: 2em 5vw 11vh 5vw
     background-color: $bg-dark
+
+  .footer-fixed
+    position: fixed
+    bottom: 0
+    left: 0
+    width: calc(100% - 10vw)
 
   .main-section
     display: flex

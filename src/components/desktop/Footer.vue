@@ -1,5 +1,5 @@
 <template>
-  <footer class="h5 text-secondary">
+  <footer :class="'h5 text-secondary ' + (fixed ? 'footer-fixed' : '')">
     <section class="space-between">
       <div>
         <h4>About Us</h4>
@@ -37,7 +37,12 @@
 
 <script setup>
 import Icon from "U#/Icon.vue";
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
+
+const fixed = ref(false);
+const observer = new ResizeObserver(() => fixed.value = window.innerHeight > document.body.scrollHeight + 64);
+observer.observe(document.body);
 
 const openLink = link => {
   window.open(link, "_blank");
@@ -46,11 +51,15 @@ const openLink = link => {
 
 <style lang="sass" scoped>
   footer
-    margin: 4em 0 2em 0
+    margin-top: 4em
     position: absolute
-    width: 100%
     left: 0
+    width: 100%
     background-color: $bg-dark
+
+  .footer-fixed
+    position: fixed
+    bottom: 0
   
   section
     margin: 2em 0
