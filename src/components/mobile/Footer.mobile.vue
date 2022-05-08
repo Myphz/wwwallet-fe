@@ -6,6 +6,7 @@
           <h4>About Us</h4>
           <a href="https://github.com/Myphz/wwwallet-fe/blob/main/LICENSE" target="_blank">License</a>
           <RouterLink to="/privacypolicy">Privacy Policy</RouterLink>
+          <RouterLink to="/cookiepolicy">Cookie Policy</RouterLink>
         </div>
 
         <div>

@@ -85,6 +85,12 @@ const router = createRouter({
       name: "Privacy Policy",
       component: () => import("../views/legal/PrivacyPolicy.view.vue")
     },
+
+    {
+      path: "/cookiepolicy",
+      name: "Privacy Policy",
+      component: () => import("../views/legal/CookiePolicy.view.vue")
+    },
   ]
 });
 
