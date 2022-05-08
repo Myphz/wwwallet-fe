@@ -1,6 +1,5 @@
 <template>
   <footer class="h5 text-secondary">
-    <hr>
     <section class="main-section">
       <section>
         <div>
@@ -50,13 +49,13 @@ const openLink = link => {
 </script>
 
 <style lang="sass" scoped>
-  hr
-    margin-bottom: 1em
-    border-color: $text-secondary  
+  footer
+    padding: 2em 5vw 11vh 5vw
+    background-color: $bg-dark
 
   .main-section
     display: flex
-    justify-content: space-between
+    justify-content: space-around
     padding: 0 1em
 
     section
@@ -68,19 +67,15 @@ const openLink = link => {
     width: 16px
     height: 16px
 
-  footer
-    margin: 0 5vw 2em 5vw
-    padding-bottom: 10vh
+  div
+    display: flex
+    flex-direction: column
 
-    div
-      display: flex
-      flex-direction: column
+  h4
+    color: $text-primary
 
-    h4
+  a
+    cursor: pointer
+    &:active
       color: $text-primary
-
-    a
-      cursor: pointer
-      &:active
-        color: $text-primary
 </style>

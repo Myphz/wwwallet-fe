@@ -1,6 +1,5 @@
 <template>
   <footer class="h5 text-secondary">
-    <hr>
     <section class="space-between">
       <div>
         <h4>About Us</h4>
@@ -45,22 +44,27 @@ const openLink = link => {
 </script>
 
 <style lang="sass" scoped>
-  hr
-    margin-bottom: 1em
-    border-color: $text-secondary
-    
   footer
-    margin: 10em 0 2em 0
+    margin: 4em 0 2em 0
+    position: absolute
+    width: 100%
+    left: 0
+    background-color: $bg-dark
+  
+  section
+    margin: 2em 0
+    display: flex
+    justify-content: space-around
 
-    div
-      display: flex
-      flex-direction: column
+  div
+    display: flex
+    flex-direction: column
 
-    h4
+  h4
+    color: $text-primary
+
+  a
+    cursor: pointer
+    &:hover
       color: $text-primary
-
-    a
-      cursor: pointer
-      &:hover
-        color: $text-primary
 </style>

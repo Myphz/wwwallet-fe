@@ -29,7 +29,7 @@ const NO_NAVBAR_PATHS = ["/login", "/register"];
     font-family: $font-base
 
   main
-    margin: 1.5em 5vw 10vh 5vw
+    margin: 1.5em 5vw 4vh 5vw
 
   .logo
     padding: .5em 1.5em
