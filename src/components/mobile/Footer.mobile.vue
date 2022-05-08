@@ -4,8 +4,8 @@
       <section>
         <div>
           <h4>About Us</h4>
-          <RouterLink to="/">About</RouterLink>
-          <RouterLink to="/">License</RouterLink>
+          <a href="https://github.com/Myphz/wwwallet-fe/blob/main/LICENSE" target="_blank">License</a>
+          <RouterLink to="/privacypolicy">Privacy Policy</RouterLink>
         </div>
 
         <div>
@@ -30,6 +30,7 @@
 
         <div>
           <h4>Contacts</h4>
+          <a href="mailto:contact@wwwallet.app">Email</a>
           <RouterLink to="/">Feedback</RouterLink>
         </div>
       </section>
