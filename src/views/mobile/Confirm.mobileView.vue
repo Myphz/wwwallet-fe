@@ -6,24 +6,38 @@
       <span class="h4" v-if="response.success">You can close this tab now.</span>
     </div>
 
-    <div class="container" v-if="update === 'password'">
+    <form class="container" v-if="update === 'password'" @submit.prevent="changePassword">
       <h2 style="margin-bottom: .5em">Update password</h2>
       <span class="h4">Type your new password in the input area below</span>
-      <div style="margin: 2.5em 0">
-        <Input 
-          icon="password" 
-          type="password"
-          label="New password"
-          autocomplete="new-password"
-          :validate="validatePassword"
-          v-model:value="values.password"
-          v-model:isValid="values.passwordValid"
-          errorMessage="Use 8 or more characters with a mix of letters, capital letters and numbers."
-          allowSpaces
-        />
+      <div class="input-container">
+        <div>
+          <Input 
+            icon="password" 
+            type="password"
+            label="New password"
+            autocomplete="new-password"
+            :validate="validatePassword"
+            v-model:value="values.password"
+            v-model:isValid="values.passwordValid"
+            errorMessage="Use 8 or more characters with a mix of letters, capital letters and numbers."
+            allowSpaces
+          />
+        </div>
+        <div>
+          <Input 
+            icon="password" 
+            type="password"
+            label="Confirm password"
+            v-model:value="values.passwordConfirm"
+            v-model:isValid="values.passwordConfirmValid"
+            :validate="() => values.password === values.passwordConfirm"
+            errorMessage="The passwords don't match"
+            allowSpaces
+          />
+        </div>
       </div>
-      <Button @click.once="changePassword">Submit</Button>
-    </div>
+      <Button submit>Submit</Button>
+    </form>
 
     <div class="container" v-if="update === 'delete'">
       <h2 style="margin-bottom: .5em">Delete account</h2>
@@ -46,6 +60,7 @@ import { useAuthStore } from "S#/auth.store";
 
 const [route, router] = [useRoute(), useRouter()];
 const store = useAuthStore();
+let submitted = false;
 // This view is called with:
 //   - JWT token query parameter
 //   - Update query parameter (possible values: 'email', 'password', 'delete')
@@ -59,8 +74,9 @@ const values = ref({});
 const response = ref({ success: null, msg: "" });
 
 const changePassword = async () => {
-  if (!values.value.passwordValid) return;
+  if (!values.value.passwordValid || !values.value.passwordConfirmValid || submitted) return;
   response.value = await store.changePassword(jwt, values.value.password);
+  submitted = true;
   if (response.value.success) setTimeout(() => router.replace("/login"), 5000);
 };
 
@@ -84,8 +100,14 @@ onMounted(async () => {
   .container
     min-width: 25vw
     max-width: 80%
+    transform: translateY(-20%)
     padding: 1.5em
     border-radius: 1em
     background-color: $box-color
     backdrop-filter: blur(12px)
+
+  .input-container
+    margin: 2.5em 0
+    div
+      margin: 2.5em 0
 </style>
