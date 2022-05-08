@@ -32,7 +32,7 @@
         <div>
           <h4>Contacts</h4>
           <a href="mailto:contact@wwwallet.app">Email</a>
-          <RouterLink to="/">Feedback</RouterLink>
+          <RouterLink to="/feedback">Feedback</RouterLink>
         </div>
       </section>
     </section>
