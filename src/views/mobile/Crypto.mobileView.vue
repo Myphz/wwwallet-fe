@@ -28,12 +28,13 @@ import Button from "U#/Button.vue";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "S#/auth.store";
+import { QUOTES } from "@/config/config";
 
 const authStore = useAuthStore();
 const route = useRoute();
 
 const crypto = ref(route.params.crypto.toUpperCase());
-const base = ref("USDT");
+const base = ref(QUOTES[localStorage.getItem("currency") || "USD"].quotes[0]);
 
 const displayPopup = ref(false);
 const request = ref({success: null, msg: ""});
