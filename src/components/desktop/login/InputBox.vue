@@ -48,7 +48,7 @@
       <span>{{ subtext }}&nbsp;</span>
       <RouterLink v-if="login" class="link" to="/register">Sign up</RouterLink>
       <RouterLink v-else class="link" to="/login">Login</RouterLink>
-      <span v-if="!login" class="h6 text-secondary"><br>By clicking register you are agreeing to the <RouterLink class="link" to="/privacypolicy">Privacy Policy</RouterLink></span>
+      <span v-if="!login" class="h6 text-secondary"><br>I agree to the <RouterLink class="link" to="/privacypolicy">Privacy Policy</RouterLink></span>
 
     </span>
   </div>
