@@ -12,7 +12,7 @@
       <Select 
         class="text-primary h2" 
         :options="baseOptions"
-        :startValue="base"
+        :startValue="startBase"
         v-model="selectedBase"
         @update:modelValue="$emit('update:Base', selectedBase)"
         iconSize="small"
@@ -25,7 +25,7 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
-import { computed, ref, toRef } from "vue";
+import { computed, getCurrentInstance, ref, toRef } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 import { getBaseLCM } from "@/helpers/crypto.helper";
 
@@ -55,6 +55,7 @@ const { crypto, base, dashboard } = props;
 const totals = toRef(props, "totals");
 
 const store = useCryptoStore();
+const { emit } = getCurrentInstance();
 
 const selectedCrypto = ref(crypto);
 const selectedBase = ref(base);
@@ -71,6 +72,15 @@ if (!dashboard) {
     store.tickerInfo[selectedCrypto.value]?.quotes || []
   );
 }
+
+// Check if the given starter base is allowed (if there are any options to check from)
+const startBase = (function(){
+  if (!baseOptions.value.length || baseOptions.value.includes(base)) return base;
+  // If it's not allowed, update it to be the first option
+  emit('update:Base', baseOptions.value[0]);
+  selectedBase.value = baseOptions.value[0];
+  return baseOptions.value[0];
+})();
 </script>
 
 <style lang="sass" scoped>

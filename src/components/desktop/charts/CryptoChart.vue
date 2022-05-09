@@ -83,8 +83,8 @@ const props = defineProps({
 const { crypto, base, dashboard } = props;
 const totals = toRef(props, "totals");
 
-const currentBase = ref(base);
 const currentCrypto = ref(crypto);
+const currentBase = ref(base);
 
 const activeTime = ref(0);
 const store = useCryptoStore();

@@ -239,7 +239,7 @@ const checkQty = () => {
 watch(isBuy, () => inputs[2].validator());
 
 watch([quantity, price], () => {
-  if (inputsValid.some(e => !e)) return totalInput.value.reset();
+  if (inputsValid.some(e => !e)) return totalInput.value?.reset();
   const total = Big(quantity.value).times(price.value);
   totalInput.value.update(total.toFixed(2));
 });
