@@ -138,6 +138,10 @@ export default {
     };
 
     const loadData = async () => {
+      // Try again in 200 milliseconds if it's currently loading
+      if (isLoading) return setTimeout(loadData, 200);
+      isLoading = true;
+
       // Close possibly existing socket
       klinesSocket && klinesSocket.close();
       let klines, socket;
@@ -146,10 +150,12 @@ export default {
       if (!totals.value) ({ klines, socket } = await store.getKlines(crypto.value, base.value, interval.value, { noSocket: !route.params.isAuth }));
       else ({ klines, socket } = await store.getDashboardKlines(crypto.value, base.value, interval.value, transactions.value, { isAuth: route.params.isAuth }));
 
-      if (!klines?.length) {
+      if (totals.value && !klines?.length) {
         disabled.value = true;
         return ctx.emit("empty");
       }
+
+      else if (!klines?.length) return;
 
       if (!route.params.isAuth && totals.value) {
         disabled.value = true;
@@ -166,16 +172,18 @@ export default {
       lastTime = klines[klines.length - 1][0]
       option.series.data = klines;
 
-      if (socket) socket.onmessage = totals.value && crypto.value === "TOTAL" ? klineUpdateTotal : klineUpdate;
       klinesSocket = socket;
+      if (klinesSocket) klinesSocket.onmessage = totals.value && crypto.value === "TOTAL" ? klineUpdateTotal : klineUpdate;
       // Zoom on chart
       chart.value.dispatchAction({
         type: "dataZoom",
         start: 100
       });
+
+      isLoading = false;
     };
 
-    // Load the data when mounted and when base or interval change
+    // Load the data when mounted and when base or crypto or interval change
     onMounted(loadData);
     watch([crypto, base, interval], loadData);
     // Watch transactions once
@@ -209,7 +217,7 @@ export default {
 
       allLoaded = klines.length !== KLINES_LIMIT;
 
-      if (!klines.length) return;
+      if (!klines.length) return isLoading = false;
       // Add data
       option.series.data = [...klines, ...option.series.data];
       // Set maximum zoom

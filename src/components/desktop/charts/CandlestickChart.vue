@@ -221,7 +221,7 @@ export default {
 
       allLoaded = klines.length !== KLINES_LIMIT;
 
-      if (!klines.length) return;
+      if (!klines.length) return isLoading = false;
 
       // Temporary disable animation
       option.animation = false;
