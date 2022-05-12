@@ -4,7 +4,7 @@
 
     <div>
       <div class="align-center">
-        <Icon icon="coins" class="margin-right" />
+        <Icon icon="dollar" class="margin-right" />
         <span>Base Currency</span>
       </div>
       <Select 

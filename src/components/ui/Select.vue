@@ -6,7 +6,7 @@
           v-if="withIcon"
           :src="getIcon(selected)" 
           :alt="selected"
-          onerror="this.src='/src/assets/icons/generic.svg'"
+          onerror="this.src='/icons/generic.svg'"
           :class="('icon-' + iconSize) + (mobile ? ' icon-mobile' : '')"
         >
         <span>{{ selected }}</span>
@@ -20,7 +20,7 @@
           v-if="withIcon"
           :src="getIcon(option)" 
           :alt="option"
-          onerror="this.onerror = null; this.src='/src/assets/icons/generic.svg'"
+          onerror="this.src='/icons/generic.svg'"
           :class="'icon-small' + (mobile ? ' icon-mobile-li' : '')"
         >
         {{ option }}

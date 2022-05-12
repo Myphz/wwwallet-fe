@@ -4,7 +4,7 @@
       <img 
         :src="getIcon(crypto)" 
         :alt="crypto"
-        onerror="this.src='/src/assets/icons/generic.svg'"
+        onerror="this.src='/icons/generic.svg'"
       >
       <span class="title">{{ store.tickerInfo?.[crypto]?.name || crypto }}</span>
       <span class="ticker">{{ crypto }}</span>

@@ -12,14 +12,15 @@
     </tbody>
   </table>
   <section class="justify-center" style="gap: 5em; margin-top: 1em">
-    <ArrowIcon :class="'arrow-icon noselect reverse ' + (!page ? 'inactive' : 'bg-base transition pointer')" @click="page ? page-- : null"/>
-    <ArrowIcon :class="'arrow-icon noselect ' + ((page+1) * 10 <= cryptoLen ? 'bg-base transition pointer' : 'inactive')" @click="(page+1) * 10 <= cryptoLen ? page++ : null" />
+    <Icon icon="arrow" :class="'arrow-icon noselect reverse ' + (!page ? 'inactive' : 'bg-base transition pointer')" @click="page ? page-- : null"/>
+    <Icon icon="arrow" :class="'arrow-icon noselect ' + ((page+1) * 10 <= cryptoLen ? 'bg-base transition pointer' : 'inactive')" @click="(page+1) * 10 <= cryptoLen ? page++ : null" />
   </section>
 </template>
 
 <script setup>
 import Card from "M#/markets/Card.mobile.vue";
-import { computed, defineAsyncComponent, ref, toRefs } from "vue";
+import Icon from "U#/Icon.vue";
+import { computed, ref, toRefs } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 import { byMcap } from "@/helpers/sort.helper";
 
@@ -32,12 +33,12 @@ const props = defineProps({
 
 const { search } = toRefs(props);
 
-const ArrowIcon = defineAsyncComponent(() => import("../../../assets/icons/arrow.svg"));
 const page = ref(0);
 const store = useCryptoStore();
-const crypto = computed(() => Object.keys(store.tickerInfo)
-                              .filter(ticker => ticker.includes(search.value))
-                              .sort(byMcap(store)));
+const crypto = computed(() => (
+  Object.keys(store.tickerInfo)
+  .filter(ticker => ticker.includes(search.value))
+  .sort(byMcap(store))));
 
 
 const cryptoLen = computed(() => crypto.value.length);

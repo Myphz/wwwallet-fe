@@ -10,7 +10,7 @@
         </div>
 
         <div class="img-section" style="text-align: justify;">
-          <img src="/src/assets/images/phone_mockup.png" alt="phone_mockup">
+          <img src="/images/phone_mockup.png" alt="phone_mockup">
           <h3 class="img-text">
             <div>Track your<br><span>crypto wallet</span><br>everywhere.</div>
             <div>Receive<br><span>real time updates</span><br>with many useful statistics.</div>

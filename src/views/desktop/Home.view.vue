@@ -11,8 +11,8 @@
             <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em"><RouterLink to="/dashboard">GET STARTED</RouterLink></Button>
           </div>
           <div>
-            <img src="/src/assets/images/tablet_mockup.png" alt="Dashboard" class="tablet-image">
-            <img src="/src/assets/images/phone_mockup.png" alt="Dashboard" class="phone-image">
+            <img src="/images/tablet_mockup.png" alt="Dashboard" class="tablet-image">
+            <img src="/images/phone_mockup.png" alt="Dashboard" class="phone-image">
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@
             </ol>
           </div>
           <div>
-            <img src="/src/assets/images/phone_mockup2.png" alt="Dashboard" class="tablet-image">
+            <img src="/images/phone_mockup2.png" alt="Dashboard" class="tablet-image">
           </div>
         </div>
         <div>

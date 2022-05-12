@@ -1,5 +1,5 @@
 <template>
-  <img :src="`/src/assets/icons/${icon}.svg`" :class="'noselect ' + (clickable ? 'clickable' : '')" :alt="icon">
+  <img :src="`/icons/${icon}.svg`" :class="'noselect ' + (clickable ? 'clickable' : '')" :alt="icon">
 </template>
 
 <script setup>

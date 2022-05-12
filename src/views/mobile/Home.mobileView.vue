@@ -12,7 +12,7 @@
           <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em"><RouterLink to="/dashboard">GET STARTED</RouterLink></Button>
         </div>
 
-        <img src="/src/assets/images/phone_mockup.png" alt="Dashboard">
+        <img src="/images/phone_mockup.png" alt="Dashboard">
       </div>
     </div>
 
@@ -41,7 +41,7 @@
             </dl>
           </li>
         </ol>
-        <img src="/src/assets/images/phone_mockup2.png" alt="Dashboard">
+        <img src="/images/phone_mockup2.png" alt="Dashboard">
         <div style="margin-top: 2em">
           <h1>Keep up with crypto</h1>
           <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em; margin-top: -2em">

@@ -1,6 +1,6 @@
 <template>
   <header class="search-bar align-center">
-    <Icon :class="'icon ' + (filled ? 'icon-fill' : 'icon-empty')" />
+    <SearchIcon :class="'icon ' + (filled ? 'icon-fill' : 'icon-empty')" />
     <input 
       type="text" 
       class="text-primary h4 search-input"
@@ -15,7 +15,7 @@
 
 <script setup>
 import { defineAsyncComponent, ref } from "vue";
-const Icon = defineAsyncComponent(() => import("../../assets/icons/search.svg"));
+const SearchIcon = defineAsyncComponent(() => import("../../assets/icons/search.svg"));
 const filled = ref(false);
 </script>
 
