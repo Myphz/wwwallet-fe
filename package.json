@@ -15,9 +15,7 @@
     "toformat": "^2.0.0",
     "vue": "^3.2.33",
     "vue-echarts": "^6.0.2",
-    "vue-router": "^4.0.15"
-  },
-  "devDependencies": {
+    "vue-router": "^4.0.15",
     "@vitejs/plugin-vue": "^2.3.2",
     "vite": "^2.9.9",
     "vite-svg-loader": "^3.3.0"
