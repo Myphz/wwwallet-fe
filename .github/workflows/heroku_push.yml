@@ -1,0 +1,11 @@
+name: Heroku CI
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - run: |
+        curl -XPOST -u "${{secrets.USERNAME}}:${{secrets.TOKEN}}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/Myphz/wwwallet-be/dispatches --data '{"event_type": "Heroku Build"}'
