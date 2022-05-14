@@ -28,7 +28,7 @@
       </span>
     </div>
     <div class="stats time noselect">
-      <span v-for="(time, i) in TIMES" :key="time" :class="activeTime == i ? 'active-time' : ''" @click="activeTime = i">
+      <span v-for="(time, i) in TIMES" :key="time" :class="activeTime == i ? 'active-time' : ''" @click="() => setTime(i)">
         {{ time.toUpperCase() }}
       </span>
     </div>
@@ -86,7 +86,7 @@ const totals = toRef(props, "totals");
 const currentBase = ref(base);
 const currentCrypto = ref(crypto);
 
-const activeTime = ref(0);
+const activeTime = ref(localStorage.getItem("timeframe") ?? 2);
 const store = useCryptoStore();
 
 const empty = ref(false);
@@ -128,7 +128,12 @@ if (!dashboard) {
   low24 = computed(() => helper("l"));
   const open = computed(() => helper("o"));
   pctChange = computed(() => !price.value || price.value.minus(open.value).div(price.value.eq(0) ? 1 : price.value).times(100));
-}
+};
+
+const setTime = i => {
+  activeTime.value = i;
+  localStorage.setItem("timeframe", i);
+};
 
 const isHigher = ref(null);
 watch(price, (newPrice, oldPrice) => {
