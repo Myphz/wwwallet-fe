@@ -25,7 +25,7 @@
 <script setup>
 import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
-import { computed, getCurrentInstance, ref, toRef } from "vue";
+import { computed, getCurrentInstance, ref, toRef, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 import { getBaseLCM } from "@/helpers/crypto.helper";
 
@@ -71,16 +71,28 @@ if (!dashboard) {
     getBaseLCM(keys.value, store.tickerInfo) : 
     store.tickerInfo[selectedCrypto.value]?.quotes || []
   );
-}
+};
+
+const startBase = ref(base);
 
 // Check if the given starter base is allowed (if there are any options to check from)
-const startBase = (function(){
-  if (!baseOptions.value.length || baseOptions.value.includes(base)) return base;
+(function setBase() {
+  if (!baseOptions.value.length) {
+    const unwatch = watch(baseOptions, () => {
+      setBase();
+      unwatch();
+    });
+
+    return;
+  };
+
+  if (baseOptions.value.includes(base)) return;
   // If it's not allowed, update it to be the first option
   emit('update:Base', baseOptions.value[0]);
   selectedBase.value = baseOptions.value[0];
-  return baseOptions.value[0];
+  startBase.value = baseOptions.value[0];
 })();
+
 </script>
 
 <style lang="sass" scoped>

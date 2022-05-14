@@ -154,10 +154,11 @@ export default {
 
       if (totals.value && !klines?.length) {
         disabled.value = true;
+        isLoading = false;
         return ctx.emit("empty");
       }
 
-      else if (!klines?.length) return;
+      else if (!klines?.length) return isLoading = false;
 
       if (!route.params.isAuth && totals.value) {
         disabled.value = true;
