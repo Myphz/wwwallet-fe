@@ -144,7 +144,7 @@ watch(price, (newPrice, oldPrice) => {
 
   .chart-container
     position: relative
-    height: 60vh
+    height: 55vh
     margin-bottom: 1em
 
   .stats
