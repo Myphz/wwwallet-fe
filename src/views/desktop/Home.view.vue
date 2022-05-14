@@ -1,6 +1,6 @@
 <template>
-  <section>
-    <div class="page" ref="first" id="first">
+  <section class="main-section">
+    <section class="page" ref="first" id="first">
       <Navbar noPadding />
       <div class="content-wrapper">
         <div class="content">
@@ -16,9 +16,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="page" ref="second" id="second">
+    <section class="page" ref="second" id="second">
       <div class="content-wrapper">
         <div class="content">
           <div>
@@ -50,14 +50,14 @@
             <img src="/images/phone_mockup2.png" alt="Dashboard" class="tablet-image">
           </div>
         </div>
-        <div>
+        <div style="padding-bottom: 5em">
           <h1>Keep up with crypto</h1>
           <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em; margin-top: -2em">
             <RouterLink to="/register">REGISTER NOW</RouterLink>
           </Button>
         </div>
       </div>
-    </div>
+    </section>
 
   </section>
 </template>
@@ -86,7 +86,7 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
 </script>
 
 <style lang="sass" scoped>
-  section
+  .main-section
     position: absolute
     left: 0
     top: 0
@@ -95,7 +95,7 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
     background-image: $gradient
 
   h1
-    font-size: nth($font-sizes, 1) + .5rem
+    font-size: nth($font-sizes, 1) + .25rem
     margin-bottom: .75em
 
   h2
