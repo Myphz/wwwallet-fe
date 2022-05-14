@@ -2,8 +2,8 @@
   <nav :class="'noselect ' + (noPadding ? '' : 'padded')">
     <Logo />
     <ul class="h2">
-      <li><RouterLink to="/crypto">Markets</RouterLink></li>
       <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
+      <li><RouterLink to="/crypto">Markets</RouterLink></li>
       <li><RouterLink to="/wallet">Wallet</RouterLink></li>
     </ul>
     <RouterLink :to="$route.params.isAuth ? '/settings' : '/login'" class="align-center"><UserIcon class="user-icon" /></RouterLink>

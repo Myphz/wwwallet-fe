@@ -20,14 +20,14 @@ import { RouterLink, useRoute } from "vue-router";
 const route = useRoute();
 const tabs = computed(() => [
   {
-    endpoint: ["/crypto"],
-    icon: "chart",
-    title: "Markets"
-  },
-  {
     endpoint: ["/dashboard"],
     icon: "dashboard",
     title: "Dashboard"
+  },
+  {
+    endpoint: ["/crypto"],
+    icon: "chart",
+    title: "Markets"
   },
   {
     endpoint: ["/wallet"],
