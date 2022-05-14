@@ -1,5 +1,5 @@
 <template>
-  <footer :class="'h5 text-secondary ' + (fixed ? 'footer-fixed' : '')">
+  <footer class="h5 text-secondary">
     <section class="main-section">
       <section>
         <div>

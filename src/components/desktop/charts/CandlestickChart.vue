@@ -154,6 +154,8 @@ export default {
       if (!totals.value) ({ klines, socket } = await store.getKlines(crypto.value, base.value, interval.value, { noSocket: !route.params.isAuth }));
       else ({ klines, socket } = await store.getDashboardKlines(crypto.value, base.value, interval.value, transactions.value, { isAuth: route.params.isAuth }));
       
+      if (klines === null) return isLoading = false;
+
       if (totals.value && !klines?.length) {
         disabled.value = true;
         isLoading = false;
