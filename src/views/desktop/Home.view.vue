@@ -1,5 +1,6 @@
 <template>
   <section class="main-section">
+
     <section class="page" ref="first" id="first">
       <Navbar noPadding />
       <div class="content-wrapper">
@@ -50,7 +51,7 @@
             <img src="/images/phone_mockup2.png" alt="Dashboard" class="tablet-image">
           </div>
         </div>
-        <div style="margin-bottom: 5em">
+        <div>
           <h1>Keep up with crypto</h1>
           <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em; margin-top: -2em">
             <RouterLink to="/register">REGISTER NOW</RouterLink>
@@ -95,7 +96,7 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
     background-image: $gradient
 
   h1
-    font-size: nth($font-sizes, 1) + .25rem
+    font-size: nth($font-sizes, 1) + .15rem
     margin-bottom: .75em
 
   h2
