@@ -99,15 +99,14 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
     background-image: $gradient
 
   h1
-    font-size: nth($font-sizes, 1)
     margin-bottom: .5em
 
   h2
     font-weight: normal
-    margin-bottom: 1em
+    margin-bottom: .5em
 
   .page
-    margin: 0 16.66vw
+    margin: 0 12.5vw
     height: 50%
     display: flex
     flex-direction: column
