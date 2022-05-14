@@ -13,6 +13,7 @@ import { onMounted, reactive, toRefs, watch } from "vue";
 
 import { useCryptoStore } from "S#/crypto.store";
 import { ANALYSIS_TIMES } from "@/config/config";
+import { byMcap } from "@/helpers/sort.helper";
 
 export default {
   components: { VChart },
@@ -38,13 +39,17 @@ export default {
     const { crypto, frequency } = toRefs(props);
     const store = useCryptoStore();
 
-    const loadData = async () => {
-      const { klines } = await store.getKlines(crypto.value, "USDT", "1h", { 
-        noSocket: true, 
-        start: frequency.value !== "TOTAL" ? (+new Date() - ANALYSIS_TIMES[frequency.value]) : null
-      });
-      option.series.data = klines;
+    const loadData = () => {
+      const unwatch = watch(store.prices, async () => {
+        const { klines } = await store.getKlines(crypto.value, store.tickerInfo[crypto.value].quotes.sort(byMcap(store))[0], "1h", { 
+          noSocket: true, 
+          start: frequency.value !== "TOTAL" ? (+new Date() - ANALYSIS_TIMES[frequency.value]) : null
+        });
+        option.series.data = klines;
+        unwatch();
+      })
     };
+
     onMounted(loadData);
 
     watch([crypto, frequency], loadData);
