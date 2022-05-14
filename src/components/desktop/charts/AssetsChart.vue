@@ -52,7 +52,7 @@ onMounted(() => {
     ret += element.offsetHeight;
   };
 
-  height.value = document.documentElement.clientHeight * 0.5 - ret;
+  height.value = document.documentElement.clientHeight * 0.6 - ret;
 });
 
 const isHigher = ref(null);

@@ -138,7 +138,7 @@ const setTime = i => {
   localStorage.setItem("timeframe", i);
 };
 
-const height = document.documentElement.clientHeight * 0.5 - 200;
+const height = document.documentElement.clientHeight * 0.6 - 200;
 
 const isHigher = ref(null);
 watch(price, (newPrice, oldPrice) => {
