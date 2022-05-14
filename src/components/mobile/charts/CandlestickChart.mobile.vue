@@ -142,6 +142,8 @@ export default {
       if (isLoading) return setTimeout(loadData, 200);
       isLoading = true;
 
+      const zoom = chart.value?.getOption()?.dataZoom?.[0].start || 100;
+
       // Close possibly existing socket
       klinesSocket && klinesSocket.close();
       let klines, socket;
@@ -177,7 +179,7 @@ export default {
       // Zoom on chart
       chart.value.dispatchAction({
         type: "dataZoom",
-        start: 100
+        start: zoom
       });
 
       isLoading = false;
