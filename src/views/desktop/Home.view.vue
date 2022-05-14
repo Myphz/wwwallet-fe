@@ -50,7 +50,7 @@
             <img src="/images/phone_mockup2.png" alt="Dashboard" class="tablet-image">
           </div>
         </div>
-        <div style="padding-bottom: 5em">
+        <div style="margin-bottom: 5em">
           <h1>Keep up with crypto</h1>
           <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em; margin-top: -2em">
             <RouterLink to="/register">REGISTER NOW</RouterLink>
