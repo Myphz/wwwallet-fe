@@ -24,7 +24,7 @@
         <div class="content">
           <div>
             <h1>How does it work?</h1>
-            <ol class="h2" style="margin-left: 1em">
+            <ol class="h3" style="margin-left: 1em">
               <li>
                 <dl>
                   <dt>Create an account</dt>
@@ -104,7 +104,7 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
     margin-bottom: 1em
 
   .page
-    margin: 0 8.33vw
+    margin: 0 16.66vw
     height: 50%
     display: flex
     flex-direction: column
@@ -142,7 +142,7 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
     font-weight: bold
   
   dd
-    font-size: nth($font-sizes, 3) - .1rem
+    font-size: 1.5rem
     
 
 </style>
