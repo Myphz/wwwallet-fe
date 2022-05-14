@@ -4,7 +4,7 @@
       <h4 class="text-secondary">TOTAL ASSET VALUE</h4>
       <h2 :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(total) }}</h2>
     </div>
-    <div class="chart-container">
+    <div v-if="height" :style="`height: ${height}px`">
       <PieChart :totals="totals" :currentValues="currentValues" />
     </div>
     
@@ -18,7 +18,7 @@
 <script setup>
 import { computed } from "@vue/reactivity";
 import PieChart from "D#/charts/PieChart.vue";
-import { ref, toRefs, watch } from "vue";
+import { onMounted, ref, toRefs, watch } from "vue";
 import { formatValue } from "@/helpers/formatter.helper";
 import Big from "@/helpers/big.helper";
 
@@ -43,6 +43,18 @@ const { totals, currentValues, earnings } = toRefs(props);
 const total = computed(() => Object.values(currentValues.value).reduce((prev, curr) => prev.plus(curr), Big(0)));
 const totalEarnings = computed(() => Object.values(earnings.value).reduce((prev, curr) => prev.plus(curr), Big(0)));
 
+// Set pie chart height to fill the remaining height
+const height = ref();
+onMounted(() => {
+  const elements = document.getElementsByClassName("main-info");
+  let ret = 0;
+  for (const element of elements) {
+    ret += element.offsetHeight;
+  };
+
+  height.value = document.documentElement.clientHeight * 0.5 - ret;
+});
+
 const isHigher = ref(null);
 watch(total, (newTotal, oldTotal) => {
   isHigher.value = newTotal.gte(oldTotal);
@@ -52,19 +64,18 @@ watch(total, (newTotal, oldTotal) => {
 <style lang="sass" scoped>
   section
     width: 15vw
-    height: 45vh
-    padding: 2em
     background-color: $bg-dark
     border-radius: 1.5em
     margin-right: 2em
-
-  .chart-container
-    height: 30vh
 
   .main-info
     display: flex
     flex-direction: column
     align-items: center
+    &:first-of-type
+      padding-top: 2em
+    &:last-of-type
+      padding-bottom: 2em
     h2
       font-weight: 550
 </style>

@@ -1,38 +1,41 @@
 <template>
   <section class="shadow">
-    <ChartOptions 
-      :crypto="crypto" 
-      :base="base" 
-      v-model:Crypto="currentCrypto" 
-      @update:Crypto="$emit('update:Crypto', currentCrypto)"
-      v-model:Base="currentBase" 
-      @update:Base="$emit('update:Base', currentBase)"
-      :dashboard="dashboard" 
-      :totals="totals" 
-    />
-    <div class="stats">
-      <span :class="'price ' + (isHigher ? 'green' : isHigher !== null ? 'red' : '')">
-        <h2>{{ formatValue(price, null, true) }}</h2>
-      </span>
-      <span class="statsgroup">
-        <span>24h Change</span>
-        <span :class="parseFloat(pctChange) > 0 ? 'green' : parseFloat(pctChange) < 0 ? 'red' : ''">{{ formatPercentage(pctChange) }}</span>
-      </span>
-      <span class="statsgroup">
-        <span>24h High</span>
-        <span class="green">{{ formatValue(high24, null, true) }}</span>
-      </span>
-      <span class="statsgroup">
-        <span>24h Low</span>
-        <span class="red">{{ formatValue(low24, null, true) }}</span>
-      </span>
-    </div>
-    <div class="time stats noselect">
-      <span v-for="(time, i) in TIMES" :key="time" :class="activeTime == i ? 'active-time' : ''" @click="() => setTime(i)">
-        {{ time.toUpperCase() }}
-      </span>
-    </div>
-    <div :class="'shadow ' + (dashboard ? 'chart-container-dashboard' : 'chart-container')">
+    <header>
+      <ChartOptions 
+        :crypto="crypto" 
+        :base="base" 
+        v-model:Crypto="currentCrypto" 
+        @update:Crypto="$emit('update:Crypto', currentCrypto)"
+        v-model:Base="currentBase" 
+        @update:Base="$emit('update:Base', currentBase)"
+        :dashboard="dashboard" 
+        :totals="totals" 
+      />
+      <div class="stats">
+        <span :class="'price ' + (isHigher ? 'green' : isHigher !== null ? 'red' : '')">
+          <h2>{{ formatValue(price, null, true) }}</h2>
+        </span>
+        <span class="statsgroup">
+          <span>24h Change</span>
+          <span :class="parseFloat(pctChange) > 0 ? 'green' : parseFloat(pctChange) < 0 ? 'red' : ''">{{ formatPercentage(pctChange) }}</span>
+        </span>
+        <span class="statsgroup">
+          <span>24h High</span>
+          <span class="green">{{ formatValue(high24, null, true) }}</span>
+        </span>
+        <span class="statsgroup">
+          <span>24h Low</span>
+          <span class="red">{{ formatValue(low24, null, true) }}</span>
+        </span>
+      </div>
+      <div class="time stats noselect">
+        <span v-for="(time, i) in TIMES" :key="time" :class="activeTime == i ? 'active-time' : ''" @click="() => setTime(i)">
+          {{ time.toUpperCase() }}
+        </span>
+      </div>
+    </header>
+    
+    <div :class="'shadow ' + (dashboard ? 'chart-container-dashboard' : 'chart-container')" :style="dashboard ? `height: ${height}px` : null">
       <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" :totals="totals" :transactions="transactions" @empty.once="empty = true" />
       <h2 v-if="empty && $route.params.isAuth" class="note">Nothing to show yet...</h2>
       <h2 v-else-if="empty" class="note shadow">
@@ -135,6 +138,8 @@ const setTime = i => {
   localStorage.setItem("timeframe", i);
 };
 
+const height = document.documentElement.clientHeight * 0.5 - 200;
+
 const isHigher = ref(null);
 watch(price, (newPrice, oldPrice) => {
   if (newPrice instanceof Big) return isHigher.value = newPrice.gt(oldPrice);
@@ -155,7 +160,6 @@ watch(price, (newPrice, oldPrice) => {
 
   .chart-container-dashboard
     position: relative
-    height: 34vh
     width: 100%
 
   .stats
