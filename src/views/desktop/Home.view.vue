@@ -136,13 +136,13 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
 
   // Second page
   li
-    margin-bottom: 2em
+    margin-bottom: 1.5em
 
   dt, li::marker
     font-weight: bold
   
   dd
-    font-size: nth($font-sizes, 3)
+    font-size: nth($font-sizes, 3) - .1rem
     
 
 </style>
