@@ -9,7 +9,7 @@
             <h1>Managing your crypto<br>has never been <i><span>this easy</span></i></h1>
             <h2>Keep track of your crypto wallet<br>in real-time, everywhere</h2>
             <h2>Completely <span>free</span> and <span>open source</span></h2>
-            <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em"><RouterLink to="/dashboard">GET STARTED</RouterLink></Button>
+            <Button btnClass="h3 bg-primary noborder" btnCss="border-radius: .25em"><RouterLink to="/dashboard">GET STARTED</RouterLink></Button>
           </div>
           <div>
             <img src="/images/tablet_mockup.png" alt="Dashboard" class="tablet-image">
@@ -23,40 +23,43 @@
       <div class="content-wrapper">
         <div class="content">
           <div>
-            <h1>How does it work?</h1>
-            <ol class="h3" style="margin-left: 1em">
-              <li>
-                <dl>
-                  <dt>Create an account</dt>
-                  <dd>Register now to keep track<br>of your wallet easily</dd>
-                </dl>
-              </li>
+            <div>
+              <h1>How does it work?</h1>
+              <ol class="h3" style="margin-left: 1em">
+                <li>
+                  <dl>
+                    <dt>Create an account</dt>
+                    <dd>Register now to keep track<br>of your wallet easily</dd>
+                  </dl>
+                </li>
 
-              <li>
-                <dl>
-                  <dt>Record your transactions</dt>
-                  <dd>Enter your transaction details<br>about your crypto movements</dd>
-                </dl>
-              </li>
+                <li>
+                  <dl>
+                    <dt>Record your transactions</dt>
+                    <dd>Enter your transaction details<br>about your crypto movements</dd>
+                  </dl>
+                </li>
 
-              <li>
-                <dl>
-                  <dt>Check your dashboard</dt>
-                  <dd>Enjoy real-time updates on more<br>than 500 crypto, every second</dd>
-                </dl>
-              </li>
-            </ol>
+                <li>
+                  <dl>
+                    <dt>Check your dashboard</dt>
+                    <dd>Enjoy real-time updates on more<br>than 500 crypto, every second</dd>
+                  </dl>
+                </li>
+              </ol>
+            </div>
+            <div>
+              <h1>Keep up with crypto</h1>
+              <Button btnClass="h3 bg-primary noborder" btnCss="border-radius: .25em; margin-top: -.5em">
+                <RouterLink to="/register">REGISTER NOW</RouterLink>
+              </Button>
+            </div>
           </div>
           <div>
             <img src="/images/phone_mockup2.png" alt="Dashboard" class="tablet-image">
           </div>
         </div>
-        <div>
-          <h1>Keep up with crypto</h1>
-          <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em; margin-top: -2em">
-            <RouterLink to="/register">REGISTER NOW</RouterLink>
-          </Button>
-        </div>
+        
       </div>
     </section>
 
@@ -96,8 +99,8 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
     background-image: $gradient
 
   h1
-    font-size: nth($font-sizes, 1) + .15rem
-    margin-bottom: .75em
+    font-size: nth($font-sizes, 1)
+    margin-bottom: .5em
 
   h2
     font-weight: normal

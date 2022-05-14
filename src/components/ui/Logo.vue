@@ -1,7 +1,7 @@
 <template>
   <span class="box align-center noselect">
     <Icon icon="logo" :class="small ? 'small' : ''" />
-    <h1>wwwallet</h1>
+    <h2>wwwallet</h2>
   </span>
 </template>
 
@@ -21,7 +21,7 @@ defineProps({
     font-family: $font-logo
 
   img
-    margin-right: 10px
+    margin-right: .5em
 
   .small
     width: 36px

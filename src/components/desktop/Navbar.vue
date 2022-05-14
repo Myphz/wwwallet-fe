@@ -1,7 +1,7 @@
 <template>
   <nav :class="'noselect ' + (noPadding ? '' : 'padded')">
     <Logo />
-    <ul class="h2">
+    <ul class="h3">
       <li><RouterLink to="/dashboard">Dashboard</RouterLink></li>
       <li><RouterLink to="/crypto">Markets</RouterLink></li>
       <li><RouterLink to="/wallet">Wallet</RouterLink></li>
