@@ -168,10 +168,14 @@ export default {
       }
 
       // Set white space to the right of the chart 
-      option.xAxis.max = Math.max(
-        klines[klines.length - 1][0] + (klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0)) * klines.length / 200, 
-        klines[klines.length-1][0] + (klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0)) * 1.5
-      );
+      option.xAxis.max = (function () {
+        const last = klines[klines.length - 1][0];
+        const span = klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0);
+
+        if (klines.length >= 20) return last + span * klines.length / (klines.length / 5);
+        if (klines.length >= 7) return last + span * (20 / klines.length);
+        return last + span;
+      })();
       
       // Set maximum zoom
       option.dataZoom.minSpan = 2000 / klines.length;
