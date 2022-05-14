@@ -17,7 +17,7 @@
     </td>
     
     <td>{{ formatValue(totals.avgBuyPrice) }}</td>
-    <td>{{ formatValue(totals.avgSellPrice) }}</td>
+    <td>{{ totals.avgSellPrice.eq(0) ? "N/A" : formatValue(totals.avgSellPrice) }}</td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentPrice) }}</td>
     <td :class="earnings.s === -1 ? 'red' : earnings.eq(0) ? '' : 'green'">{{ earnings.s === -1 ? "-" : "" }}{{ formatValue(earnings.abs()) }}</td>
     <td :class="parseFloat(pctChange) > 0 ? 'green' : parseFloat(pctChange) < 0 ? 'red' : ''">{{ formatPercentage(pctChange) }}</td>

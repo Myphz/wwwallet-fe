@@ -29,7 +29,7 @@
         <span>Current Value</span>
       </div>
       <div class="space-between margin-bottom">
-        <span>{{ formatValue(totals.avgSellPrice) }}</span>
+        <span>{{ totals.avgSellPrice.eq(0) ? "N/A" : formatValue(totals.avgSellPrice) }}</span>
         <span :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentValue) }}</span>
       </div>
 

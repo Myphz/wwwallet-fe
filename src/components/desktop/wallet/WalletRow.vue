@@ -10,7 +10,7 @@
       <span class="ticker">{{ crypto }}</span>
     </td>
     <td>{{ formatValue(totals.avgBuyPrice, getDecimalDigits(transactions[0]?.price)) }}</td>
-    <td>{{ !totals.avgSellPrice.eq(0) ? formatValue(totals.avgSellPrice, getDecimalDigits(transactions[0]?.price)) : "" }}</td>
+    <td>{{ !totals.avgSellPrice.eq(0) ? formatValue(totals.avgSellPrice, getDecimalDigits(transactions[0]?.price)) : "N/A" }}</td>
     <td>{{ totals.totalQuantity.toFormat() }}</td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
       {{ formatValue(currentValue) }}
