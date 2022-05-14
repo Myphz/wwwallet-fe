@@ -17,8 +17,11 @@ const getPriceObj = (crypto, prices, curr, once) => {
   quote = quotes.find(quote => (quote + crypto) in prices);
   if (quote) {
     const price = prices[quote + crypto];
-    const conversionFactor = 1 / price.c;
+    // The true price is 1/price.c, but the transformObject function will multiply it by the conversion factor.
+    // To solve this, square the denominator so that price * 1/price^2 = 1/price
+    const conversionFactor = 1 / (price.c**2);
     const originalDigits = getDecimalDigits(price.c);
+    
     return transformObject(price, conversionFactor, originalDigits);
   }
 
