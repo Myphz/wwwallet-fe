@@ -78,13 +78,14 @@ defineEmits(["request"]);
 const cryptoStore = useCryptoStore();
 const open = ref(false);
 
-const computedTransactions = computed(() => addEarnings(transactions.value, crypto, cryptoStore.prices))
+const computedTransactions = computed(() => addEarnings(transactions.value, crypto, cryptoStore.prices));
+
 const totalEarnings = computed(() => {
-  // The formula is as follows:
-  // Total Earnings = Current Crypto Quantity * Current Price - Current Crypto Quantity * Avg Buy Price + Sold Quantity * (Average Sell Price - Average Buy Price)
-  const oldValue = totals.value.totalQuantity.times(totals.value.avgBuyPrice);
-  const soldEarnings = totals.value.sellQuantity.times(totals.value.avgSellPrice.minus(totals.value.avgBuyPrice));
-  return currentValue.value.minus(oldValue).plus(soldEarnings);
+  let ret = Big(0);
+  for (const { base, earnings } of computedTransactions.value) {
+    ret = ret.plus(earnings.times(getFavPrice(base, cryptoStore.prices)));
+  }
+  return ret;
 });
 
 const pctChange = computed(() => {

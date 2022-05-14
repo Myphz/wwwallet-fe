@@ -95,7 +95,7 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
     background-image: $gradient
 
   h1
-    font-size: nth($font-sizes, 1) + 1rem
+    font-size: nth($font-sizes, 1) + .5rem
     margin-bottom: .75em
 
   h2
