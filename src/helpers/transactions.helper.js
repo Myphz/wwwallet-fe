@@ -77,15 +77,16 @@ export function getStats(transactions, prices, opts) {
 
   for (const transaction of transactions) {
     if (transaction.date > end || transaction.date < start) continue;
+    const basePrice = getFavPrice(transaction.base, prices);
     
     if (transaction.isBuy) {
       ret.totalQuantity = ret.totalQuantity.plus(transaction.quantity);
       ret.buyQuantity = ret.buyQuantity.plus(transaction.quantity);
-      buyPriceSum = buyPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getFavPrice(transaction.base, prices)) );
+      buyPriceSum = buyPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(basePrice) );
     } else {
       ret.totalQuantity = ret.totalQuantity.minus(transaction.quantity);
       ret.sellQuantity= ret.sellQuantity.plus(transaction.quantity);
-      sellPriceSum = sellPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(getFavPrice(transaction.base, prices)) );
+      sellPriceSum = sellPriceSum.plus( Big(transaction.price).times(transaction.quantity).times(basePrice) );
     }
   };
 

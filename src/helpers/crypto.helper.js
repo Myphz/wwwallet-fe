@@ -6,8 +6,22 @@ const getPriceObj = (crypto, prices, curr, once) => {
   if (!prices) return;
   const currency = curr || (localStorage.getItem("currency") || "USD");
   const quotes = QUOTES?.[currency]?.quotes || [currency];
-  const quote = quotes.find(quote => (crypto + quote) in prices);
+
+  let quote = quotes.find(quote => (crypto + quote) in prices);
   if (quote) return prices[crypto + quote];
+  
+  // Helper function to divide all the values of an object by a conversion factor float, rounded up to originalDigits digits
+  const transformObject = (price, conversionFactor, originalDigits) => 
+    Object.fromEntries(Object.entries(price).map(([_, value]) => [_, parseFloat((value * conversionFactor).toFixed(originalDigits))]));
+
+  quote = quotes.find(quote => (quote + crypto) in prices);
+  if (quote) {
+    const price = prices[quote + crypto];
+    const conversionFactor = 1 / price.c;
+    const originalDigits = getDecimalDigits(price.c);
+    return transformObject(price, conversionFactor, originalDigits);
+  }
+
   if (once) return;
 
   // Try to get price in USD, BTC or BNB (99.99% of Binance crypto have at least one of these as quote)
@@ -19,7 +33,7 @@ const getPriceObj = (crypto, prices, curr, once) => {
   }
 
   // If a suiting pair has not been found, give up
-  if(!price) return {};
+  if (!price) return {};
 
   let conversionFactor, originalDigits;
 
@@ -36,7 +50,7 @@ const getPriceObj = (crypto, prices, curr, once) => {
   };
 
   if (conversionFactor) 
-    return Object.fromEntries(Object.entries(price).map(([_, value]) => [_, parseFloat((value * conversionFactor).toFixed(originalDigits))]));
+    return transformObject(price, conversionFactor, originalDigits)
 
   // Check if current crypto + support currency quote exists
   // e.g: if the price of the selected crypto has been found in USD and the wanted currency is EUR, try to find an USDEUR pair
@@ -51,7 +65,7 @@ const getPriceObj = (crypto, prices, curr, once) => {
   };
 
   if (conversionFactor) 
-    return Object.fromEntries(Object.entries(price).map(([_, value]) => [_, parseFloat((value * conversionFactor).toFixed(originalDigits))]));
+    return transformObject(price, conversionFactor, originalDigits)
 }
 
 export function getPrice(crypto, base, prices) {
@@ -62,7 +76,7 @@ export function getPrice(crypto, base, prices) {
 // Retrieve asset's price in user's favorite currency
 export function getFavPrice(crypto, prices) {
   const price = getPriceObj(crypto, prices);
-  return price?.c || 0
+  return price?.c || 0;
 };
 
 export function calculatePercentage(price) {

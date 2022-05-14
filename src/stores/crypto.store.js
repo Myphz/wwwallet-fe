@@ -117,8 +117,8 @@ export const useCryptoStore = defineStore("crypto", {
       let klinesAll = await Promise.all(cryptos.map(key => 
         fetchBinance(`klines?symbol=${key}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}` + (end ? `&endTime=${end}` : "")) 
       )); 
-
-      if (!klinesAll.length) return { klines: [] };
+      
+      if (!klinesAll.length || klinesAll.some(klines => klines.success === false)) return { klines: [] };
       // Add start padding if the length is not the same
       const maxLength = Math.max(...klinesAll.map(klines => klines.length));
       klinesAll = klinesAll.map(klines => [...Array(maxLength - klines.length).fill([0,0,0,0,0]), ...klines]);
