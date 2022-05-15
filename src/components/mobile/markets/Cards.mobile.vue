@@ -19,10 +19,11 @@
 
 <script setup>
 import Card from "M#/markets/Card.mobile.vue";
-import Icon from "U#/Icon.vue";
-import { computed, ref, toRefs } from "vue";
+import { computed, defineAsyncComponent, ref, toRefs } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 import { byMcap } from "@/helpers/sort.helper";
+
+const Icon = defineAsyncComponent(() => import("../../../assets/icons/arrow.svg"));
 
 const props = defineProps({
   search: {

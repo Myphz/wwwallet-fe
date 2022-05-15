@@ -27,11 +27,11 @@
     </table>
     <section class="justify-center" style="gap: 5em; padding: .5em 0" v-if="(authStore.transactions?.[crypto] || transactions).length > 10">
       <Icon icon="arrow" 
-        :class="'arrow-icon noselect reverse ' + (!page ? 'inactive' : 'transition pointer')" 
+        :class="'transactions-arrow-icon noselect reverse ' + (!page ? 'inactive' : 'transition pointer')" 
         @click="page ? page-- : null"
       />
       <Icon icon="arrow" 
-        :class="'arrow-icon noselect ' + ((page+1) * 10 <= (authStore.transactions?.[crypto] || transactions).length ? 'transition pointer' : 'inactive')" 
+        :class="'transactions-arrow-icon noselect ' + ((page+1) * 10 <= (authStore.transactions?.[crypto] || transactions).length ? 'transition pointer' : 'inactive')" 
         @click="(page+1) * 10 <= (authStore.transactions?.[crypto] || transactions).length ? page++ : null" 
       />
     </section>
@@ -109,11 +109,11 @@ const authStore = useAuthStore();
 </style>
 
 <style lang="sass">
-  .arrow-icon
+  .transactions-arrow-icon
     width: 48px
     height: 48px  
     path
-      fill: none !important
+      fill: none
     &:not(.inactive):hover
       background-color: lighten($bg-dark, 10%)
 
