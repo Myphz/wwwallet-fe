@@ -1,5 +1,5 @@
 <template>
-  <VChart :option="option" style="margin-bottom: 1em" ref="chart" @datazoom="checkEnd" :class="disabled ? 'disabled' : ''" />
+  <VChart :option="option" style="margin-bottom: 1em" ref="chart" @datazoom="checkEnd" :class="disabled ? 'disabled' : ''" autoresize />
 </template>
 
 <script>

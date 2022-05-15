@@ -1,5 +1,5 @@
 <template>
-  <VChart v-if="Object.keys(earnings).length" :option="option" :class="$route.params.isAuth ? '' : 'disabled'" />
+  <VChart v-if="Object.keys(earnings).length" :option="option" :class="$route.params.isAuth ? '' : 'disabled'" autoresize />
   <h2 class="note shadow" v-else-if="$route.params.isAuth">Nothing to show yet...</h2>
   <h2 class="note shadow" v-if="!$route.params.isAuth">
     <RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now to check your wallet
