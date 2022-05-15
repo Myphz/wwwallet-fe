@@ -113,7 +113,6 @@ import { useCryptoStore } from "S#/crypto.store";
 import { useAuthStore } from "S#/auth.store";
 
 import Datepicker from "@vuepic/vue-datepicker";
-import "@vuepic/vue-datepicker/dist/main.css";
 
 const props = defineProps({
   crypto: {
@@ -318,6 +317,8 @@ if (!isDetail) {
 </style>
 
 <style lang="sass">
+  @use "@vuepic/vue-datepicker/dist/main.css" as *
+
   .dp__theme_dark
     --dp-background-color: $bg-paper
     --dp-text-color: $text-primary
