@@ -10,5 +10,6 @@ import sass from "@/assets/sass/_export.sass";
 
 export default function(value) {
   // Get the string between 'value:' and ';' (the content of the variable)
-  return sass.split(value + ":")[1].split(";")[0];
+  // Split by ; or } if it's the last value
+  return sass.split(value + ":")[1].split(/;|}/)[0];
 }
