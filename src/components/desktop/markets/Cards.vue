@@ -21,11 +21,11 @@
 
 <script setup>
 import Card from "D#/markets/Card.vue";
-import Icon from "U#/Icon.vue";
-import { computed, ref, toRefs } from "vue";
+import { computed, defineAsyncComponent, ref, toRefs } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 import { byMcap } from "@/helpers/sort.helper";
 
+const Icon = defineAsyncComponent(() => import("../../../assets/icons/arrow.svg"));
 const props = defineProps({
   search: {
     type: String,
