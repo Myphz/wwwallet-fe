@@ -13,6 +13,7 @@ import { onMounted, reactive, toRefs, watch } from "vue";
 
 import { useCryptoStore } from "S#/crypto.store";
 import { ANALYSIS_TIMES } from "@/config/config";
+import { byMcap } from "@/helpers/sort.helper";
 
 export default {
   components: { VChart },
