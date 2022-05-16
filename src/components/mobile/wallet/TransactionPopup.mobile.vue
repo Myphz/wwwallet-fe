@@ -183,7 +183,7 @@ const totalQty = computed(
   () => (
     authStore.transactions[selectedCrypto.value] || [])
     .reduce((prev, curr) => curr.isBuy ? prev.plus(curr.quantity) : prev.minus(curr.quantity), Big(0)
-  )
+  ).plus(isDetail ? transaction.quantity : 0)
 );
 const quotes = computed(() => cryptoStore.tickerInfo[selectedCrypto.value]?.quotes || []);
 
