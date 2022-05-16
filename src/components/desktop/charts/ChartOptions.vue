@@ -65,7 +65,7 @@ if (!dashboard) {
   baseOptions = computed(() => store.tickerInfo[selectedCrypto.value]?.quotes || []);
   cryptoList = computed(() => Object.keys(store.tickerInfo));
 } else {
-  const keys = computed(() => Object.keys(totals.value));
+  const keys = computed(() => Object.keys(totals.value).filter(key => !totals.value[key].totalQuantity.eq(0)));
   cryptoList = computed(() => ["TOTAL", ...keys.value]);
   baseOptions = computed(() => selectedCrypto.value === "TOTAL" ? 
     getBaseLCM(keys.value, store.tickerInfo) : 
