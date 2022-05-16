@@ -64,6 +64,19 @@ export default {
     let isLoading = false; // Check if the component is currently fetching more data
     let allLoaded = false; // Check if all the data has been fetched
 
+    const updateMaxX = data => {
+      const klines = data || option.series.data;
+        // Set white space to the right of the chart 
+      option.xAxis.max = (function () {
+        const last = klines[klines.length - 1][0];
+        const span = klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0);
+
+        if (klines.length >= 20) return last + span * klines.length / (klines.length / 5);
+        if (klines.length >= 7) return last + span * (20 / klines.length);
+        return last + span;
+      })();
+    };
+
     // Function called by the websocket for every new kline
     const klineUpdate = ({ data }) => {
       // Parse the data
@@ -84,10 +97,10 @@ export default {
       if (!newKline[1]) return;
       // Check if it's a new candle
       if (t !== option.series.data[option.series.data.length - 1][0]) {
-        // Update the maximum x axis value
-        option.xAxis.max += t - option.series.data[option.series.data.length - 1][0];
         // Add candle
         option.series.data.push(newKline);
+        updateMaxX();
+
       } else {
         // Or an update of the last one
         option.series.data[option.series.data.length - 1] = newKline;
@@ -103,7 +116,7 @@ export default {
       if (kline.k.t !== lastTime) {
         // If so, reset the buffer
         lastTime = kline.k.t;
-        klinesBuffer = {};
+        option.series.dataBuffer = {};
       };
 
       // Save the crypto kline in the buffer
@@ -130,9 +143,8 @@ export default {
       if (!newKline[1]) return;
       // If it's a new candle, push it
       if (lastTime !== option.series.data[option.series.data.length - 1][0]) {
-        // Update the maximum x axis value
-        option.xAxis.max += lastTime - option.series.data[option.series.data.length - 1][0];
         option.series.data.push(newKline);
+        updateMaxX();
       } else {
         // Otherwise, modify the last one
         option.series.data[option.series.data.length - 1] = newKline;
@@ -170,14 +182,7 @@ export default {
       }
 
       // Set white space to the right of the chart 
-      option.xAxis.max = (function () {
-        const last = klines[klines.length - 1][0];
-        const span = klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0);
-
-        if (klines.length >= 20) return last + span * klines.length / (klines.length / 5);
-        if (klines.length >= 7) return last + span * (20 / klines.length);
-        return last + span;
-      })();
+      updateMaxX(klines);
       
       // Set maximum zoom
       option.dataZoom.minSpan = 2000 / klines.length;
