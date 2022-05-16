@@ -30,7 +30,7 @@
       </div>
       <div class="time stats noselect">
         <span v-for="(time, i) in TIMES" :key="time" :class="activeTime == i ? 'active-time' : ''" @click="() => setTime(i)">
-          {{ time.toUpperCase() }}
+            {{ i > 1 ? time.toUpperCase() : time }}
         </span>
       </div>
     </header>
