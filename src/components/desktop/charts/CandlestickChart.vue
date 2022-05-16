@@ -116,7 +116,7 @@ export default {
       if (kline.k.t !== lastTime) {
         // If so, reset the buffer
         lastTime = kline.k.t;
-        option.series.dataBuffer = {};
+        klinesBuffer = {};
       };
 
       // Save the crypto kline in the buffer
