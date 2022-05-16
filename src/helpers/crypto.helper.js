@@ -8,14 +8,14 @@ const getPriceObj = (crypto, prices, curr, once) => {
   const quotes = QUOTES?.[currency]?.quotes || [currency];
 
   let quote = quotes.find(quote => (crypto + quote) in prices);
-  if (quote) return prices[crypto + quote];
+  if (quote && prices[crypto + quote].c) return prices[crypto + quote];
   
   // Helper function to divide all the values of an object by a conversion factor float, rounded up to originalDigits digits
   const transformObject = (price, conversionFactor, originalDigits) => 
     Object.fromEntries(Object.entries(price).map(([_, value]) => [_, parseFloat((value * conversionFactor).toFixed(originalDigits))]));
 
   quote = quotes.find(quote => (quote + crypto) in prices);
-  if (quote) {
+  if (quote && prices[quote + crypto].c) {
     const price = prices[quote + crypto];
     // The true price is 1/price.c, but the transformObject function will multiply it by the conversion factor.
     // To solve this, square the denominator so that price * 1/price^2 = 1/price
@@ -36,7 +36,7 @@ const getPriceObj = (crypto, prices, curr, once) => {
   }
 
   // If a suiting pair has not been found, give up
-  if (!price) return {};
+  if (!price) return;
 
   let conversionFactor, originalDigits;
 

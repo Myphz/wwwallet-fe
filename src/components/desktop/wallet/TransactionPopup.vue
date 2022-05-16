@@ -175,7 +175,7 @@ const totalQty = computed(
   () => (
     authStore.transactions[selectedCrypto.value] || [])
     .reduce((prev, curr) => curr.isBuy ? prev.plus(curr.quantity) : prev.minus(curr.quantity), Big(0)
-  )
+  ).plus(isDetail ? transaction.quantity : 0)
 );
 const quotes = computed(() => cryptoStore.tickerInfo[selectedCrypto.value]?.quotes || []);
 
@@ -228,7 +228,7 @@ const submit = async (func, additionalParams) => {
 const errorMessage = ref("Invalid value");
 const checkQty = () => {
   if (isBuy.value || !quantity.value) return true;
-  if (totalQty.value.lt(quantity.value)) {
+  if ((totalQty.value).lt(quantity.value)) {
     errorMessage.value = `Current balance: ${totalQty.value.toFormat()} ${selectedCrypto.value}`;
     return false;
   }

@@ -128,6 +128,8 @@ export function addEarnings(allTransactions, crypto, prices, opts) {
     };
     // Get the price of reference
     const price = pastPrice?.[transaction.base] || transaction.price;
+    // Get price of the base in user's currency
+    const basePrice = getFavPrice(transaction.base, prices);
     // Get previous average buy price
     let quantity = Big(transaction.quantity);
 
@@ -147,13 +149,13 @@ export function addEarnings(allTransactions, crypto, prices, opts) {
       }
 
       // Otherwise, multiply what's remaining by the current price and subtract the original cost
-      transaction.earnings = quantity.times(getPrice(crypto, transaction.base, prices)).minus(quantity.times(price));
+      transaction.earnings = quantity.times(getPrice(crypto, transaction.base, prices)).minus(quantity.times(price)).times(basePrice);
       transaction.change = transaction.earnings.div(quantity.times(price)).times(100);
     } else {
       const { avgBuyPrice } = getStats(allTransactions, prices, { end: transaction.date  });
       // Earnings = Transaction quantity * transaction price - Avg Buy price * transaction quantity
-      transaction.earnings = quantity.times(price).minus(avgBuyPrice.times(quantity));
-      transaction.change = transaction.earnings.div(quantity.times(avgBuyPrice)).times(100);
+      transaction.earnings = quantity.times(price).times(basePrice).minus(avgBuyPrice.times(quantity));
+      transaction.change = quantity.eq(0) || avgBuyPrice.eq(0) ? Big(0) : transaction.earnings.div(quantity.times(avgBuyPrice)).times(100);
     };
 
     ret.push(transaction);

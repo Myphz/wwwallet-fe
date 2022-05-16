@@ -28,7 +28,7 @@
       <Transactions 
         :crypto="crypto" 
         :withTicker="false"
-        :transactions="$route.params.isAuth ? [] : transactions"
+        :transactions="$route.params.isAuth ? [] : computedTransactions"
         bgColor="bg-base-dark" 
         fontSize="h5" 
         shorter 
