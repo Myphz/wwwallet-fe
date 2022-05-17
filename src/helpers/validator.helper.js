@@ -4,7 +4,13 @@ export function validateEmail(email) {
 };
 
 export function validatePassword(password) {
-  return password.length > 6; // TODO: Define password constraints
+  // Min 6 characters long
+  if (password.length < 6) return false;
+  // Min 1 uppercase letter
+  if (!/[A-Z]/.test(password)) return false;
+  // Min 1 number
+  if (!/\d/.test(password)) return false;
+  return true;
 };
 
 export function isPositiveFloat(value) {

@@ -22,7 +22,7 @@
           v-model:value="values.password"
           v-model:isValid="areValuesValid[1]"
           :validate="login ? undefined : validatePassword"
-          errorMessage="Use 8 or more characters with a mix of letters, capital letters and numbers."
+          errorMessage="Use 6 or more characters with a mix of letters, capital letters and numbers."
           allowSpaces
         />
 
