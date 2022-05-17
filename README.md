@@ -1,6 +1,6 @@
 <p align="center">
 <h1 align="center">
-<img style="vertical-align: middle" src="https://wwwallet.app/icons/logo.svg">
+<img align="center" src="https://wwwallet.app/icons/logo.svg">
 wwwallet
 </h1>
 <h4 align="center">Managing your crypto has never been this easy</h4>
