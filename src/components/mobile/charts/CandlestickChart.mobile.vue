@@ -56,7 +56,7 @@ export default {
     const option = reactive(options);
     const disabled = ref(false);
 
-    let klinesSocket;
+    let socket;
     let klinesBuffer;
     let lastTime;
 
@@ -156,8 +156,8 @@ export default {
       const zoom = chart.value?.getOption()?.dataZoom?.[0].start || 100;
 
       // Close possibly existing socket
-      klinesSocket && klinesSocket.close();
-      let klines, socket;
+      socket && socket.close();
+      let klines;
       klinesBuffer = {};
 
       if (!totals.value) ({ klines, socket } = await store.getKlines(crypto.value, base.value, interval.value, { noSocket: !route.params.isAuth }));
@@ -185,8 +185,7 @@ export default {
       lastTime = klines[klines.length - 1][0]
       option.series.data = klines;
 
-      klinesSocket = socket;
-      if (klinesSocket) klinesSocket.onmessage = totals.value && crypto.value === "TOTAL" ? klineUpdateTotal : klineUpdate;
+      if (socket) socket.onmessage = totals.value && crypto.value === "TOTAL" ? klineUpdateTotal : klineUpdate;
       // Zoom on chart
       chart.value.dispatchAction({
         type: "dataZoom",
@@ -198,6 +197,8 @@ export default {
 
     // Load the data when mounted and when base or crypto or interval change
     onMounted(loadData);
+    // Close the socket when the component is unmounted
+    onUnmounted(() => socket && socket.close());
     watch([crypto, base, interval], loadData);
     // Watch transactions once
     const unwatch = watch(transactions, () => { loadData(), unwatch() });
@@ -247,8 +248,6 @@ export default {
       isLoading = false;
     };
 
-    // Close the socket when the component is unmounted
-    onUnmounted(() => klinesSocket && klinesSocket.close());
     return { chart, option, checkEnd, disabled };
   }
 }
