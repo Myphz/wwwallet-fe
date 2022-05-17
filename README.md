@@ -28,7 +28,7 @@ wwwallet
 > A web application to track your investments anywhere, in real-time
 
 <a href="https://wwwallet.app/" target="_blank">wwwallet</a> makes it easy for investors to track their movements in the cryptocurrency sector.  
-With its easy and intuitive interface, it allows users by calculating and display many useful statistics, updated in real-time using data from Binance.
+With its easy and intuitive interface, it allows users to monitor their wallet by calculating and displaying many useful statistics, updated in real-time using data from Binance.
 
 ## Features
 - Easy to use and intuitive interface
