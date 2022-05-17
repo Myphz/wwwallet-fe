@@ -37,9 +37,9 @@ With its easy and intuitive interface, it allows users by calculating and displa
 - More than 500 cryptocurrencies, updated real-time using Binance APIs
 
 ## Usage
-To start using the application, you can visit the website or deploy it locally.  
-After registering and confirming your email, you can record your transactions from the wallet page or from any cryptocurrency's chart page.
-Click on the switch to choose from BUY/SELL options, select your pair and type in the crypto quantity and the price. The total value will be calculated and displayed automatically.
+To start using the application, you can visit the website or deploy it locally.   
+After registering and confirming your email, you can record your transactions from the wallet page or from any cryptocurrency's chart page.  
+Click on the switch to choose from BUY/SELL options, select your pair and type in the crypto quantity and the price. The total value will be calculated and displayed automatically.  
 
 <img src="https://wwwallet.app/images/transaction.png">
 
@@ -47,7 +47,6 @@ Click on the switch to choose from BUY/SELL options, select your pair and type i
 If you want to test the app by yourself, follow these steps:
 - Install <a href="https://nodejs.org/" target="_blank">NodeJS</a> and <a href="https://www.npmjs.com/">npm</a> on your machine.
 - Install, configure and run the <a href="https://github.com/Myphz/wwwallet-be">backend</a> server
-> Remember to set the required environment variables!
 - Clone the repository with `git clone https://github.com/Myphz/wwwallet-fe.git`
 - Inside the clone repository, execute these commands:
 ```
