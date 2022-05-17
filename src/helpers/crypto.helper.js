@@ -1,4 +1,4 @@
-import { QUOTES, GATEIO_ICON_URL } from "@/config/config";
+import { QUOTES, SERVER_BASE_URL } from "@/config/config";
 import { getDecimalDigits } from "@/helpers/formatter.helper";
 
 // Helper function to retrieve the cryptoStore price object of a given asset
@@ -104,5 +104,5 @@ export function getBaseLCM(cryptos, tickers) {
 };
 
 export function getIcon(crypto) {
-  return `${GATEIO_ICON_URL}${crypto.toLowerCase()}.png`;
+  return `${SERVER_BASE_URL}crypto/image/${crypto.toLowerCase()}`;
 }

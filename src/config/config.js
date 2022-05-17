@@ -1,5 +1,4 @@
 export const BINANCE_BASE_URL_WS = "wss://stream.binance.com:9443/";
-export const GATEIO_ICON_URL = "https://www.gate.io/images/coin_icon/64/";
 export const SERVER_BASE_URL = process.env.NODE_ENV === "production" ? "/api/" : "http://localhost:3000/api/";
 
 // Stablecoins with a specific value
