@@ -26,11 +26,11 @@
       </tbody>
     </table>
     <section class="justify-center" style="gap: 5em; padding: .5em 0" v-if="(authStore.transactions?.[crypto] || transactions).length > 10">
-      <Icon icon="arrow" 
+      <Icon
         :class="'transactions-arrow-icon noselect reverse ' + (!page ? 'inactive' : 'transition pointer')" 
         @click="page ? page-- : null"
       />
-      <Icon icon="arrow" 
+      <Icon
         :class="'transactions-arrow-icon noselect ' + ((page+1) * 10 <= (authStore.transactions?.[crypto] || transactions).length ? 'transition pointer' : 'inactive')" 
         @click="(page+1) * 10 <= (authStore.transactions?.[crypto] || transactions).length ? page++ : null" 
       />

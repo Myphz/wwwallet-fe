@@ -12,8 +12,8 @@
     </tbody>
   </table>
   <section class="justify-center" style="gap: 5em; margin-top: 1em">
-    <Icon icon="arrow" :class="'arrow-icon noselect reverse ' + (!page ? 'inactive' : 'bg-base transition pointer')" @click="page ? page-- : null"/>
-    <Icon icon="arrow" :class="'arrow-icon noselect ' + ((page+1) * 10 <= cryptoLen ? 'bg-base transition pointer' : 'inactive')" @click="(page+1) * 10 <= cryptoLen ? page++ : null" />
+    <Icon :class="'arrow-icon noselect reverse ' + (!page ? 'inactive' : 'bg-base transition pointer')" @click="page ? page-- : null"/>
+    <Icon :class="'arrow-icon noselect ' + ((page+1) * 10 <= cryptoLen ? 'bg-base transition pointer' : 'inactive')" @click="(page+1) * 10 <= cryptoLen ? page++ : null" />
   </section>
 </template>
 
