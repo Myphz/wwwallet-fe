@@ -3,7 +3,7 @@
 <img align="center" src="https://wwwallet.app/icons/logo.svg">
 wwwallet
 </h1>
-<h2 align="center">Managing your crypto has never been this easy</h2>
+<h3 align="center">Managing your crypto has never been this easy</h3>
 </p>
 
 <p align="center">
