@@ -45,7 +45,7 @@ const getPriceObj = (crypto, prices, curr, once) => {
   // to convert the retrieved USD price
   for (const testCurrency of (QUOTES?.[supportCurrency]?.quotes || [supportCurrency])) {
     const quote = quotes.find(quote => (quote + testCurrency) in prices);
-    if (quote) {
+    if (quote && prices[quote + testCurrency].c) {
       conversionFactor = 1 / prices[quote + testCurrency].c;
       originalDigits = getDecimalDigits(prices[quote + testCurrency].c);
       break;
@@ -60,7 +60,7 @@ const getPriceObj = (crypto, prices, curr, once) => {
   // to convert the retrieved USD price
   for (const testCurrency of (QUOTES?.[supportCurrency]?.quotes || [supportCurrency])) {
     const quote = quotes.find(quote => (testCurrency + quote) in prices);
-    if (quote) {
+    if (quote && prices[testCurrency + quote].c) {
       conversionFactor = prices[testCurrency + quote].c;
       originalDigits = getDecimalDigits(prices[testCurrency + quote].c);
       break;
