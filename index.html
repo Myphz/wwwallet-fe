@@ -18,12 +18,32 @@
     <title>wwwallet</title>
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WE3VWD7P7E"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-WE3VWD7P7E');
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      const GA_LOCAL_STORAGE_KEY = 'ga:clientId'
+      if (window.localStorage) {
+        if (localStorage.getItem(GA_LOCAL_STORAGE_KEY)) {
+          gtag('js', new Date())
+          gtag('config', 'G-WE3VWD7P7E', {
+            send_page_view: true,
+            client_storage: 'none',
+            client_id: localStorage.getItem(GA_LOCAL_STORAGE_KEY),
+          })
+        } else {
+          window.localStorage.setItem(GA_LOCAL_STORAGE_KEY, uuidv4())
+          gtag('js', new Date())
+          gtag('config', 'G-WE3VWD7P7E', {
+            send_page_view: true,
+            client_storage: 'none',
+            client_id: localStorage.getItem(GA_LOCAL_STORAGE_KEY),
+          })
+        }
+      }
     </script>
   </head>
   <body>
