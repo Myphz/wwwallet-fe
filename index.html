@@ -18,7 +18,6 @@
     <title>wwwallet</title>
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WE3VWD7P7E"></script>
-    <script async src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
     <script>
       window.dataLayer = window.dataLayer || []
       function gtag() {
@@ -35,7 +34,8 @@
             client_id: localStorage.getItem(GA_LOCAL_STORAGE_KEY),
           })
         } else {
-          window.localStorage.setItem(GA_LOCAL_STORAGE_KEY, uuidv4())
+          // Generate random UUID (shouldn't use Math.random for this, but it's not really important)
+          window.localStorage.setItem(GA_LOCAL_STORAGE_KEY, Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER - Number.MIN_SAFE_INTEGER + 1) + Number.MIN_SAFE_INTEGER))
           gtag('js', new Date())
           gtag('config', 'G-WE3VWD7P7E', {
             send_page_view: true,
