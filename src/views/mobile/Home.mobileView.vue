@@ -92,9 +92,9 @@ import Logo from "U#/Logo.vue";
   .content-wrapper
     margin-bottom: 3em
 
-  span
-    color: darken($text-primary, 15%)
-    font-weight: bold
+    span
+      color: darken($text-primary, 15%)
+      font-weight: bold
 
   .tablet-image
     height: 100%
