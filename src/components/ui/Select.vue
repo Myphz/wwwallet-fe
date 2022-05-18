@@ -1,6 +1,6 @@
 <template>
   <div :class="'noselect ' + (open ? 'opened ' : '') + (bordered ? 'bordered' : '')">
-    <span class="align-center item-container" @click="open = !open; search = ''; input.update('')">
+    <span class="align-center item-container" @click="open = !open; search = ''; input.update(''); input.focus()">
       <span class="align-center">
         <img 
           v-if="withIcon"

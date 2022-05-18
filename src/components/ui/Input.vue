@@ -16,6 +16,7 @@
           :placeholder="placeholder"
           @keydown.space="e => allowSpaces ? null : e.preventDefault()"
           :oninput="upperCase ? 'let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p)' : null"
+          ref="input"
         >
         <label :class="'text-secondary ' + labelClasses">{{ label }}</label>
       </span>
@@ -112,6 +113,8 @@ const props = defineProps({
   }
 });
 
+const input = ref();
+
 const { icon, validate } = props;
 const { startValue } = toRefs(props);
 
@@ -144,6 +147,8 @@ const update = val => {
 
 const reset = () => update("");
 
+const focus = () => input.value.focus();
+
 // When startValue updates, update the current value and emit
 watch(startValue, () => {
   value.value = startValue.value;
@@ -153,7 +158,7 @@ watch(startValue, () => {
   emit("update:isValid", isValid.value);
 });
 
-defineExpose({ update, reset, validator });
+defineExpose({ validator, update, reset, focus });
 </script>
 
 <style lang="sass" scoped>
