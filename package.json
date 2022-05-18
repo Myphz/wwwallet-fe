@@ -7,6 +7,7 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
+    "@aacassandra/vue3-progressbar": "^1.0.3",
     "@vuepic/vue-datepicker": "^3.2.1",
     "animated-scroll-to": "^2.2.0",
     "big.js": "^6.1.1",

@@ -1,4 +1,5 @@
 <template>
+  <vue-progress-bar />
   <header v-if="$route.path !== '/'" class="logo">
     <Logo small />
   </header>

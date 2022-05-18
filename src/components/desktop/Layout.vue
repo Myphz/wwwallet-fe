@@ -1,4 +1,5 @@
 <template>
+  <vue-progress-bar />
   <Navbar class="margin" v-if="$route.path !== '/' && !NO_NAVBAR_PATHS.some(path => $route.path.startsWith(path))" />
 
   <router-view v-slot="{ Component, route }">
