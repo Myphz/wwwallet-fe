@@ -4,6 +4,7 @@
 
 <script>
 import options from "@/config/charts/candlestickChartOptions.mobile.js";
+import clone from "just-clone";
 import { onMounted, onUnmounted, reactive, ref, toRefs, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
 import { KLINES_LIMIT } from "@/config/config";
@@ -53,7 +54,7 @@ export default {
 
     const { crypto, base, interval, transactions, totals } = toRefs(props);
     const route = useRoute();
-    const option = reactive(options);
+    const option = reactive(clone(options));
     const disabled = ref(false);
 
     let socket;
