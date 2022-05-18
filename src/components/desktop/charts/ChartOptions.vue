@@ -18,7 +18,7 @@
         iconSize="small"
       />
     </span>
-    <Icon icon="settings" />
+    <!-- <Icon icon="settings" /> -->
   </header>
 </template>
 

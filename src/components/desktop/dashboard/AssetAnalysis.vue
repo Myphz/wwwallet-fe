@@ -19,8 +19,12 @@
     <td>{{ formatValue(totals.avgBuyPrice) }}</td>
     <td>{{ totals.avgSellPrice.eq(0) ? "N/A" : formatValue(totals.avgSellPrice) }}</td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentPrice) }}</td>
-    <td :class="earnings.s === -1 ? 'red' : earnings.eq(0) ? '' : 'green'">{{ earnings.s === -1 ? "-" : "" }}{{ formatValue(earnings.abs()) }}</td>
-    <td :class="parseFloat(pctChange) > 0 ? 'green' : parseFloat(pctChange) < 0 ? 'red' : ''">{{ formatPercentage(pctChange) }}</td>
+    <td v-if="!earnings.eq(0)" :class="earnings.s === -1 ? 'red' : 'green'">{{ earnings.s === -1 ? "-" : "" }}{{ formatValue(earnings.abs()) }}</td>
+    <td v-else>N/A</td>
+
+    <td v-if="!pctChange.eq(0)" :class="pctChange.gt(0) ? 'green' : 'red'">{{ formatPercentage(pctChange) }}</td>
+    <td v-else>N/A</td>
+    
     <td class="arrow-cell">
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </td>

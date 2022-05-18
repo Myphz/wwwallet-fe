@@ -38,8 +38,11 @@
         <span>Earnings</span>
       </div>
       <div class="space-between margin-bottom">
-        <span :class="parseFloat(pctChange) > 0 ? 'green' : parseFloat(pctChange) < 0 ? 'red' : ''">{{ formatPercentage(pctChange) }}</span>
-        <span :class="earnings.s === -1 ? 'red' : earnings.eq(0) ? '' : 'green'">{{ earnings.s === -1 ? "-" : "" }}{{ formatValue(earnings.abs()) }}</span>
+        <span v-if="!pctChange.eq(0)" :class="pctChange.gt(0) ? 'green' : 'red'">{{ formatPercentage(pctChange) }}</span>
+        <span v-else>N/A</span>
+        
+        <span v-if="!earnings.eq(0)" :class="earnings.s === -1 ? 'red' : 'green'">{{ earnings.s === -1 ? "-" : "" }}{{ formatValue(earnings.abs()) }}</span>
+        <span v-else>N/A</span>
       </div>
     </div>
 

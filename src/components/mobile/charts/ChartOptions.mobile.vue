@@ -23,7 +23,7 @@
 
     </span>
 
-    <Icon icon="settings" class="margin-right" />
+    <!-- <Icon icon="settings" class="margin-right" /> -->
   </header>
 </template>
 
