@@ -35,7 +35,7 @@
           })
         } else {
           // Generate random UUID (shouldn't use Math.random for this, but it's not really important)
-          window.localStorage.setItem(GA_LOCAL_STORAGE_KEY, Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER - Number.MIN_SAFE_INTEGER + 1) + Number.MIN_SAFE_INTEGER))
+          window.localStorage.setItem(GA_LOCAL_STORAGE_KEY, Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER + 1)))
           gtag('js', new Date())
           gtag('config', 'G-WE3VWD7P7E', {
             send_page_view: true,

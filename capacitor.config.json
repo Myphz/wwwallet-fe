@@ -1,0 +1,6 @@
+{
+  "appId": "com.wwwallet.app",
+  "appName": "wwwallet",
+  "webDir": "../dist",
+  "bundledWebRuntime": false
+}

@@ -20,6 +20,9 @@
     "vue-router": "^4.0.15"
   },
   "devDependencies": {
+    "@capacitor/android": "^3.5.1",
+    "@capacitor/cli": "^3.5.1",
+    "@capacitor/core": "^3.5.1",
     "@vitejs/plugin-vue": "^2.3.2",
     "sass": "^1.51.0",
     "vite": "^2.9.9",
