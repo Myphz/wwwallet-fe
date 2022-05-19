@@ -2,11 +2,12 @@ import extractSass from "@/helpers/extractSass.helper.js";
 const primaryColor = extractSass("text-primary");
 
 export default {
+  animation: false,
   yAxis: {
     type: "value",
     show: false,
     scale: true,
-    boundaryGap: ["50%", "50%"],
+    boundaryGap: ["100%", "100%"],
   },
 
   xAxis: {
