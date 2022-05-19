@@ -6,7 +6,7 @@ export default {
     type: "value",
     show: false,
     scale: true,
-    boundaryGap: ["60%", "60%"],
+    boundaryGap: ["50%", "50%"],
   },
 
   xAxis: {

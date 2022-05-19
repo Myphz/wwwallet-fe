@@ -71,7 +71,7 @@ export default {
         const last = klines[klines.length - 1][0];
         const span = klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0);
 
-        if (klines.length >= 20) return last + span * klines.length / (klines.length / 5);
+        if (klines.length >= 20) return last + span * klines.length / (klines.length / 3);
         if (klines.length >= 6) return last + span * (40 / klines.length);
         return last + span;
       })();
