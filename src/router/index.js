@@ -13,7 +13,8 @@ export default function createVueRouter(app) {
       {
         path: "/",
         name: "homepage",
-        component: () => routeView("Home"),
+        // Don't render home on android
+        component: () => import.meta.env.MODE !== "android" ? routeView("Home") : routeView("Dashboard"),
       },
 
       {
@@ -105,7 +106,7 @@ export default function createVueRouter(app) {
   // Global route to check if the route is protected
   router.beforeEach(async to => {
     // Start progress bar
-    app.config.globalProperties.$Progress.start();
+    app?.config?.globalProperties?.$Progress?.start();
     const isAuth = await useAuthStore().checkAuth();
     to.params = { ...(to.params), isAuth };
 
@@ -126,7 +127,7 @@ export default function createVueRouter(app) {
       };
   });
   // Finish progress bar
-  router.afterEach(() => app.config.globalProperties.$Progress.finish())
+  router.afterEach(() => app?.config?.globalProperties?.$Progress?.finish())
 
   return router;
 };

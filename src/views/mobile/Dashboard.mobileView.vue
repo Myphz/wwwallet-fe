@@ -40,10 +40,11 @@ import { ANALYSIS_TIMES } from "@/config/config";
 import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { getFavPrice } from "@/helpers/crypto.helper";
 import { addEarnings } from "@/helpers/transactions.helper";
 import { generateTransactions, getStats } from "@/helpers/transactions.helper";
+import { useRouter } from "vue-router";
 
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
@@ -100,6 +101,12 @@ const earnings = computed(() => {
   };
 
   return ret;
+});
+
+// On android mode, if the route is "/" redirect to /dashboard
+onMounted(() => {
+  const router = useRouter();
+  if (router.currentRoute.value.path === "/") router.replace("/dashboard");
 });
 </script>
 

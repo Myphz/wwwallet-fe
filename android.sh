@@ -1,4 +1,4 @@
-npm run build
+node node_modules/vite/bin/vite.js build --mode android
 rm -rf ./android
 npx cap add android
 npx cap copy android

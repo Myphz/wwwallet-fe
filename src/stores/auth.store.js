@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { fetchServer } from "@/helpers/fetch.helper.js";
-import router from "@/router/index.js";
+import { router } from "@/main.js";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({

@@ -1,5 +1,9 @@
 export const BINANCE_BASE_URL_WS = "wss://stream.binance.com:9443/";
-export const SERVER_BASE_URL = process.env.NODE_ENV === "production" ? "/api/" : "http://localhost:3000/api/";
+export const SERVER_BASE_URL = (function() {
+  // On android, set the URL to the hosted website
+  if (import.meta.env.MODE === "android") return "https://wwwallet.app/api/";
+  return import.meta.env.MODE === "production" ? "/api/" : "http://localhost:3000/api/";
+})();
 
 // Stablecoins with a specific value
 export const QUOTES = {
