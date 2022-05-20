@@ -49,6 +49,8 @@ const tabs = computed(() => [
     position: fixed
     bottom: 0
     width: 100%
+    // Gotta defeat echarts' tooltip's z-index
+    z-index: 9999999999
 
     nav
       padding: .5em
