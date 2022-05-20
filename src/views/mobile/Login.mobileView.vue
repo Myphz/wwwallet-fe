@@ -26,14 +26,14 @@ import InputBox from "M#/login/InputBox.mobile.vue";
       padding: 1em 2em
       text-align: center
 
+      span
+        color: darken($text-primary, 15%)
+        font-weight: bold
+
   h2, h3
     font-weight: normal
 
   h3
     margin-bottom: 1em
-
-  span
-    color: darken($text-primary, 15%)
-    font-weight: bold
 
 </style>

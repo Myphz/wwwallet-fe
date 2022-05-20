@@ -26,7 +26,6 @@
             <Icon icon="github" />
             <a>GitHub</a>
           </div>
-          <RouterLink to="/">Contribute</RouterLink>
         </div>
 
         <div>

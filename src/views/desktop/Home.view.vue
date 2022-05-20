@@ -121,9 +121,9 @@ onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
     display: flex
     position: relative
 
-  span
-    color: darken($text-primary, 15%)
-    font-weight: bold
+    span
+      color: darken($text-primary, 15%)
+      font-weight: bold
 
   .tablet-image
     height: 100%

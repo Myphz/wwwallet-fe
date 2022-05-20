@@ -44,6 +44,11 @@ import InputBox from "D#/login/InputBox.vue";
     justify-content: space-around
     background-image: $gradient
 
+  .text-header, .img-section
+    span
+      color: darken($text-primary, 15%)
+      font-weight: bold
+
   .text-header
     margin-top: 2.5em
 
@@ -58,10 +63,6 @@ import InputBox from "D#/login/InputBox.vue";
     height: 50vh
     flex-direction: column
     justify-content: space-around
-
-  span
-    color: darken($text-primary, 15%)
-    font-weight: bold
 
   img
     height: 50vh
