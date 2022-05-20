@@ -17,9 +17,12 @@ export default function createVueRouter(app) {
   router.beforeEach(async to => {
     // Start progress bar
     app?.config?.globalProperties?.$Progress?.start();
+    // Set default isAuth
+    const store = useAuthStore();
+    to.params = { ...(to.params), isAuth: store.isAuthenticated };
     // If there are no special requirements for the route, just return
     if (!to.meta.requiresAuth && !to.meta.noAuth) return;
-    const isAuth = await useAuthStore().checkAuth();
+    const isAuth = await store.checkAuth();
     to.params = { ...(to.params), isAuth };
 
     if (to.meta.requiresAuth) {

@@ -35,17 +35,20 @@ const NO_NAVBAR_PATHS = ["/login", "/register"];
   html
     font-size: 70%
     height: 100%
+    overflow-x: hidden
 
   body
     background-color: $bg-base
     color: $text-primary
     font-family: $font-base
     height: 100%
+    overflow-x: hidden
   
   #app
     height: 100%
     display: flex
     flex-direction: column
+    overflow-x: hidden
     & > *
       flex-shrink: 0
 
