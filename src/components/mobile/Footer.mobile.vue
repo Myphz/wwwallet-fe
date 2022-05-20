@@ -11,7 +11,7 @@
 
         <div>
           <h4>Explore</h4>
-          <RouterLink to="/">Home</RouterLink>
+          <RouterLink v-if="!isAndroid" to="/">Home</RouterLink>
           <RouterLink to="/dashboard">Dashboard</RouterLink>
           <RouterLink to="/wallet">Wallet</RouterLink>
           <RouterLink to="/login">Login</RouterLink>
@@ -43,6 +43,7 @@
 import Icon from "U#/Icon.vue";
 import { RouterLink } from "vue-router";
 
+const isAndroid = import.meta.env.MODE === "android";
 const openLink = link => {
   window.open(link, "_blank");
 }
