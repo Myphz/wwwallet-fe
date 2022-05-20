@@ -31,25 +31,23 @@
         dataLayer.push(arguments)
       }
       gtag('js', new Date())
+      // Disable cookies
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied'
+      });
+      
       const GA_LOCAL_STORAGE_KEY = 'ga:clientId'
       if (window.localStorage) {
-        if (localStorage.getItem(GA_LOCAL_STORAGE_KEY)) {
-          gtag('js', new Date())
-          gtag('config', 'G-YJQ5Q1JLD3', {
-            send_page_view: true,
-            client_storage: 'none',
-            client_id: localStorage.getItem(GA_LOCAL_STORAGE_KEY),
-          })
-        } else {
+        if (!localStorage.getItem(GA_LOCAL_STORAGE_KEY)) {
           // Generate random UUID (shouldn't use Math.random for this, but it's not really important)
           window.localStorage.setItem(GA_LOCAL_STORAGE_KEY, Math.floor(Math.random() * Number.MAX_SAFE_INTEGER))
-          gtag('js', new Date())
-          gtag('config', 'G-YJQ5Q1JLD3', {
-            send_page_view: true,
-            client_storage: 'none',
-            client_id: localStorage.getItem(GA_LOCAL_STORAGE_KEY),
-          })
         }
+        gtag('config', 'G-YJQ5Q1JLD3', {
+          send_page_view: true,
+          client_storage: 'none',
+          client_id: localStorage.getItem(GA_LOCAL_STORAGE_KEY),
+        })
       }
     </script>
   </head>
