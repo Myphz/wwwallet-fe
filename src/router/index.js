@@ -12,10 +12,13 @@ export default function createVueRouter(app) {
     routes
   });
 
-  // Global route to check if the route is protected
+
+  // Global route to block navigation if the route requirement is not fulfilled
   router.beforeEach(async to => {
     // Start progress bar
     app?.config?.globalProperties?.$Progress?.start();
+    // If there are no special requirements for the route, just return
+    if (!to.meta.requiresAuth && !to.meta.noAuth) return;
     const isAuth = await useAuthStore().checkAuth();
     to.params = { ...(to.params), isAuth };
 
@@ -35,6 +38,15 @@ export default function createVueRouter(app) {
         params: { isAuth }
       };
   });
+
+  // Global route to add isAuth parameter
+  router.beforeResolve(async to => {
+    // If the requiresAuth or noAuth meta property is set, the isAuth parameter is already checked in the previous route
+    if (to.meta.requiresAuth || to.meta.noAuth) return;
+    const isAuth = await useAuthStore().checkAuth();
+    to.params = { ...(to.params), isAuth };
+  });
+  
   // Finish progress bar
   router.afterEach(() => app?.config?.globalProperties?.$Progress?.finish())
 
