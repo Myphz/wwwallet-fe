@@ -21,6 +21,10 @@ public class MainActivity extends BridgeActivity {
 }" > ./app/src/main/java/com/wwwallet/app/MainActivity.java
 
 ANDROID_SDK_ROOT=/opt/android-sdk ./gradlew bundleRelease
-mv app/build/outputs/bundle/release/app-release.aab ../bundle/wwwallet.aab
+mv app/build/outputs/bundle/release/app-release.aab ../bundle/wwwallet-unsigned.aab
 cd ..
 rm -rf ./android
+# Sign bundle
+cd bundle
+jarsigner -sigalg SHA256withRSA -digestalg SHA-256 -keystore ~/keys/wwwallet.jks -signedjar wwwallet.aab wwwallet-unsigned.aab wwwallet
+rm wwwallet-unsigned.aab
