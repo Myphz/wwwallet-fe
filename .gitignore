@@ -26,6 +26,5 @@ coverage
 *.njsproj
 *.sln
 *.sw?
-*.jks
 
-/apk
+bundle
