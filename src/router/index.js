@@ -1,106 +1,15 @@
-import { createRouter, createWebHistory } from "vue-router"
-import { routeView } from "../helpers/route.helper";
+import { createRouter, createWebHistory } from "vue-router";
+import routes from "./routes.mjs";
 import { useAuthStore } from "S#/auth.store";
 
 export default function createVueRouter(app) {
   const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    scrollBehavior(to, from, savedPosition) {
+    scrollBehavior() {
       // always scroll to top
       return { top: 0 }
     },
-    routes: [
-      {
-        path: "/",
-        name: "homepage",
-        // Don't render home on android
-        component: () => import.meta.env.MODE !== "android" ? routeView("Home") : routeView("Dashboard"),
-      },
-
-      {
-        path: "/wallet",
-        name: "wallet",
-        component: () => routeView("Wallet"),
-      },
-
-      {
-        path: "/crypto",
-        name: "market",
-        component: () => routeView("Market")
-      },
-
-      {
-        path: "/crypto/:crypto",
-        name: "crypto",
-        component: () => routeView("Crypto")
-      },
-
-      {
-        path: "/dashboard",
-        name: "dashboard",
-        component: () => routeView("Dashboard"),
-      },
-
-      {
-        path: "/login",
-        name: "login",
-        component: () => routeView("Login"),
-        meta: { noAuth: true }
-      },
-
-      {
-        path: "/register",
-        name: "register",
-        component: () => routeView("Register"),
-        meta: { noAuth: true }
-      },
-
-      {
-        path: "/register/verify",
-        name: "verify",
-        component: () => routeView("RegisterVerify"),
-        meta: { noAuth: true }
-      },
-
-      {
-        path: "/confirm",
-        name: "confirm",
-        component: () => routeView("Confirm"),
-      },
-
-      {
-        path: "/forgot",
-        name: "forgot",
-        component: () => routeView("Forgot"),
-        meta: { noAuth: true }
-      },
-
-      {
-        path: "/settings",
-        name: "settings",
-        component: () => routeView("UserSettings"),
-        meta: { requiresAuth: true }
-      },
-
-      {
-        path: "/feedback",
-        name: "feedback",
-        component: () => routeView("Feedback"),
-        meta: { requiresAuth: true }
-      },
-
-      {
-        path: "/privacypolicy",
-        name: "Privacy Policy",
-        component: () => import("../views/legal/PrivacyPolicy.view.vue")
-      },
-
-      {
-        path: "/cookiepolicy",
-        name: "Cookie Policy",
-        component: () => import("../views/legal/CookiePolicy.view.vue")
-      },
-    ]
+    routes
   });
 
   // Global route to check if the route is protected
