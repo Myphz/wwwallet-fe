@@ -75,18 +75,15 @@ import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 const first = ref();
 const second = ref();
 
-let start = 0;
-const onScroll = () => {
-  if (window.scrollY < start)
-    animateScrollTo(first.value);
+const onScroll = ({ deltaY }) => {
+  if (deltaY < 0)
+    animateScrollTo(first.value, { speed: 700 });
   else
-    animateScrollTo(second.value);
-
-  start = window.scrollY;
+    animateScrollTo(second.value, { speed: 700 });
 };
 
-onBeforeMount(() => window.addEventListener("scroll", onScroll));
-onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
+onBeforeMount(() => window.addEventListener("wheel", onScroll));
+onBeforeUnmount(() => window.removeEventListener("wheel", onScroll));
 </script>
 
 <style lang="sass" scoped>
