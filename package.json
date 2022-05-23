@@ -15,7 +15,7 @@
     "just-clone": "^5.0.1",
     "pinia": "^2.0.14",
     "toformat": "^2.0.0",
-    "vue": "^3.2.33",
+    "vue": "^3.2.36",
     "vue-echarts": "^6.0.3",
     "vue-router": "^4.0.15"
   },
@@ -24,7 +24,7 @@
     "@capacitor/cli": "^3.5.1",
     "@capacitor/core": "^3.5.1",
     "@vitejs/plugin-vue": "^2.3.2",
-    "sass": "^1.51.0",
+    "sass": "^1.52.1",
     "sitemap": "^7.1.1",
     "vite": "^2.9.9",
     "vite-svg-loader": "^3.3.0"
