@@ -3,10 +3,10 @@
     <Logo />
     <h2>{{ header }}</h2>
     <form @submit.prevent="submit">
-      <Input 
-        class="input" 
-        icon="email" 
-        label="Email" 
+      <Input
+        class="input"
+        icon="email"
+        label="Email"
         v-model:value="values.email"
         v-model:isValid="areValuesValid[0]"
         :validate="validateEmail"
@@ -65,6 +65,7 @@ import { useAuthStore } from "S#/auth.store";
 import { reactive, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import { validateEmail, validatePassword } from "@/helpers/validator.helper";
+import mixpanel from "mixpanel-browser";
 
 const { login, redirect } = defineProps({
   login: {
@@ -93,32 +94,34 @@ let subtext, header, submit;
 if (login) {
   header = "Login";
   subtext = "Don't have an account?";
-  submit = async () => { 
+  submit = async () => {
     // Guard clause to check if all the values are valid before sending the request to backend
-    if (areValuesValid.some(v => !v)) return; 
+    if (areValuesValid.some(v => !v)) return;
 
     const res = await store.login(values);
     if (!res) return;
     const { success, msg } = res;
-    
+
     if (!success) {
       requestSuccess.value = false;
       requestMessage.value = msg;
     } else {
+      mixpanel.track("User login");
       router.push(redirect || "/dashboard");
     }
   };
 } else {
   header = "Register";
   subtext = "Already have an account?";
-  submit = async () => { 
+  submit = async () => {
     // Guard clause to check if all the values are valid before sending the request to backend
-    if (areValuesValid.some(v => !v)) return; 
+    if (areValuesValid.some(v => !v)) return;
     const { success, msg } = await store.register(values);
     if (!success) {
       requestSuccess.value = false;
       requestMessage.value = msg;
     } else {
+      mixpanel.track("User register");
       router.push({ name: "verify", params: { email: values.email, password: values.password } });
     }
   };

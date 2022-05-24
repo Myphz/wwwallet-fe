@@ -23,32 +23,6 @@
 
     <noscript>JavaScript is required for this website. Please allow JavaScript and refresh the page.</noscript>
     <title>wwwallet</title>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJQ5Q1JLD3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || []
-      function gtag() {
-        dataLayer.push(arguments)
-      }
-      gtag('js', new Date())
-      // Disable cookies
-      gtag('consent', 'default', {
-        'ad_storage': 'denied',
-        'analytics_storage': 'denied'
-      });
-
-      const GA_LOCAL_STORAGE_KEY = 'ga:clientId'
-      if (window.localStorage) {
-        if (!localStorage.getItem(GA_LOCAL_STORAGE_KEY)) {
-          // Generate random UUID (shouldn't use Math.random for this, but it's not really important)
-          window.localStorage.setItem(GA_LOCAL_STORAGE_KEY, Math.floor(Math.random() * Number.MAX_SAFE_INTEGER))
-        }
-        gtag('config', 'G-YJQ5Q1JLD3', {
-          client_storage: 'none',
-          client_id: localStorage.getItem(GA_LOCAL_STORAGE_KEY),
-        })
-      }
-    </script>
   </head>
   <body>
     <div id="app"></div>

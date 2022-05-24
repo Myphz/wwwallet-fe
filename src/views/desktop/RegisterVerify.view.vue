@@ -35,6 +35,7 @@ import Popup from "U#/Popup.vue";
 import { useAuthStore } from "S#/auth.store";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
+import mixpanel from "mixpanel-browser";
 
 const store = useAuthStore();
 const [route, router] = [useRoute(), useRouter()];
@@ -42,7 +43,7 @@ const [route, router] = [useRoute(), useRouter()];
 // This page can be called in 2 different ways:
 // 1) After register / after login if the email is not verified (with email and password as route params)
 // 2) To verify email from the email link (with jwt as query)
-// Try to take all the parameters, and redirect to the login page if none of these work. 
+// Try to take all the parameters, and redirect to the login page if none of these work.
 const { email, password } = route.params;
 const jwt = route.query.jwt;
 if ((!email || !password) && !jwt) router.replace("/login");
@@ -54,7 +55,10 @@ if (jwt)
   onMounted(async () => {
     request.value.msg = "Verifying email...";
     request.value = await store.verify(jwt);
-    if (request.value.success) setTimeout(() => router.replace("/dashboard"), 5000);
+    if (request.value.success) {
+      mixpanel.track("Email verified");
+      setTimeout(() => router.replace("/dashboard"), 5000);
+    }
   });
 
 const resend = async () => {
