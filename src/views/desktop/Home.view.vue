@@ -9,7 +9,12 @@
             <h1>Managing your crypto<br>has never been <i><span>this easy</span></i></h1>
             <h2>Keep track of your crypto wallet<br>in real-time, everywhere</h2>
             <h2>Completely <span>free</span> and <span>open source</span></h2>
-            <Button btnClass="h3 bg-primary noborder" btnCss="border-radius: .25em"><RouterLink to="/dashboard">GET STARTED</RouterLink></Button>
+            <div class="align-center buttons">
+              <Button btnClass="h3 bg-primary noborder" btnCss="border-radius: .25em; margin-right: 1em"><RouterLink to="/dashboard">GET STARTED</RouterLink></Button>
+              <a href='https://play.google.com/store/apps/details?id=com.wwwallet.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                <img alt='Get it on Google Play' src='/images/google-play-badge.png' />
+              </a>
+            </div>
           </div>
           <div>
             <img src="/images/tablet_mockup.png" alt="Dashboard" class="tablet-image">
@@ -59,7 +64,7 @@
             <img src="/images/phone_mockup2.png" alt="Dashboard" class="tablet-image">
           </div>
         </div>
-        
+
       </div>
     </section>
 
@@ -103,7 +108,7 @@ onBeforeUnmount(() => window.removeEventListener("wheel", onScroll));
     margin-bottom: .5em
 
   .page
-    margin: 0 12.5vw
+    margin: 0 10vw
     height: 50%
     display: flex
     flex-direction: column
@@ -133,15 +138,20 @@ onBeforeUnmount(() => window.removeEventListener("wheel", onScroll));
     right: 0
     bottom: 0
 
+  .buttons
+    align-items: stretch
+    *
+      display: flex
+
   // Second page
   li
     margin-bottom: 1.5em
 
   dt, li::marker
     font-weight: bold
-  
+
   dd
     font-size: 1.5rem
-    
+
 
 </style>

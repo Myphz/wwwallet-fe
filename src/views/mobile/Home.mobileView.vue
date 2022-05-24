@@ -5,11 +5,18 @@
     </header>
     <div class="page">
       <div class="content-wrapper">
-        <div style="margin-bottom: 5em">
+        <div style="margin-bottom: 10em">
           <h1>Managing<br>your crypto<br>has never been <i><span>this easy</span></i></h1>
           <h3>Keep track of your crypto wallet in real-time, everywhere</h3>
           <h3>Completely <span>free</span> and <span>open source</span></h3>
-          <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em"><RouterLink to="/dashboard">GET STARTED</RouterLink></Button>
+          <div class="buttons" style="position: relative">
+
+            <Button btnClass="bg-primary noborder" btnCss="border-radius: .25em; font-size: 1.5rem"><RouterLink to="/dashboard">GET STARTED</RouterLink></Button>
+            <a style="left: 50%" href='https://play.google.com/store/apps/details?id=com.wwwallet.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+              <img alt='Get it on Google Play' src='/images/google-play-badge.png' style="height: 48px" />
+            </a>
+          </div>
+
         </div>
 
         <img src="/images/phone_mockup.png" alt="Dashboard">
@@ -44,7 +51,7 @@
         <img src="/images/phone_mockup2.png" alt="Dashboard">
         <div style="margin-top: 2em">
           <h1>Keep up with crypto</h1>
-          <Button btnClass="h2 bg-primary noborder" btnCss="border-radius: .25em; margin-top: -2em">
+          <Button btnClass="h3 bg-primary noborder" btnCss="border-radius: .25em; margin-top: -.5em">
             <RouterLink to="/register">REGISTER NOW</RouterLink>
           </Button>
         </div>
@@ -65,7 +72,7 @@ import Logo from "U#/Logo.vue";
     left: 0
     top: 0
     width: 100%
-    height: fit-content 
+    height: fit-content
     background-image: $gradient
 
   .logo
@@ -74,8 +81,6 @@ import Logo from "U#/Logo.vue";
     background-color: $bg-dark
 
   h1
-    font-size: nth($font-sizes, 1) + 1rem
-    line-height: 5rem
     margin-bottom: .75em
 
   h3
@@ -101,6 +106,10 @@ import Logo from "U#/Logo.vue";
     position: absolute
     right: 0
 
+  .buttons
+    &>*
+      position: absolute
+
   img
     width: 100%
 
@@ -110,9 +119,9 @@ import Logo from "U#/Logo.vue";
 
   dt, li::marker
     font-weight: bold
-  
+
   dd
     font-size: nth($font-sizes, 3)
-    
+
 
 </style>
