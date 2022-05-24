@@ -25,6 +25,7 @@
     "@capacitor/cli": "^3.5.1",
     "@capacitor/core": "^3.5.1",
     "@vitejs/plugin-vue": "^2.3.2",
+    "capacitor-set-version": "^2.0.0",
     "sass": "^1.52.1",
     "sitemap": "^7.1.1",
     "vite": "^2.9.9",
