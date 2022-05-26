@@ -5,7 +5,7 @@
       <header class="space-between margin-bottom">
         <h1 v-if="isDetail">Transaction Detail</h1>
         <h1 v-else>Add Transaction</h1>
-        <Icon 
+        <Icon
           icon="cross"
           @click="$emit('close'); resetFields()"
           clickable
@@ -16,7 +16,7 @@
         <span :class="'option ' + (isBuy ? '' : 'active')" @click="isBuy = false">SELL</span>
       </div>
       <div class="space-between margin-bottom gap">
-        <Select 
+        <Select
           :options="cryptoList"
           icon="bitcoin"
           class="h2 width-50"
@@ -25,9 +25,9 @@
           :ref="e => inputs[0] = e"
           bordered
         />
-        <Select 
+        <Select
           :options="quotes"
-          icon="bitcoin" 
+          icon="bitcoin"
           class="h2 width-50"
           :startValue="base"
           v-model="selectedBase"
@@ -37,20 +37,20 @@
       </div>
 
       <div class="space-between row margin-bottom">
-        <Input 
-          icon="coins" 
-          label="Quantity" 
+        <Input
+          icon="coins"
+          label="Quantity"
           :startValue="quantity"
           v-model:value="quantity"
           v-model:isValid="inputsValid[0]"
           :validate="quantity => isPositiveFloat(quantity) && checkQty()"
           :errorMessage="errorMessage"
-          :ref="e => inputs[2] = e" 
+          :ref="e => inputs[2] = e"
         />
 
-        <Input 
-          icon="exchange" 
-          :label="`${selectedCrypto}/${selectedBase}`" 
+        <Input
+          icon="exchange"
+          :label="`${selectedCrypto}/${selectedBase}`"
           :startValue="startPrice"
           v-model:value="price"
           v-model:isValid="inputsValid[1]"
@@ -58,27 +58,30 @@
           errorMessage="Invalid value"
           :ref="e => inputs[3] = e"
         />
-        
+
       </div>
 
       <div class="space-between row margin-bottom">
-        <Datepicker 
-          v-model="date" 
-          format="dd/MM/yyyy HH:mm" 
-          :maxDate="currentDate" 
-          autoApply 
-          :closeOnAutoApply="false"
-          menuClassName="dp-menu"
-          :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
-          @open.once="datePicked = true"
-          dark 
-        />
-        <Input 
-          icon="notes" 
-          label="Notes" 
-          :startValue="notes" 
-          v-model:value="notes" 
-          :ref="e => inputs[4] = e" 
+        <div style="width: 50%">
+          <Datepicker
+            v-model="date"
+            format="dd/MM/yyyy HH:mm"
+            :maxDate="currentDate"
+            autoApply
+            :closeOnAutoApply="false"
+            menuClassName="dp-menu"
+            :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
+            @open.once="datePicked = true"
+            dark
+          />
+          <span class="h6 text-secondary">Statistics before this date won't be shown</span>
+        </div>
+        <Input
+          icon="notes"
+          label="Notes"
+          :startValue="notes"
+          v-model:value="notes"
+          :ref="e => inputs[4] = e"
           allowSpaces
         />
       </div>
@@ -205,9 +208,9 @@ const resetFields = () => {
 
 const submit = async (func, additionalParams) => {
   if (inputsValid.some(input => !input)) return;
-  const params = { 
+  const params = {
     ...(additionalParams || {}),
-    crypto: selectedCrypto.value, 
+    crypto: selectedCrypto.value,
     base: selectedBase.value,
     isBuy: isBuy.value,
     price: price.value,
@@ -270,7 +273,7 @@ if (!isDetail) {
     height: 100%
     background-color: black
     opacity: .5
-  
+
   .options
     background-color: $bg-dark
     border-radius: 1.5em
@@ -286,8 +289,11 @@ if (!isDetail) {
     cursor: pointer
 
   .row
-    span, .dp__main
+    span
       width: 48%
+
+    .dp__main
+      width: 96%
 
   .active
     background-color: $primary
@@ -335,7 +341,7 @@ if (!isDetail) {
     background-color: black
     border: none
     &:hover
-     background-color: black 
+     background-color: black
 
   .dp__button_bottom
     background-color: darken($bg-dark, 3%)
@@ -352,7 +358,7 @@ if (!isDetail) {
     padding: 0
     path
       fill: $text-secondary-hex
-      
+
   .dp-input
     font-size: nth($font-sizes, 5)
     padding: 11px 0 11px 50px
@@ -372,9 +378,9 @@ if (!isDetail) {
   .date-picked
     color: $text-primary
     & + .dp__input_icons
-      path  
+      path
         fill: $text-primary
-        
+
     border-bottom: 1px solid $text-primary
     &:hover
       border-bottom: 1px solid $text-primary

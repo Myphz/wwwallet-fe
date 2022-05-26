@@ -3,7 +3,7 @@
     <div :class="'box-container align-center bordered ' + (value ? 'border-primary ' : '') + containerClasses">
       <InputIcon :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-05' : '')" />
       <span class="input-container">
-        <input 
+        <input
           :class="'text-primary ' + inputClasses"
           :type="type === 'password' ? show ? 'text' : type : type"
           :name="icon"
@@ -21,10 +21,10 @@
         <label :class="'text-secondary ' + labelClasses">{{ label }}</label>
       </span>
       <component
-        :is="show ? EyeClose : EyeOpen" 
-        v-if="type === 'password'" 
-        :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-05' : '')" 
-        style="margin-left: auto; margin-right: 1em; transform: scale(1.1); cursor: pointer" 
+        :is="show ? EyeClose : EyeOpen"
+        v-if="type === 'password'"
+        :class="(value ? 'icon-fill ' : 'icon-empty ') + (iconSmall ? 'icon-05' : '')"
+        style="margin-left: auto; margin-right: 1em; transform: scale(1.1); cursor: pointer"
         @click="show = !show"
       />
     </div>

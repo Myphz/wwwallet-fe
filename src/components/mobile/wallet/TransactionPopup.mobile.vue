@@ -5,7 +5,7 @@
       <header class="space-between-margin">
         <h2 v-if="isDetail">Transaction Detail</h2>
         <h2 v-else>Add Transaction</h2>
-        <Icon 
+        <Icon
           icon="cross"
           @click="$emit('close'); resetFields()"
           clickable
@@ -16,9 +16,9 @@
         <span :class="'option ' + (isBuy ? '' : 'active')" @click="isBuy = false">SELL</span>
       </div>
       <div class="space-between-margin">
-        <Select 
+        <Select
           :options="cryptoList"
-          icon="bitcoin" 
+          icon="bitcoin"
           class="h3 width-50"
           :startValue="crypto"
           v-model="selectedCrypto"
@@ -27,9 +27,9 @@
           bordered
           mobile
         />
-        <Select 
+        <Select
           :options="quotes"
-          icon="bitcoin" 
+          icon="bitcoin"
           class="h3 width-50"
           iconSize="small"
           :startValue="base"
@@ -41,52 +41,55 @@
       </div>
 
       <div class="space-between-margin row">
-        <Input 
-          icon="coins" 
-          label="Quantity" 
-          iconSmall 
+        <Input
+          icon="coins"
+          label="Quantity"
+          iconSmall
           :startValue="quantity"
-          v-model:value="quantity" 
+          v-model:value="quantity"
           v-model:isValid="inputsValid[0]"
           :validate="quantity => (isPositiveFloat(quantity) && checkQty())"
           :errorMessage="errorMessage"
-          :ref="e => inputs[2] = e" 
+          :ref="e => inputs[2] = e"
         />
 
-        <Input 
-          icon="exchange" 
-          :label="`${selectedCrypto}/${selectedBase}`" 
-          iconSmall 
-          :startValue="startPrice" 
-          v-model:value="price" 
+        <Input
+          icon="exchange"
+          :label="`${selectedCrypto}/${selectedBase}`"
+          iconSmall
+          :startValue="startPrice"
+          v-model:value="price"
           v-model:isValid="inputsValid[1]"
           :validate="isPositiveFloat"
           errorMessage="Invalid value"
-          :ref="e => inputs[3] = e" 
+          :ref="e => inputs[3] = e"
         />
       </div>
 
       <div class="space-between-margin row">
-        <Datepicker 
-          v-model="date" 
-          format="dd/MM HH:mm" 
-          :maxDate="currentDate" 
-          autoApply 
-          :closeOnAutoApply="false"
-          menuClassName="dp-menu"
-          :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
-          @open.once="datePicked = true"
-          vertical
-          dark 
-        />
-        <Input 
-          icon="notes" 
-          label="Notes" 
+        <div style="width: 50%">
+          <Datepicker
+            v-model="date"
+            format="dd/MM HH:mm"
+            :maxDate="currentDate"
+            autoApply
+            :closeOnAutoApply="false"
+            menuClassName="dp-menu"
+            :inputClassName="'dp-input ' + (datePicked ? 'date-picked' : 'date-default')"
+            @open.once="datePicked = true"
+            vertical
+            dark
+          />
+          <span class="text-secondary text-smaller">Data before this date won't be shown</span>
+        </div>
+        <Input
+          icon="notes"
+          label="Notes"
           iconSmall
-          :startValue="notes" 
+          :startValue="notes"
           v-model:value="notes"
-          :ref="e => inputs[4] = e" 
-          allowSpaces 
+          :ref="e => inputs[4] = e"
+          allowSpaces
         />
       </div>
 
@@ -213,9 +216,9 @@ const resetFields = () => {
 
 const submit = async (func, additionalParams) => {
   if (inputsValid.some(input => !input)) return;
-  const params = { 
+  const params = {
     ...(additionalParams || {}),
-    crypto: selectedCrypto.value, 
+    crypto: selectedCrypto.value,
     base: selectedBase.value,
     isBuy: isBuy.value,
     price: price.value,
@@ -283,7 +286,7 @@ if (!isDetail) {
 
   .width-50
     width: 50%
-  
+
   .options
     background-color: $bg-dark
     border-radius: 1.5em
@@ -302,8 +305,11 @@ if (!isDetail) {
     gap: 2em
 
   .row
-    span, .dp__main
+    span
       width: 48%
+
+    .dp__main
+      width: 96%
 
   .active
     background-color: $primary
@@ -314,6 +320,9 @@ if (!isDetail) {
   img
     width: 36px
     height: 36px
+
+  .text-smaller
+    font-size: nth($font-sizes, 6) - 0.1rem
 </style>
 
 <style lang="sass">
@@ -353,7 +362,7 @@ if (!isDetail) {
     background-color: black
     border: none
     &:hover
-     background-color: black 
+     background-color: black
 
   .dp__button_bottom
     background-color: lighten($bg-dark, 10%)
@@ -393,7 +402,7 @@ if (!isDetail) {
   .date-picked
     color: $text-primary
     & + .dp__input_icons
-      path  
+      path
         fill: $text-primary
 
     border-bottom: 1px solid $text-primary
