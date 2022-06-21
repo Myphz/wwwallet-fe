@@ -67,7 +67,7 @@ export default {
 
     const updateMaxX = data => {
       const klines = data || option.series.data;
-        // Set white space to the right of the chart 
+        // Set white space to the right of the chart
       option.xAxis.max = (function () {
         const last = klines[klines.length - 1][0];
         const span = klines[klines.length - 1][0] - (klines[klines.length - 2]?.[0] || 0);
@@ -166,7 +166,7 @@ export default {
 
       if (!totals.value) ({ klines, socket } = await store.getKlines(crypto.value, base.value, interval.value, { noSocket: !route.params.isAuth }));
       else ({ klines, socket } = await store.getDashboardKlines(crypto.value, base.value, interval.value, transactions.value, { isAuth: route.params.isAuth }));
-      
+
       if (klines === null) return isLoading = false;
 
       if (totals.value && !klines?.length) {
@@ -182,9 +182,9 @@ export default {
         ctx.emit("empty");
       }
 
-      // Set white space to the right of the chart 
+      // Set white space to the right of the chart
       updateMaxX(klines);
-      
+
       // Set maximum zoom
       option.dataZoom.minSpan = 2000 / klines.length;
 
@@ -219,16 +219,16 @@ export default {
       let klines;
 
       if (!totals.value) {
-        ({ klines } = await store.getKlines(crypto.value, base.value, interval.value, 
-          { 
-            end: option.series.data[0][0] - (option.series.data[1][0] - option.series.data[0][0]), 
-            noSocket: true 
+        ({ klines } = await store.getKlines(crypto.value, base.value, interval.value,
+          {
+            end: option.series.data[0][0] - (option.series.data[1][0] - option.series.data[0][0]),
+            noSocket: true
           })
         );
       } else {
         ({ klines } = await store.getDashboardKlines(crypto.value, base.value, interval.value, transactions.value,
-          { 
-            end: option.series.data[0][0] - (option.series.data[1][0] - option.series.data[0][0]), 
+          {
+            end: option.series.data[0][0] - (option.series.data[1][0] - option.series.data[0][0]),
             noSocket: true,
             isAuth: route.params.isAuth
           })
@@ -246,14 +246,6 @@ export default {
       // Set maximum zoom
       option.dataZoom.minSpan = 2000 / klines.length / option.series.data.length / klines.length;
 
-      // Return to the last position
-      chart.value.dispatchAction({
-        type: "dataZoom",
-        start: 100 / (option.series.data.length / klines.length),
-        end: 100 / (option.series.data.length / klines.length) + kline.end / (option.series.data.length / klines.length)
-      });
-
-      
       isLoading = false;
     };
 
