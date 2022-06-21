@@ -1,17 +1,17 @@
 <template>
   <section class="analysis-section">
     <h1>Wallet Analysis</h1>
-    <AssetsChart 
+    <AssetsChart
       :totals="totals"
       :currentValues="currentValues"
       :earnings="earnings"
     />
-    <CryptoChart 
+    <CryptoChart
       crypto="TOTAL"
-      base="USDT" 
+      base="USDT"
       :totals="totals"
       :transactions="transactions"
-      dashboard 
+      dashboard
     />
   </section>
   <section class="analysis-section">
@@ -65,15 +65,15 @@ const transactions = computed(() => addEarnings(authTransactions.value, cryptoSt
 
 // Computed variable to store some transaction statistics.
 // Example format:
-// { 
-//   "BTC": { 
-//     "totalQuantity": "5", 
-//     "buyQuantity": "5", 
-//     "sellQuantity": "0", 
-//     "avgBuyPrice": "39577.01", 
-//     "avgSellPrice": "0" 
+// {
+//   "BTC": {
+//     "totalQuantity": "5",
+//     "buyQuantity": "5",
+//     "sellQuantity": "0",
+//     "avgBuyPrice": "39577.01",
+//     "avgSellPrice": "0"
 //   },
-  
+
 //   "ETH": {... }
 // }
 const totals = computed(() => getStats(transactions.value, cryptoStore.prices));
@@ -96,7 +96,7 @@ const earnings = computed(() => {
   for (const [crypto, trans] of Object.entries(transactions.value || {})) {
     ret[crypto] = Big(0);
     for (const { base, earnings } of trans) {
-      ret[crypto] = ret[crypto].plus(earnings.times(getFavPrice(base, cryptoStore.prices)));
+      ret[crypto] = ret[crypto].plus(EarningsChart);
     }
   };
 

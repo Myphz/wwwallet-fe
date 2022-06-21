@@ -1,8 +1,8 @@
 <template>
   <div class="main bg-dark nohover h4 transition">
     <div class="crypto align-center h2">
-      <img 
-        :src="getIcon(crypto)" 
+      <img
+        :src="getIcon(crypto)"
         :alt="crypto"
         onerror="this.src='/icons/generic.svg'"
       >
@@ -40,7 +40,7 @@
       <div class="space-between margin-bottom">
         <span v-if="!pctChange.eq(0)" :class="pctChange.gt(0) ? 'green' : 'red'">{{ formatPercentage(pctChange) }}</span>
         <span v-else>N/A</span>
-        
+
         <span v-if="!earnings.eq(0)" :class="earnings.s === -1 ? 'red' : 'green'">{{ earnings.s === -1 ? "-" : "" }}{{ formatValue(earnings.abs()) }}</span>
         <span v-else>N/A</span>
       </div>
@@ -120,7 +120,7 @@ const pctChange = computed(() => {
 const earnings = computed(() => {
   let ret = Big(0);
   for (const transaction of computedTransactions.value) {
-    ret = ret.plus(transaction.earnings.times(getFavPrice(transaction.base, store.prices)));
+    ret = ret.plus(transaction.earnings);
   };
   return ret;
 });
@@ -179,5 +179,5 @@ watch(currentPrice, (newPrice, oldPrice) => {
     width: 32px
     height: 32px
     margin-right: .5em
-      
+
 </style>

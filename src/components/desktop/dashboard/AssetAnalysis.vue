@@ -1,8 +1,8 @@
 <template>
   <tr class="h4 bg-dark transition" @click="open = !open">
     <td class="align-center" id="chart">
-      <img 
-        :src="getIcon(crypto)" 
+      <img
+        :src="getIcon(crypto)"
         :alt="crypto"
         onerror="this.src='/icons/generic.svg'"
       >
@@ -15,7 +15,7 @@
         </div>
       </div>
     </td>
-    
+
     <td>{{ formatValue(totals.avgBuyPrice) }}</td>
     <td>{{ totals.avgSellPrice.eq(0) ? "N/A" : formatValue(totals.avgSellPrice) }}</td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentPrice) }}</td>
@@ -24,7 +24,7 @@
 
     <td v-if="!pctChange.eq(0)" :class="pctChange.gt(0) ? 'green' : 'red'">{{ formatPercentage(pctChange) }}</td>
     <td v-else>N/A</td>
-    
+
     <td class="arrow-cell">
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </td>
@@ -100,7 +100,7 @@ const pctChange = computed(() => {
 const earnings = computed(() => {
   let ret = Big(0);
   for (const transaction of computedTransactions.value) {
-    ret = ret.plus(transaction.earnings.times(getFavPrice(transaction.base, store.prices)));
+    ret = ret.plus(transaction.earnings);
   };
   return ret;
 });
@@ -148,11 +148,11 @@ watch(currentPrice, (newPrice, oldPrice) => {
 
   td
     padding: .25em 1em
-  
+
   .arrow-cell
     text-align: right
 
   .transactions-row
     background-color: darken($bg-base, 2%)
-      
+
 </style>
