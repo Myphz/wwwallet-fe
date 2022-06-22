@@ -96,7 +96,7 @@ const earnings = computed(() => {
   for (const [crypto, trans] of Object.entries(transactions.value || {})) {
     ret[crypto] = Big(0);
     for (const { base, earnings } of trans) {
-      ret[crypto] = ret[crypto].plus(EarningsChart);
+      ret[crypto] = ret[crypto].plus(earnings);
     }
   };
 
