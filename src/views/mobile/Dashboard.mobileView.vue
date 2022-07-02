@@ -8,7 +8,7 @@
     />
     <CryptoChart
       crypto="TOTAL"
-      base="USDT"
+      :base="base"
       :totals="totals"
       :transactions="transactions"
       dashboard
@@ -36,7 +36,7 @@ import EarningsChart from "M#/charts/EarningsChart.mobile.vue";
 import Select from "U#/Select.vue";
 import AssetsAnalysis from "M#/dashboard/AssetsAnalysis.mobile.vue";
 
-import { ANALYSIS_TIMES } from "@/config/config";
+import { ANALYSIS_TIMES, QUOTES } from "@/config/config";
 import { useAuthStore } from "S#/auth.store";
 import { useCryptoStore } from "S#/crypto.store";
 import Big from "@/helpers/big.helper";
@@ -49,6 +49,7 @@ import { useRouter } from "vue-router";
 const authStore = useAuthStore();
 const cryptoStore = useCryptoStore();
 const frequency = ref("TOTAL");
+const base = ref(QUOTES[localStorage.getItem("currency") || "USD"].quotes[0]);
 
 // Mock transactions if the user is not logged in
 const authTransactions = ref(authStore.transactions);
