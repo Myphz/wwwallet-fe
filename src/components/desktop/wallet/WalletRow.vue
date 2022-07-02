@@ -1,8 +1,8 @@
 <template>
   <tr :class="'h4 transition main-row'" @click="open = !open">
     <td class="align-center">
-      <img 
-        :src="getIcon(crypto)" 
+      <img
+        :src="getIcon(crypto)"
         :alt="crypto"
         onerror="this.src='/icons/generic.svg'"
       >
@@ -25,14 +25,14 @@
   </tr>
   <tr v-show="open" class="transactions-row">
     <td colspan="8">
-      <Transactions 
-        :crypto="crypto" 
+      <Transactions
+        :crypto="crypto"
         :withTicker="false"
         :transactions="$route.params.isAuth ? [] : computedTransactions"
-        bgColor="bg-base-dark" 
-        fontSize="h5" 
-        shorter 
-        @request="value => $emit('request', value)" 
+        bgColor="bg-base-dark"
+        fontSize="h5"
+        shorter
+        @request="value => $emit('request', value)"
       />
     </td>
   </tr>
@@ -82,8 +82,8 @@ const computedTransactions = computed(() => addEarnings(transactions.value, cryp
 
 const totalEarnings = computed(() => {
   let ret = Big(0);
-  for (const { base, earnings } of computedTransactions.value) {
-    ret = ret.plus(earnings.times(getFavPrice(base, cryptoStore.prices)));
+  for (const { earnings } of computedTransactions.value) {
+    ret = ret.plus(earnings);
   }
   return ret;
 });
@@ -113,7 +113,7 @@ watch(currentValue, (newValue, oldValue) => {
     cursor: pointer
     &:hover
       background-color: lighten($bg-base, 10%)
-    
+
   img
     width: 48px
     height: 48px
