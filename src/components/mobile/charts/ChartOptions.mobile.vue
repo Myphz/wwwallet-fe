@@ -1,8 +1,9 @@
 <template>
   <header class="noselect space-between align-center shadow">
     <span class="align-center">
-      <Select 
-        class="margin-left text-primary h3" 
+      <Select
+        v-if="selectedCrypto"
+        class="margin-left text-primary h3"
         :options="cryptoList"
         :startValue="selectedCrypto"
         v-model="selectedCrypto"
@@ -11,8 +12,9 @@
         mobile
       />
 
-      <Select 
-        class="text-primary h3" 
+      <Select
+        v-if="selectedBase"
+        class="text-primary h3"
         :options="baseOptions"
         :startValue="startBase"
         v-model="selectedBase"
@@ -28,7 +30,6 @@
 </template>
 
 <script setup>
-import Icon from "U#/Icon.vue";
 import Select from "U#/Select.vue";
 import { computed, getCurrentInstance, ref, toRef, watch } from "vue";
 import { useCryptoStore } from "S#/crypto.store";
@@ -72,8 +73,8 @@ if (!dashboard) {
 } else {
   const keys = computed(() => Object.keys(totals.value).filter(key => !totals.value[key].totalQuantity.eq(0)));
   cryptoList = computed(() => ["TOTAL", ...keys.value]);
-  baseOptions = computed(() => selectedCrypto.value === "TOTAL" ? 
-    getBaseLCM(keys.value, store.tickerInfo) : 
+  baseOptions = computed(() => selectedCrypto.value === "TOTAL" ?
+    getBaseLCM(keys.value, store.tickerInfo) :
     store.tickerInfo[selectedCrypto.value]?.quotes || []
   );
 };
@@ -108,7 +109,7 @@ const startBase = ref(base);
 
   h2
     font-weight: normal
-        
+
   img
     width: 36px
     height: 36px

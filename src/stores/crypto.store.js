@@ -47,7 +47,7 @@ export const useCryptoStore = defineStore("crypto", {
         //    ETH: ...
         // }
 
-        // IMPORTANT: 'mcap' and 'name' may be missing, 
+        // IMPORTANT: 'mcap' and 'name' may be missing,
         // as they come from the top 5000 crypto by marketcap on CoinMarketCap (and not from Binance)
 
         if (baseAsset in this.tickerInfo) {
@@ -69,11 +69,11 @@ export const useCryptoStore = defineStore("crypto", {
       data.forEach(miniTicker => {
         // Save open, high, low, close, volume
         const { o, h, l, c, s } = miniTicker;
-        this.prices[s] = { 
-          o: parseFloat(o), 
-          h: parseFloat(h), 
-          l: parseFloat(l), 
-          c: parseFloat(c), 
+        this.prices[s] = {
+          o: parseFloat(o),
+          h: parseFloat(h),
+          l: parseFloat(l),
+          c: parseFloat(c),
         };
       });
     },
@@ -87,7 +87,7 @@ export const useCryptoStore = defineStore("crypto", {
 
       let socket;
       if (!noSocket) socket = createSocket(`ws/${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`);
-      
+
       return {
         klines: klines.length && (noSlice ? klines : klines.map(kline => kline.slice(0, 5).map(k => parseFloat(k)))),
         socket
@@ -95,6 +95,7 @@ export const useCryptoStore = defineStore("crypto", {
     },
 
     async getDashboardKlines(crypto, base, interval, transactions, opts) {
+      if (!crypto || !base) return { klines: [] };
       const { end, noSocket, isAuth } = opts || {};
 
       // Helper function to shrink the klines and multiply each value by the quantity
@@ -113,11 +114,11 @@ export const useCryptoStore = defineStore("crypto", {
 
       // Get all cryptos and klines for every crypto
       const cryptos = Object.keys(transactions);
-      
-      let klinesAll = await Promise.all(cryptos.map(key => 
-        fetchBinance(`klines?symbol=${key}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}` + (end ? `&endTime=${end}` : "")) 
-      )); 
-      
+
+      let klinesAll = await Promise.all(cryptos.map(key =>
+        fetchBinance(`klines?symbol=${key}${base.toUpperCase()}&interval=${interval}&limit=${KLINES_LIMIT}` + (end ? `&endTime=${end}` : ""))
+      ));
+
       if (klinesAll.some(klines => klines.success === false)) return { klines: null };
       if (!klinesAll.length) return { klines: [] };
       // Add start padding if the length is not the same
@@ -125,7 +126,7 @@ export const useCryptoStore = defineStore("crypto", {
       klinesAll = klinesAll.map(klines => [...Array(maxLength - klines.length).fill([0,0,0,0,0]), ...klines]);
       // Initialize retKlines with the first converted series of klines
       let retKlines = convertKlines(cryptos[0], klinesAll[0]);
-      
+
       for (let i = 1; i < klinesAll.length; i++) {
         const klines = convertKlines(cryptos[i], klinesAll[i]);
         // Loop over each next klines, convert them and add each single value to retKlines
@@ -133,7 +134,7 @@ export const useCryptoStore = defineStore("crypto", {
       }
 
       let socket;
-      if (!noSocket && isAuth) 
+      if (!noSocket && isAuth)
         socket = createSocket("stream?streams=" + cryptos.map(crypto => `${crypto.toLowerCase()}${base.toLowerCase()}@kline_${interval}`).join("/"));
 
       retKlines = retKlines.filter(kline => kline[1]).map(kline => kline.map(k => parseFloat(k.toFixed(2))));
@@ -150,7 +151,7 @@ export const useCryptoStore = defineStore("crypto", {
       transactions.forEach(({ base }) => bases.add(base));
       bases = [...bases]; // Convert it back to an Array to ensure order
 
-      const prices = await Promise.all(bases.map(base => 
+      const prices = await Promise.all(bases.map(base =>
         fetchBinance(`klines?symbol=${crypto}${base}&interval=1m&startTime=${time}&endTime=${time + 60000}&limit=1`)
       ));
 

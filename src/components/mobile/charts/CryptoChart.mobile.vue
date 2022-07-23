@@ -1,14 +1,14 @@
 <template>
   <section class="shadow">
-    <ChartOptions 
-      :crypto="crypto" 
-      :base="base" 
-      v-model:Crypto="currentCrypto" 
+    <ChartOptions
+      :crypto="crypto"
+      :base="base"
+      v-model:Crypto="currentCrypto"
       @update:Crypto="$emit('update:Crypto', currentCrypto)"
-      v-model:Base="currentBase" 
+      v-model:Base="currentBase"
       @update:Base="$emit('update:Base', currentBase)"
-      :dashboard="dashboard" 
-      :totals="totals" 
+      :dashboard="dashboard"
+      :totals="totals"
     />
     <div class="stats">
       <span :class="'price ' + (isHigher ? 'green' : isHigher !== null ? 'red' : '')">
@@ -33,7 +33,7 @@
       </span>
     </div>
     <div class="chart-container">
-      <CandlestickChart :crypto="currentCrypto" :base="currentBase" :interval="TIMES[activeTime]" :totals="totals" :transactions="transactions" @empty.once="empty = true" />
+      <CandlestickChart :crypto="currentCrypto" :base="currentBase || ''" :interval="TIMES[activeTime]" :totals="totals" :transactions="transactions" @empty.once="empty = true" />
       <h2 v-if="empty && $route.params.isAuth" class="note shadow">Nothing to show yet...</h2>
       <h2 v-else-if="empty" class="note shadow">
         <RouterLink to="/login" class="link">Login</RouterLink> or <RouterLink to="/register" class="link">Register</RouterLink> now<br>to check your wallet
@@ -111,14 +111,14 @@ if (!dashboard) {
     // If it's not "TOTAL", return the crypto current price * crypto quantity
     if (currentCrypto.value !== "TOTAL")
       return getValue(
-        currentCrypto, totals.value, "totalQuantity", 
+        currentCrypto, totals.value, "totalQuantity",
         getValue(currentCrypto, store.prices, key)
       );
 
     // Otherwise, do this for all the crypto in the wallet and return the sum
     const entries = Object.entries(totals.value);
     return entries.reduce(
-      (prev, [value, { totalQuantity }]) => prev.plus( getValue({value}, store.prices, key, totalQuantity) ), 
+      (prev, [value, { totalQuantity }]) => prev.plus( getValue({value}, store.prices, key, totalQuantity) ),
       Big(0)
     );
   };

@@ -9,9 +9,9 @@ const getPriceObj = (crypto, prices, curr, once) => {
 
   let quote = quotes.find(quote => (crypto + quote) in prices);
   if (quote && prices[crypto + quote].c) return prices[crypto + quote];
-  
+
   // Helper function to divide all the values of an object by a conversion factor float, rounded up to originalDigits digits
-  const transformObject = (price, conversionFactor, originalDigits) => 
+  const transformObject = (price, conversionFactor, originalDigits) =>
     Object.fromEntries(Object.entries(price).map(([_, value]) => [_, parseFloat((value * conversionFactor).toFixed(originalDigits))]));
 
   quote = quotes.find(quote => (quote + crypto) in prices);
@@ -21,7 +21,7 @@ const getPriceObj = (crypto, prices, curr, once) => {
     // To solve this, square the denominator so that price * 1/price^2 = 1/price
     const conversionFactor = 1 / (price.c**2);
     const originalDigits = getDecimalDigits(price.c);
-    
+
     return transformObject(price, conversionFactor, originalDigits);
   }
 
@@ -52,7 +52,7 @@ const getPriceObj = (crypto, prices, curr, once) => {
     }
   };
 
-  if (conversionFactor) 
+  if (conversionFactor)
     return transformObject(price, conversionFactor, originalDigits)
 
   // Check if current crypto + support currency quote exists
@@ -67,7 +67,7 @@ const getPriceObj = (crypto, prices, curr, once) => {
     }
   };
 
-  if (conversionFactor) 
+  if (conversionFactor)
     return transformObject(price, conversionFactor, originalDigits)
 }
 
@@ -104,5 +104,6 @@ export function getBaseLCM(cryptos, tickers) {
 };
 
 export function getIcon(crypto) {
+  if (!crypto) return "";
   return `${SERVER_BASE_URL}crypto/image/${crypto.toLowerCase()}`;
 }
