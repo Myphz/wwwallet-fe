@@ -28,7 +28,7 @@
     "capacitor-set-version": "^2.0.3",
     "sass": "^1.52.3",
     "sitemap": "^7.1.1",
-    "vite": "^2.9.12",
+    "vite": "^2.9.13",
     "vite-svg-loader": "^3.3.0"
   }
 }
