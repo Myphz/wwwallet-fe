@@ -142,6 +142,7 @@ onBeforeUnmount(() => window.removeEventListener("wheel", onScroll));
     align-items: stretch
     *
       display: flex
+      align-items: center
 
   // Second page
   li

@@ -24,11 +24,11 @@
     "@capacitor/android": "^3.6.0",
     "@capacitor/cli": "^3.5.1",
     "@capacitor/core": "^3.5.1",
-    "@vitejs/plugin-vue": "^2.3.2",
+    "@vitejs/plugin-vue": "^3.0.3",
     "capacitor-set-version": "^2.0.3",
     "sass": "^1.52.3",
     "sitemap": "^7.1.1",
-    "vite": "^2.9.12",
+    "vite": "^3.0.9",
     "vite-svg-loader": "^3.3.0"
   }
 }
