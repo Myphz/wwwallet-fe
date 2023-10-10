@@ -12,18 +12,18 @@ npx capacitor-assets generate --android
 
 cd android
 # To enable persistent cookies
-# echo "package com.wwwallet.app;
-# import android.webkit.CookieManager;
-# import com.getcapacitor.BridgeActivity;
+echo "package com.wwwallet.app;
+import android.webkit.CookieManager;
+import com.getcapacitor.BridgeActivity;
 
-# public class MainActivity extends BridgeActivity {
-#   @Override
-#   public void onPause() {
-#     super.onPause();
+public class MainActivity extends BridgeActivity {
+  @Override
+  public void onPause() {
+    super.onPause();
 
-#     CookieManager.getInstance().flush();
-#   }
-# }" > ./app/src/main/java/com/wwwallet/app/MainActivity.java
+    CookieManager.getInstance().flush();
+  }
+}" > ./app/src/main/java/com/wwwallet/app/MainActivity.java
 
 ./gradlew assembleDebug
 mv app/build/outputs/apk/debug/app-debug.apk ../bundle/wwwallet-debug.apk

@@ -10,7 +10,7 @@ mkdir bundle
 npx cap add android
 npx cap copy android
 rm -rf ../dist
-cordova-res android --skip-config --copy
+npx capacitor-assets generate --android
 # Set build number
 build=$(cat buildnumber)
 newbuild=$(($build+1))
@@ -18,18 +18,18 @@ node_modules/capacitor-set-version/bin/run set:android -v $1 -b $newbuild
 
 cd android
 # To enable persistent cookies
-# echo "package com.wwwallet.app;
-# import android.webkit.CookieManager;
-# import com.getcapacitor.BridgeActivity;
+echo "package com.wwwallet.app;
+import android.webkit.CookieManager;
+import com.getcapacitor.BridgeActivity;
 
-# public class MainActivity extends BridgeActivity {
-#   @Override
-#   public void onPause() {
-#     super.onPause();
+public class MainActivity extends BridgeActivity {
+  @Override
+  public void onPause() {
+    super.onPause();
 
-#     CookieManager.getInstance().flush();
-#   }
-# }" > ./app/src/main/java/com/wwwallet/app/MainActivity.java
+    CookieManager.getInstance().flush();
+  }
+}" > ./app/src/main/java/com/wwwallet/app/MainActivity.java
 
 ./gradlew bundleRelease
 mv app/build/outputs/bundle/release/app-release.aab ../bundle/wwwallet-unsigned.aab
