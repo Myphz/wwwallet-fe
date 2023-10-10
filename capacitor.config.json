@@ -2,7 +2,6 @@
   "appId": "com.wwwallet.app",
   "appName": "wwwallet",
   "webDir": "../dist",
-  "bundledWebRuntime": false,
   "SplashScreen": {
     "androidScaleType": "CENTER_CROP"
   }

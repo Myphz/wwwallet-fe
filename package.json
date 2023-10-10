@@ -8,27 +8,28 @@
   },
   "dependencies": {
     "@aacassandra/vue3-progressbar": "^1.0.3",
-    "@vuepic/vue-datepicker": "^3.2.2",
-    "animated-scroll-to": "^2.2.0",
-    "big.js": "^6.2.0",
-    "echarts": "^5.3.3",
-    "just-clone": "^6.0.1",
-    "mixpanel-browser": "^2.45.0",
-    "pinia": "^2.0.14",
+    "@vuepic/vue-datepicker": "^7.1.0",
+    "animated-scroll-to": "^2.3.0",
+    "big.js": "^6.2.1",
+    "echarts": "^5.4.3",
+    "just-clone": "^6.2.0",
+    "mixpanel-browser": "^2.47.0",
+    "pinia": "^2.1.6",
     "toformat": "^2.0.0",
-    "vue": "^3.2.37",
-    "vue-echarts": "^6.0.3",
-    "vue-router": "^4.0.16"
+    "vue": "^3.3.4",
+    "vue-echarts": "^6.6.1",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
-    "@capacitor/android": "^3.6.0",
-    "@capacitor/cli": "^3.5.1",
-    "@capacitor/core": "^3.5.1",
-    "@vitejs/plugin-vue": "^3.0.3",
-    "capacitor-set-version": "^2.0.3",
-    "sass": "^1.52.3",
+    "@capacitor/android": "^5.4.2",
+    "@capacitor/assets": "^3.0.1",
+    "@capacitor/cli": "^5.4.2",
+    "@capacitor/core": "^5.4.2",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "capacitor-set-version": "^2.2.0",
+    "sass": "^1.69.2",
     "sitemap": "^7.1.1",
-    "vite": "^3.0.9",
-    "vite-svg-loader": "^3.3.0"
+    "vite": "^4.4.11",
+    "vite-svg-loader": "^4.0.0"
   }
 }

@@ -1,20 +1,14 @@
-if [ -z "$1" ]
-  then
-    echo "No argument supplied"
-    exit
-fi
-
 node node_modules/vite/bin/vite.js build --mode android
 rm -rf ./bundle
 mkdir bundle
 npx cap add android
 npx cap copy android
 rm -rf ../dist
-cordova-res android --skip-config --copy
+npx capacitor-assets generate --android
 # Set build number
-build=$(cat buildnumber)
-newbuild=$(($build+1))
-node_modules/capacitor-set-version/bin/run set:android -v $1 -b $newbuild
+# build=$(cat buildnumber)
+# newbuild=$(($build+1))
+# node_modules/capacitor-set-version/bin/run set:android -v $1 -b $newbuild
 
 cd android
 # To enable persistent cookies
@@ -31,12 +25,12 @@ cd android
 #   }
 # }" > ./app/src/main/java/com/wwwallet/app/MainActivity.java
 
-./gradlew bundleRelease
-mv app/build/outputs/bundle/release/app-release.aab ../bundle/wwwallet-unsigned.aab
+./gradlew assembleDebug
+mv app/build/outputs/apk/debug/app-debug.apk ../bundle/wwwallet-debug.apk
 cd ..
 rm -rf ./android
 # Sign bundle
-cd bundle
-jarsigner -sigalg SHA256withRSA -digestalg SHA-256 -keystore ~/keys/wwwallet.jks -signedjar wwwallet.aab wwwallet-unsigned.aab wwwallet
-rm wwwallet-unsigned.aab
-echo $newbuild > ../buildnumber
+# cd bundle
+# jarsigner -sigalg SHA256withRSA -digestalg SHA-256 -keystore ~/keys/wwwallet.jks -signedjar wwwallet.aab wwwallet-unsigned.aab wwwallet
+# rm wwwallet-unsigned.aab
+# echo $newbuild > ../buildnumber
