@@ -29,7 +29,7 @@
     "capacitor-set-version": "^2.2.0",
     "sass": "^1.69.2",
     "sitemap": "^7.1.1",
-    "vite": "^4.4.11",
+    "vite": "^4.4.12",
     "vite-svg-loader": "^4.0.0"
   }
 }
