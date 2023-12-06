@@ -5,17 +5,39 @@
         :src="getIcon(crypto)"
         :alt="crypto"
         onerror="this.src='/icons/generic.svg'"
-      >
-      <span class="title">{{ cryptoStore.tickerInfo[crypto]?.name || crypto }}</span>
+      />
+      <span class="title">
+        {{ cryptoStore.tickerInfo[crypto]?.name || crypto }}
+      </span>
       <span class="ticker">{{ crypto }}</span>
     </td>
-    <td>{{ formatValue(totals.avgBuyPrice, getDecimalDigits(transactions[0]?.price)) }}</td>
-    <td>{{ !totals.avgSellPrice.eq(0) ? formatValue(totals.avgSellPrice, getDecimalDigits(transactions[0]?.price)) : "N/A" }}</td>
+    <td>
+      {{
+        formatValue(
+          totals.avgBuyPrice,
+          getDecimalDigits(transactions[0]?.price)
+        )
+      }}
+    </td>
+    <td>
+      {{
+        !totals.avgSellPrice.eq(0)
+          ? formatValue(
+              totals.avgSellPrice,
+              getDecimalDigits(transactions[0]?.price)
+            )
+          : "N/A"
+      }}
+    </td>
     <td>{{ totals.totalQuantity.toFormat() }}</td>
     <td :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
       {{ formatValue(currentValue) }}
     </td>
-    <td :class="totalEarnings.s === -1 ? 'red' : totalEarnings.eq(0) ? '' : 'green'">
+    <td
+      :class="
+        totalEarnings.s === -1 ? 'red' : totalEarnings.eq(0) ? '' : 'green'
+      "
+    >
       {{ formatValue(totalEarnings) }}
     </td>
     <td :class="pctChange.s === -1 ? 'red' : pctChange.eq(0) ? '' : 'green'">
@@ -32,7 +54,7 @@
         bgColor="bg-base-dark"
         fontSize="h5"
         shorter
-        @request="value => $emit('request', value)"
+        @request="(value) => $emit('request', value)"
       />
     </td>
   </tr>
@@ -46,7 +68,11 @@ import Big from "@/helpers/big.helper.js";
 import { addEarnings } from "@/helpers/transactions.helper.js";
 import { useCryptoStore } from "S#/crypto.store";
 import { getFavPrice, getIcon } from "@/helpers/crypto.helper";
-import { getDecimalDigits, formatPercentage, formatValue } from "@/helpers/formatter.helper";
+import {
+  getDecimalDigits,
+  formatPercentage,
+  formatValue,
+} from "@/helpers/formatter.helper";
 
 const props = defineProps({
   crypto: {
@@ -56,18 +82,18 @@ const props = defineProps({
 
   transactions: {
     type: Object,
-    required: true
+    required: true,
   },
 
   totals: {
     type: Object,
-    required: true
+    required: true,
   },
 
   currentValue: {
     type: Big,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const { crypto } = props;
@@ -78,7 +104,9 @@ defineEmits(["request"]);
 const cryptoStore = useCryptoStore();
 const open = ref(false);
 
-const computedTransactions = computed(() => addEarnings(transactions.value, crypto, cryptoStore.prices));
+const computedTransactions = computed(() =>
+  addEarnings(transactions.value, crypto, cryptoStore.prices)
+);
 
 const totalEarnings = computed(() => {
   let ret = Big(0);
@@ -94,8 +122,10 @@ const pctChange = computed(() => {
   let totVal = Big(0);
   for (const transaction of computedTransactions.value) {
     if (transaction.earnings.eq(0)) continue;
-    const val = Big(transaction.quantity).times(getFavPrice(transaction.base, cryptoStore.prices));
-    totVal = totVal.plus(val)
+    const val = Big(transaction.quantity).times(
+      getFavPrice(transaction.base, cryptoStore.prices)
+    );
+    totVal = totVal.plus(val);
     ret = ret.plus(transaction.change.times(val));
   }
   return totVal.eq(0) ? Big(0) : ret.div(totVal);
@@ -108,17 +138,19 @@ watch(currentValue, (newValue, oldValue) => {
 </script>
 
 <style lang="sass" scoped>
-  .main-row
-    border-bottom: 1px solid $primary
-    cursor: pointer
-    &:hover
-      background-color: lighten($bg-base, 10%)
+.main-row
+  border-bottom: 1px solid $primary
+  cursor: pointer
+  &:hover
+    background-color: lighten($bg-base, 10%)
 
-  img
-    width: 48px
-    height: 48px
-    margin-right: 1em
+img
+  width: 48px
+  height: 48px
+  margin-right: 1em
+  border-radius: 999rem
+  background: white
 
-  .transactions-row
-    background-color: darken($bg-base, 2%)
+.transactions-row
+  background-color: darken($bg-base, 2%)
 </style>

@@ -1,26 +1,32 @@
 <template>
   <tr :class="fontSize">
     <td v-if="withTicker" class="align-center">
-      <img 
-        :src="getIcon(crypto)" 
+      <img
+        :src="getIcon(crypto)"
         :alt="crypto"
         onerror="this.src='/icons/generic.svg'"
-      >
+      />
       <span>{{ crypto }}/{{ base }}</span>
     </td>
-    <td>{{ isBuy ? 'BUY' : 'SELL' }}</td>
+    <td>{{ isBuy ? "BUY" : "SELL" }}</td>
     <td>{{ quantity }}</td>
     <td>{{ Big(price).toFormat() }}</td>
     <td v-if="!withTicker && $route.params.isAuth" class="right-align">
-      <Button btnClass="bg-outline h4" btnCss="padding: 0.3em;" @click="displayPopup = true">Details</Button>
+      <Button
+        btnClass="bg-outline h4"
+        btnCss="padding: 0.3em;"
+        @click="displayPopup = true"
+      >
+        Details
+      </Button>
     </td>
   </tr>
-  <TransactionPopup 
-    v-if="displayPopup" 
-    :crypto="crypto" 
-    :transaction="transaction" 
-    @request="value => $parent.$emit('request', value)"
-    @close="displayPopup = false" 
+  <TransactionPopup
+    v-if="displayPopup"
+    :crypto="crypto"
+    :transaction="transaction"
+    @request="(value) => $parent.$emit('request', value)"
+    @close="displayPopup = false"
   />
 </template>
 
@@ -31,32 +37,32 @@ import { ref, computed, watch } from "vue";
 import { getFavPrice, getIcon } from "@/helpers/crypto.helper";
 import Big from "@/helpers/big.helper";
 import { useCryptoStore } from "S#/crypto.store";
-import { formatValue } from "@/helpers/formatter.helper"
+import { formatValue } from "@/helpers/formatter.helper";
 
-const { transaction , crypto } = defineProps({
+const { transaction, crypto } = defineProps({
   transaction: {
     type: Object,
-    required: true
+    required: true,
   },
 
   crypto: {
     type: String,
-    required: true
+    required: true,
   },
 
   fontSize: {
     type: String,
-    default: "h4"
+    default: "h4",
   },
 
   withTicker: {
     type: Boolean,
-    default: true
+    default: true,
   },
 
   shorter: {
     type: Boolean,
-    default: false
+    default: false,
   },
 });
 
@@ -64,10 +70,11 @@ const store = useCryptoStore();
 let { isBuy, base, quantity, price } = transaction;
 
 let value;
-if (isBuy) 
-  value = computed(() => Big(getFavPrice(crypto, store.prices)).times(quantity));
-else
-  value = Big(price).times(quantity);
+if (isBuy)
+  value = computed(() =>
+    Big(getFavPrice(crypto, store.prices)).times(quantity)
+  );
+else value = Big(price).times(quantity);
 
 const displayPopup = ref(false);
 
@@ -76,16 +83,18 @@ if (isBuy) {
   watch(value, (newValue, oldValue) => {
     isHigher.value = newValue.gt(oldValue);
   });
-};
+}
 </script>
 
 <style lang="sass" scoped>
-  img
-    width: 36px
-    height: 36px
-    margin-right: .5em
+img
+  width: 36px
+  height: 36px
+  margin-right: .5em
+  border-radius: 999rem
+  background: white
 
-  .right-align
-    display: flex
-    justify-content: flex-end
+.right-align
+  display: flex
+  justify-content: flex-end
 </style>

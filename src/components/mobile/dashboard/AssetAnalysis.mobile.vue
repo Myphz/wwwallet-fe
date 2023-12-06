@@ -5,8 +5,10 @@
         :src="getIcon(crypto)"
         :alt="crypto"
         onerror="this.src='/icons/generic.svg'"
-      >
-      <span class="title">{{ store.tickerInfo?.[crypto]?.name || crypto }}</span>
+      />
+      <span class="title">
+        {{ store.tickerInfo?.[crypto]?.name || crypto }}
+      </span>
       <span class="ticker">{{ crypto }}</span>
     </div>
 
@@ -21,7 +23,9 @@
       </div>
       <div class="space-between margin-bottom">
         <span>{{ formatValue(totals.avgBuyPrice) }}</span>
-        <span :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentPrice) }}</span>
+        <span :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
+          {{ formatValue(currentPrice) }}
+        </span>
       </div>
 
       <div class="space-between header">
@@ -29,8 +33,14 @@
         <span>Current Value</span>
       </div>
       <div class="space-between margin-bottom">
-        <span>{{ totals.avgSellPrice.eq(0) ? "N/A" : formatValue(totals.avgSellPrice) }}</span>
-        <span :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">{{ formatValue(currentValue) }}</span>
+        <span>
+          {{
+            totals.avgSellPrice.eq(0) ? "N/A" : formatValue(totals.avgSellPrice)
+          }}
+        </span>
+        <span :class="isHigher ? 'green' : isHigher !== null ? 'red' : ''">
+          {{ formatValue(currentValue) }}
+        </span>
       </div>
 
       <div class="space-between header">
@@ -38,20 +48,38 @@
         <span>Earnings</span>
       </div>
       <div class="space-between margin-bottom">
-        <span v-if="!pctChange.eq(0)" :class="pctChange.gt(0) ? 'green' : 'red'">{{ formatPercentage(pctChange) }}</span>
+        <span
+          v-if="!pctChange.eq(0)"
+          :class="pctChange.gt(0) ? 'green' : 'red'"
+        >
+          {{ formatPercentage(pctChange) }}
+        </span>
         <span v-else>N/A</span>
 
-        <span v-if="!earnings.eq(0)" :class="earnings.s === -1 ? 'red' : 'green'">{{ earnings.s === -1 ? "-" : "" }}{{ formatValue(earnings.abs()) }}</span>
+        <span
+          v-if="!earnings.eq(0)"
+          :class="earnings.s === -1 ? 'red' : 'green'"
+        >
+          {{ earnings.s === -1 ? "-" : "" }}{{ formatValue(earnings.abs()) }}
+        </span>
         <span v-else>N/A</span>
       </div>
     </div>
 
-    <div class="align-center justify-center arrow-cell bg-primary" style="height: 5vh" @click="open = !open">
+    <div
+      class="align-center justify-center arrow-cell bg-primary"
+      style="height: 5vh"
+      @click="open = !open"
+    >
       <span :class="'arrow ' + (open ? 'open' : '')"></span>
     </div>
 
     <div v-show="open">
-      <TransactionsAnalysis :transactions="computedTransactions" :crypto="crypto" :currentValue="currentValue" />
+      <TransactionsAnalysis
+        :transactions="computedTransactions"
+        :crypto="crypto"
+        :currentValue="currentValue"
+      />
     </div>
   </div>
 </template>
@@ -68,30 +96,30 @@ import { addEarnings } from "@/helpers/transactions.helper";
 import { ANALYSIS_TIMES } from "@/config/config";
 
 const props = defineProps({
-  crypto:  {
+  crypto: {
     type: String,
-    required: true
+    required: true,
   },
 
   totals: {
     type: Object,
-    required: true
+    required: true,
   },
 
   currentValue: {
     type: Big,
-    required: true
+    required: true,
   },
 
   transactions: {
     type: Array,
-    required: true
+    required: true,
   },
 
   frequency: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const { crypto, totals, currentValue, frequency, transactions } = toRefs(props);
@@ -102,7 +130,13 @@ let end = ref();
 
 const currentPrice = computed(() => getFavPrice(crypto.value, store.prices));
 
-const computedTransactions = computed(() => addEarnings(transactions.value, crypto.value, store.prices, { pastPrice: pastPrice.value, end: end.value, copy: true }));
+const computedTransactions = computed(() =>
+  addEarnings(transactions.value, crypto.value, store.prices, {
+    pastPrice: pastPrice.value,
+    end: end.value,
+    copy: true,
+  })
+);
 
 const pctChange = computed(() => {
   // Weighted average
@@ -110,8 +144,10 @@ const pctChange = computed(() => {
   let totVal = Big(0);
   for (const transaction of computedTransactions.value) {
     if (transaction.earnings.eq(0)) continue;
-    const val = Big(transaction.quantity).times(getFavPrice(transaction.base, store.prices));
-    totVal = totVal.plus(val)
+    const val = Big(transaction.quantity).times(
+      getFavPrice(transaction.base, store.prices)
+    );
+    totVal = totVal.plus(val);
     ret = ret.plus(transaction.change.times(val));
   }
   return totVal.eq(0) ? Big(0) : ret.div(totVal);
@@ -121,7 +157,7 @@ const earnings = computed(() => {
   let ret = Big(0);
   for (const transaction of computedTransactions.value) {
     ret = ret.plus(transaction.earnings);
-  };
+  }
   return ret;
 });
 
@@ -133,51 +169,56 @@ watch(frequency, async () => {
   }
 
   end.value = +new Date() - ANALYSIS_TIMES[frequency.value];
-  pastPrice.value = await store.getPastPrices(end.value, crypto.value, computedTransactions.value);
+  pastPrice.value = await store.getPastPrices(
+    end.value,
+    crypto.value,
+    computedTransactions.value
+  );
 });
 
 const open = ref(false);
 
 const isHigher = ref(null);
 watch(currentPrice, (newPrice, oldPrice) => {
-  if (newPrice instanceof Big) return isHigher.value = newPrice.gt(oldPrice);
+  if (newPrice instanceof Big) return (isHigher.value = newPrice.gt(oldPrice));
   isHigher.value = newPrice > oldPrice;
 });
 </script>
 
 <style lang="sass" scoped>
-  .main
-    margin-bottom: 2em
-    border-radius: 1em
+.main
+  margin-bottom: 2em
+  border-radius: 1em
 
-  .ticker
-    font-size: nth($font-sizes, 2)
-    font-weight: 200
+.ticker
+  font-size: nth($font-sizes, 2)
+  font-weight: 200
 
-  .title
-    font-size: nth($font-sizes, 3)
+.title
+  font-size: nth($font-sizes, 3)
 
-  .pad-1
-    padding: 1em
+.pad-1
+  padding: 1em
 
-  .crypto
-    border-bottom: 1px solid $text-secondary
-    padding: .5em 1em
-    margin-bottom: .5em
+.crypto
+  border-bottom: 1px solid $text-secondary
+  padding: .5em 1em
+  margin-bottom: .5em
 
-  .arrow-cell
-    border-radius: 0 0 1em 1em
+.arrow-cell
+  border-radius: 0 0 1em 1em
 
-  .header
-    font-weight: bold
-    color: $text-secondary
+.header
+  font-weight: bold
+  color: $text-secondary
 
-  .margin-bottom
-    margin-bottom: .5em
+.margin-bottom
+  margin-bottom: .5em
 
-  img
-    width: 32px
-    height: 32px
-    margin-right: .5em
-
+img
+  width: 32px
+  height: 32px
+  margin-right: .5em
+  border-radius: 999rem
+  background: white
 </style>
