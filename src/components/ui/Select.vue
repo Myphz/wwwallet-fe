@@ -204,8 +204,7 @@ img
 .icon-big
   width: 64px
   height: 64px
-  margin: 0 .5em
-  padding: .2em 0
+  margin: .2em .5em
 
 .icon-small
   width: 48px
