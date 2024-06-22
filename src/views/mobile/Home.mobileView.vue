@@ -289,6 +289,7 @@ h1 {
 .hero-buttons {
   margin-top: 12px;
   display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
