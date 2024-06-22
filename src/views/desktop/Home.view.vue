@@ -26,21 +26,21 @@
 
       <header class="hero">
         <div class="hero-text color-secondary">
-          <span>Managing your crypto</span>
-          <span>
+          <span class="fade-up">Managing your crypto</span>
+          <span class="fade-up" style="--delay: 0.1s">
             has never been
             <span class="color-text-highlight">so easy</span>
           </span>
         </div>
 
-        <h1 class="color-text-highlight poppins">
+        <h1 class="color-text-highlight poppins fade-up" style="--delay: 0.2s">
           <span>
             Keep track of your crypto wallet in real-time, everywhere.
           </span>
           <span>Completely free and open source.</span>
         </h1>
 
-        <div class="hero-buttons">
+        <div class="hero-buttons fade-up" style="--delay: 0.3s">
           <a
             class="button-tertiary"
             href="https://play.google.com/store/apps/details?id=com.wwwallet.app"
@@ -90,11 +90,11 @@
 
             <span>Get it on Google Play</span>
           </a>
-          <a href="/login">Get Started</a>
+          <a href="/dashboard">Get Started</a>
         </div>
       </header>
 
-      <div class="dashboard-wrapper margined">
+      <div class="dashboard-wrapper margined fade" style="--delay: 0.7s">
         <img src="/images/dashboard.webp" class="dashboard" alt="dashboard" />
       </div>
     </section>
@@ -375,6 +375,47 @@ h1 {
   align-items: center;
   font-weight: 700;
   font-size: 64px;
+}
+
+.fade-up {
+  opacity: 0;
+  filter: blur(10px);
+  translate: 0 50%;
+  animation: faded-up 0.35s cubic-bezier(0.57, 0.21, 0.69, 1.25)
+    var(--delay, 0s) forwards;
+}
+
+@keyframes faded-up {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    translate: 0 50%;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0px);
+  }
+}
+
+.fade {
+  opacity: 0;
+  filter: blur(10px);
+  animation: faded 0.25s cubic-bezier(0.57, 0.21, 0.69, 1.25) var(--delay, 0s)
+    forwards;
+}
+
+@keyframes faded {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0px);
+  }
 }
 </style>
 
