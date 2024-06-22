@@ -30,12 +30,11 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async checkAuth() {
-      // if (this.isAuthenticated) return true;
-      // if (this.isAuthenticated === false) return false;
-      // const { success } = await fetchServer("auth/verify");
-      // this.isAuthenticated = success;
-      // return success;
-      return false;
+      if (this.isAuthenticated) return true;
+      if (this.isAuthenticated === false) return false;
+      const { success } = await fetchServer("auth/verify");
+      this.isAuthenticated = success;
+      return success;
     },
 
     // Utility function that redirects to the login page if not logged in

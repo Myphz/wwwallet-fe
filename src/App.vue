@@ -9,11 +9,11 @@ import { useCryptoStore } from "S#/crypto.store";
 import { useAuthStore } from "S#/auth.store";
 
 const Layout = defineAsyncComponent(() => routeComponent("Layout"));
-// const cryptoStore = useCryptoStore();
-// const authStore = useAuthStore();
+const cryptoStore = useCryptoStore();
+const authStore = useAuthStore();
 
-// cryptoStore.init();
-// authStore.getTransactions();
+cryptoStore.init();
+authStore.getTransactions();
 </script>
 
 <style lang="sass">
