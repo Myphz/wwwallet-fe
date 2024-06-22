@@ -1,26 +1,26 @@
 <template>
   <div class="inter main-wrapper">
     <section>
-      <img src="/images/bg.png" class="bg" />
+      <img src="/images/bg.png" class="bg" alt="Background Effectg" />
 
       <nav>
         <Logo />
 
         <ul style="gap: 64px">
           <li>
-            <a href="/dashboard">Dashboard</a>
+            <a href="/dashboard" class="unstyled">Dashboard</a>
           </li>
           <li>
-            <a href="/crypto">Markets</a>
+            <a href="/crypto" class="unstyled">Markets</a>
           </li>
           <li>
-            <a href="/wallet">Wallet</a>
+            <a href="/wallet" class="unstyled">Wallet</a>
           </li>
         </ul>
 
         <ul style="gap: 1rem">
-          <li><a href="/login" class="as-button button-secondary">Login</a></li>
-          <li><a href="/register" class="as-button">Register</a></li>
+          <li><a href="/login" class="button-secondary">Login</a></li>
+          <li><a href="/register">Register</a></li>
         </ul>
       </nav>
 
@@ -41,7 +41,11 @@
         </h1>
 
         <div class="hero-buttons">
-          <button class="button-tertiary">
+          <a
+            class="button-tertiary"
+            href="https://play.google.com/store/apps/details?id=com.wwwallet.app"
+            target="_blank"
+          >
             <svg
               width="21"
               height="20"
@@ -85,13 +89,13 @@
             </svg>
 
             <span>Get it on Google Play</span>
-          </button>
-          <button>Get Started</button>
+          </a>
+          <a href="/login">Get Started</a>
         </div>
       </header>
 
       <div class="dashboard-wrapper margined">
-        <img src="/images/dashboard.webp" class="dashboard" />
+        <img src="/images/dashboard.webp" class="dashboard" alt="dashboard" />
       </div>
     </section>
 
@@ -113,33 +117,69 @@
           </li>
           <li>
             <div>
-              <div class="color-text-highlight inter">Create an account</div>
+              <div class="color-text-highlight inter">
+                Record your transactions
+              </div>
               <div class="color-secondary">
-                Register now to keep track of your wallet easily
+                Enter your transaction details about your crypto movements
               </div>
             </div>
           </li>
           <li>
             <div>
-              <div class="color-text-highlight inter">Create an account</div>
+              <div class="color-text-highlight inter">Check your dashboard</div>
               <div class="color-secondary">
-                Register now to keep track of your wallet easily
+                Enjoy real-time updates on more than 500 crypto, every second
               </div>
             </div>
           </li>
         </ul>
       </div>
-      <div class="second">sdfsdf</div>
+      <div class="second">
+        <img src="/images/combined.webp" style="width: 100%" alt="mockup" />
+      </div>
     </section>
+
+    <div class="cta inter color-secondary">
+      <span>
+        Start
+        <span class="color-text-highlight">taking track</span>
+        of
+      </span>
+      <span>your crypto now</span>
+
+      <a
+        class="color-text-highlight"
+        href="/dashboard"
+        style="
+          font-weight: 400;
+          margin-top: 32px;
+          color: #e3ecf6;
+          margin-bottom: 100px;
+        "
+      >
+        Get Started
+      </a>
+    </div>
   </div>
 </template>
 
 <script setup>
 import Logo from "U#/Logo.vue";
+import Lenis from "lenis";
+
+const lenis = new Lenis();
+
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+
+requestAnimationFrame(raf);
 </script>
 
 <style scoped>
-button {
+a:not(.unstyled) {
   border-radius: 32px;
   padding: 0.5rem 1rem;
   font: inherit;
@@ -158,17 +198,6 @@ svg path {
   margin: 0 300px;
 }
 
-.as-button {
-  border-radius: 32px;
-  padding: 0.5rem 1rem;
-  font: inherit;
-  color: inherit;
-  background-color: #0070f4;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-}
-
 .color-text-highlight {
   color: #e3ecf6;
 }
@@ -178,14 +207,14 @@ svg path {
 }
 
 .button-secondary {
-  background-color: #303d64;
-  border: 1px solid #85abd9;
+  background-color: #303d64 !important;
+  border: 1px solid #85abd9 !important;
 }
 
 .button-tertiary {
-  border: 1px solid #0070f4;
-  background-color: #051629;
-  color: #e3ecf6;
+  border: 1px solid #0070f4 !important;
+  background-color: #051629 !important;
+  color: #e3ecf6 !important;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -300,7 +329,11 @@ h1 {
 
 .second-section {
   display: flex;
-  justify-content: space-between;
+  gap: 128px;
+
+  & > * {
+    flex: 1;
+  }
 
   .first {
     display: flex;
@@ -313,7 +346,11 @@ h1 {
       align-self: flex-start;
 
       li {
+        align-self: flex-start;
+
         & > div {
+          align-self: flex-start;
+
           div:first-of-type {
             font-size: 32px;
             font-weight: 700;
@@ -330,5 +367,36 @@ h1 {
     font-weight: 700;
     font-size: 56px;
   }
+}
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 700;
+  font-size: 64px;
+}
+</style>
+
+<style>
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 </style>
