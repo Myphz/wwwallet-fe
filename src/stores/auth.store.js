@@ -5,7 +5,7 @@ import { router } from "@/main.js";
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     isAuthenticated: null,
-    transactions: null
+    transactions: null,
   }),
 
   actions: {
@@ -13,7 +13,8 @@ export const useAuthStore = defineStore("auth", {
       const res = await fetchServer("auth/login", { email, password });
       this.isAuthenticated = res.success && res.isVerified;
       if (this.isAuthenticated) await this.getTransactions();
-      if (res.success && !res.isVerified) return router.push({ name: "verify", params: { email, password } });
+      if (res.success && !res.isVerified)
+        return router.push({ name: "verify", params: { email, password } });
       return res;
     },
 
@@ -38,11 +39,18 @@ export const useAuthStore = defineStore("auth", {
 
     // Utility function that redirects to the login page if not logged in
     async redirect() {
-      if (!await this.checkAuth()) return router.push({ name: "login", params: { redirect: router.currentRoute.value.path } });
+      if (!(await this.checkAuth()))
+        return router.push({
+          name: "login",
+          params: { redirect: router.currentRoute.value.path },
+        });
     },
 
     // Transactions
-    async addTransaction({ crypto, base, isBuy, price, quantity, date, notes }, emit) {
+    async addTransaction(
+      { crypto, base, isBuy, price, quantity, date, notes },
+      emit
+    ) {
       const params = { crypto, base, isBuy, price, quantity, date, notes };
       const { success, id, msg } = await fetchServer("transactions", params);
       // Emit the data BEFORE rearraging the transactions, as that would cause a rerender, losing the emit
@@ -51,9 +59,9 @@ export const useAuthStore = defineStore("auth", {
       if (success) {
         if (!this.transactions) this.transactions = {};
         if (crypto in this.transactions) {
-          this.transactions[crypto].push({ _id: id, ...params});
+          this.transactions[crypto].push({ _id: id, ...params });
         } else {
-          this.transactions[crypto] = [{ _id: id, ...params}];
+          this.transactions[crypto] = [{ _id: id, ...params }];
         }
       }
 
@@ -67,8 +75,8 @@ export const useAuthStore = defineStore("auth", {
         const { success, transactions } = await fetchServer("transactions");
         if (!success) {
           this.isAuthenticated = false;
-          return false
-        };
+          return false;
+        }
         this.transactions = transactions;
       }
       // If the request didn't fail, you are authenticated
@@ -76,35 +84,71 @@ export const useAuthStore = defineStore("auth", {
       return true;
     },
 
-    async updateTransaction({ id, oldCrypto, crypto, base, isBuy, price, quantity, date, notes }, emit) {
+    async updateTransaction(
+      { id, oldCrypto, crypto, base, isBuy, price, quantity, date, notes },
+      emit
+    ) {
       const params = { id, crypto, base, isBuy, price, quantity, date, notes };
-      const { success, newId, msg } = await fetchServer("transactions", params, { method: "PUT" });
+      const { success, newId, msg } = await fetchServer(
+        "transactions",
+        params,
+        { method: "PUT" }
+      );
       // Emit the data BEFORE rearraging the transactions, as that would cause a rerender, losing the emit
       emit("request", { success, msg });
       if (!success) return success;
       // Update existing transactions
-      let i = this.transactions[oldCrypto].findIndex(transaction => transaction._id === id);
+      let i = this.transactions[oldCrypto].findIndex(
+        (transaction) => transaction._id === id
+      );
       if (oldCrypto !== crypto) {
         this.transactions[oldCrypto].splice(i, 1);
 
-        if (!this.transactions[oldCrypto].length) delete this.transactions[oldCrypto];
+        if (!this.transactions[oldCrypto].length)
+          delete this.transactions[oldCrypto];
         if (!this.transactions[crypto]) this.transactions[crypto] = [];
 
-        this.transactions[crypto].push({ _id: newId, oldCrypto, crypto, base, isBuy, price, quantity, date, ...(notes && { notes}) });
+        this.transactions[crypto].push({
+          _id: newId,
+          oldCrypto,
+          crypto,
+          base,
+          isBuy,
+          price,
+          quantity,
+          date,
+          ...(notes && { notes }),
+        });
         i = this.transactions[crypto].length - 1;
       } else {
-        this.transactions[crypto][i] = { _id: newId, oldCrypto, crypto, base, isBuy, price, quantity, date, ...(notes && { notes}) }
-      };
+        this.transactions[crypto][i] = {
+          _id: newId,
+          oldCrypto,
+          crypto,
+          base,
+          isBuy,
+          price,
+          quantity,
+          date,
+          ...(notes && { notes }),
+        };
+      }
 
       return success;
     },
 
     async deleteTransaction({ id, crypto }, emit) {
-      const { success, msg } = await fetchServer("transactions", { id }, { method: "DELETE" });
+      const { success, msg } = await fetchServer(
+        "transactions",
+        { id },
+        { method: "DELETE" }
+      );
       emit("request", { success, msg });
       if (!success) return success;
-      
-      const i = this.transactions[crypto].findIndex(transaction => transaction._id === id);
+
+      const i = this.transactions[crypto].findIndex(
+        (transaction) => transaction._id === id
+      );
       this.transactions[crypto].splice(i, 1);
       if (!this.transactions[crypto].length) delete this.transactions[crypto];
       return success;
@@ -127,7 +171,9 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async deleteTransactions() {
-      const ret = await fetchServer("account/delete/transactions", null, { method: "DELETE" });
+      const ret = await fetchServer("account/delete/transactions", null, {
+        method: "DELETE",
+      });
       if (ret.success) this.transactions = {};
       return ret;
     },
@@ -141,11 +187,17 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async changePassword(jwt, password) {
-      return await fetchServer("account/update", { jwt, password }, { method: "PUT" });
+      return await fetchServer(
+        "account/update",
+        { jwt, password },
+        { method: "PUT" }
+      );
     },
 
     async deleteAccount(jwt) {
-      const ret = await fetchServer(`account/delete?jwt=${jwt}`, null, { method: "DELETE" });
+      const ret = await fetchServer(`account/delete?jwt=${jwt}`, null, {
+        method: "DELETE",
+      });
       this.isAuthenticated = false;
       return ret;
     },
@@ -155,7 +207,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async feedback(text) {
-      return await fetchServer("account/feedback", { msg: text })
-    }
-  }
+      return await fetchServer("account/feedback", { msg: text });
+    },
+  },
 });
