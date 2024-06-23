@@ -81,7 +81,6 @@ body
   transition: all 0.3s ease-in
 
 main
-  height: 100%
   width: 100%
   position: relative
   box-sizing: border-box

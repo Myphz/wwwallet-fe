@@ -102,7 +102,9 @@
     <section class="second-section margined">
       <div class="first">
         <header>
-          <span class="color-secondary">How does it</span>
+          <span class="color-secondary" style="white-space: nowrap">
+            How does it
+          </span>
           <span class="color-text-highlight">work?</span>
         </header>
 
