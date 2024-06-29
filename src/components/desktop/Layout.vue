@@ -82,6 +82,5 @@ body
 
 main
   width: 100%
-  position: relative
   box-sizing: border-box
 </style>
