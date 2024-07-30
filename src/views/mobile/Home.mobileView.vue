@@ -269,9 +269,8 @@ ul {
 }
 
 .hero-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
+  text-wrap: balance;
   margin-top: 64px;
   font-size: 32px;
   font-weight: 700;
